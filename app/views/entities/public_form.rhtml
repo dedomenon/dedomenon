@@ -1,0 +1,49 @@
+<% if params['embedded']=='t' %>
+<%=# stylesheet_link_tag 'yui-container' 
+%>
+<%=# javascript_include_tag "yui-yahoo" 
+%>
+<%=# javascript_include_tag "yui-event" 
+%>
+<%=# javascript_include_tag "yui-dom" 
+%>
+<%=# javascript_include_tag "yui-container" 
+%>
+<!-- css --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css">
+<!-- js -->
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/animation/animation-min.js&2.5.2/build/connection/connection-min.js&2.5.2/build/container/container-min.js&2.5.2/build/selector/selector-beta-min.js&2.5.2/build/element/element-beta-min.js"></script>
+<%= javascript_include_tag :defaults  %>
+<%= javascript_include_tag "fat" %>
+<%= javascript_include_tag "scriptaculous" %>
+<%= javascript_include_tag "madb" %>
+<%= javascript_include_tag "gau" %>
+<% else %>
+<!-- <H1><%=h( t("madb_create_new",  :vars => { 'entity' => t(@entity.name)}) )%></H1> -->
+<% end %>
+
+  <div id="addition_form_div">
+   <form id="entity_form" method="post" action="<%= url_for :action=> "apply_edit" %>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
+    <input type="hidden" name="instance_id" value="-1">
+    <input type="hidden" name="entity" value="<%=@entity.id%>">
+    <%= render :partial => "entity_form", :object => @instance %>
+    <%= submit_tag(t("madb_submit"))%> <%= link_to_function t("madb_cancel"), "$('addition_form_div').style.display='none'; new Form.reset_madb_form (document.forms[0]);"%>
+    </form>
+<a href="http://www.myowndb.com"><img style="display:block; margin-left:auto; margin-right: auto; border:0px" src="/images/logo-small.gif"/></a>
+  </div>
+
+  <div style="display:none;" id="insertion_successful">
+    <%= t("madb_insertion_was_successful") %>
+  </div>
+
+
+<script type="text/javascript">
+    
+  var success_action = function(data){
+      Element.hide('addition_form_div');
+      Element.show('insertion_successful');
+  }
+  <%= render :partial => "upload_form_function", :entity => @entity %>
+  new EntityFormSubmitter('entity_form', success_action);
+
+</script>

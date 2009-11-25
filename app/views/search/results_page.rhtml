@@ -1,0 +1,10 @@
+<h1><%= t("madb_search") %></h1>
+<%= help_info("madb_help_info_search_index")%>
+<%= render_component :controller => "search",  :action => "simple_search_form", :params => {:database_id => params["database_id"], :entity_id => params["entity_id"], :detail_id => params["detail_id"], :value => params["value"]  }   %>
+<% if @error %>
+ <span class=""><%= @error %></span>
+<% else %>
+	<% @entities.each do |e| %>
+	<%= render_component :action => "list_for_entity", :params => { :entity_id => e.id , :detail_id => params["detail_id"], :value => params["value"] } %>
+	<% end %>
+<% end %>

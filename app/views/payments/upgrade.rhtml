@@ -1,0 +1,67 @@
+<H1><%= t("madb_account_#{params["action"]}")%></H1>
+<% if MadbSettings.european_countries.include? session["user"].account.country and @action=="upgrade"%>
+<%= link_to_remote( t("madb_back_to_vat_change"), { :url => { :controller => "settings", :action => "vat_form" }, :update => "subscription_upgrade" })%><br/>
+<%end%>
+
+<%= t("madb_your_current_subscription_plan", :vars => { "subscription" => t(session["user"].account.account_type.name) ,"amount" => session["user"].account.account_type.monthly_fee})%><br/>
+<table>
+  <thead>
+    <tr>
+      <td></td>
+      <td><%=t("madb_number_of_databases")%></td>
+      <td><%=t("madb_number_of_users")%></td>
+      <td><%=t("madb_maximum_attachment_size")%></td>
+      <td><%=t("madb_maximum_monthly_file_transfer")%></td>
+      <td><%=t("madb_maximum_attachment_number")%></td>
+      <td><%=t("madb_monthly_fee")%>*</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% if session["user"].account.status=="cancelled"%>
+      <% comparator=">=" %>
+    <%else%>
+      <% comparator=">" %>
+    <%end%>
+    <% AccountType.find(:all, :conditions => ["id#{comparator}? and active='t'", @start_subscription]).each do |subscription| %>
+      <tr>
+        <td>
+  <%= paypal_form_tag %>
+  <%= paypal_setup session["user"].account_id , 0.0 , "rb@raphinou.com", { :notify_url => url_for(:only_path => false, :controller => "payments", :action => "ipn"),
+    #this is a modify only button
+    :modify => @paypal_modify,
+    :return => @return, 
+    # amount
+    :a3 => ((subscription.monthly_fee * (session["user"].account.vat/100.0 + 1))*100).round/100.0,
+    # number of time unit
+    :p3 => 1, 
+    # time unit
+    :t3 => "M", 
+    # set recurring
+    :src => 1,
+    # reattempts when payment fails
+    :sra => 1,
+    # set cmd to "_xclick-subscriptions" to request a subscription payment
+    :cmd => "_xclick-subscriptions",
+    # must be included and set to one for subscriptions
+    :no_note => 1,
+    :currency_code => "EUR" ,:business_key => MadbSettings.paypal_key, :business_cert => MadbSettings.paypal_cert, :business_certid => MadbSettings.paypal_cert_id
+    } %>
+    <%= submit_tag t("madb_#{params["action"]}_subscription_to", :vars => { "subscription_name" => t(subscription.name), "amount" => subscription.monthly_fee, "vat" => session["user"].account.vat  })%>
+
+     <%= end_form_tag %>
+      </td>
+      <td><strong><%=subscription.number_of_databases%></strong></td>
+      <td><strong><%=t("madb_unlimited_number_of_users")%></strong></td>
+    <% if subscription.maximum_file_size.bytes/1.megabyte.to_f >=0.9 %>
+      <td><strong><%=(((subscription.maximum_file_size.bytes/1.megabytes.to_f)*100).to_i)/100.0%>Mb</strong></td>
+    <%else%>
+      <td><strong><%=(((subscription.maximum_file_size.bytes/1.kilobytes)*100).to_i)/100.0%>Kb</strong></td>
+    <%end%>
+      <td><strong><%=(((subscription.maximum_monthly_file_transfer.bytes/1.megabytes.to_f)*100).to_i)/100.0%>Mb</strong><%#= image_tag("hlp16_1.gif", :alt => t("madb_question"), :id => "monthly_file_transfer_explanations") %></td>
+      <td><strong><%=subscription.maximum_attachment_number%></strong></td>
+      <td><strong><%=subscription.monthly_fee%>EUR </strong></td>
+    </tr>
+    <%end%>
+    </tbody>
+  </table>
+  *<%= t("madb_excluding_vat")%>

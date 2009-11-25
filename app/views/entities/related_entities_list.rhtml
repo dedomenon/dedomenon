@@ -1,0 +1,98 @@
+<div class="<%= @div_class%>">
+<script type="text/javascript">
+  <% if @hide_to_new_link %>
+    //Element.hide('<%=@add_new_link%>');
+    parent.document.getElementById('<%=@add_new_link%>').style.display='none';
+  <% else %>
+    //Element.show('<%=@add_new_link%>');
+    parent.document.getElementById('<%=@add_new_link%>').style.display='';
+  <% end %>
+  <% if @hide_to_existing_link %>
+    //Element.hide('<%=@add_existing_link%>');
+    parent.document.getElementById('<%=@add_existing_link%>').style.display='none';
+  <%else %>
+    //Element.show('<%=@add_existing_link%>');
+    parent.document.getElementById('<%=@add_existing_link%>').style.display='';
+  <% end %>
+</script>
+
+
+<%= form_remote_tag :update => "#{@list_id}_div", :url => { :controller => "entities", :action => "related_entities_list"}%>
+    <%= form_hidden_fields({ :id => params["id"], :relation_id => @relation.id, :type => params["type"] }) %>
+<%# FIXME: use EntityDetail
+%>
+<%= t("madb_filter_on") %> <select name="detail_filter"> <%=options_from_collection_for_select(@relation.send(@link_type).ordered_details, "detail_id", "name", params["detail_filter"])  %> </select> <%= t("madb_with_value") %> <input type="text" name="value_filter" value="<%=params["value_filter"]%>">
+     <%# ATTENTION: replaced <input type="submit"> by the button as a input without name creates an entry in params with key "", which causes a problem (interning empty string, coming from "".to_sym)
+     %>
+    <%= submit_tag t("madb_submit")%>
+    <%= link_to_remote t("madb_reset"), :update => "#{@list_id}_div", :url => { :controller => "entities", :action => "related_entities_list", :id => params["id"], :relation_id => @relation.id, :type => params["type"], :overwrite_params => { :highlight => nil, :detail_filter => nil, :filter_value => nil, "#{@list_id}_order".to_sym  => nil } } %>
+    <% if params["popup"]!='t' or embedded? %>
+    <%= link_to  image_tag("icon/big/newWindow.png", :alt =>t("madb_open_in_new_window"), :title =>t("madb_open_in_new_window")), {:overwrite_params => {:controller => "entities", :action => "related_entities_list", :id => params["id"], :relation_id => @relation.id, :popup => 't', :list_id => "#{@list_id}" }}, {:target =>  "#{@list_id}_window", :title => t("madb_open_in_new_window"), :class => "icon"  }   %>
+    <% end %>
+    </form>
+
+<% if @list.length >0 %>
+  <table class="entities_list">
+
+  <caption>
+     <div class="navigation_links">
+  <% if @paginator.length>1 %>
+	<%= t("madb_page")%>:
+  <% @paginator.each do |page| %>
+      <span class="navigation_link">
+      <% if page!=@paginator.current %>
+      <%= link_to_remote( page.number , :update => "#{@list_id}_div", :url => {:overwrite_params=> {:controller => "entities", :action => "related_entities_list","#{@list_id}_page".to_sym => page.number, :highlight => nil }  }) %>
+      <% else %>
+        <%= page.number %>
+      <% end %>
+      </span>
+  <% end if @paginator.length > 1%>
+      <% end %>
+      <span>(<%= t("madb_number_of_records_in_list", :vars=> {"number" => @paginator.item_count}).send(@paginator.item_count>1 ? "pluralize" : "singularize") %>)</span>
+     </div>
+	</caption>
+  <thead>
+  <tr>
+  <% @ordered_fields.each do |c| %>
+    <% next if c == "id" or @not_in_list_view.include? c %>
+    <th><%=link_to_remote(t(c, { :scope => "account"}), :update => "#{@list_id}_div", :url => {:controller => "entities", :action => "related_entities_list",:overwrite_params => {"#{@list_id}_order".to_sym => c}  })  %></th>
+  <% end %>
+    <th class="action_cell"><%=t "madb_view"%></th>
+    <th class="action_cell"><%=t "madb_edit"%></th>
+    <th class="action_cell"><%=t "madb_unlink"%></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |o| %>
+  <tr id="tr_<%=@list_id%>_div_<%=o.id%>" <%= 'class="highlight"' if o.id.to_s == params["highlight"] %>>
+    <% @ordered_fields.each do |column| %>
+    <% next if column == "id" or @not_in_list_view.include? column %>
+    <% detail_class = class_from_name(@details[column].data_type.class_name)%>
+    <td class="data_cell"><%=detail_class.format_detail :value =>  o[column], :controller => self %></td>
+    <% end %>
+    <td class="action_cell">
+	<%=link_to(image_tag("icon/big/view.png", :border =>0), { :controller => "entities", :action => "view", :id => o.id, :popup => params["popup"] }, { :title=> t("madb_view")}) %>
+    </td>
+    <td class="action_cell">
+	<%=link_to(image_tag("icon/big/edit.png", :border =>0), { :controller => "entities", :action => "edit", :id => o.id, :popup => params["popup"] }, { :title=> t("madb_edit")}) %>
+    </td>
+    <td class="action_cell">
+      <%= link_to_remote( image_tag("icon/big/unlink.png", :border =>0, :alt => t("madb_unlink")), :update => "#{@list_id}_div",  :url => { :overwrite_params => {:controller => "entities", :action => "unlink",:id => o.id, :relation_id => @relation.id, @source_id.to_sym => params["id"] } } ,
+      :complete => " if ('#{@link_to_many}'=='f')
+                    {
+                    $('#{@links_div}').style.display='block';
+                    }
+                    ") %></td>
+
+    </tr>
+  <% end %>
+  </tbody>
+  </table>
+
+
+<% else %>
+  <%= t("madb_no_data_found") %>
+<% end %>
+
+
+</div>

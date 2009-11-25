@@ -1,0 +1,67 @@
+
+EntityFormSubmitter = function ( form, success_action ) 
+{
+	this.form = form;
+	this.success_action = success_action;
+	//focus first element of form
+	YAHOO.util.Selector.query('#'+this.form+'  input:not([type=hidden])')[0].focus()
+	this.init();
+}
+
+EntityFormSubmitter.prototype ={
+  init: function()
+  {
+	YAHOO.util.Event.on(this.form, "submit", this.additionformfunction, this, true);
+
+  },
+  after_upload: function(o) {
+	var data = o.responseText;
+	if (data.match(/(.{8}_([\w\s]+_[\w\s]*)\[\d\](_\w+)*(######)?)+/))
+	{
+	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input',this.form); 
+	    try {
+	    YAHOO.util.Dom.batch(invalid_fields, function (e) {Element.removeClassName( e,'invalid_form_value');Element.addClassName( e,'unchecked_form_value'); });
+	    }
+	    catch(e)
+	    {
+	    }
+	  ids = data.split('######');
+	  <%# comment needed for test code
+	  %>
+	  for(var i=0;i</*>*/ids.length; i++)
+	  {
+	      value = ids[i];
+
+				YAHOO.util.Dom.removeClass( value,'valid_form_value');
+				YAHOO.util.Dom.removeClass( value,'unchecked_form_value');
+				YAHOO.util.Dom.addClass( value,'invalid_form_value');
+	  }
+	}
+	else if (data.match(/__ERROR__.*/))
+	{
+	  message = data.replace('__ERROR__','');
+	  alert(message);
+	}
+	else
+	{
+	    this.success_action(data);
+	}
+	Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
+  },
+  additionformfunction: function (event)
+  {
+	  YAHOO.util.Event.preventDefault(event);
+	  Effect.Appear('xhr_message',{duration:0.5,queue:'end'});
+	  YAHOO.util.Connect.setForm(this.form, true );
+	  addition_callback = { upload: this.after_upload, scope: this };
+	  YAHOO.util.Connect.asyncRequest('POST', YAHOO.util.Dom.get(this.form).getAttribute('action') , addition_callback);
+  }
+}
+
+
+
+
+
+
+
+

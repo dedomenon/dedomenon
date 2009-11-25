@@ -1,0 +1,8 @@
+<% for column in Database.content_columns %>
+<p>
+  <b><%= column.human_name %>:</b> <%=h @database.send(column.name) %>
+</p>
+<% end %>
+
+<%= link_to t('madb_edit'), :action => 'edit', :id => @database %> |
+<%= link_to t('madb_back'), :action => 'list' %>

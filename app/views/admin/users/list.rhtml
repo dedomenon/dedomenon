@@ -1,0 +1,35 @@
+<h1><%= t("madb_users_list") %></h1>
+
+<% if flash["notice"] %>
+  <span class="notice"><%= flash["notice"]%></span>
+<% end %>
+
+<table>
+  <thead>
+  <tr>
+    <th><%= t("madb_login") %></th><th><%= t("madb_firstname") %></th><th><%= t("madb_lastname") %></th>
+<th><%= t("madb_user_type") %></th>
+<th/>
+<th/>
+<th/>
+  </tr>
+  </thead>
+
+<% for user in @users %>
+  <tbody>
+  <tr>
+    <td><%=h(user.login) %></td><td><%=h(user.firstname)%></td><td><%=h(user.lastname)%></td> <td><%=h(t(user.user_type.name))%></td>
+    <td><%= link_to t('madb_reset_password'), {:action => 'reset_password', :id => user} , :method => :post  %></td>
+    <td class="action_cell"><%= link_to image_tag("icon/big/edit.png", :alt => t('madb_show'), :border => 0), :action => 'edit', :id => user %></td>
+    <td class="action_cell"><%= link_to image_tag("icon/big/delete.png",:alt =>t('madb_delete'), :border=> 0), {:action => 'destroy', :id => user}, :confirm => t("madb_delete_user_question", :vars => { 'login' => user.login }) unless user.user_type_id == 1%></td>
+  </tr>
+</tbody>
+<% end %>
+</table>
+
+<%= link_to t("madb_previous_page"), { :page => @users_pages.current.previous } if @users_pages.current.previous %>
+<%= link_to t("madb_next_page"), { :page => @users_pages.current.next } if @users_pages.current.next %>
+
+<br />
+
+<%= link_to t('madb_create_user'), :action => 'new' %>

@@ -1,0 +1,5 @@
+<% if @list.length >0 -%><% @ordered_fields.each do |c| -%><%# next if @not_in_list_view.include? c or c == "id" -%>"<%=t(c, { :scope => "account" } ) -%>";<% end -%>
+
+<%@list.each do |o| -%><%@ordered_fields.each  do |column|-%><%#next if @not_in_list_view.include? column or column == "id"-%>"<% detail_class = class_from_name(@details[column].data_type.class_name)%><%=detail_class.format_detail(:value => o[column],:format=>:csv)-%>";<%end-%>
+
+<% end %><%end -%>

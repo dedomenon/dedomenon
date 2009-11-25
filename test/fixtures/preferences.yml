@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+preferences_user_2:
+  id: 1
+  user_id: 2
+  display_help: t
+preferences_user_1003:
+  id: 2
+  user_id: 1000003
+  display_help: f

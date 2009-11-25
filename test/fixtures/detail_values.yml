@@ -1,0 +1,1204 @@
+--- 
+detail_values_175: 
+  detail_id: "52"
+  instance_id: "77"
+  id: "350"
+  value: Place De Brouckere 26
+  type: "SimpleDetailValue"
+detail_values_147: 
+  detail_id: "63"
+  instance_id: "84"
+  id: "402"
+  value: christiane.danneels@consultaix.com
+  type: "EmailDetailValue"
+detail_values_119: 
+  detail_id: "58"
+  instance_id: "76"
+  id: "344"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_033: 
+  detail_id: "48"
+  instance_id: "79"
+  id: "363"
+  value: Banque Degroof
+  type: "SimpleDetailValue"
+detail_values_005: 
+  detail_id: "58"
+  instance_id: "85"
+  id: "406"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_090: 
+  detail_id: "50"
+  instance_id: "89"
+  id: "431"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_062: 
+  detail_id: "59"
+  instance_id: "92"
+  id: "455"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_176: 
+  detail_id: "55"
+  instance_id: "80"
+  id: "377"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_148: 
+  detail_id: "48"
+  instance_id: "73"
+  id: "321"
+  value: O-nuclear
+  type: "SimpleDetailValue"
+detail_values_034: 
+  detail_id: "56"
+  instance_id: "74"
+  id: "330"
+  value: Carol
+  type: "SimpleDetailValue"
+detail_values_006: 
+  detail_id: "55"
+  instance_id: "78"
+  id: "361"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_091: 
+  detail_id: "63"
+  instance_id: "75"
+  id: "340"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_063: 
+  detail_id: "63"
+  instance_id: "79"
+  id: "370"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_177: 
+  detail_id: "52"
+  instance_id: "69"
+  id: "296"
+  value: rue de perck
+  type: "SimpleDetailValue"
+detail_values_149: 
+  detail_id: "63"
+  instance_id: "88"
+  id: "428"
+  value: info@be.easynet.net
+  type: "EmailDetailValue"
+detail_values_007: 
+  detail_id: "63"
+  instance_id: "80"
+  id: "378"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_092: 
+  detail_id: "59"
+  instance_id: "87"
+  id: "419"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_064: 
+  detail_id: "57"
+  instance_id: "82"
+  id: "387"
+  value: Consultante
+  type: "SimpleDetailValue"
+detail_values_035: 
+  detail_id: "58"
+  instance_id: "86"
+  id: "412"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_178: 
+  detail_id: "52"
+  instance_id: "73"
+  id: "324"
+  value: "Braine-l'Alleud"
+  type: "SimpleDetailValue"
+detail_values_008: 
+  detail_id: "54"
+  instance_id: "73"
+  id: "326"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_093: 
+  detail_id: "52"
+  instance_id: "93"
+  id: "460"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_036: 
+  detail_id: "48"
+  instance_id: "92"
+  id: "451"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_179: 
+  detail_id: "54"
+  instance_id: "78"
+  id: "360"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_120: 
+  detail_id: "53"
+  instance_id: "88"
+  id: "425"
+  value: "+32 2 432 37 00"
+  type: "SimpleDetailValue"
+detail_values_009: 
+  detail_id: "54"
+  instance_id: "91"
+  id: "448"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_094: 
+  detail_id: "52"
+  instance_id: "89"
+  id: "432"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_065: 
+  detail_id: "63"
+  instance_id: "92"
+  id: "456"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_037: 
+  detail_id: "59"
+  instance_id: "81"
+  id: "383"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_150: 
+  detail_id: "59"
+  instance_id: "90"
+  id: "441"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_121: 
+  detail_id: "48"
+  instance_id: "90"
+  id: "437"
+  value: Becker
+  type: "SimpleDetailValue"
+detail_values_095: 
+  detail_id: "48"
+  instance_id: "76"
+  id: "341"
+  value: Soizon
+  type: "SimpleDetailValue"
+detail_values_066: 
+  detail_id: "63"
+  instance_id: "70"
+  id: "306"
+  value: valtech@broebel.net
+  type: "EmailDetailValue"
+detail_values_038: 
+  detail_id: "49"
+  instance_id: "79"
+  id: "364"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_151: 
+  detail_id: "48"
+  instance_id: "78"
+  id: "355"
+  value: BARDAF
+  type: "SimpleDetailValue"
+detail_values_122: 
+  detail_id: "48"
+  instance_id: "94"
+  id: "465"
+  value: Garcia
+  type: "SimpleDetailValue"
+detail_values_096: 
+  detail_id: "63"
+  instance_id: "87"
+  id: "420"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_067: 
+  detail_id: "48"
+  instance_id: "89"
+  id: "429"
+  value: Experteam
+  type: "SimpleDetailValue"
+detail_values_039: 
+  detail_id: "57"
+  instance_id: "74"
+  id: "331"
+  value: Employée
+  type: "SimpleDetailValue"
+detail_values_180: 
+  detail_id: "52"
+  instance_id: "91"
+  id: "446"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_152: 
+  detail_id: "52"
+  instance_id: "80"
+  id: "374"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_123: 
+  detail_id: "48"
+  instance_id: "84"
+  id: "397"
+  value: Danneels
+  type: "SimpleDetailValue"
+detail_values_097: 
+  detail_id: "53"
+  instance_id: "93"
+  id: "461"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_068: 
+  detail_id: "58"
+  instance_id: "82"
+  id: "388"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_124: 
+  detail_id: "56"
+  instance_id: "72"
+  id: "316"
+  value: Raphaël
+  type: "SimpleDetailValue"
+detail_values_010: 
+  detail_id: "54"
+  instance_id: "69"
+  id: "298"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_069: 
+  detail_id: "48"
+  instance_id: "75"
+  id: "335"
+  value: Soizon
+  type: "SimpleDetailValue"
+detail_values_153: 
+  detail_id: "63"
+  instance_id: "94"
+  id: "470"
+  value: joelle.garcia@oconolly.co.uk
+  type: "EmailDetailValue"
+detail_values_125: 
+  detail_id: "59"
+  instance_id: "76"
+  id: "345"
+  value: Siège de Bruxelles
+  type: "SimpleDetailValue"
+detail_values_011: 
+  detail_id: "59"
+  instance_id: "85"
+  id: "407"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_040: 
+  detail_id: "59"
+  instance_id: "86"
+  id: "413"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_098: 
+  detail_id: "57"
+  instance_id: "83"
+  id: "393"
+  value: Consultante
+  type: "SimpleDetailValue"
+detail_values_154: 
+  detail_id: "49"
+  instance_id: "78"
+  id: "356"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_126: 
+  detail_id: "56"
+  instance_id: "90"
+  id: "438"
+  value: Robert
+  type: "SimpleDetailValue"
+detail_values_012: 
+  detail_id: "48"
+  instance_id: "81"
+  id: "379"
+  value: Audux
+  type: "SimpleDetailValue"
+detail_values_041: 
+  detail_id: "56"
+  instance_id: "92"
+  id: "452"
+  value: Peter
+  type: "SimpleDetailValue"
+detail_values_099: 
+  detail_id: "53"
+  instance_id: "89"
+  id: "433"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_155: 
+  detail_id: "53"
+  instance_id: "80"
+  id: "375"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_127: 
+  detail_id: "56"
+  instance_id: "94"
+  id: "466"
+  value: Joelle
+  type: "SimpleDetailValue"
+detail_values_013: 
+  detail_id: "54"
+  instance_id: "77"
+  id: "352"
+  value: "+32 2 227 61 01"
+  type: "SimpleDetailValue"
+detail_values_070: 
+  detail_id: "48"
+  instance_id: "93"
+  id: "457"
+  value: "O'Conolly & Associates"
+  type: "SimpleDetailValue"
+detail_values_042: 
+  detail_id: "63"
+  instance_id: "81"
+  id: "384"
+  value: florence.audux@consultaix.com
+  type: "EmailDetailValue"
+detail_values_156: 
+  detail_id: "48"
+  instance_id: "85"
+  id: "403"
+  value: Brughmans
+  type: "SimpleDetailValue"
+detail_values_128: 
+  detail_id: "56"
+  instance_id: "84"
+  id: "398"
+  value: Christiane
+  type: "SimpleDetailValue"
+detail_values_071: 
+  detail_id: "48"
+  instance_id: "71"
+  id: "307"
+  value: raphinou
+  type: "SimpleDetailValue"
+detail_values_014: 
+  detail_id: "55"
+  instance_id: "91"
+  id: "449"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_157: 
+  detail_id: "63"
+  instance_id: "90"
+  id: "442"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_129: 
+  detail_id: "57"
+  instance_id: "72"
+  id: "317"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_072: 
+  detail_id: "59"
+  instance_id: "82"
+  id: "389"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_043: 
+  detail_id: "50"
+  instance_id: "79"
+  id: "365"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_015: 
+  detail_id: "55"
+  instance_id: "69"
+  id: "299"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_158: 
+  detail_id: "48"
+  instance_id: "77"
+  id: "347"
+  value: Axios
+  type: "SimpleDetailValue"
+detail_values_073: 
+  detail_id: "56"
+  instance_id: "75"
+  id: "336"
+  value: Ermioni
+  type: "SimpleDetailValue"
+detail_values_044: 
+  detail_id: "55"
+  instance_id: "95"
+  id: "472"
+  value: "aucun mémo n'est à noter pour le moment"
+  type: "LongTextDetailValue"
+detail_values_016: 
+  detail_id: "63"
+  instance_id: "85"
+  id: "408"
+  value: raphael.brughmans@bardaf.be
+  type: "EmailDetailValue"
+detail_values_159: 
+  detail_id: "48"
+  instance_id: "69"
+  id: "293"
+  value: valtech
+  type: "SimpleDetailValue"
+detail_values_074: 
+  detail_id: "49"
+  instance_id: "93"
+  id: "458"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_045: 
+  detail_id: "56"
+  instance_id: "70"
+  id: "302"
+  value: Vincent
+  type: "SimpleDetailValue"
+detail_values_100: 
+  detail_id: "48"
+  instance_id: "88"
+  id: "421"
+  value: Easynet Belgium
+  type: "SimpleDetailValue"
+detail_values_017: 
+  detail_id: "56"
+  instance_id: "81"
+  id: "380"
+  value: Florence
+  type: "SimpleDetailValue"
+detail_values_130: 
+  detail_id: "57"
+  instance_id: "90"
+  id: "439"
+  value: CEO
+  type: "SimpleDetailValue"
+detail_values_075: 
+  detail_id: "49"
+  instance_id: "71"
+  id: "308"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_046: 
+  detail_id: "48"
+  instance_id: "82"
+  id: "385"
+  value: Kastagnette
+  type: "SimpleDetailValue"
+detail_values_101: 
+  detail_id: "54"
+  instance_id: "93"
+  id: "462"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_018: 
+  detail_id: "55"
+  instance_id: "77"
+  id: "353"
+  value: Ceci est le mémo qui est un long text
+  type: "LongTextDetailValue"
+detail_values_047: 
+  detail_id: "53"
+  instance_id: "79"
+  id: "367"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_102: 
+  detail_id: "54"
+  instance_id: "71"
+  id: "312"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_019: 
+  detail_id: "55"
+  instance_id: "73"
+  id: "327"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_160: 
+  detail_id: "56"
+  instance_id: "85"
+  id: "404"
+  value: Raphaël
+  type: "SimpleDetailValue"
+detail_values_131: 
+  detail_id: "57"
+  instance_id: "94"
+  id: "467"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_076: 
+  detail_id: "63"
+  instance_id: "82"
+  id: "390"
+  value: nicole.kitsopulos@consultaix.com
+  type: "EmailDetailValue"
+detail_values_048: 
+  detail_id: "57"
+  instance_id: "92"
+  id: "453"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_103: 
+  detail_id: "58"
+  instance_id: "83"
+  id: "394"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_161: 
+  detail_id: "49"
+  instance_id: "73"
+  id: "322"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_132: 
+  detail_id: "57"
+  instance_id: "84"
+  id: "399"
+  value: Secrétaire
+  type: "SimpleDetailValue"
+detail_values_049: 
+  detail_id: "57"
+  instance_id: "70"
+  id: "303"
+  value: Chief
+  type: "SimpleDetailValue"
+detail_values_104: 
+  detail_id: "49"
+  instance_id: "88"
+  id: "422"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_077: 
+  detail_id: "57"
+  instance_id: "75"
+  id: "337"
+  value: Employée
+  type: "SimpleDetailValue"
+detail_values_162: 
+  detail_id: "50"
+  instance_id: "78"
+  id: "357"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_133: 
+  detail_id: "58"
+  instance_id: "72"
+  id: "318"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_105: 
+  detail_id: "55"
+  instance_id: "93"
+  id: "463"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_020: 
+  detail_id: "63"
+  instance_id: "69"
+  id: "300"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_078: 
+  detail_id: "56"
+  instance_id: "87"
+  id: "416"
+  value: Hélène
+  type: "SimpleDetailValue"
+detail_values_163: 
+  detail_id: "48"
+  instance_id: "91"
+  id: "443"
+  value: Mind
+  type: "SimpleDetailValue"
+detail_values_134: 
+  detail_id: "63"
+  instance_id: "76"
+  id: "346"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_106: 
+  detail_id: "59"
+  instance_id: "83"
+  id: "395"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_079: 
+  detail_id: "50"
+  instance_id: "93"
+  id: "459"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_135: 
+  detail_id: "58"
+  instance_id: "94"
+  id: "468"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_107: 
+  detail_id: "54"
+  instance_id: "89"
+  id: "434"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_050: 
+  detail_id: "52"
+  instance_id: "79"
+  id: "366"
+  value: Rue Béliard
+  type: "SimpleDetailValue"
+detail_values_021: 
+  detail_id: "48"
+  instance_id: "86"
+  id: "409"
+  value: Kastagnette
+  type: "SimpleDetailValue"
+detail_values_164: 
+  detail_id: "49"
+  instance_id: "77"
+  id: "348"
+  value: "230202020"
+  type: "SimpleDetailValue"
+detail_values_136: 
+  detail_id: "58"
+  instance_id: "84"
+  id: "400"
+  value: Secrétatiat
+  type: "SimpleDetailValue"
+detail_values_108: 
+  detail_id: "50"
+  instance_id: "88"
+  id: "423"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_051: 
+  detail_id: "58"
+  instance_id: "74"
+  id: "332"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_022: 
+  detail_id: "63"
+  instance_id: "77"
+  id: "354"
+  value: inf@consultaix.com
+  type: "EmailDetailValue"
+detail_values_165: 
+  detail_id: "49"
+  instance_id: "69"
+  id: "294"
+  value: hjhjhjk
+  type: "SimpleDetailValue"
+detail_values_137: 
+  detail_id: "59"
+  instance_id: "72"
+  id: "319"
+  value: "trucksharing, madb, easynet"
+  type: "SimpleDetailValue"
+detail_values_109: 
+  detail_id: "56"
+  instance_id: "76"
+  id: "342"
+  value: Elisabeth
+  type: "SimpleDetailValue"
+detail_values_052: 
+  detail_id: "63"
+  instance_id: "86"
+  id: "414"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_023: 
+  detail_id: "63"
+  instance_id: "73"
+  id: "328"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_080: 
+  detail_id: "50"
+  instance_id: "71"
+  id: "309"
+  value: BE 738 832 298
+  type: "SimpleDetailValue"
+detail_values_166: 
+  detail_id: "57"
+  instance_id: "85"
+  id: "405"
+  value: Informaticien
+  type: "SimpleDetailValue"
+detail_values_138: 
+  detail_id: "54"
+  instance_id: "88"
+  id: "426"
+  value: "+32 2 432 37 01"
+  type: "SimpleDetailValue"
+detail_values_053: 
+  detail_id: "58"
+  instance_id: "92"
+  id: "454"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_024: 
+  detail_id: "48"
+  instance_id: "70"
+  id: "301"
+  value: Luyckx
+  type: "SimpleDetailValue"
+detail_values_081: 
+  detail_id: "48"
+  instance_id: "83"
+  id: "391"
+  value: Biloute
+  type: "SimpleDetailValue"
+detail_values_167: 
+  detail_id: "50"
+  instance_id: "73"
+  id: "323"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_139: 
+  detail_id: "48"
+  instance_id: "80"
+  id: "371"
+  value: Commission  européenne
+  type: "SimpleDetailValue"
+detail_values_025: 
+  detail_id: "56"
+  instance_id: "86"
+  id: "410"
+  value: Dimitri
+  type: "SimpleDetailValue"
+detail_values_082: 
+  detail_id: "49"
+  instance_id: "89"
+  id: "430"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_168: 
+  detail_id: "52"
+  instance_id: "78"
+  id: "358"
+  value: "Rue d'Arlon"
+  type: "SimpleDetailValue"
+detail_values_054: 
+  detail_id: "58"
+  instance_id: "70"
+  id: "304"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_026: 
+  detail_id: "57"
+  instance_id: "81"
+  id: "381"
+  value: Consultante
+  type: "SimpleDetailValue"
+detail_values_083: 
+  detail_id: "58"
+  instance_id: "75"
+  id: "338"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_169: 
+  detail_id: "49"
+  instance_id: "91"
+  id: "444"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_055: 
+  detail_id: "54"
+  instance_id: "79"
+  id: "368"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_110: 
+  detail_id: "55"
+  instance_id: "71"
+  id: "313"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_027: 
+  detail_id: "63"
+  instance_id: "78"
+  id: "362"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_084: 
+  detail_id: "57"
+  instance_id: "87"
+  id: "417"
+  value: Juriste
+  type: "SimpleDetailValue"
+detail_values_140: 
+  detail_id: "59"
+  instance_id: "94"
+  id: "469"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_111: 
+  detail_id: "55"
+  instance_id: "89"
+  id: "435"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_028: 
+  detail_id: "61"
+  instance_id: "95"
+  id: "471"
+  value: visite de test
+  type: "SimpleDetailValue"
+detail_values_085: 
+  detail_id: "52"
+  instance_id: "71"
+  id: "310"
+  value: kasteellaan 17
+  type: "SimpleDetailValue"
+detail_values_056: 
+  detail_id: "59"
+  instance_id: "74"
+  id: "333"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_141: 
+  detail_id: "49"
+  instance_id: "80"
+  id: "372"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_112: 
+  detail_id: "63"
+  instance_id: "71"
+  id: "314"
+  value: rb@raphinou.com
+  type: "EmailDetailValue"
+detail_values_029: 
+  detail_id: "48"
+  instance_id: "74"
+  id: "329"
+  value: Bauduin
+  type: "SimpleDetailValue"
+detail_values_086: 
+  detail_id: "59"
+  instance_id: "75"
+  id: "339"
+  value: Siège de Bruxelles
+  type: "SimpleDetailValue"
+detail_values_057: 
+  detail_id: "48"
+  instance_id: "87"
+  id: "415"
+  value: Kastagnette
+  type: "SimpleDetailValue"
+detail_values_170: 
+  detail_id: "50"
+  instance_id: "77"
+  id: "349"
+  value: BE230202020
+  type: "SimpleDetailValue"
+detail_values_058: 
+  detail_id: "59"
+  instance_id: "70"
+  id: "305"
+  value: "chambre de commerce namur, trucksharing, b2a, b2i"
+  type: "SimpleDetailValue"
+detail_values_113: 
+  detail_id: "57"
+  instance_id: "76"
+  id: "343"
+  value: employée
+  type: "SimpleDetailValue"
+detail_values_171: 
+  detail_id: "54"
+  instance_id: "80"
+  id: "376"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_142: 
+  detail_id: "59"
+  instance_id: "84"
+  id: "401"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_087: 
+  detail_id: "58"
+  instance_id: "87"
+  id: "418"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_059: 
+  detail_id: "55"
+  instance_id: "79"
+  id: "369"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_114: 
+  detail_id: "52"
+  instance_id: "88"
+  id: "424"
+  value: Gulledelle 92
+  type: "SimpleDetailValue"
+detail_values_172: 
+  detail_id: "50"
+  instance_id: "69"
+  id: "295"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_143: 
+  detail_id: "63"
+  instance_id: "72"
+  id: "320"
+  value: rb@raphinou.com
+  type: "EmailDetailValue"
+detail_values_115: 
+  detail_id: "63"
+  instance_id: "93"
+  id: "464"
+  value: ''
+  type: "EmailDetailValue"
+detail_values_030: 
+  detail_id: "57"
+  instance_id: "86"
+  id: "411"
+  value: Gardien
+  type: "SimpleDetailValue"
+detail_values_088: 
+  detail_id: "53"
+  instance_id: "71"
+  id: "311"
+  value: "+32 479 989 969"
+  type: "SimpleDetailValue"
+detail_values_001: 
+  detail_id: "53"
+  instance_id: "77"
+  id: "351"
+  value: "+32 2 227 61 00"
+  type: "SimpleDetailValue"
+detail_values_173: 
+  detail_id: "53"
+  instance_id: "78"
+  id: "359"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_144: 
+  detail_id: "55"
+  instance_id: "88"
+  id: "427"
+  value: ''
+  type: "LongTextDetailValue"
+detail_values_116: 
+  detail_id: "63"
+  instance_id: "89"
+  id: "436"
+  value: info@experteam.be
+  type: "EmailDetailValue"
+detail_values_031: 
+  detail_id: "63"
+  instance_id: "91"
+  id: "450"
+  value: info@mind.be
+  type: "EmailDetailValue"
+detail_values_089: 
+  detail_id: "56"
+  instance_id: "83"
+  id: "392"
+  value: Stéphanie
+  type: "SimpleDetailValue"
+detail_values_002: 
+  detail_id: "53"
+  instance_id: "73"
+  id: "325"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_174: 
+  detail_id: "50"
+  instance_id: "91"
+  id: "445"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_145: 
+  detail_id: "58"
+  instance_id: "90"
+  id: "440"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_117: 
+  detail_id: "63"
+  instance_id: "83"
+  id: "396"
+  value: stephanie.biloute@consultaix.com
+  type: "EmailDetailValue"
+detail_values_003: 
+  detail_id: "53"
+  instance_id: "91"
+  id: "447"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_060: 
+  detail_id: "56"
+  instance_id: "82"
+  id: "386"
+  value: Nicole
+  type: "SimpleDetailValue"
+detail_values_146: 
+  detail_id: "50"
+  instance_id: "80"
+  id: "373"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_118: 
+  detail_id: "48"
+  instance_id: "72"
+  id: "315"
+  value: BAuduin
+  type: "SimpleDetailValue"
+detail_values_032: 
+  detail_id: "58"
+  instance_id: "81"
+  id: "382"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_004: 
+  detail_id: "53"
+  instance_id: "69"
+  id: "297"
+  value: ''
+  type: "SimpleDetailValue"
+detail_values_061: 
+  detail_id: "63"
+  instance_id: "74"
+  id: "334"
+  value: carol.bauduin@o-nuclear.be
+  type: "EmailDetailValue"
+email_detail_values_002: 
+  detail_id: "23"
+  instance_id: "25"
+  id: "232"
+  value: rb@raphinou.com
+  type: "EmailDetailValue"
+weburl_detail_values_002: 
+  detail_id: "24"
+  instance_id: "25"
+  id: "233"
+  value: http://www.raphinou.com
+  type: "WebUrlDetailValue"
+# We comment out it as S3Attachment is no more a core type
+#s3_detail_values_002: 
+#  detail_id: "25"
+#  instance_id: "25"
+#  id: "234"
+#  value: " --- \n :uploaded: false\n :filename: ms-ff.png\n :s3_key: \"151970\"\n :filetype: \"image/png\r\"\n"
+#  type: "S3Attachment"
+# Values for the Books[100] Instance[200]
+# BEGIN
+book_name_value_200_1:
+  detail_id: "74"
+  instance_id: "200"
+  id: "1200"
+  value: "Compiler, Principles, Tools and Techniques"
+  type: "SimpleDetailValue"
+book_name_value_200_2:
+  detail_id: "74"
+  instance_id: "200"
+  id: "1201"
+  value: "The Dragon Book"
+  type: "SimpleDetailValue"
+book_description_value_200_1:
+  detail_id: "75"
+  instance_id: "200"
+  id: "1202"
+  value: "A comprehensive text on the compiler construction."
+  type: "LongTextDetailValue"
+book_email_value_200_1:
+  detail_id: "79"
+  instance_id: "200"
+  id: "1203"
+  value: "info@wrox.com"
+  type: "EmailDetailValue"
+book_email_value_200_2:
+  detail_id: "79"
+  instance_id: "200"
+  id: "1204"
+  value: "weilly@aw.com"
+  type: "EmailDetailValue"
+book_website_value_200_1:
+  detail_id: "80"
+  instance_id: "200"
+  id: "1205"
+  value: "http://www.wrox.com"
+  type: "WebUrlDetailValue"
+book_website_value_200_2:
+  detail_id: "80"
+  instance_id: "200"
+  id: "1206"
+  value: "http://www.amzon.com"
+  type: "WebUrlDetailValue"
+# END
+
+# Values for the Books[100] Instance[200]
+# BEGIN
+book_name_value_201_1:
+  detail_id: "74"
+  instance_id: "201"
+  id: "1207"
+  value: "Software Engieneering: A Practioners's Apporach"
+  type: "SimpleDetailValue"
+book_name_value_201_2:
+  detail_id: "74"
+  instance_id: "201"
+  id: "1208"
+  value: "Pressman's Book"
+  type: "SimpleDetailValue"
+book_description_value_201_1:
+  detail_id: "75"
+  instance_id: "201"
+  id: "1209"
+  value: "Detailed description on software engineering practices"
+  type: "LongTextDetailValue"
+book_email_value_201_1:
+  detail_id: "79"
+  instance_id: "201"
+  id: "1210"
+  value: "pressman@mit.edu"
+  type: "EmailDetailValue"
+book_email_value_201_2:
+  detail_id: "79"
+  instance_id: "200"
+  id: "1211"
+  value: "dr_pressman@aol.com"
+  type: "EmailDetailValue"
+book_website_value_201_1:
+  detail_id: "80"
+  instance_id: "201"
+  id: "1212"
+  value: "http://www.pressman.com"
+  type: "WebUrlDetailValue"
+book_website_value_201_2:
+  detail_id: "80"
+  instance_id: "201"
+  id: "1213"
+  value: "http://www.mit.edu/pressman"
+  type: "WebUrlDetailValue"
+#END
+# Single instance containing a FileAttachment 
+name_books_value:
+  detail_id: "74"
+  instance_id: "202"
+  id: "1214"
+  value: "Mohsin Hijazee"
+  type: "SimpleDetailValue"
+picture_books_value:
+  detail_id: "82"
+  instance_id: "202"
+  id: "1215"
+  value: " --- \n :uploaded: true\n :filename: logo-Ubuntu.png\n :valueid: 1215\n :detail_value_id: 1215\n :filetype: \"image/png\r\"\n"
+  type: "FileAttachment"

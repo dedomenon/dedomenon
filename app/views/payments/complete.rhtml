@@ -1,0 +1,30 @@
+<% #subscription variables: https://www.paypal.com/en_US/pdf/subscriptions.pdf page 48 %>
+
+   <hr>
+   
+<%= paypal_form_tag %>
+<%= paypal_setup session["user"].account_id , 0.0 , "rb@raphinou.com", { :notify_url =>  url_for(:only_path => false, :controller => "payments", :action => "ipn"),
+   :return =>  url_for(:only_path => false, :controller => "payments", :action => "completed"),
+  # amount
+  :a3 => ((session["user"].account.account_type.monthly_fee * (session["user"].account.vat/100.0 + 1))*100).round/100.0,
+  # number of time unit
+  :p3 => 1, 
+  # time unit
+  :t3 => "M", 
+  # set recurring
+  :src => 1,
+  # reattempts when payment fails
+  :sra => 1,
+  # set cmd to "_xclick-subscriptions" to request a subscription payment
+  :cmd => "_xclick-subscriptions",
+  # must be included and set to one for subscriptions
+  :no_note => 1,
+  :currency_code => "EUR" ,:business_key => MadbSettings.paypal_key, :business_cert => MadbSettings.paypal_cert, :business_certid => MadbSettings.paypal_cert_id
+  
+  } %>
+  <p><%= t("madb_click_button_to_subscribe_through_paypal", :vars => { 'amount' => ((session["user"].account.account_type.monthly_fee * (session["user"].account.vat/100.0 + 1))*100).round/100.0 }) %></p>
+  <%= submit_tag t("madb_pay_with_paypal") %>
+
+   <%= end_form_tag %>
+
+   <hr>

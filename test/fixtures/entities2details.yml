@@ -1,0 +1,649 @@
+---
+first:
+  maximum_number_of_values: "1"
+  entity_id: "21"
+  detail_id: "55"
+  id: "1"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_053:
+  maximum_number_of_values: "1"
+  entity_id: "21"
+  detail_id: "55"
+  id: "99"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_042:
+  maximum_number_of_values: "1"
+  entity_id: "8"
+  detail_id: "40"
+  id: "40"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_031:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "38"
+  id: "38"
+  status_id: "1"
+  display_order: "5"
+  displayed_in_list_view: t
+entities2details_020:
+  maximum_number_of_values: "1"
+  entity_id: "19"
+  detail_id: "61"
+  id: "92"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_009:
+  maximum_number_of_values: "1"
+  entity_id: "18"
+  detail_id: "55"
+  id: "90"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_054:
+  maximum_number_of_values: "1"
+  entity_id: "8"
+  detail_id: "42"
+  id: "42"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_043:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "51"
+  id: "64"
+  status_id: "1"
+  display_order: "40"
+  displayed_in_list_view: t
+entities2details_032:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "49"
+  id: "62"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_021:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "36"
+  id: "36"
+  status_id: "1"
+  display_order: "2"
+  displayed_in_list_view: t
+entities2details_010:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "63"
+  id: "101"
+  status_id: "1"
+  display_order: "90"
+  displayed_in_list_view: t
+entities2details_055:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "53"
+  id: "66"
+  status_id: "1"
+  display_order: "50"
+  displayed_in_list_view: f
+entities2details_044:
+  maximum_number_of_values: "1"
+  entity_id: "13"
+  detail_id: "61"
+  id: "75"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_033:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "59"
+  id: "73"
+  status_id: "1"
+  display_order: "40"
+  displayed_in_list_view: f
+entities2details_022:
+  maximum_number_of_values: "1"
+  entity_id: "9"
+  detail_id: "38"
+  id: "53"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_011:
+  maximum_number_of_values: "1"
+  entity_id: "9"
+  detail_id: "37"
+  id: "51"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_045:
+  maximum_number_of_values: "1"
+  entity_id: "17"
+  detail_id: "61"
+  id: "86"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_034:
+  maximum_number_of_values: "1"
+  entity_id: "16"
+  detail_id: "55"
+  id: "84"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_023:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "57"
+  id: "71"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_012:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "48"
+  id: "69"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_001:
+  maximum_number_of_values: "1"
+  entity_id: "8"
+  detail_id: "43"
+  id: "43"
+  status_id: "1"
+  display_order: "5"
+  displayed_in_list_view: t
+entities2details_046:
+  maximum_number_of_values: "1"
+  entity_id: "17"
+  detail_id: "55"
+  id: "87"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_035:
+  maximum_number_of_values: "1"
+  entity_id: "20"
+  detail_id: "61"
+  id: "95"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_024:
+  maximum_number_of_values: "1"
+  entity_id: "16"
+  detail_id: "60"
+  id: "82"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_013:
+  maximum_number_of_values: "1"
+  entity_id: "15"
+  detail_id: "61"
+  id: "80"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_002:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "54"
+  id: "67"
+  status_id: "1"
+  display_order: "60"
+  displayed_in_list_view: f
+entities2details_047:
+  maximum_number_of_values: "1"
+  entity_id: "21"
+  detail_id: "61"
+  id: "98"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_036:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "39"
+  id: "39"
+  status_id: "1"
+  display_order: "4"
+  displayed_in_list_view: t
+entities2details_025:
+  maximum_number_of_values: "1"
+  entity_id: "19"
+  detail_id: "55"
+  id: "93"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_014:
+  maximum_number_of_values: "1"
+  entity_id: "19"
+  detail_id: "60"
+  id: "91"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_003:
+  maximum_number_of_values: "1"
+  entity_id: "14"
+  detail_id: "61"
+  id: "78"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_048:
+  maximum_number_of_values: "1"
+  entity_id: "8"
+  detail_id: "41"
+  id: "41"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_037:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "50"
+  id: "63"
+  status_id: "1"
+  display_order: "30"
+  displayed_in_list_view: t
+entities2details_026:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "37"
+  id: "37"
+  status_id: "1"
+  display_order: "3"
+  displayed_in_list_view: t
+entities2details_015:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "63"
+  id: "102"
+  status_id: "1"
+  display_order: "50"
+  displayed_in_list_view: t
+entities2details_004:
+  maximum_number_of_values: "1"
+  entity_id: "18"
+  detail_id: "61"
+  id: "89"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_050:
+  maximum_number_of_values: "1"
+  entity_id: "13"
+  detail_id: "55"
+  id: "76"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_049:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "52"
+  id: "65"
+  status_id: "1"
+  display_order: "40"
+  displayed_in_list_view: f
+entities2details_038:
+  maximum_number_of_values: "1"
+  entity_id: "13"
+  detail_id: "60"
+  id: "74"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_027:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "48"
+  id: "61"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_016:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "35"
+  id: "35"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_005:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "62"
+  id: "100"
+  status_id: "1"
+  display_order: "80"
+  displayed_in_list_view: f
+entities2details_051:
+  maximum_number_of_values: "1"
+  entity_id: "14"
+  detail_id: "60"
+  id: "77"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_040:
+  maximum_number_of_values: "1"
+  entity_id: "20"
+  detail_id: "55"
+  id: "96"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: t
+entities2details_039:
+  maximum_number_of_values: "1"
+  entity_id: "17"
+  detail_id: "60"
+  id: "85"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_028:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "58"
+  id: "72"
+  status_id: "1"
+  display_order: "30"
+  displayed_in_list_view: t
+entities2details_017:
+  maximum_number_of_values: "1"
+  entity_id: "9"
+  detail_id: "39"
+  id: "52"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_006:
+  maximum_number_of_values: "1"
+  entity_id: "8"
+  detail_id: "44"
+  id: "44"
+  status_id: "1"
+  display_order: "6"
+  displayed_in_list_view: t
+entities2details_052:
+  maximum_number_of_values: "1"
+  entity_id: "18"
+  detail_id: "60"
+  id: "88"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_041:
+  maximum_number_of_values: "1"
+  entity_id: "21"
+  detail_id: "60"
+  id: "97"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_030:
+  maximum_number_of_values: "1"
+  entity_id: "20"
+  detail_id: "60"
+  id: "94"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_029:
+  maximum_number_of_values: "1"
+  entity_id: "16"
+  detail_id: "61"
+  id: "83"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_018:
+  maximum_number_of_values: "1"
+  entity_id: "12"
+  detail_id: "56"
+  id: "70"
+  status_id: "1"
+  display_order: "10"
+  displayed_in_list_view: t
+entities2details_007:
+  maximum_number_of_values: "1"
+  entity_id: "11"
+  detail_id: "55"
+  id: "68"
+  status_id: "1"
+  display_order: "70"
+  displayed_in_list_view: f
+entities2details_019:
+  maximum_number_of_values: "1"
+  entity_id: "15"
+  detail_id: "55"
+  id: "81"
+  status_id: "1"
+  display_order: "20"
+  displayed_in_list_view: f
+entities2details_008:
+  maximum_number_of_values: "1"
+  entity_id: "15"
+  detail_id: "60"
+  id: "79"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_103:
+  maximum_number_of_values: "1"
+  entity_id: "51"
+  detail_id: "60"
+  id: "103"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: f
+entities2details_104:
+  maximum_number_of_values: "1"
+  entity_id: "52"
+  detail_id: "100"
+  id: "104"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: f
+entities2details_110:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "23"
+  id: "105"
+  status_id: "1"
+  display_order: "23"
+  displayed_in_list_view: f
+entities2details_1000:
+  maximum_number_of_values: "1"
+  entity_id: "7"
+  detail_id: "25"
+  id: "1000"
+  status_id: "1"
+  display_order: "25"
+  displayed_in_list_view: f
+entities2details_1001:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "64"
+  id: "1001"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+entities2details_1002:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "65"
+  id: "1002"
+  status_id: "1"
+  display_order: "2"
+  displayed_in_list_view: t
+entities2details_1003:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "66"
+  id: "1003"
+  status_id: "1"
+  display_order: "3"
+  displayed_in_list_view: t
+entities2details_1004:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "67"
+  id: "1004"
+  status_id: "1"
+  display_order: "4"
+  displayed_in_list_view: t
+entities2details_1005:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "68"
+  id: "1005"
+  status_id: "1"
+  display_order: "5"
+  displayed_in_list_view: t
+entities2details_1006:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "69"
+  id: "1006"
+  status_id: "1"
+  display_order: "6"
+  displayed_in_list_view: t
+entities2details_1007:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "70"
+  id: "1007"
+  status_id: "1"
+  display_order: "7"
+  displayed_in_list_view: t
+entities2details_1008:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "71"
+  id: "1008"
+  status_id: "1"
+  display_order: "8"
+  displayed_in_list_view: t
+entities2details_1009:
+  maximum_number_of_values: "1"
+  entity_id: "30"
+  detail_id: "72"
+  id: "1009"
+  status_id: "1"
+  display_order: "9"
+  displayed_in_list_view: t
+# Here we link the Books entity of database 6 with details.
+# BEGIN BOOKS DETAIL
+books_name:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "74"
+  id: "1010"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+books_description:
+  maximum_number_of_values: "1"
+  entity_id: "100"
+  detail_id: "75"
+  id: "1011"
+  status_id: "1"
+  display_order: "2"
+  displayed_in_list_view: t
+books_published:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "76"
+  id: "1012"
+  status_id: "1"
+  display_order: "3"
+  displayed_in_list_view: t
+books_pages:
+  maximum_number_of_values: "1"
+  entity_id: "100"
+  detail_id: "77"
+  id: "1013"
+  status_id: "1"
+  display_order: "4"
+  displayed_in_list_view: t
+books_category:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "78"
+  id: "1014"
+  status_id: "1"
+  display_order: "5"
+  displayed_in_list_view: t
+books_email:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "79"
+  id: "1015"
+  status_id: "1"
+  display_order: "6"
+  displayed_in_list_view: t
+books_website:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "80"
+  id: "1016"
+  status_id: "1"
+  display_order: "7"
+  displayed_in_list_view: t
+books_picture:
+  maximum_number_of_values: "6"
+  entity_id: "100"
+  detail_id: "82"
+  id: "1017"
+  status_id: "1"
+  display_order: "8"
+  displayed_in_list_view: t
+#NOTE: The S#3 will be dealt later with communication from Raphael.
+#books_downloadlink:
+#  maximum_number_of_values: "6"
+#  entity_id: "100"
+#  detail_id: "81"
+#  id: "1017"
+#  status_id: "1"
+#  display_order: "8"
+#  displayed_in_list_view: t
+
+# END BOOKS DETAIL
+
+# BEGIN PERSON DETAILS
+person_name:
+  maximum_number_of_values: "1"
+  entity_id: "101"
+  detail_id: "74"
+  id: "1018"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+person_picture:
+  maximum_number_of_values: "1"
+  entity_id: "101"
+  detail_id: "82"
+  id: "1019"
+  status_id: "1"
+  display_order: "2"
+  displayed_in_list_view: t
+# END PERSON DETAILS

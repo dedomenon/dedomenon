@@ -1,0 +1,49 @@
+--- 
+relations_001: 
+  from_parent_to_child_name: company_contacts
+  from_child_to_parent_name: contact of
+  parent_side_type_id: "1"
+  id: "5"
+  child_id: "8"
+  child_side_type_id: "2"
+  parent_id: "7"
+relations_002: 
+  from_parent_to_child_name: company_other_addresses
+  from_child_to_parent_name: address of
+  parent_side_type_id: "1"
+  id: "6"
+  child_id: "9"
+  child_side_type_id: "2"
+  parent_id: "7"
+relations_003: 
+  from_parent_to_child_name: contact_de_visite
+  from_child_to_parent_name: contact_de_visite
+  parent_side_type_id: "1"
+  id: "8"
+  child_id: "12"
+  child_side_type_id: "2"
+  parent_id: "19"
+relations_004: 
+  from_parent_to_child_name: contact_de_la_societe
+  from_child_to_parent_name: société de
+  parent_side_type_id: "2"
+  id: "7"
+  child_id: "12"
+  child_side_type_id: "2"
+  parent_id: "11"
+relations_005: 
+  from_parent_to_child_name: contact_prefere
+  from_child_to_parent_name: contact prefere de
+  parent_side_type_id: "1"
+  id: "9"
+  child_id: "12"
+  child_side_type_id: "1"
+  parent_id: "11"
+relations_1000: 
+  from_parent_to_child_name: parent vers enfant
+  from_child_to_parent_name: enfant vers parent
+  parent_side_type_id: "2"
+  id: "1000"
+  child_id: "30"
+  child_side_type_id: "2"
+  parent_id: "30"

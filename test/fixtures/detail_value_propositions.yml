@@ -1,0 +1,88 @@
+--- 
+detail_value_propositions_008: 
+  detail_id: "36"
+  id: "8"
+  value: SA
+detail_value_propositions_009: 
+  detail_id: "36"
+  id: "9"
+  value: ASBL
+detail_value_propositions_010: 
+  detail_id: "36"
+  id: "10"
+  value: Other
+detail_value_propositions_011: 
+  detail_id: "62"
+  id: "11"
+  value: sprl
+detail_value_propositions_012: 
+  detail_id: "62"
+  id: "12"
+  value: sa
+detail_value_propositions_001: 
+  detail_id: "18"
+  id: "1"
+  value: belgique
+detail_value_propositions_013: 
+  detail_id: "62"
+  id: "13"
+  value: asbl
+detail_value_propositions_002: 
+  detail_id: "18"
+  id: "2"
+  value: france
+detail_value_propositions_003: 
+  detail_id: "18"
+  id: "3"
+  value: pays bas
+detail_value_propositions_004: 
+  detail_id: "28"
+  id: "4"
+  value: Mr
+detail_value_propositions_005: 
+  detail_id: "28"
+  id: "5"
+  value: Mlle
+detail_value_propositions_006: 
+  detail_id: "28"
+  id: "6"
+  value: Mme
+detail_value_propositions_007: 
+  detail_id: "36"
+  id: "7"
+  value: SPRL
+selenium_test_of_details_prop1: 
+  detail_id: "67"
+  id: "1000"
+  value: première proposition
+selenium_test_of_details_prop2: 
+  detail_id: "67"
+  id: "1001"
+  value: deuxième proposition
+selenium_test_of_details_prop3: 
+  detail_id: "67"
+  id: "1002"
+  value: uñáµ§ strange text
+# The category propsition for the Books entity
+# BEGIN 
+catagory_book_props1:
+  detail_id: "78"
+  id: "1003"
+  value: Fiction
+catagory_book_props2:
+  detail_id: "78"
+  id: "1004"
+  value: Romance
+catagory_book_props3:
+  detail_id: "78"
+  id: "1005"
+  value: Poetry
+catagory_book_props4:
+  detail_id: "78"
+  id: "1006"
+  value: Computer Science
+catagory_book_props5:
+  detail_id: "78"
+  id: "1007"
+  value: Science
+# END BOOKS PROPOSITIONS

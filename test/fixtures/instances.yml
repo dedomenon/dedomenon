@@ -1,0 +1,102 @@
+--- 
+instances_018: 
+  entity_id: "12"
+  id: "82"
+instances_007: 
+  entity_id: "11"
+  id: "78"
+instances_019: 
+  entity_id: "11"
+  id: "93"
+instances_008: 
+  entity_id: "11"
+  id: "89"
+instances_020: 
+  entity_id: "12"
+  id: "72"
+instances_009: 
+  entity_id: "11"
+  id: "79"
+instances_021: 
+  entity_id: "12"
+  id: "83"
+instances_010: 
+  entity_id: "12"
+  id: "90"
+instances_022: 
+  entity_id: "12"
+  id: "94"
+instances_011: 
+  entity_id: "11"
+  id: "69"
+instances_023: 
+  entity_id: "11"
+  id: "73"
+instances_012: 
+  entity_id: "11"
+  id: "80"
+instances_001: 
+  entity_id: "12"
+  id: "75"
+instances_024: 
+  entity_id: "12"
+  id: "84"
+instances_013: 
+  entity_id: "11"
+  id: "91"
+instances_002: 
+  entity_id: "12"
+  id: "86"
+instances_025: 
+  entity_id: "19"
+  id: "95"
+instances_014: 
+  entity_id: "12"
+  id: "70"
+instances_003: 
+  entity_id: "12"
+  id: "76"
+instances_026: 
+  entity_id: "12"
+  id: "74"
+instances_015: 
+  entity_id: "12"
+  id: "81"
+instances_004: 
+  entity_id: "12"
+  id: "87"
+instances_027: 
+  entity_id: "12"
+  id: "85"
+instances_016: 
+  entity_id: "12"
+  id: "92"
+instances_005: 
+  entity_id: "11"
+  id: "77"
+instances_017: 
+  entity_id: "11"
+  id: "71"
+instances_006: 
+  entity_id: "11"
+  id: "88"
+instances_100: 
+  entity_id: "51"
+  id: "100"
+instances_101: 
+  entity_id: "7"
+  id: "25"
+# The instances for the Books[100] entity
+# BEGIN BOOKS INSTANCES
+instance_books_01:
+  entity_id: "100"
+  id: "200"
+instance_books_02:
+  entity_id: "100"
+  id: "201"
+#END BOOKS INSTACNES
+pictures_instance_01:
+  entity_id: "101"
+  id: "202"
+
+#if you create new instances, find an id that is still free under 100, or it breaks selenium tests

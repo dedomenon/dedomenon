@@ -1,0 +1,42 @@
+<%# we define translation in the YAHOO.madb.translations hash so that these are available to the tooltip defined in the form representation of a detail value (which is defined in the activerecord object, where translation is not available)
+%>
+<script type="text/javascript">
+  YAHOO.madb.translations["madb_delete_file"] = "<%= t('madb_delete_file')%>";
+  YAHOO.madb.translations["madb_replace_file"] = "<%= t('madb_replace_file')%>";
+  YAHOO.madb.translations["madb_go_back_do_no_replace_current_file"] = "<%= t('madb_go_back_do_no_replace_current_file')%>";
+  YAHOO.madb.translations["madb_this_will_erase_the_current_file"] = "<%=t('madb_this_will_erase_the_current_file')%>";
+</script>
+<% form_id = String.random %>
+<input type="hidden" name="form_id" value="<%= form_id %>">
+
+<% if params["source_id"] %>
+	<input type="hidden" name="source_id" value="<%= params["source_id"] %>">
+<% end %>
+<table>
+<%# USE class EntityDetail
+%>
+<% @entity.entity_details.sort{|a,b| a.display_order<=>b.display_order}.each  do |entity_detail| %>
+<% detail = entity_detail.detail %>
+	<% i=0 %>
+	<% if @instance %>
+		<% values = class_from_name(detail.data_type.class_name).find(:all, :conditions => ("instance_id=#{@instance.id} and detail_id=#{detail.id}")) %>
+		<%# the following is necessary to display details which have no value for this instance
+		%>
+
+		<% if values.length==0%>
+		      <% values= [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] %>
+		<% end %>
+	<% else %>
+		<% values = []
+		%>
+		<% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ]
+		%>
+	<% end %>
+	<%values.each do |value| %>
+  <!-- <input type="hidden" id="<%=@entity.name+'_'+detail.name+"["+i.to_s+"]"%>_id" name="<%=detail.name+"["+i.to_s+"]"%>[id]" value="<%=value.id%>"> -->
+  <%#   breakpoint %>
+    <%= value.to_form_row(i, :form_id => form_id, :entity => @entity, :controller => self.controller ) %>
+	<%end%>
+<% end %>
+
+</table>

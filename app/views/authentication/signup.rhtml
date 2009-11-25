@@ -1,0 +1,113 @@
+<% form_tag :action=> "signup" do -%>
+<div  class="form">
+  <h2><%= t("madb_account_type_signup") %></h2>
+  <%= t("madb_select_account_type")%><select id="account_type_id" name="account_type_id" onchange="new Ajax.Updater('account_type_explanations', '<%= url_for :action => "account_type_explanations"%>/'+this.value, { evalScripts: true} ); new Effect.Highlight($('account_type_explanations'))">
+  <%= options_for_select(@account_types, params["account_type_id"].to_i)%>
+</select>
+<div id="account_type_explanations"></div>
+</div>
+<script type="text/javascript">
+  new Ajax.Updater('account_type_explanations', '<%= url_for :action => "account_type_explanations"%>/'+$('account_type_id').value, { evalScripts: true});
+</script>
+<div title="<%= t("madb_account_signup") %>"  class="form">
+  <h2><%= t("madb_account_signup") %></h2>
+  <% if flash['message'] %>
+    <div id="ErrorExplanation">
+      <h3><%= flash['message'] %></h3>
+    </div>
+  <% end %>
+
+  <h3><%= t("madb_company") %></h3>
+<% if @account.errors.count>0 or @error_tos%>
+<div class="errorExplanation" id="errorExplanation"><h2><%=t("madb_error_saving_account")%></h2>
+  <ul>
+    <% @account.errors.each do |attr,e| %>
+<li><%= t(e) %></li>
+<% end %>
+<% if @error_tos %>
+  <li><%=t("tos_acceptance_needed")%></li>
+<%end%>
+</ul>
+</div>
+<% end -%>
+
+
+  <div class="form-padding">
+    <label for="account_name"><%=t "madb_company_name"%>:</label><br/>
+    <%= text_field "account", "name", :size => 30 %><br/>
+    <label for="account_street"><%=t "madb_company_street"%>:</label><br/>
+    <%= text_field "account", "street", :size => 30 %><br/>
+    <label for="account_zip_code"><%=t "madb_company_zip_code"%>:</label><br/>
+    <%= text_field "account", "zip_code", :size => 30 %><br/>
+    <label for="account_city"><%=t "madb_company_city"%>:</label><br/>
+    <%= text_field "account", "city", :size => 30 %><br/>
+    <label for="account_country"><%=t "madb_company_country"%>:</label><br/>
+    <%= country_select "account", "country", { t("madb_choose") => 0}%><br/>
+    <span id="vat_row" style="display:none">
+      <label for="account_vat_number"><%=t "madb_company_vat"%>:</label><br/>
+      <%= text_field "account", "vat_number", :size => 30  %><br/>
+    </span>
+  </div>
+  <script type="text/javascript">
+  function set_vat_visibility()
+  {
+    var eu_countries =   $A(new Array(<%= MadbSettings.european_countries.collect{|e| "'"+e+"'"}.join(",") %>));
+    YAHOO.madb.vat_row = $("vat_row");
+    YAHOO.madb.vat_field = $("account_vat_number");
+    selected_country = $("account_country").value;
+    if (eu_countries.include(selected_country))
+    {
+      YAHOO.madb.vat_row.style.display='block';
+      var pos = YAHOO.util.Dom.getXY(YAHOO.madb.vat_row);
+      YAHOO.madb.vat_explanations = new YAHOO.widget.Overlay("vat_explanations", { visible:true, constraintoviewport: true, width:"40em"});
+      //,  x:pos[0] + YAHOO.madb.vat_field.offsetWidth+10 , y:pos[1] + YAHOO.madb.vat_field.offsetHeight
+      YAHOO.madb.vat_explanations.setBody("<%= t('madb_vat_explanations')%>");
+      YAHOO.madb.vat_explanations.render(document.body);
+      YAHOO.madb.vat_explanations.cfg.setProperty("context", [YAHOO.madb.vat_field, "tr", "tl"]);
+    }
+    else
+    {
+      YAHOO.madb.vat_row.style.display='none';
+      YAHOO.madb.vat_explanations.destroy();
+    }
+
+  }
+  YAHOO.util.Event.addListener(window, 'load', set_vat_visibility)
+  YAHOO.util.Event.addListener("account_country", "change", set_vat_visibility );
+  </script>
+
+
+  <br/>
+  <hr>
+  <h3><%= t("madb_administrator_user")%></h3>
+<% if @user.errors.count>0 %>
+<div class="errorExplanation" id="errorExplanation"><h2><%=t("madb_error_saving_user")%></h2>
+  <ul>
+    <% @user.errors.each do |attr,e| %>
+<li><%= t(e) %></li>
+<% end %>
+</ul>
+</div>
+<%end%>
+  <div class="form-padding">
+    <label for="user_firstname"><%= t("madb_firstname") %>:</label><br/>
+    <%= text_field "user", "firstname", :size => 30 %><br/>
+    <label for="user_lastname"><%= t("madb_lastname") %>:</label><br/>
+    <%= text_field "user", "lastname", :size => 30 %><br/>
+    <label for="user_login"><%= t("madb_login_email") %>:</label><br/>
+    <%= text_field "user", "login", :size => 30 %><br/>
+    <label for="user_login_confirmation"><%= t("madb_email_confirmation") %>:</label><br/>
+    <%= text_field "user", "login_confirmation", :size => 30 %><br/>
+    <label for="user_password"><%= t("madb_choose_password_creation") %>:</label><br/>
+    <%= password_field "user", "password", :size => 30, :value => "" %><br/>
+    <label for="user_password_confirmation"><%= t("madb_confirm_password_creation") %>:</label><br/>
+    <%= password_field "user", "password_confirmation", :size => 30, :value => "" %><br/>
+
+    <input type="checkbox" name="tos_accepted" ><%= t("madb_tos_accepted")%>
+
+    <div class="button-bar">
+      <%= submit_tag t("madb_signup") %>
+    </div>
+  <div>
+<% end -%>
+

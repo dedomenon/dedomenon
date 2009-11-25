@@ -1,0 +1,26 @@
+---
+
+databases_001:
+  name: CRM1
+  account_id: "2"
+  id: "3"
+databases_with_all_data_types:
+  name: selenium all details
+  account_id: "100"
+  id: "5"
+databases_002:
+  name: demo_forem
+  account_id: "1"
+  id: "6"
+databases_003:
+  name: database_without_details
+  account_id: "1"
+  id: "7"
+databases_004:
+  name: database_with_one_entity_with_all_details
+  account_id: "1"
+  id: "8"
+databases_005:
+  name: Tasks
+  account_id:  "1"
+  id:  "1"

@@ -1,0 +1,10 @@
+common:
+  system_email_address: system@example.com
+  exception_recipients: --- 
+  - my@address.com
+  languages: ---
+  - en
+  - fr
+development:
+production:
+test:

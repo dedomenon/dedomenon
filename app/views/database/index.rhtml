@@ -1,0 +1,12 @@
+<h1><%=@title%></h1>
+<%= help_info("madb_help_info_database_list") %>
+<table>
+<thead>
+<tr><th><%= t("madb_name") %></th><th><%=t("madb_use")%></th></tr>
+</thead>
+<tbody>
+<% @databases.each do |database|%>
+<tr><td><%=database.name %></td><td class="action_cell"><%= link_to image_tag("icon/big/use.png",:alt => t("madb_use"), :border => 0), :action => "list_entities", :id => database.id %></td></tr>
+<% end %>
+</tbody>
+</table>

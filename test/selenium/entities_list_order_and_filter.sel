@@ -1,0 +1,100 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app/authentication/login||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|assertTextPresent|demo_forem||
+|assertTextPresent|database_without_details||
+|assertTextPresent|database_with_one_entity_with_all_details||
+|clickAndWait|//a[img/@alt='madb_use']||
+|assertTitle|exact:madb_madb::madb_entities_list||
+|assertTextPresent|convention_partenaire||
+|assertTextPresent|stage||
+|assertTextPresent|formation||
+|assertTextPresent|engagement||
+|assertTextPresent|visite||
+|assertTextPresent|documentation||
+|assertTextPresent|tutoriat||
+|assertTextPresent|commentaires_et_suivi||
+|assertTextPresent|societe||
+|assertTextPresent|contacts||
+|assertTextPresent|coaching||
+|clickAndWait|//tr[8]/td[2]/a||
+|assertTitle|exact:madb_madb::madb_list||
+|assertTable|entities_list_societe.1.0|valtech|
+|assertTable|entities_list_societe.2.0|raphinou|
+|assertTable|entities_list_societe.3.0|O-nuclear|
+|assertTable|entities_list_societe.4.0|Axios|
+|assertTable|entities_list_societe.5.0|BARDAF|
+|assertTable|entities_list_societe.6.0|Banque Degroof|
+|assertTable|entities_list_societe.7.0|Commission européenne|
+|assertTable|entities_list_societe.8.0|Easynet Belgium|
+|assertTable|entities_list_societe.9.0|Experteam|
+|assertTable|entities_list_societe.10.0|Mind|
+|assertTextPresent|madb_page:||
+|assertTextPresent|1||
+|click|link=2||
+|pause|1000||
+|assertTextPresent|O'Conolly & Associates||
+|click|link=1||
+|pause|1000||
+|click|link=nom||
+|pause|1000||
+|assertTextPresent|O'Conolly & Associates||
+|type|value_filter|e|
+|click|//div[@id='societe_list_table_div']/form/input[3]||
+|pause|1000||
+|assertTextPresent|valtech||
+|assertTextPresent|O-nuclear||
+|assertTextPresent|Banque Degroof||
+|assertTextPresent|Commission||
+|assertTextPresent|Easynet Belgium||
+|assertTextPresent|Experteam||
+|assertTextPresent|O'Conolly & Associates||
+|assertTextNotPresent|BARDAF||
+|click|link=madb_reset||
+|pause|1000||
+|assertTextPresent|valtech||
+|assertTextPresent|raphinou||
+|assertTextPresent|O-nuclear||
+|assertTextPresent|Axios||
+|assertTextPresent|BARDAF||
+|assertTextPresent|anque Degroof||
+|assertTextPresent|européenne||
+|assertTextPresent|Easynet Belgium||
+|assertTextPresent|Experteam||
+|assertTextPresent|Mind||
+|click|link=nom||
+|pause|1000||
+|assertTable|entities_list_societe.1.0|Axios|
+|assertTable|entities_list_societe.2.0|Banque Degroof|
+|assertTable|entities_list_societe.3.0|BARDAF|
+|assertTable|entities_list_societe.4.0|Commission européenne|
+|assertTable|entities_list_societe.5.0|Easynet Belgium|
+|assertTable|entities_list_societe.6.0|Experteam|
+|assertTable|entities_list_societe.7.0|Mind|
+|assertTable|entities_list_societe.8.0|O'Conolly & Associates|
+|assertTable|entities_list_societe.9.0|O-nuclear|
+|assertTable|entities_list_societe.10.0|raphinou|
+|click|link=2||
+|pause|1000||
+|assertTextPresent|valtech||
+|click|link=personnes_occuppees||
+|pause|1000||
+|assertTextPresent|O'Conolly & Associates||
+|click|link=1||
+|pause|1000||
+|assertTable|entities_list_societe.1.0|raphinou|
+|assertTable|entities_list_societe.2.0|valtech|
+|assertTable|entities_list_societe.3.0|Axios|
+|assertTable|entities_list_societe.4.0|Experteam|
+|assertTable|entities_list_societe.5.0|Easynet Belgium|
+|assertTable|entities_list_societe.6.0|Banque Degroof|
+|assertTable|entities_list_societe.7.0|BARDAF|
+|assertTable|entities_list_societe.8.0|O-nuclear|
+|assertTable|entities_list_societe.9.0|Commission européenne|
+|assertTable|entities_list_societe.10.0|Mind|
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||

@@ -1,0 +1,9 @@
+|open|/selenium/setup?fixtures=account_types,accounts,user_types,users||
+|open|/app/authentication/login||
+|assertTitle|exact:madb_madb::||
+|type|user_login|hjk|
+|type|user_password|hjk|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::||
+|assertTextPresent|madb_login_unsuccessful||
+|assertTextPresent|madb_please_login||

@@ -1,0 +1,15 @@
+
+
+<h1>phones</h1>
+<ul>
+<% @phones.each do |phone| %>
+ <li><%= phone[1]["value"] %> (detail value id = <%= phone[1]["id"] %>)
+<%end%>
+</ul>
+
+<h1>names</h1>
+<ul>
+<% @names.each do |name| %>
+ <li><%= name[1]["value"] %> (detail value id = <%= name[1]["id"] %>)
+<%end%>
+</ul>

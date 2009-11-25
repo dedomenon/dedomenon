@@ -1,0 +1,62 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users,preferences||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|clickAndWait|link=societe||
+|assertTitle|exact:madb_madb::madb_list||
+|clickAndWait|//a[contains(@href, '/app/entities/view/73')]||
+|assertTitle|exact:madb_madb::madb_entity_details||
+|click|//a[contains(@href, "javascript:change('6')")]||
+|assertNotVisible|//div[@id="add_new_child_contact_de_la_societe_div"]||
+|click|link=madb_add_new_related_entity||
+|pause|1000||
+|assertVisible|//div[@id="add_new_child_contact_de_la_societe_div"]||
+|type|nom[0][value]|nom test|
+|type|prenom[0][value]|prénom test|
+|type|fonction[0][value]|fonction inconnue|
+|type|service[0][value]|PR|
+|type|coordonees_specifiques[0][value]|je n'en sais rien du tout|
+|click|commit||
+|pause|1000||
+|assertTextPresent|nom test||
+|assertTextPresent|prénom test||
+|assertTextPresent|fonction inconnue||
+|assertTextPresent|PR||
+|assertNotVisible|//div[@id="link_existing_child_contact_de_la_societe_div"]||
+|click|link=madb_link_to_existing_entity||
+|pause|1000||
+|assertVisible|//div[@id="link_existing_child_contact_de_la_societe_div"]||
+|assertTextPresent|Luyckx||
+|assertTextPresent|Vincent||
+|assertTextPresent|Chief||
+|click|link=2||
+|pause|1000||
+|assertTextPresent|Garcia||
+|assertTextPresent|Joelle||
+|click|link=nom||
+|pause|1000||
+|assertTextPresent|Luyckx||
+|assertTextPresent|Kastagnette||
+|click|link=1||
+|pause|1000||
+|click|//a[@id="add_90_contact_de_la_societe_linkable_list"]||
+|pause|1000||
+|assertNotVisible|//div[@id="link_existing_child_contact_de_la_societe_div"]||
+|assertTextPresent|Becker||
+|assertTextPresent|Robert||
+|assertTextPresent|CEO||
+|type|//div[@id='contact_de_la_societe_child_div']/div/form/input[4]|becker|
+|click|//div[@id='contact_de_la_societe_child_div']/div/form/input[5]||
+|pause|1000||
+|assertTextNotPresent|Soizon||
+|select|//div[@id='contact_de_la_societe_child_div']/div/form/select|label=prenom|
+|type|//div[@id='contact_de_la_societe_child_div']/div/form/input[4]|li|
+|click|//div[@id='contact_de_la_societe_child_div']/div/form/input[5]||
+|pause|1000||
+|assertTextPresent|Elisabeth||
+|assertTextNotPresent|Carol||
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||

@@ -1,0 +1,16 @@
+<% detail_ids = [] %>
+<% entity.details.each  do |detail| %>
+    <% if detail.displayed_in_list_view=='t' %>
+      <% detail_ids.push detail.id %>
+      "<%=t(detail.name) %>"
+    <% end %>
+<% end %>
+<% instances.each do |instance|  %>
+    <% entity.details.each do |detail| %>
+      <% detail_class = class_from_name(detail.data_type.class_name) %>
+      <% val = detail_class.find(:all, :conditions => "instance_id=#{instance.id} and detail_id=#{detail.id}")[0] %>
+        <% if detail.displayed_in_list_view=='t' %>
+          "<%=detail_class.format_detail(:value => val.value, :format => :csv) if val%>"
+        <% end %>
+    <% end %>
+<% end %>

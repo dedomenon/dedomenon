@@ -1,0 +1,2 @@
+<div id="<%=@list_id %>_div">
+  <%= render_component :controller => "entities", :action => "list_available_for_link", :params => { @self_id.to_sym => params[@self_id], :relation_id => params["relation_id"] , :update => params["update"], :embedded => params["embedded"], :link_to_many => params['link_to_many']   } %>

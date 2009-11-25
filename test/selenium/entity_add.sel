@@ -1,0 +1,37 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users,preferences||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|click|//a[contains(@href, "javascript:change('6')")]||
+|clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
+|assertTitle|exact:madb_madb::madb_add_and_instance||
+|type|nom[0][value]|AAAAAAlesi|
+|type|prenom[0][value]|Jean|
+|type|fonction[0][value]|pilote|
+|type|service[0][value]|chomage|
+|type|coordonees_specifiques[0][value]|france|
+|click|commit||
+|pause|3000||
+|assertTextPresent|AAAAAAlesi||
+|assertValue|//input[@name="nom[0][value]"]|AAAAAAlesi|
+|assertValue|//input[@name="prenom[0][value]"]|Jean|
+|assertValue|//input[@name="fonction[0][value]"]|pilote|
+|assertValue|//input[@name="service[0][value]"]|chomage|
+|assertValue|//textarea[@name="coordonees_specifiques[0][value]"]|france|
+|type|nom[0][value]|ZZZZZ|
+|type|prenom[0][value]|hjhkj|
+|type|fonction[0][value]|hjkhkj|
+|type|service[0][value]|hjkhkj|
+|type|coordonees_specifiques[0][value]|fsdgfgd|
+|click|commit||
+|pause|1000||
+|assertValue|//input[@name="nom[0][value]"]|ZZZZZ|
+|assertValue|//input[@name="prenom[0][value]"]|hjhkj|
+|assertValue|//input[@name="fonction[0][value]"]|hjkhkj|
+|assertValue|//input[@name="service[0][value]"]|hjkhkj|
+|assertValue|//textarea[@name="coordonees_specifiques[0][value]"]|fsdgfgd|
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||

@@ -1,0 +1,64 @@
+<%# = show_list :instances => @instances, :list_id => @list_id, :paginator => @paginator, :links => @links, :refresh_controller => params["controller"] , :refresh_action => params["action"] %>
+<div class="tool_in_page">
+<%= form_remote_tag :update => "#{@list_id}_div", :url => { :controller => "entities", :action => "list_available_for_link"}%>
+    <%= form_hidden_fields({ :id => params["id"], :relation_id => params["relation_id"], :parent_id => params["parent_id"], :child_id => params["child_id"], :update => params["update"], :embedded => params["embedded"]  }) %>
+<%# FIXME: use EntityDetail
+%>
+     Filter on <select name="detail_filter"> <%=options_from_collection_for_select(@entity.ordered_details, "detail_id", "name", params["detail_filter"])  %> </select> with value <input type="text" name="value_filter" value="<%=params["value_filter"]%>">
+		 <%=submit_tag( t("madb_submit"))%>
+<%= link_to_remote "madb_reset", :update => "#{@list_id}_div", :url => { :controller => "entities", :action => "list_available_for_link", :id => params[@self_id], :relation_id => @relation.id, :type => params["type"], :overwrite_params => { :highlight => nil, :value_filter=> nil, :detail_filter=> nil } } %>
+    </form>
+<hr>
+<% if @list.length >0 %>
+     <div class="navigation_links">
+  <% @paginator.each do |page| %>
+      <span class="navigation_link">
+      <% if page!=@paginator.current %>
+      <%= link_to_remote( page.number , :update => "#{@list_id}_div", :url => { :controller => "entities", :action => "list_available_for_link",  :overwrite_params=> {"#{@list_id}_page".to_sym => page.number, :highlight => nil }  }) %>
+      <% else %>
+        <%= page.number %>
+      <% end %>
+			</span>
+  <% end if @paginator.length > 1%>
+     </div>
+  <div class="<%=@div_class%>">
+  <table class="list_table">
+  <thead>
+  <tr>
+  <% @ordered_fields.each do |c| %>
+    <% next if @not_in_list_view.include? c or c == "id" %>
+    <th><%=link_to_remote(t(c), :update => "#{@list_id}_div", :url => {:controller => "entities", :action => "list_avalable_for_link",:overwrite_params => {"#{@list_id}_order".to_sym => c}  })  %></th>
+  <% end %>
+    <th class="action_cell"><%=t("madb_use")%></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @list.each do |o| %>
+    <tr id="tr_<%=@list_id%>_div_<%=o.id%>">
+    <% @ordered_fields.each do |column| %>
+    <% next if @not_in_list_view.include? column or column == "id" %>
+    <% detail_class = class_from_name(@details[column].data_type.class_name)%>
+    <td><%=detail_class.format_detail :value => o[column], :controller => self %></td>
+    <% end %>
+    <% if request.xhr? %>
+    <td class="action_cell"><%= link_to_remote( image_tag("icon/big/use.png", :border => 0, :alt => t("madb_use") ), { :update => params["update"],  :url => {:overwrite_params => { :action => "link", :id => o.id} } ,  :complete => "Element.hide('#{params["embedded"]}');   Fat.fade_element('tr_#{params["update"]}_'+request.getResponseHeader('MYOWNDB_highlight')) ;"} , { :id => "add_"+o.id.to_s+"_"+@list_id }     ) %></td>
+    <% else %>
+    <td class="action_cell">
+      <%=link_to(image_tag("icon/big/use.png", :border =>0, :alt => t("madb_use")), { :controller => "entities", :action => "link", :overwrite_params => o.id }, { :title=> t("madb_use")}) %>
+    </td>
+    <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+  </table>
+  </div>
+
+
+<% else %>
+<%= t("madb_no_data_found") %><br />
+<% end %>
+
+
+  <% if params["embedded"] %> <span class="button_style"> <%= link_to_function t("madb_cancel"), "Element.hide('#{params["embedded"]}');"%></span><% end %>
+
+</div>

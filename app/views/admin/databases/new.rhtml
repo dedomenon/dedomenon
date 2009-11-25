@@ -1,0 +1,8 @@
+<h1><%=t("madb_new_database_title")%></h1>
+
+<% form_tag :action => 'create' do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag t("madb_submit") %>
+  <%= link_to t('madb_back'), :action => 'list' %>
+<% end -%>
+

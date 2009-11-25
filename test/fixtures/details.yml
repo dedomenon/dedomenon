@@ -1,0 +1,317 @@
+---
+details_first:
+  name: dummydata
+  data_type_id: "1"
+  id: "1"
+  status_id: "1"
+  database_id: "3"
+detail_018:
+    name: mohsin
+    data_type_id: "1"
+    id: "18"
+    database_id: "3"
+detail_028:
+    name: language
+    data_type_id: "1"
+    id: "28"
+    database_id: "3"
+details_021:
+  name: phone
+  data_type_id: "1"
+  id: "43"
+  status_id: "1"
+  database_id: "3"
+details_010:
+  name: titre
+  data_type_id: "1"
+  id: "61"
+  status_id:
+  database_id: "6"
+details_022:
+  name: memo
+  data_type_id: "2"
+  id: "55"
+  status_id:
+  database_id: "6"
+details_011:
+  name: Ville
+  data_type_id: "1"
+  id: "38"
+  status_id: "1"
+  database_id: "3"
+details_023:
+  name: email
+  data_type_id: "1"
+  id: "44"
+  status_id: "1"
+  database_id: "3"
+details_012:
+  name: personnes_occuppees
+  data_type_id: "4"
+  id: "51"
+  status_id:
+  database_id: "6"
+details_001:
+  name: Code_postal
+  data_type_id: "1"
+  id: "39"
+  status_id: "1"
+  database_id: "3"
+details_024:
+  name: prenom
+  data_type_id: "1"
+  id: "56"
+  status_id:
+  database_id: "6"
+details_013:
+  name: status
+  data_type_id: "5"
+  id: "62"
+  status_id:
+  database_id: "6"
+details_002:
+  name: service
+  data_type_id: "1"
+  id: "58"
+  status_id:
+  database_id: "6"
+details_025:
+  name: Rue
+  data_type_id: "1"
+  id: "37"
+  status_id: "1"
+  database_id: "3"
+details_014:
+  name: contact_name
+  data_type_id: "1"
+  id: "40"
+  status_id: "1"
+  database_id: "3"
+details_003:
+  name: nom
+  data_type_id: "1"
+  id: "48"
+  status_id:
+  database_id: "6"
+details_026:
+  name: fonction
+  data_type_id: "1"
+  id: "57"
+  status_id:
+  database_id: "6"
+details_015:
+  name: adresse
+  data_type_id: "1"
+  id: "52"
+  status_id:
+  database_id: "6"
+details_004:
+  name: coordonees_specifiques
+  data_type_id: "2"
+  id: "59"
+  status_id:
+  database_id: "6"
+details_016:
+  name: company_email
+  data_type_id: "6"
+  id: "63"
+  status_id:
+  database_id: "6"
+details_005:
+  name: company_name
+  data_type_id: "1"
+  id: "35"
+  status_id: "1"
+  database_id: "3"
+details_017:
+  name: contact_first_name
+  data_type_id: "1"
+  id: "41"
+  status_id: "1"
+  database_id: "3"
+details_006:
+  name: code_nace
+  data_type_id: "1"
+  id: "49"
+  status_id:
+  database_id: "6"
+details_018:
+  name: telephone
+  data_type_id: "1"
+  id: "53"
+  status_id:
+  database_id: "6"
+details_007:
+  name: date
+  data_type_id: "3"
+  id: "60"
+  status_id:
+  database_id: "6"
+details_019:
+  name: birthday
+  data_type_id: "3"
+  id: "42"
+  status_id: "1"
+  database_id: "3"
+details_008:
+  name: legal_status
+  data_type_id: "5"
+  id: "36"
+  status_id: "1"
+  database_id: "3"
+details_020:
+  name: fax
+  data_type_id: "1"
+  id: "54"
+  status_id:
+  database_id: "6"
+details_009:
+  name: TVA
+  data_type_id: "1"
+  id: "50"
+  status_id:
+  database_id: "6"
+details_030:
+  name: unique_detail_db_8
+  data_type_id: "1"
+  id: "100"
+  status_id:
+  database_id: "8"
+details_031:
+  name: email_detail
+  data_type_id: "6"
+  id: "23"
+  status_id:
+  database_id: "3"
+details_032:
+  name: url_detail
+  data_type_id: "7"
+  id: "24"
+  status_id:
+  database_id: "3"
+s3_detail:
+  name: s3_detail
+  data_type_id: "8"
+  id: "25"
+  status_id:
+  database_id: "3"
+selenium_short_text_detail:
+  name: short_text
+  data_type_id: "1"
+  id: "71"
+  status_id:
+  database_id: "5"
+selenium_long_text_detail:
+  name: long_text
+  data_type_id: "2"
+  id: "64"
+  status_id:
+  database_id: "5"
+selenium_date_detail:
+  name: date
+  data_type_id: "3"
+  id: "65"
+  status_id:
+  database_id: "5"
+selenium_integer_detail:
+  name: integer
+  data_type_id: "4"
+  id: "66"
+  status_id:
+  database_id: "5"
+selenium_ddl_detail:
+  name: ddl
+  data_type_id: "5"
+  id: "67"
+  status_id:
+  database_id: "5"
+selenium_email_detail:
+  name: émail
+  data_type_id: "6"
+  id: "68"
+  status_id:
+  database_id: "5"
+selenium_web_detail:
+  name: web_url
+  data_type_id: "7"
+  id: "69"
+  status_id:
+  database_id: "5"
+selenium_s3_detail:
+  name: s3_attachment
+  data_type_id: "8"
+  id: "70"
+  status_id:
+  database_id: "5"
+second_selenium_s3_detail:
+  name: other_s3_attachment
+  data_type_id: "8"
+  id: "72"
+  status_id:
+  database_id: "5"
+an_unlinked_detail:
+  name: unlinked_detail
+  data_type_id: "1"
+  id: "73"
+  status_id: "1"
+  database_id: "8"
+#Here are the details of that are int eh database 6 and to the entity
+# that belong to the Books entity
+name_detail_for_book:
+  name: Name
+  data_type_id: "1"
+  id: "74"
+  status_id: "1"
+  database_id: "6"
+description_detail_for_book:
+  name: Description
+  data_type_id: "2"
+  id: "75"
+  status_id: "1"
+  database_id: "6"
+published_detail_for_book:
+  name: Published
+  data_type_id: "3"
+  id: "76"
+  status_id: "1"
+  database_id: "6"
+pages_detail_for_book:
+  name: Pages
+  data_type_id: "4"
+  id: "77"
+  status_id: "1"
+  database_id: "6"
+category_detail_for_book:
+  name: Category
+  data_type_id: "5"
+  id: "78"
+  status_id: "1"
+  database_id: "6"
+email_detail_for_book:
+  name: Email
+  data_type_id: "6"
+  id: "79"
+  status_id: "1"
+  database_id: "6"
+website_detail_for_book:
+  name: Website
+  data_type_id: "7"
+  id: "80"
+  status_id: "1"
+  database_id: "6"
+downloadlink_detail_for_book:
+  name: DownloadLink
+  data_type_id: "7"
+  id: "81"
+  status_id: "1"
+  database_id: "6"
+picture_detail_for_person:
+  name: Picture
+  data_type_id: "8"
+  id: "82"
+  status_id: "1"
+  database_id: "6"
+#
+#if you create a new detail find an id under 100 that is free or it breaks selenium tests
+# currently available range: from 72
+

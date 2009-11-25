@@ -1,0 +1,6 @@
+<% %W(prototype.js madb.js).each  do |f|%>
+  <%= IO.read("#{RAILS_ROOT}/public/javascripts/#{f}")%>
+<%end%>
+
+
+new Ajax.Updater('<%= params["container"] %>', 'http://www.madb.net<%= url_for :controller => "entities", :action => "public_form", :id => params["id"] , :embedded => "t" %>', { evalScripts:true});

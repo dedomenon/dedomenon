@@ -1,0 +1,50 @@
+<% if params["id"]%>
+<H1 id="list_title"><%= t(@entity.name,{:scope => "account"}) %></H1>
+<%= help_info("madb_help_info_entities_list_intro")%>
+<span class="button_style"><%= link_to_function t("madb_create_new_entity",  :vars => { 'entity_name' => t(@entity.name, :scope => "account")}), "$('addition_form_div').style.display='block'; YAHOO.util.Selector.query('#entity_form  input:not([type=hidden])')[0].focus()"%></span>
+<span class="button_style"><%= link_to t("madb_import_csv",  :vars => { 'entity_name' => t(@entity.name, :scope => "account")}), :controller => :importwizard, :id => @entity.id%>
+
+</span>
+  <div id="addition_form_div" class="hidden">
+		<%#  :update => "#{@entity.name}_list_div" ,
+		%>
+
+    <form id="entity_form" method="post" action="<%= url_for :action=> 'apply_edit' %>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
+
+    <input type="hidden" name="instance_id" value="-1">
+    <input type="hidden" name="entity" value="<%=@entity.id%>">
+    <%= render :partial => "entity_form", :object => @instance %>
+    <%=submit_tag t('madb_submit')%> <%= link_to_function t("madb_cancel"), "$('addition_form_div').style.display='none'; new Form.reset_madb_form (document.forms[0]);"%>
+    </form>
+<script type="text/javascript">
+  var success_action= function(data)
+  {
+    list_div = $('<%=@entity.name%>_list_div');
+    list_div.innerHTML=data;
+    highlighted_row = YAHOO.util.Dom.getElementsByClassName("highlight", "tr", list_div);
+    anim = new YAHOO.util.ColorAnim(highlighted_row, {  backgroundColor: { from: '#FFFF33', to: '#fff' } } );
+    anim.duration=5;
+    anim.animate();
+    new Form.reset_madb_form (document.forms[0]);
+    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input','entity_form');
+    try {
+    YAHOO.util.Dom.batch(invalid_fields, function (e) {YAHOO.util.Dom.removeClass( e,'invalid_form_value');YAHOO.util.Dom.addClass( e,'unchecked_form_value'); });
+    }
+    catch(e)
+    {
+    }
+
+    Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
+  } 
+  
+
+   <%= render :partial => "upload_form_function", :entity => @entity %>
+  new EntityFormSubmitter('entity_form', success_action);
+</script>
+
+  </div>
+<% end %>
+
+<div id="<%= @list_id%>_div">
+<%= render_component :controller => "entities", :action => "entities_list", :id => params["id"] %>
+</div>

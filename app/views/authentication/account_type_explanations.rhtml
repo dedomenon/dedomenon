@@ -1,0 +1,55 @@
+<table>
+  <thead>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%=t("madb_number_of_databases")%></td>
+      <td><strong><%=@account_type.number_of_databases%></strong></td>
+    </tr>
+    <tr>
+      <td><%=t("madb_number_of_users")%></td>
+      <td><strong><%=t("madb_unlimited_number_of_users")%></strong></td>
+    </tr>
+    <% if @account_type.maximum_file_size.bytes/1.megabyte.to_f >=0.9 %>
+    <tr>
+      <td><%=t("madb_maximum_attachment_size")%></td>
+      <td><strong><%=(((@account_type.maximum_file_size.bytes/1.megabytes.to_f)*100).to_i)/100.0%>Mb</strong></td>
+    </tr>
+    <%else%>
+    <tr>
+      <td><%=t("madb_maximum_attachment_size")%></td>
+      <td><strong><%=(((@account_type.maximum_file_size.bytes/1.kilobytes)*100).to_i)/100.0%>Kb</strong></td>
+    </tr>
+    <%end%>
+    <tr>
+      <td><%=t("madb_maximum_monthly_file_transfer")%></td>
+      <td><strong><%=(((@account_type.maximum_monthly_file_transfer.bytes/1.megabytes.to_f)*100).to_i)/100.0%>Mb</strong><%= image_tag("hlp16_1.gif", :alt => t("madb_question"), :id => "monthly_file_transfer_explanations") %></td>
+    </tr>
+    <tr>
+      <td><%=t("madb_maximum_attachment_number")%></td>
+      <td><strong><%=@account_type.maximum_attachment_number%></strong></td>
+    </tr>
+    <tr>
+      <td><%=t("madb_monthly_fee")%></td>
+      <td><strong><%=@account_type.monthly_fee%>EUR (<%= t("madb_excluding_vat")%> <%= image_tag("hlp16_1.gif", :alt => t("madb_question"), :id => "who_pays_vat") %>)</strong></td>
+    </tr>
+  </tbody>
+</table>
+<script type="text/javascript">
+  vat_question_tooltip = new YAHOO.widget.Tooltip("who_pays_vat_tooltip", {  
+           context:"who_pays_vat",  
+           text:"<%= t("madb_vat_explanations") %>", 
+           showDelay:100,
+           hideDelay:100,
+           autodismissdelay: 20000} ); 
+monthly_transfer_tooltip = new YAHOO.widget.Tooltip("monthly_file_transfer_tooltip", {  
+           context:"monthly_file_transfer_explanations",  
+           text:"<%= t("madb_maximum_montly_file_transfer_explanations_tooltip") %>", 
+           showDelay:100,
+           hideDelay:100,
+           autodismissdelay: 20000} ); 
+<%# needed to reposition the vat explanation overlay when the page is (re)loaded
+%>
+YAHOO.madb.vat_explanations.cfg.refireEvent("context");
+
+</script>

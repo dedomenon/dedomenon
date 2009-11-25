@@ -1,0 +1,101 @@
+<% if @relation %>
+<h1><%=t("madb_define_link", { :vars => { 'parent' => t(@relation.parent.name,{ :scope => "account"}), 'child' => t(@relation.child.name, { :scope => "account"} ) }})%></h1>
+<%else%>
+<h1><%=t("madb_define_new_link", { :vars => { 'entity' => t(@source.name,{ :scope => "account"}) }})%></h1>
+<%end%>
+<% if params["action"]=="edit_link" %>
+<%= help_info("madb_help_info_admin_entities_edit_link")%>
+<% else %>
+<%= help_info("madb_help_info_admin_entities_define_link")%>
+<% end %>
+
+
+<script type="text/javascript">
+function check_link_form()
+{
+  c2p = $("relation_from_child_to_parent_name").value;
+  p2c = $("relation_from_parent_to_child_name").value;
+  if ((c2p=='') || (p2c==''))
+  {
+    alert('<%= t('madb_you_need_to_provide_names_for_the_link_in_both_directions') %>');
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+
+</script>
+<% form_tag({:action => "add_link"} , {:onsubmit => "return check_link_form();"}) do -%>
+<%= form_hidden_fields( :source_id => @source_id, "relation[#{@this_side}]" => @source_id) %>
+<% if @relation %>
+  <input type="hidden" name="relation_id" value="<%= @relation.id %>">
+<% end -%>
+
+<table>
+<tr>
+  <td><%=t("madb_"+@other_side_name)%>  :</td>
+
+  <td><select <%= @relation ? 'disabled="disabled"' : '' %> name="relation[<%=@other_side%>]">
+      <% entities_for_select = @entities.collect{|e| [t(e.name,:scope => "account"), e.id]  } %>
+      <%# options_from_collection_for_select(@entities, "id","name", @relation ? @relation.send("#{@other_side}"):nil)
+      %>
+    <%= options_for_select(entities_for_select, @relation ? @relation.send("#{@other_side}"):nil)%>
+</select>
+  </td>
+</tr>
+
+<tr>
+  <td><%= t("madb_from_parent_to_child_relation_name", {:vars => { "parent_entity" => t(@parent_entity,:scope => "account"), "child_entity" => t(@child_entity ,:scope => "account")}})%>:</td><td> <%= text_field("relation","from_parent_to_child_name")%></td>
+</tr>
+<tr>
+  <td><%= t("madb_from_child_to_parent_relation_name", :vars => { "parent_entity" => t(@parent_entity,:scope => "account"), "child_entity" => t(@child_entity ,:scope => "account")})%>:</td><td> <%= text_field("relation","from_child_to_parent_name")%></td>
+</tr>
+<tr>
+  <td><%= t("madb_can_one_child_entity_have_several_parents_question", :vars => { "parent_entity" => t(@parent_entity,:scope => "account"), "child_entity" => t(@child_entity ,:scope => "account")}) %> :</td>
+  <td><select <%= @parent_side_edit ? '' : 'disabled="disabled" '  %> name="relation[parent_side_type_id]">
+      <% parent_ddl_options = @relation_types.collect{|rt| rt.name=="one" ? [ t("madb_no_only_one_parent"), rt.id ] : [ t("madb_yes_multiple_parent"), rt.id ] }%>
+      <%# options_from_collection_for_select(@relation_types, "id","name", (@relation ? @relation.parent_side_type_id : nil))
+      %>
+      <%= options_for_select(parent_ddl_options,(@relation ? @relation.parent_side_type_id : nil))%>
+</select>
+</td>
+</tr>
+<tr>
+  <td><%= t("madb_can_one_parent_entity_have_several_children_question", :vars => { "parent_entity" => t(@parent_entity, :scope => "account"), "child_entity" => t(@child_entity ,:scope => "account")}) %>:</td><td><select  <%= @child_side_edit ? '' : 'disabled="disabled" ' %> name="relation[child_side_type_id]">
+      <% child_ddl_options = @relation_types.collect{|rt| rt.name=="one" ? [ t("madb_no_only_one_child"), rt.id ] : [ t("madb_yes_multiple_child"), rt.id ] }%>
+<%# options_from_collection_for_select(@relation_types, "id","name", (@relation ? @relation.child_side_type_id : nil))%>
+      <%= options_for_select(child_ddl_options,(@relation ? @relation.child_side_type_id : nil))%>
+</select>
+</td>
+</tr>
+</table>
+  <%= submit_tag t("madb_submit")%> 
+  <% if request.env["HTTP_REFERER"] %>
+    <%=link_to t("madb_cancel"),request.env["HTTP_REFERER"] %>
+  <% end %>
+</form>
+
+<script type="text/javascript">
+s = 'relation[<%=@other_side%>]';
+ddl = document.forms[0][s];
+function update_parents () {
+      value = ddl.options[ddl.selectedIndex].text;
+      spans = $A(document.getElementsByClassName('no_css_parent_name'));
+      spans.each( function(e){ e.innerHTML = value})
+    }
+function update_children () {
+      value = ddl.options[ddl.selectedIndex].text;
+      spans = $A(document.getElementsByClassName('no_css_child_name'));
+      spans.each( function(e){ e.innerHTML = value})
+    }
+<% if params["parent_id"] or @this_side=="parent_id" %>
+  update_children();
+  Event.observe(ddl, "change", update_children);
+<% else %>
+  update_parents();
+  Event.observe(ddl, "change", update_parents);
+<% end %>
+</script>
+<% end %>

@@ -1,0 +1,14 @@
+<% if @database.errors.count>0 %>
+<div class="errorExplanation" id="errorExplanation"><h2><%=t("madb_error_saving_database")%></h2>
+  <ul>
+<% @database.errors.each do |attr,e| %>
+<li><%= t(e) %></li>
+<% end %>
+</ul>
+</div>
+<%end%>
+<!--[form:database]-->
+<p><label for="database_name"><%= t("madb_name") %></label><br/>
+<%= text_field 'database', 'name'  %></p>
+<!--[eoform:database]-->
+

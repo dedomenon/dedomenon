@@ -1,0 +1,111 @@
+
+
+
+<% detail_ids = [] %>
+<H1><%=h( t("madb_entity_details", :vars => { 'entity' => t(@entity.name, :scope => "account")}) )%></H1>
+<%= help_info("madb_help_info_entities_view_intro")%>
+
+<div class="details_display">
+  <table>
+<% @crosstab_object.each  do |o| %>
+        <% next if o.id=="id" %>
+        <% detail = Detail.find(o.id, :include => [:data_type]) %>
+        <% detail_class = class_from_name(detail.data_type.class_name) %>
+        <tr><td class="label_cell"><%=t(detail.name, {:scope => "account"})  %>:</td><td class="data_cell">
+            <%=detail_class.format_detail :value => o.value, :controller => self %>
+        </td></tr>
+<% end %>
+</table>
+<span class="button_style"><%= link_to( t("madb_edit"), :controller => "entities", :action => "edit", :id => params["id"], :popup => params["popup"] ) %></span>
+</div>
+
+
+
+<h1><%=t("madb_related_entities")%></h1>
+<%= help_info("madb_help_info_entities_views_related_entities")%>
+
+
+<% [ {:from => "parent", :to => "child"}, {:from => "child", :to => "parent"} ].each do |type| %>
+  <% if @entity.send("relations_to_#{type[:to].pluralize}").size>0 %>
+
+  <!-- <div class="section_head"><span><%= t("madb_related_#{type[:to].pluralize}_objects")%></span></div> -->
+
+    <% @entity.send("relations_to_#{type[:to].pluralize}").each do |relation| %>
+    <% relation_name = relation.send("from_#{type[:from]}_to_#{type[:to]}_name") %>
+    <% list_id = "#{relation_name}_#{type[:to]}_div" %>
+          <h2><%= t(relation_name,{:scope => "account"}) %></h2>
+          <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
+          <% link_from_many = relation.send("#{type[:from]}_side_type").name=='many' %>
+          <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style">
+
+            <span id="<%=list_id%>_add_existing_<%=type[:to]%>_link">
+              <%=link_to_function t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}), "
+            new Ajax.Updater('link_existing_#{type[:to]}_#{relation_name}_div',  '#{url_for :controller => "entities", :action => "link_to_existing" ,  "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "link_existing_#{type[:to]}_#{relation_name}_div", :link_to_many => (link_to_many ? 't':'f'), :update => list_id }  ', {asynchronous:true} );
+            $('link_existing_#{type[:to]}_#{relation_name}_div').innerHTML='';
+            Element.show('link_existing_#{type[:to]}_#{relation_name}_div');
+
+              " %>
+            </span>
+
+
+            <span class="" id="<%=list_id%>_add_new_<%=type[:to]%>_link">
+              <%=link_to_function t("madb_add_new_related_entity" ,{ :vars => { 'entity' => t(relation.send(type[:to]).name, :scope => "account")}}), "
+              if (document.getElementById('add_new_#{type[:to]}_#{relation_name}_div').childNodes.length<1)
+              {
+              new Ajax.Updater('add_new_#{type[:to]}_#{relation_name}_div',  '#{url_for :controller => "entities", :action => "link_to_new" , :id => relation.send(type[:to]).id, "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "add_new_#{type[:to]}_#{relation_name}_div", :update => list_id}  ', {evalScripts:true, onComplete:function(request){
+              /*
+                $('add_new_#{type[:to]}_#{relation_name}_div').style.height = $('add_new_#{type[:to]}_#{relation_name}_div').original_height;
+                $('add_new_#{type[:to]}_#{relation_name}_div').style.width = $('add_new_#{type[:to]}_#{relation_name}_div').original_width;
+                */
+                form = $('add_new_#{type[:to]}_#{relation_name}_div').childNodes[0].getElementsByTagName('form')[0];
+                if (form!=undefined)
+                {
+                  form.reset();
+                }
+                Element.show('add_new_#{type[:to]}_#{relation_name}_div');
+                new Form.focusFirstElement(form);
+                  /* Works only with ff 1.5
+                Element.show('add_new_#{type[:to]}_#{relation_name}_div');
+                new Form.focusFirstElement(form);
+                */
+               }
+              });
+              }
+              else
+              {
+              /*
+              $('add_new_#{type[:to]}_#{relation_name}_div').style.height = $('add_new_#{type[:to]}_#{relation_name}_div').original_height;
+              $('add_new_#{type[:to]}_#{relation_name}_div').style.width = $('add_new_#{type[:to]}_#{relation_name}_div').original_width;
+                */
+                form = $('add_new_#{type[:to]}_#{relation_name}_div').childNodes[0].getElementsByTagName('form')[0];
+                if (form!=undefined)
+                {
+                  form.reset();
+                  Element.show('add_new_#{type[:to]}_#{relation_name}_div');
+                  new Form.focusFirstElement(form);
+                  /* Works only with ff 1.5
+                  Element.show('add_new_#{type[:to]}_#{relation_name}_div');
+                  new Form.focusFirstElement(form);
+                  */
+                }
+              }
+
+                "  %>
+              </span>
+          </div>
+          <div id="add_new_<%=type[:to]%>_<%=relation_name%>_div" style="display:none; "></div>
+          <div id="link_existing_<%=type[:to]%>_<%=relation_name%>_div" style="display:none; "></div>
+
+          <div class="related_<%=type[:to]%>_entities_div" id="<%= list_id %>">
+        <%= render_component :controller => "entities", :action => "related_entities_list", :id => @instance.id,:params => { :relation_id => relation.id, :type => type[:to].pluralize, :popup => params["popup"]} %>
+      </div>
+      <hr>
+
+      <% end %>
+
+  <% end %>
+
+
+  <% end %>
+
+

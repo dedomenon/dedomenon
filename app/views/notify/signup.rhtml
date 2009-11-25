@@ -1,0 +1,11 @@
+<%= t "madb_welcome_to_myowndb", :lang => @lang %>
+
+<%= t "madb_your_login_information_is", :lang => @lang %>:
+
+<%=t "madb_login", :lang => @lang%>:    <%= @login %>
+
+<%= t("madb_please_confirm_your_registration_by_clicking_on_this_link", :lang => @lang)%>
+
+<%= @url %>/<%=@uuid%>
+
+<%= t("madb_mail_outro", {:lang => @lang })%>

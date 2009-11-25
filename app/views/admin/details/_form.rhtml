@@ -1,0 +1,115 @@
+<% if @details.errors.count>0 %>
+<div class="errorExplanation" id="errorExplanation"><h2><%=t("madb_error_saving_detail")%></h2>
+  <ul>
+    <% @details.errors.each do |attr,e| %>
+<li><%= t(e) %></li>
+<% end %>
+</ul>
+</div>
+<%end%>
+
+<script type="text/javascript">
+function toggle_propositions_visibility(ddl)
+{
+ if (ddl.value==<%= @choose_in_list_id %> )
+ {
+  $('proposition_list_div').setAttribute('class','visible');
+  $('proposition_list_div').style.display='block';
+ }
+ else
+ {
+  $('proposition_list_div').setAttribute('class','hidden');
+  $('proposition_list_div').style.display='none';
+ }
+}
+var existing_propositions = [];
+function add_new_proposition()
+{
+  proposition_list = document.getElementById('detail_propositions');
+  proposition = document.getElementById('proposition_entry').value;
+
+  for(i=0;i<existing_propositions.length;i++)
+  {
+    if (proposition==existing_propositions[i])
+    {
+      alert('<%= t("madb_proposition_exists") %>');
+      return;
+    }
+  }
+
+  option = document.createElement('option');
+  option.setAttribute('value',proposition);
+  option_text =document.createTextNode(proposition);
+  option.appendChild(option_text);
+  proposition_list.appendChild(option);
+  existing_propositions.push(proposition);
+}
+
+function remove_propositions()
+{
+  existing_propositions = [];
+  proposition_list = document.getElementById('detail_propositions');
+  var r = new Array();
+  for (var i = 0; i < proposition_list.options.length; i++)
+      if (proposition_list.options[i].selected)
+      {
+          r[r.length] = proposition_list.options[i];
+      }
+      else
+      {
+        existing_propositions.push(proposition_list.options[i].value);
+      }
+  for (var i = 0; i < r.length; i++)
+  {
+      proposition_list.removeChild(r[i]);
+  }
+
+}
+function select_propositions()
+{
+  proposition_list = document.getElementById('detail_propositions');
+  for (var i = 0; i < proposition_list.options.length; i++)
+      proposition_list.options[i].selected=true;
+}
+
+</script>
+<!--[form:details]-->
+<% if params["for_entity"] %>
+  <input type="hidden" value="<%=params["for_entity"]%>" name="for_entity">
+<% else %>
+  <input type="hidden" value="<%=params["db"]  %>" name="db">
+<% end %>
+<p><label for="details_name"><%=t("madb_name") %></label><br/>
+<%= text_field 'details', 'name'  %></p>
+<p><label for="data_type"><%= t("madb_data_type") %></label><br/>
+<select <%= ["edit","show"].include?(params["action"]) ? "disabled":"" %> onchange="toggle_propositions_visibility(this);" id="details[data_type_id]" name="details[data_type_id]"><%= options_for_select @data_types, @details.data_type_id   %></select></p>
+<div class="hidden" id="proposition_list_div">
+  <% if params["action"]=="edit" %>
+    <%= help_info("madb_help_info_admin_details_value_propositions_for_edit")%>
+  <% elsif params["action"]=="show"%>
+    <%= help_info("madb_help_info_admin_details_value_propositions_for_show")%>
+  <% elsif params["action"]=="new" %>
+    <%= help_info("madb_help_info_admin_details_value_propositions_for_new")%>
+  <%end%>
+  <% if %w{new create show}.include? params["action"] %>
+<input id="proposition_entry" type="text" name="null"><br/>
+<%= image_tag("icon/big/flecheform.png", :id =>"flecheform") %>
+<select multiple="multiple" size="5" id="detail_propositions" name="propositions[]">
+
+  <%= options_for_select @propositions %></select><br/>
+  <% if %w{new create}.include? params["action"] %>
+    <input type="submit" class="submit" value="<%=h(t("madb_remove_propositions"))%>" onclick="remove_propositions(); return false;">
+    <input type="submit" class="submit" value="<%=h(t("madb_add_proposition"))%>" onclick="add_new_proposition(); return false;">
+  <% end %>
+<% end %>
+</p>
+
+</div>
+<!--[eoform:details]-->
+
+<% if ["edit", "show", "create"].include? params["action"]%>
+  <script type="text/javascript">
+    toggle_propositions_visibility($('details[data_type_id]'));
+
+  </script>
+<% end %>

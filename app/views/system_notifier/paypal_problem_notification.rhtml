@@ -1,0 +1,20 @@
+<% require 'pp' %>
+
+Impossible to verify a Paypal payment.
+
+<%= @message%>
+
+PDT (transaction <%= @pdt.tx%>)
+------------------------------------------------
+<% for key, value in @pdt.params -%>
+  * <%= key %>: <%= value.to_s.strip %>
+  <% end -%>
+
+
+
+Environment
+----------------
+<% for key, value in request.env -%>
+  * <%= key %>: <%= value.to_s.strip %>
+  <% end -%>
+

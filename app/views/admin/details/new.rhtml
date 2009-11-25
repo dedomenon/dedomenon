@@ -1,0 +1,33 @@
+<h1><%=t("madb_new_detail_title")%></h1>
+<%= help_info("madb_help_info_admin_details_new")%>
+
+<% form_tag({:action => 'create'}, {:onsubmit => 'select_propositions();'}) do -%>
+  <%= render :partial => "form" %>
+<% if params["for_entity"] %>
+<%= help_info("madb_help_info_admin_details_new_quick_commit")%>
+<%end%>
+<%= submit_tag t("madb_submit") %> |
+<% if params["for_entity"] %>
+<%= submit_tag(t("madb_quick_submit"), :name => "quick_commit")%> |
+<%end%>
+<!-- 
+   WHY THIS GAURDING CONDITION?
+  The return-to is set by various controllers before ceritan actions
+  called by the user. This condition is not needed in the case of simply
+  development or production environment. However, when we run the tests,
+  they treat the things in discrete manner.  For that, the return-to is 
+  even passed with the post/get or other calls but even then sometimes it happens
+  that return-to is nil. Therefore, we've surrounded it in a gaurding condition
+  in order to clear the tests.
+  -->
+ <% if session['return-to']%>
+  <%=link_to t("madb_cancel"),session["return-to"] %>
+ <%end%>
+
+
+<% end -%>
+
+<script type="text/javascript">
+  new Form.focusFirstElement(document.forms[0]);
+</script>
+

@@ -1,0 +1,51 @@
+nl:
+  madb_cancel: Annuleren
+  madb_submit_all: Alles versturen
+  madb_admin_users: Gebruikers beheren
+  new_translation: Vertaling invoeren
+  madb_help_info_database_list_entities: Die pagina geeft een lijst terug van gedefinieerde objecten in de databank die u gebruikt.
+  madb_resize: madb_resize
+  fr: "Fran\xC3\xA7ais"
+  previous_page: Vorige pagina
+  madb_invoice_from: Van
+  madb_admin_database: Databank beheren
+  madb_name: Naam
+  madb_notes: madb_notes
+  madb_reset: madb_reset
+  find_translations_matching: Vertaling filtreren op
+  madb_search: Zoeken
+  madb_help: Hulp
+  madb_urls_where_translation_appears: madb_urls_where_translation_appears
+  madb_add_new: madb_add_new
+  entity: Entiteit
+  madb_listing_translations: madb_listing_translations
+  madb_invoice_to: Naar
+  madb_manage_translations: Vertalingen beheren
+  madb_editing_translations: madb_editing_translations
+  madb_enter_id_of_the_translation: madb_enter_id_of_the_translation
+  cancel: Annuleren
+  submit_all: Alles versturen
+  madb_find_translations_matching: ""
+  madb_submit: Versturen
+  madb_edit: Aanpassen
+  madb_logout: Uitloggen
+  madb_settings: Instellingen
+  madb_admin_databases: Databanken beheren
+  next_page: Volgende pagina
+  lastname: Familie naam
+  madb_help_info_database_list: U vind op die pagina de lijst van bestaande databanken om te kiezen welke u wilt gebruiken.
+  mabd_forgot_your_password_question: Passwoord vergeten?
+  madb_login: Login
+  madb_help_info_you_can_disable_help_in_your_settings: U kan dit help uitschakellen in uw instellingen
+  madb_my_databases: Mijn databanken
+  madb_next_page: madb_next_page
+  create_new: Nieuw {{entity}} aanmaken
+  madb_use: Gebruiken
+  madb_password: Paswoord
+  admin_databases: Beheer van Dbs
+  reset: Herzetten
+  nl: Nederlands
+  madb_amount: Bedrag
+  madb_new_translation: madb_new_translation
+  madb_modify_entity: madb_modify_entity
+  en: English

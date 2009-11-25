@@ -1,0 +1,35 @@
+<h1><%= t("madb_new_users") %></h1>
+
+<% form_tag :action => 'create' do -%>
+  <%#= 
+%>
+  <%#= submit_tag "Create"
+%>
+
+
+  <%= error_messages_for 'user' %><br/>
+
+
+<dir class="form-padding">
+  <p><label for="users_lastname"><%= t("madb_lastname")%></label><br/>
+<%= text_field 'user', 'lastname'  %></p>
+<p><label for="users_firstname"><%= t("madb_firstname")%></label><br/>
+<%= text_field 'user', 'firstname'  %></p>
+<label for="user_login"><%=t("madb_email")%>:</label><br/>
+    <%= text_field "user", "login", :size => 30 %><br/>
+    <label for="user_login_confirmation"><%= t("madb_email_confirmation")%>:</label><br/>
+    <%= text_field "user", "login_confirmation", :size => 30 %><br/>
+
+    <label for="user_type"><%= t("madb_user_type")%>:</label>
+    <select name="user[user_type_id]"><%= options_for_select(@user_types_for_select, 2)  %> </select><br/>
+
+    <div class="button-bar">
+      <%= submit_tag t("madb_submit") %>
+      <%= link_to t("madb_cancel"), :action => 'list' %>
+    </div>
+
+
+
+
+<% end -%>
+

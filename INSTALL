@@ -1,0 +1,52 @@
+Here are simplified installation instructions.
+
+The latest and most complete installation instructions are available on the
+Dedomenon wiki at http://www.dedomenon.org/wiki/dedomenon/Installing_Dedomenon
+
+Prerequisites:
+--------------
+
+You should have the following software installed (ubuntu package names):
+ruby1.8 ruby1.8-dev irb rake rubygems build-essential postgresql-8.2
+postgresql-contrib-8.2 libpgsql-ruby1.8 libz-dev libpng-dev libgd2-xpm-dev
+
+The following ruby gems are also necessary:
+ruby-debug json captcha ruby-gd sources termios
+
+We recommend the use of the latest Git version available from http://git.or.cz/
+The easiest way to install Dedomenon is using sudo, so we recommend that also
+
+Getting the software
+--------------------
+
+Get the software by cloning our Git repository:
+
+git clone git://dedomenon.org/dedomenon
+
+Preparing your system
+---------------------
+Configure sudo so you can execute some commands as the postgres user (the
+default postgresql super user in Debian and Ubuntu):
+as root, execute the command
+  visudo
+and add this line to the file that is presented by visudo:
+YOURLOGIN ALL=(postgres) NOPASSWD:/usr/bin/psql, /usr/bin/createdb, /usr/bin/createuser
+
+Set up of Dedomenon
+-------------------
+After that, you can go in the dedomenon directory and run this command to set
+everything up:
+  rake dedomenon:setup
+
+This command configures the application in the production environment, and you
+can start the server with this command:
+  ruby script/server --environment=production
+
+This way of running the application is good for testing. Once you go into
+production, you should use more efficient ways of running Dedomenon (for
+example with Mongrel).
+
+Clean things up
+---------------
+you can run visudo again and remove the line we added earlier, it is not needed
+anymore.

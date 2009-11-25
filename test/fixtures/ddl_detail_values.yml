@@ -1,0 +1,89 @@
+---
+ddl_detail_values_008:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "89"
+  id: "23"
+ddl_detail_values_009:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "91"
+  id: "24"
+ddl_detail_values_010:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "93"
+  id: "25"
+ddl_detail_values_011:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "77"
+  id: "18"
+ddl_detail_values_001:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "69"
+  id: "15"
+ddl_detail_values_002:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "71"
+  id: "16"
+ddl_detail_values_003:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "73"
+  id: "17"
+ddl_detail_values_004:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "80"
+  id: "21"
+ddl_detail_values_005:
+  detail_id: "62"
+  detail_value_proposition_id: "12"
+  instance_id: "88"
+  id: "22"
+ddl_detail_values_006:
+  detail_id: "62"
+  detail_value_proposition_id: "11"
+  instance_id: "78"
+  id: "19"
+ddl_detail_values_007:
+  detail_id: "62"
+  detail_value_proposition_id: "12"
+  instance_id: "79"
+  id: "20"
+ddl_detail_values_008:
+  detail_id: "62"
+  detail_value_proposition_id: "12"
+  instance_id: "79"
+  id: "1"
+# For Book[100] Instance[200..201]
+# BEGIN
+books_category_200_1:
+  detail_id: "78"
+  detail_value_proposition_id: "1007"
+  instance_id: "200"
+  id: "70"
+books_category_200_2:
+  detail_id: "78"
+  detail_value_proposition_id: "1006"
+  instance_id: "200"
+  id: "71"
+books_category_201_1:
+  detail_id: "78"
+  detail_value_proposition_id: "1003"
+  instance_id: "201"
+  id: "72"
+books_category_201_2:
+  detail_id: "78"
+  detail_value_proposition_id: "1004"
+  instance_id: "201"
+  id: "73"
+books_category_201_3:
+  detail_id: "78"
+  detail_value_proposition_id: "1005"
+  instance_id: "201"
+  id: "74"
+# END

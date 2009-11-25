@@ -1,0 +1,42 @@
+
+<script type="text/javascript">
+  function check_search_form(form)
+  {
+		if ($('search_value').value=='')
+		{
+		  alert('<%=t("madb_enter_value_to_search_for")%>');
+	  	return false;
+		}
+  }
+</script>
+<div id="simple_search_form_div">
+  <form action="<%= url_for  :controller => "search", :action => "results_page" %>" onsubmit="return check_search_form(this);">
+<table>
+
+  <tr><td><%= t("madb_searched_database") %></td><td><select name="database_id" id="database_id" onchange="new Ajax.Updater('simple_search_form_div', '<%= url_for :controller =>"search", :action => "simple_search_form"%>', {parameters:'database_id='+ escape(value) ,asynchronous:true});" ><%= options_for_select(@databases_list, params["database_id"].to_i||0)  %></select></td></tr>
+
+
+<% if params["database_id"] and params["database_id"].to_i>0 and (@databases_list.collect{|d| d[1]}.include? params["database_id"].to_i) %>
+<% options = Entity.find(:all, :conditions => "database_id=#{params["database_id"]}").collect { |e| [t(e.name, { :scope => "account" }), e.id]}.unshift([t("madb_all"), 0])  %>
+<tr><td><%= t("madb_searched_entity") %></td><td><select name="entity_id" id="entity_id" onchange="new Ajax.Updater('simple_search_form_div', '<%= url_for :controller =>"search", :action => "simple_search_form"%>', {parameters:'database_id='+escape(<%=params["database_id"]%>)+'&entity_id='+ escape(value) ,asynchronous:true, onComplete:function(r){ $('search_value').focus()}});"><%= options_for_select(options, params["entity_id"].to_i || 0)  %></select></td></tr>
+
+<% if params["entity_id"] and params["entity_id"].to_i>0 %>
+<td><%=t("madb_searched_detail")%></td>
+<td>
+  <select id="<%= @ddl_id%>" onchange="$('search_value').focus();" name="detail_id"><%= options_for_select(@details_list, params["detail_id"]) %>
+</select>
+</td>
+    <tr id="field_list"></tr>
+  <% end %>
+
+
+
+  <tr><td><%= t("madb_searched_value")%></td><td><input type="text" id="search_value" name="value" value="<%=params["value"]%>"></td></tr>
+<% end %>
+</table>
+<%=submit_tag t("madb_search")%>
+</form>
+<script type="text/javascript">
+  $("search_value").focus();
+</script>
+</div>

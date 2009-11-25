@@ -1,0 +1,70 @@
+<% if !request.xhr?%>
+<div id="<%=@list_id%>_div" class="<%= @div_class %>">
+<%end%>
+  <h2><%= t(@e,{:scope => "account"}) %></h2><br>
+<span class="button_style">
+    <%= link_to_remote t("madb_refresh"), :update => "#{@list_id}_div", :url => {  :overwrite_params => {:controller => "search", :action => "list_for_entity"} } %>
+</span>
+    <% if !params["popup"] or params["popup"]!='t' %>
+	    <%= link_to image_tag("icon/big/newWindow.png", :alt =>t("madb_open_in_new_window"), :title =>t("madb_open_in_new_window")  ), { :overwrite_params => {:controller => "search", :action => "list_for_entity", :id => params["id"],:popup => 't'}},  {:target =>  "#{@list_id}_window", :title => t("madb_open_in_new_window"), :class => "icon"  }   %>
+	<%end%>
+  <%= link_to image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export")  ), { :overwrite_params => {:controller => "search", :action => "list_for_entity", :id => params["id"], :format => 'csv' }},  { :class => "icon"  }   %>
+
+
+<% if @list.length >0 %>
+<%  if @paginator.length > 1 %>
+
+<div class="navigation_links"> <%= t("madb_page")%>:
+  <% @paginator.each do |page| %>
+
+      <% if page!=@paginator.current %>
+          <span class="navigation_link"><%= link_to_remote( page.number , :update => "#{@list_id}_div", :url => {   :overwrite_params=> {:controller => "search", :action => "list_for_entity","#{@list_id}_page".to_sym => page.number}  }) %> </span>
+      <%else %>
+          <span class="navigation_link"><%= page.number %></span>
+      <% end %>
+  <% end%>
+</div>
+<% end %>
+  <table class="entities_list">
+  <thead>
+  <tr>
+  <% @ordered_fields.each do |c| %>
+    <% next if @not_in_list_view.include? c  or c =="id" %>
+    <th><%=link_to_remote(t(c, { :scope => "account"}), :update => "#{@list_id}_div", :url => {:overwrite_params => {:controller => "search", :action => "list_for_entity","#{@list_id}_order".to_sym => c}  })  %></th>
+  <% end %>
+    <th class="action_cell"><%=t "madb_view"%></th>
+    <th class="action_cell"><%=t "madb_edit"%></th>
+  </tr>
+</thead>
+<tbody>
+  <% @list.each do |o| %>
+    <tr>
+    <% @ordered_fields.each do |column| %>
+    <% next if  @not_in_list_view.include? column or column == "id" %>
+    <% detail_class = class_from_name(@details[column].data_type.class_name)%>
+    <td><%= detail_class.format_detail :value => o[column], :controller => self %></td>
+    <% end %>
+    <td class="action_cell">
+	<%=link_to(image_tag("icon/big/view.png", :border =>0), { :controller => "entities", :action => "view", :id => o.id, :popup => params["popup"] }, { :title=> t("madb_view")}) %>
+    </td>
+    <td class="action_cell">
+	<%=link_to(image_tag("icon/big/edit.png", :border =>0), { :controller => "entities", :action => "edit", :id => o.id, :popup => params["popup"] }, { :title=> t("madb_edit")}) %>
+    </td>
+
+    </tr>
+  <% end %>
+</tbody>
+</table>
+
+
+<% else %>
+  <%= t("madb_no_data_found") %>
+<% end %>
+
+
+
+<% if !request.xhr?%>
+</div>
+<%end%>
+
+

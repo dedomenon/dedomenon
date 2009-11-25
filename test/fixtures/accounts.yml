@@ -1,0 +1,76 @@
+--- 
+accounts_001: 
+  city: raphiunou
+  name: raphinou
+  country: Belgium
+  zip_code: raphinou
+  id: "1"
+  street: raphinou
+  account_type_id: 5
+  status: active
+  end_date: 2105-05-22 20:29:27
+  #attachment_count: 0
+accounts_002: 
+  city: ''
+  name: raphinou
+  country: Belgium
+  zip_code: ''
+  id: "2"
+  street: ''
+  account_type_id: 1
+  status: active
+  #attachment_count: 0
+basic_account_not_paid: 
+  city: 'city of account number 3'
+  name: raphinou
+  country: Zimbabwe
+  zip_code: '1239'
+  id: "3"
+  street: 'street of account 3'
+  account_type_id: 2
+  status: inactive
+  #attachment_count: 0
+basic_account_active: 
+  city: ''
+  name: raphinou_active
+  country: Russia
+  zip_code: ''
+  id: "4"
+  street: ''
+  account_type_id: 2
+  status: active
+  #subscription_id: "S-6C766433G88379323"
+  #attachment_count: 0
+basic_account_cancelled: 
+  city: ''
+  name: raphinou_cancelled
+  country: Belgium
+  zip_code: ''
+  id: "5"
+  street: ''
+  account_type_id: 2
+  status: cancelled
+  #subscription_id: "S-6C766433G88379323"
+  #attachment_count: 0
+basic_account_expired: 
+  city: ''
+  name: raphinou_expired
+  country: Zimbabwe
+  zip_code: ''
+  id: "6"
+  street: ''
+  account_type_id: 2
+  status: "expired"
+  #subscription_id: "S-6C766433G88379323A"
+  #attachment_count: 0
+accounts_selenium_tests2: 
+  city: Groot-Bijgaarden
+  name: selenium
+  country: Belgium
+  zip_code: 1702
+  id: "100"
+  street: raphinou
+  account_type_id: 1
+  status: active
+  end_date: 2105-05-22 20:29:27
+  #attachment_count: 0

@@ -1,0 +1,21 @@
+<h1><%= t("madb_add_detail_to_entity", { :vars =>{ 'entity' => t(@entity.name, { :scope => "account"})} })%></H1>
+  <%= help_info("madb_help_info_admin_entities_add_existing_choose")%>
+<% if @details.length<1 %>
+<p><%= t("madb_no_available_details_maybe_you_should_create_a_new_detail")%></p>
+<% else %>
+  <table>
+  <thead>
+    <tr><th><%=t("madb_name") %></th><th><%= t("madb_data_type") %></th><th><%= t("madb_choose") %> </th></tr>
+  </thead>
+  <tbody>
+  <% for detail in @details %>
+  <tr>
+    <td><%= t(detail.name, :scope => "account")%></td>
+  <td><%= t(detail.data_type.name)%></td>
+  <td class="action_cell"><%= link_to(   image_tag("icon/big/use.png", :border => 0, :alt => t("madb_use")), {:action => "add_existing_precisions", :id => params["id"], :detail_id => detail.id}, {:title => t("madb_use")}) %></td>
+  </tr>
+  <% end %>
+  </tbody>
+  </table>
+<%end%>
+<%= link_to t("madb_back", :vars => {:entity => @entity.name}, :scope => "account" ), :controller => "/admin/entities", :action => "show" ,  :id => @entity.id %>

@@ -1,0 +1,474 @@
+fr:
+  madb_invoice_vat_amount: TVA
+  madb_your_registered_vat_number_confirm_or_change: "Voici les donn\xC3\xA9es TVA qui seront utilis\xC3\xA9es pour la facturation. Veuillez confirmer ou adapter ces donn\xC3\xA9es, et vous serez ensuite redirig\xC3\xA9 vers la page des mise \xC3\xA0 jours."
+  madb_mail_account_expired: "Cher utilisateur,\n\n\
+    votre compte utilisateur sur MaDB.net est arriv\xC3\xA9 \xC3\xA0 expiration. Nous regrettons de vous perdre comme utilisateur, mais esp\xC3\xA9rons que de futur d\xC3\xA9velopppement vous ferons changer d'avis. Si vous avez des reproches ou remarques \xC3\xA0 propos de l'application nous appr\xC3\xA9cierions que vous preniez le temps de nous les transmettre \xC3\xA0 info@madb.net.\n\n\
+    En esp\xC3\xA9rant vous revoir bient\xC3\xB4t sur http://www.madb.net\n\n\
+    L'\xC3\xA9quipe de MaDB.net"
+  madb_admin_entity: "D\xC3\xA9finition de la table {{entity}}"
+  madb_really_delete_entity_table_question: Effacer la table {{name}}?
+  madb_translation_missing_translations: Traductions manquantes
+  madb_host: www.madb.net
+  madb_tos_accepted: "J'ai lu et compris et j'accepte les <a class=\"link\" href=\"/TOS.html\">conditions d'utilisation</a> r\xC3\xA9dig\xC3\xA9es en Anglais "
+  madb_login_successful: "Authentification r\xC3\xA9ussie!"
+  madb_no_only_one_child: Non
+  madb_lastname: Nom de famille
+  madb_choose_password: Votre nouveau mot de passe
+  madb_help_info_search_index: "La fonctionalit\xC3\xA9 de recherche vous permet de retrouver les entr\xC3\xA9es d'une base de donn\xC3\xA9es correspondant \xC3\xA0 la valeur entr\xC3\xA9e.\n\
+    <p>La recherche peut s'effectuer sur une seule ou toutes les tables d\xC3\xA9finies  dans la base de donn\xC3\xA9es. Lorsque la recherche ne concerne qu'une table, il est possible de n'examiner qu'un champs lors de la recherche.</p>\n"
+  madb_normal_user: "Acc\xC3\xA8s en lecture et \xC3\xA9criture"
+  madb_settings_could_not_be_saved: "Vos pr\xC3\xA9f\xC3\xA9rences n'ont pas pu \xC3\xAAtre sauv\xC3\xA9es."
+  madb_entries_found_but_no_details_to_be_displayed_in_list: "Des entr\xC3\xA9es existent, mais aucun champs n'est configur\xC3\xA9 pour \xC3\xAAtre affich\xC3\xA9 dans les listes. Contactez votre administrateur pour modifier la configuration."
+  madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty: "Cette table n'a aucun champs affich\xC3\xA9 dans les listes, et ces listes apparaitront vide, m\xC3\xAAme si des entr\xC3\xA9es existent!"
+  madb_use: Utiliser
+  madb_confirm_password_creation: Confirmation du mot de passe
+  madb_help_info_entities_view_intro: "Voici les d\xC3\xA9tails de l'entr\xC3\xA9e s\xC3\xA9lectionn\xC3\xA9e. Notez qu'il n'y a que les champs ayant une valeur qui sont affich\xC3\xA9s! Les champs vide ne sont pas affich\xC3\xA9. En suivant le lien d'\xC3\xA9dition, il vous sera possible d'\xC3\xA9diter tous les champs de cette entr\xC3\xA9e."
+  madb_integer: Nombre entier
+  updated_at: "Mis \xC3\xA0 jour le"
+  madb_welcom_to_madb_signup_subject: "[MaDB] - Bienvenue sur MaDB.net"
+  madb_yes_multiple_child: Oui
+  madb_could_not_find_account_with_email: "Nous n'avons pas pu retrouver un compte avec l'adress \xC3\xA9lectronique {{mail}}."
+  madb_help_info_admin_entities_list: "Cette page liste les tables d\xC3\xA9finies dans la base de donn\xC3\xA9es active. Chaque table peut \xC3\xAAtre:\n\
+    <ul>\n\
+    <li>administr\xC3\xA9e, c'est-\xC3\xA0-dire ajouter des champs \xC3\xA0 la table, la renommer, modifier ses association  avec d'autres tables , etc..</li>\n\
+    <li>effac\xC3\xA9e. Attention, cela efface toutes les donn\xC3\xA9es contenues dans la table! </li>\n\
+    </ul>"
+  madb_help_info_you_can_disable_help_in_your_settings: "Vous pouvez d\xC3\xA9sactiver cette aide dans vos  pr\xC3\xA9f\xC3\xA9rences."
+  madb_busy: "Occup\xC3\xA9"
+  madb_multiple_parents_allowed: Un enfant peut-il avoir plusieurs parents
+  madb_administrate: Administrer
+  madb_password_must_be_five_chars_and_equal_to_confirmation: "Votre passe doit comprendre au moins 5 caract\xC3\xA8res, et sa valeur doit \xC3\xAAtre confirm\xC3\xA9e."
+  madb_help_info_database_list_entities: "Cette page liste les objets d\xC3\xA9finis dans la base de donn\xC3\xA9es que vous utilisez actuellement."
+  madb_to_parents: Associations vers les parents
+  madb_error_saving_user: "Erreur dans la cr\xC3\xA9ation de l'utilisateur"
+  madb_choose_password_creation: Mot de passe
+  madb_help_info_admin_entities_define_link: "Vous pouvez sp\xC3\xA9cifier toutes les caract\xC3\xA9ristiques d'une nouvelle association:\n\
+    <ul>\n\
+    <li>la table associ\xC3\xA9e</li>\n\
+    <li>le nom de l'association, dans chaque sens</li>\n\
+    <li>le type de l'association, dans chaque sens</li>\n\
+    </ul>"
+  madb_open_in_new_window: "Dans une nouvelle fen\xC3\xAAtre"
+  madb_yes: Oui
+  madb_help_info_admin_entities_show_links_to_other_entities: "<p>Une entr\xC3\xA9e dans une table peut \xC3\xAAtre associ\xC3\xA9e \xC3\xA0 une ou plusieurs entr\xC3\xA9es dans la m\xC3\xAAme table ou dans une table diff\xC3\xA9rente. Dans l'exemple d'une base de donn\xC3\xA9e client, un contact est associ\xC3\xA9 \xC3\xA0 une soci\xC3\xA9t\xC3\xA9.\n\
+    </p>\n\
+    <p>\n\
+    Vous pouvez d\xC3\xA9finir ce-dessous les associations impliquant la table actuelle. Une association lie, par d\xC3\xA9finition, une entit\xC3\xA9 parent \xC3\xA0 une entit\xC3\xA9 enfant. Cette distincion est n\xC3\xA9c\xC3\xA9ssaire pour pouvoir pr\xC3\xA9ciser le type d'association dans les deux sens: de parent \xC3\xA0 enfant et d'enfant \xC3\xA0 parent.\n\
+    <ul>\n\
+    <li> Une entr\xC3\xA9e parent peut-elle \xC3\xAAtre associ\xC3\xA9e \xC3\xA0 diff\xC3\xA9rentes entr\xC3\xA9es enfant, et vice-versa? Un client peut \xC3\xAAtre associ\xC3\xA9 \xC3\xA0 diff\xC3\xA9rentes factures, mais une facture ne peut \xC3\xAAtre associ\xC3\xA9e qu'\xC3\xA0 un client. Notez que le choix incombe \xC3\xA0 l'administrateur de la base de donn\xC3\xA9e quant au choix de l'entit\xC3\xA9 parent et enfant dans une association.\n\
+    </li>\n\
+    </ul>\n\
+    Ci-dessous sont list\xC3\xA9es les associations impliquant la table actuelle. vous pouvez ajouter, effacer et modifier des associations. "
+  madb_entity_edition: "Modification d'une entr\xC3\xA9e"
+  madb_translation_value: Traduction
+  madb_translation_scope: Champs d'application
+  madb_file_transfer_quota_reached: "Vous avez atteint les limites d'utilisation de votre compte.pour l'attachement de fichier. "
+  madb_account_verified: "Votre accompte est maintenant confirm\xC3\xA9. Vous pouvez d\xC3\xA9sormais vous authentifier."
+  madb_help_info_admin_entities_edit_link: "Vous pouvez modifier une association existante, avec certaines limitations:\n\
+    <ul>\n\
+    <li>vous ne pouvez pas changer la table associ\xC3\xA9e</li>\n\
+    <li>vous ne pouvez modifier une association acceptant plusieurs entr\xC3\xA9es en une associations n'accdeptant qu'une entr\xC3\xA9e (pour le plus techniciens: une  association \"to many\" ne peut \xC3\xAAtre modifi\xC3\xA9e en une association \"to one\")</li>\n\
+    </ul>"
+  madb_modify_entity: Modifier la structure
+  madb_add_new_related_entity: "Associer une nouvelle entr\xC3\xA9e {{entity}}"
+  madb_company_street: Adresse
+  madb_show_detail_spec_link_title: "Affiche les sp\xC3\xA9cification du d\xC3\xA9tail utilis\xC3\xA9 pour d\xC3\xA9finir ce champs"
+  next_page: Page suivante
+  madb_amount: Montant
+  madb_editing_translations: Edition de traduction
+  madb_login_not_allowed_for_account_contact_admin: "Authentification non accept\xC3\xA9e. Veuillez contacter admin@madb.net."
+  madb_define_link: Modification de la relation entre {{parent}} et {{child}}
+  madb_p_demos: "Captures d'\xC3\xA9crans et D\xC3\xA9mos"
+  nl: "N\xC3\xA9erlandais"
+  lastname: Nom de famille
+  madb_link_to_invoices_list: Vous pouvez visualiser <a href="{{url}}">vos factures</a>.
+  madb_account_reactivate: "R\xC3\xA9activation du compte"
+  madb_parent_entity: Parent
+  madb_help_info_admin_entities_show_intro: "<p>Vous pouvez d\xC3\xA9finir les champs  des tables de votre base de donn\xC3\xA9es en r\xC3\xA9utilisant un d\xC3\xA9tail d\xC3\xA9ja d\xC3\xA9fini dans la base de donn\xC3\xA9es, ou en d\xC3\xA9finissant un nouveau d\xC3\xA9tail (que vous pourrez alors r\xC3\xA9utiliser pour d\xC3\xA9finir les champs d'autres tables).\n\
+    </p>\n\
+    <p>L'ordre d'affichage des details peut-\xC3\xAAtre modifi\xC3\xA9 par glisser-d\xC3\xA9poser, et sera appliqu\xC3\xA9 dans tous les affichages (liste et  bo\xC3\xAEtes de s\xC3\xA9lections)</p>\n\
+    <p>Pour chaque champs de la table, trois liens vous permettens de \n\
+    <ul>\n\
+    <li>visualiser les caract\xC3\xA9ristiques du d\xC3\xA9tail utilis\xC3\xA9 pour d\xC3\xA9finir le champs(par exemple son type: date, texte, choix dans une liste, ...),</li>\n\
+    <li>pr\xC3\xA9ciser les caract\xC3\xA9ristique du champs de cette tables (affichage dans les listes, multiples valeurs autoris\xC3\xA9e</li> \n\
+    <li>retirer le champs de la table. Cette op\xC3\xA9ration n'efface pas le d\xC3\xA9tail, de sorte que vous pouvez le r\xC3\xA9utiliser pour d\xC3\xA9finir d'autres champs.</li>\n\
+    </ul>\n\
+    </p>\n\
+    <p>Il est \xC3\xA9galement possible de sp\xC3\xA9cifier que le formulaire d'entr\xC3\xA9e de cette table peut-\xC3\xAAtre acc\xC3\xA9der \xC3\xA0 l'ext\xC3\xA9rieur de cette application</p>"
+  madb_new_password_could_not_be_mailed: "Le courriel n'a pas pu \xC3\xAAtre envoy\xC3\xA9 \xC3\xA0 {{email}}"
+  madb_view: Afficher
+  forgotten_password_mail_intro: "Siute \xC3\xA0 votre demande ou celle de votre administrateur, votre mot de passe a \xC3\xA9t\xC3\xA9 r\xC3\xA9initialis\xC3\xA9. Veuillez vous authentifier avec les donn\xC3\xA9es suivantes:"
+  madb_show: Afficher
+  madb_create_new_entity: "Ajouter une nouvelle entr\xC3\xA9e {{entity_name}}"
+  madb_back_to_vat_change: Retour aux informations de TVA
+  madb_p_contact: Contact
+  madb_help_info_admin_details_value_propositions_for_new: "Ce type de d\xC3\xA9tail n'acceptera que les valeurs que vous pr\xC3\xA9cisez ci-dessous. Ce d\xC3\xA9tail sera affich\xC3\xA9 comme une liste d\xC3\xA9roulante dans le formulaire de saisie."
+  madb_company_city: Ville
+  madb_account_upgrade: "Mise \xC3\xA0 jour de l'abonnement"
+  madb_account_type_personal: Personnel
+  madb_edit_entity: "Modification d'une entit\xC3\xA9"
+  madb_please_confirm_your_registration_by_clicking_on_this_link: "Suivez ce lien pour confirmer votre inscription. "
+  madb_all: Tous
+  madb_mail_password_change_intro: "Suite \xC3\xA0 votre demande ou \xC3\xA0 l'administrateur de votre compte, voici un nouveau mot de passe pour votre compte MaDB.net. Nous vous conseillons de modifier ce mot de passe lors de votre premi\xC3\xA8re connection.\n\n\
+    Veuillez vous authentifier gr\xC3\xA2ce \xC3\xA0 ces donn\xC3\xA9es:"
+  madb_remove_propositions: Effacer la proposition
+  madb_help_info_entities_edition: "Vous pouvez ici \xC3\xA9diter une entr\xC3\xA9e, et sp\xC3\xA9cifier une valeur pour chaque champs."
+  madb_page: Page
+  madb_parent: Parent
+  madb_you_need_to_provide_names_for_the_link_in_both_directions: Veuillez entrer un nom pour la relation dans chaque sens.
+  madb_duplicate_detail_name_in_db: "Un d\xC3\xA9tail du m\xC3\xAAme nom existe d\xC3\xA9ja dans cette base de donn\xC3\xA9es."
+  madb_child: Enfant
+  madb_maximum_monthly_file_transfer: "Transfert maximum de fichier attach\xC3\xA9s:"
+  madb_browser_demo_login_message_ie: "MaDB.net est optimis\xC3\xA9 pour Firefox. Faites-vous une faveur et utilisez ce navigateur supportant les derniers standards!"
+  madb_help_info_admin_databases_list: "Voici la liste des bases de donn\xC3\xA9es existantes. Pour chaque base de donn\xC3\xA9es, vous pouvez acc\xC3\xA9der aux tables et d\xC3\xA9tails d\xC3\xA9finis. Un d\xC3\xA9tails est utilis\xC3\xA9 pour d\xC3\xA9finir les champs des tables, et peut-\xC3\xAAtre utilis\xC3\xA9 plusieurs fois. Vous pouvez aussi renommer ou effacer chaque base de donn\xC3\xA9es."
+  madb_administrator_user: Compte administrateur
+  madb_add_new: "Saisie d'une entr\xC3\xA9e"
+  madb_details: Details
+  madb_really_unlink_detail_question: Voulez-vous vraiment effacer le champs {{detail}}?
+  madb_edit_detail: "Modification d'un d\xC3\xA9tail"
+  madb_help_info_translations_list_intro: "La premi\xC3\xA8re liste affiche les traduction existantes, la seconde les traductions manquantes"
+  madb_s3_attachment: "Fichier attach\xC3\xA9"
+  madb_refresh: "Rafra\xC3\xAEchir"
+  madb_help_info_settings_show_intro: "Vous pouvez modifier vos pr\xC3\xA9f\xC3\xA9rences, et par exemple d\xC3\xA9sactiver l'affichage de cette aide."
+  madb_translation_t_id: terme
+  madb_find_translations_matching: Recherche
+  madb_add_proposition: Ajouter la proposition
+  madb_long_text: Texte long
+  madb_error_record_already_linked: "Les deux entr\xC3\xA9es que vous essayez d'associer le sont d\xC3\xA9ja."
+  madb_no_data_found: "Aucune donn\xC3\xA9e \xC3\xA0 afficher"
+  madb_invoice_number: "Num\xC3\xA9ro de facture"
+  madb_invoice_total_amount: Total
+  madb_click_button_to_subscribe_through_paypal: "Cliquez sur le bouton suivant pour vous abonnez \xC3\xA0 madb.net pour {{amount}} euros par mois. Vous pouvez annuler votre abonnement \xC3\xA0 tout moment, mais aucun remboursement ne sera effectu\xC3\xA9."
+  madb_p_submenu_content_contact: |-
+    <p><b>Contactez-nous!</b></p>
+    <p>Que ce soit pour une demande d'information ou une remarque, nous nous ferons un devoir de traiter votre communication avec la plus grande attention.</p>
+  madb_can_one_parent_entity_have_several_children_question: "Une entr\xC3\xA9e <span class=\"no_css_parent_name\">{{parent_entity}}</span> peut-elle \xC3\xAAtre associ\xC3\xA9e \xC3\xA0 plusieurs <span class=\"no_css_child_name\">{{child_entity}}</span>"
+  madb_searched_detail: "Champs \xC3\xA0 examiner"
+  madb_from_parent_to_child_relation_name: "Nom de l'association de <span class=\"no_css_parent_name\">{{parent_entity}}</span> \xC3\xA0 <span class=\"no_css_child_name\">{{child_entity}}</span>"
+  madb_payment_not_yet_received_and_incorrect_communication_from_paypal: "Nous n'avons pas encore re\xC3\xA7u la confirmation du paiement de Paypal. Veuillez essayer de vous authentifier dans quelques minutes."
+  madb_next_page: Page suivante
+  madb_help_info_entities_views_related_entities: "Ci-dessous se trouvent les entr\xC3\xA9es reli\xC3\xA9e a l'entr\xC3\xA9e s\xC3\xA9lectionn\xC3\xA9e.\n\
+    <br>\n\
+    Chacune des listes correspond \xC3\xA0 une relation vers d'autres entr\xC3\xA9es.<br>\n\
+    Si la d\xC3\xA9finition de la relation vous permet de lier d'autres entit\xC3\xA9s, deux liens seront affich\xC3\xA9s qui vous permettront de relier une entr\xC3\xA9e existante ou une nouvelle entr\xC3\xA9e respectivement.\n\
+    <br>\n\
+    Chaque liste peut \xC3\xAAtre filtr\xC3\xA9e et ouverte dans une nouvelle fen\xC3\xAAtre. Il vous est \xC3\xA9galement possible de directement afficher les d\xC3\xA9tails d'une entr\xC3\xA9e li\xC3\xA9e \xC3\xA0 l'entr\xC3\xA9e actuelle gr\xC3\xA2ce aux liens affich\xC3\xA9s dans les derni\xC3\xA8re colonne de la liste."
+  madb_help_info_admin_details_new: "Lors de la cr\xC3\xA9ation d'un d\xC3\xA9tail, vous pouvez lui donner un nom et sp\xC3\xA9cifier le type de donn\xC3\xA9e lui \xC3\xA9tant associ\xC3\xA9.\n\
+    Le type du d\xC3\xA9tail  a une implication sur les valeurs accept\xC3\xA9es et la repr\xC3\xA9sentation du d\xC3\xA9tail dans l'application (un d\xC3\xA9tail de type email n'accepte que des valeurs correspondan \xC3\xA0 une adresse email valide, et est repr\xC3\xA9sent\xC3\xA9 comme lien).\n"
+  madb_choose_database: "S\xC3\xA9lectionnez la DB"
+  madb_number_of_users: Nombre d'utilisateurs
+  madb_translation_existing_translations: Termes traduits
+  madb_define_new_detail: "Entrer un nouveau d\xC3\xA9tail"
+  madb_displayed_in_list_view: "Le champs doit-il \xC3\xAAtre affich\xC3\xA9 dans les listes?"
+  create_new: Ajout de {{entity}}
+  madb_help_info_admin_details_value_propositions_for_edit: Il n'est actuellement pas possible de modifier la liste de propositions.
+  madb_entities: Tables
+  madb_searched_value: "Valeur recherch\xC3\xA9e"
+  madb_listing_translations: Liste des traductions
+  madb_welcome_to_myowndb: "Bienvenue sur MaDB.net!\n\
+    D\xC3\xA8s que vous aurez confirm\xC3\xA9 votre compte en suivant le lien ci-dessous, vous aurez acc\xC3\xA8s aux outils MaDB.net vous permettant de g\xC3\xA9rer vos donn\xC3\xA9es en lignes."
+  madb_entity: "{{entity}}"
+  madb_help_info_admin_entities_add_existing_choose: "Choisissez le d\xC3\xA9tail \xC3\xA0 utiliser pour d\xC3\xA9finir le nouveau champs."
+  madb_account_type_free: Gratuit
+  madb_reset: "Remise \xC3\xA0 z\xC3\xA9ro"
+  madb_account_activation_impossible_because_not_found: "Votre compte n'a pu \xC3\xAAtre v\xC3\xA9rifi\xC3\xA9. V\xC3\xA9rifiez-que le lien qui vous a \xC3\xA9t\xC3\xA9 envoy\xC3\xA9 est bien affich\xC3\xA9 sur une ligne. Vous pouvez essayer de copier l'adresse du lien et la coller dans la bare d'adresse de votre navigateur internet. Si le probl\xC3\xA8me persiste, veuillez contacter <a href=\"mailto:admin@madb.net\">admin@madb.net</a>"
+  madb_create_database: "Cr\xC3\xA9er une nouvelle base de donn\xC3\xA9es."
+  madb_admin_users: "G\xC3\xA9rer les utilisateurs"
+  madb_logout: Terminer
+  madb_subscription_type: Type d'abonnement
+  madb_login_not_confirmed: La confirmation du login ne correspond pas.
+  madb_choose: Choisissez
+  madb_forgotten_password_mail_outro: "Nous vous conseillons de changer imm\xC3\xA9diatement de mot de passe en cliquant sur \"Pr\xC3\xA9f\xC3\xA9rences\" dans le menu."
+  madb_translation_ids: Identifiants
+  madb_subscription_type_characteristics: "Caract\xC3\xA9ristiques de votre compte"
+  madb_date: Date
+  madb_searched_entity: "Rechercher les entr\xC3\xA9es de type"
+  madb_create_new: "Ins\xC3\xA9rez une entr\xC3\xA9e {{entity}}"
+  madb_short_text: Texte court
+  madb_delete_detail_question: "Etes-vous s\xC3\xBBr de vouloir effacer le detail {{detail}}?"
+  madb_link_to_existing_entity: "Associer une entr\xC3\xA9e {{entity}} existante"
+  madb_add_link_to_child_entity: "D\xC3\xA9finir une nouvelle association vers une entit\xC3\xA9 enfant"
+  madb_password_reset_mail_sent: "Un mail a \xC3\xA9t\xC3\xA9 envoy\xC3\xA9 avec le nouveau mot de passe."
+  madb_maximum_attachment_number: "Nombre maximum de fichiers pouvant \xC3\xAAtre attach\xC3\xA9s:"
+  madb_account_not_active_or_cancelled: "Compte inactif ou annull\xC3\xA9."
+  madb_new_database_title: "Cr\xC3\xA9ation d'une nouvelle Base de Donn\xC3\xA9e"
+  madb_help_info_database_list: "Vous retouvez sur cette page la liste des bases de donn\xC3\xA9es d\xC3\xA9finies et choisir laquelle vous voulez utiliser. S'il s'agit de votre premi\xC3\xA8re utilisation de l'application, vous devez d'abord cr\xC3\xA9er votre premi\xC3\xA8re base de donn\xC3\xA9es en cliquant sur l'entr\xC3\xA9e \"G\xC3\xA9rer mes DBs\" dans la barre au sommet de l'\xC3\xA9cran."
+  madb_input_form_is_publicly_accessible: Publier le formulaire de saisie
+  madb_search_results: "R\xC3\xA9sultats de la recherche"
+  madb_enter_account_name: "Entrez un nom de soci\xC3\xA9t\xC3\xA9 ou d'organisation(entrez vos nom/pr\xC3\xA9nom si vous \xC3\xAAtes un particulier)"
+  madb_has_public_form: Formulaire de saisie public?
+  madb_primary_user: "Acc\xC3\xA8s administrateur"
+  madb_submit_all: Tout envoyer
+  madb_submit: Envoyer
+  madb_choose_in_list: Choix dans une liste de proposition
+  madb_show_detail_spec: "Sp\xC3\xA9cifications du d\xC3\xA9tails"
+  madb_delete_user_question: Supprimmer le login {{login}}?
+  madb_administrate_entity_link_title: "Ce liens vous donne acc\xC3\xA8s \xC3\xA0 la d\xC3\xA9finition de cette entit\xC3\xA9, comme ses d\xC3\xA9tails et liens vers d'autres entiti\xC3\xA9s."
+  madb_we_have_received_your_first_payment_and_account_is_activated.: "Nous avons r\xC3\xA9ceptionn\xC3\xA9 votre premier paiement et votre compte est maintenant activ\xC3\xA9. Vous pouvez  vous authentifier en suivant ce lien:"
+  tos_acceptance_needed: "Vous devez  indiquer que vous avez lu et compris et que vous acceptez les conditions d'utilisation (Terms of Service) r\xC3\xA9dig\xC3\xA9es en Anglais."
+  madb_login_cannot_be_blank: "Le mot de passe ne peut pas \xC3\xAAtre vide!"
+  madb_maximum_number_of_values: "Nombre de valeur accept\xC3\xA9e par ce champs:"
+  madb_really_delete_database_question: "Etes-vous sur de vouloir effacer la base de donn\xC3\xA9es {{database}}?"
+  madb_p_home: Accueil
+  madb_register_for_an_account: S'enregister
+  madb_related_entities: "Entr\xC3\xA9es li\xC3\xA9es"
+  madb_detail_name_cannot_be_id: "Le nom du d\xC3\xA9tail ne peut actuellement \xC3\xAAtre \"id\"."
+  madb_define_new_link: "D\xC3\xA9finition d'une association"
+  madb_login_unsuccessful: Login ou mot de passe incorrect.
+  madb_details_for_entity: Champs de la table {{entity}}
+  madb_list: Liste des {{entity}}
+  "madb_to_children ": Associations vers les enfants
+  madb_login_not_a_valid_email: "Votre login doit \xC3\xAAtre une adresse email valide!"
+  madb_account_type_signup: Type d'abonnement
+  madb_help_info_entities_list_intro: "<p>Cette page liste les donn\xC3\xA9es actuellement pr\xC3\xA9sente dans table s\xC3\xA9lectionn\xC3\xA9e et vous donne un acc\xC3\xA8s rapide \xC3\xA0 l'insertion d'une nouvelle entr\xC3\xA9e.</p>\n\
+    <p>\n\
+    La liste peut \xC3\xAAtre limit\xC3\xA9e aux entr\xC3\xA9es correspondant au crit\xC3\xA8re de recherche entr\xC3\xA9. Il vous suffit de choisir le champs et la valeur recherch\xC3\xA9e. Il est \xC3\xA9galement possible d'ouvrir la liste dans une nouvelle fen\xC3\xAAtre.\n\
+    </p>\n\
+    <p>\n\
+    Les liens dans les derni\xC3\xA8res colonnes de la liste vous permettent de facilement visualiser ou \xC3\xA9diter les d\xC3\xA9tails d'une entr\xC3\xA9e,\n\
+    </p>\n"
+  madb_user_type: Profil utilisateur
+  madb_unlink_detail_from_entity_link_title: "Effacer le champs et les valeurs associ\xC3\xA9es"
+  reset: "R\xC3\xA9initialiser"
+  new_translation: Nouvelle traduction
+  madb_new_password_sent: "Un nouveau mot de passe a \xC3\xA9t\xC3\xA9 envoy\xC3\xA9 \xC3\xA0 {{mail}}"
+  madb_urls_where_translation_appears: URL contenant le terme
+  madb_go_back_do_no_replace_current_file: "Faire marche arri\xC3\xA8re et ne pas remplacer le fichier."
+  madb_quick_submit: Ajout rapide
+  madb_data_type: Type
+  madb_edit_entity_to_detail: Modifier le champs
+  madb_translation_check_usage_in_source_code: "Utilis\xC3\xA9?"
+  madb_password_and_confirmation_needed: "Veillez \xC3\xA0 bien entrer votre mot de passe et sa confirmation"
+  madb_entity_menu_link_title: Affiche la liste des {{entity}}
+  madb_this_is_a_popup_window_warning: "Attention, ceci n'est pas la fen\xC3\xAAtre principale de l'application!"
+  madb_database_menu_link_title: Afficher la liste des tables
+  madb_company_name: "Soci\xC3\xA9t\xC3\xA9"
+  madb_public_form_will_be_available_at: "Le formulaire sera accessible \xC3\xA0 "
+  madb_confirm_delete_all_links: "Effacer cette association supprimera tous les liens correspondant entres les entr\xC3\xA9es dans les tables. Voulez-vous continuer?"
+  madb_company_vat: "Num\xC3\xA9ro de TVA"
+  madb_insertion_was_successful: "Vos donn\xC3\xA9es ont \xC3\xA9t\xC3\xA9 enregistr\xC3\xA9es."
+  madb_edit_database: "Modification d'une base de donn\xC3\xA9es"
+  madb_error_data_not_found: "Les donn\xC3\xA9es demand\xC3\xA9e n'ont pu \xC3\xAAtre trouv\xC3\xA9es."
+  madb_display_info_help: "Afficher l'aide int\xC3\xA9gr\xC3\xA9e"
+  admin_databases: "G\xC3\xA9stion des DBs"
+  madb_translation_updated_at: "Mis \xC3\xA0 jour"
+  madb_edit: Editer
+  madb_links: Associations
+  madb_new_detail_title: "Nouveau d\xC3\xA9tail"
+  madb_users_list: Liste des utilisateurs
+  madb_select_account_type: "Votre choix:"
+  madb_p_homepage_title: "MaDB.net: la base de donn\xC3\xA9es web"
+  madb_no_only_one_child_allowed: "Non, une entr\xC3\xA9e {{parent_entity}} ne peut \xC3\xAAtre associ\xC3\xA9e qu'\xC3\xA0 une entr\xC3\xA9e {{child_entity}}\n"
+  madb_web_url: Adresse d'un site web
+  madb_no_instance_found: "Aucune donn\xC3\xA9e \xC3\xA0 afficher."
+  previous_page: "Pag epr\xC3\xA9c\xC3\xA9dente"
+  madb_invoice_date: Date de facturation
+  madb_english_translation: English translation
+  madb_add_detail_to_entity: "Ajo\xC3\xBBt d'un d\xC3\xA9tail \xC3\xA0 {{entity}}"
+  madb_madb: MaDB
+  entity: "Entit\xC3\xA9 {{entity}}"
+  madb_child_entity: Enfant
+  madb_firstname: "Pr\xC3\xA9nom"
+  madb_p_blog: Blog
+  madb_signup: "Cr\xC3\xA9er mon compte"
+  madb_filter_on: Filtrer sur le champs
+  madb_confirm_password: Confirmez votre nouveau mot de passe
+  madb_login_already_taken: "Ce login existe d\xC3\xA9ja. Si vous avez oubli\xC3\xA9 votre mot de passe vous pouvez le r\xC3\xA9cup\xC3\xA9rer depuis la page de login."
+  madb_user_verified: "Compte valid\xC3\xA9?"
+  madb_from_child_to_parent_relation_name: "Nom de l'association de <span class=\"no_css_child_name\">{{child_entity}}</span> \xC3\xA0 <span class=\"no_css_parent_name\">{{parent_entity}}</span>\n"
+  madb_help: Aide
+  madb_an_error_occured: "Une erreur a eu lieu au cours de l'op\xC3\xA9ration."
+  madb_forgot_password_subject: "[MaDB]: oubli de votre mot de passe"
+  madb_yes_many_children_allowed: "oui, une entr\xC3\xA9e {{parent_entity}} peut \xC3\xAAtre associ\xC3\xA9e a plusieurs entr\xC3\xA9es {{child_entity}}"
+  madb_unlink: "D\xC3\xA9sassocier"
+  madb_my_databases: "Mes bases de donn\xC3\xA9es"
+  madb_translation_lang: Langue
+  mabd_forgot_your_password_question: Mot de passe perdu?
+  madb_searched_database: "Base de donn\xC3\xA9es \xC3\xA0 utiliser"
+  madb_manage_translations: "G\xC3\xA9rer les traductions"
+  madb_previous_page: "Page pr\xC3\xA9c\xC3\xA9dente"
+  madb_number_of_records_in_list: "{{number}} elements"
+  madb_p_submenu_content_post_to_delicious: <a href="http://del.icio.us/post" onclick="window.open('http://del.icio.us/post?v=4&noui&jump=close&url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=700,height=400'); return false;">Sauvez sur del.icio.us</a>
+  madb_number_of_databases: "Nombre de bases de donn\xC3\xA9es"
+  madb_email_confirmation: Confirmez l'adresse email
+  madb_invoices_list: Factures
+  madb_help_info_admin_entities_edit: "Vous pouvez modifier le nom de l'entit\xC3\xA9"
+  madb_export: "Exporter ces donn\xC3\xA9es"
+  madb_company: "Soci\xC3\xA9t\xC3\xA9"
+  madb_help_info_admin_edit_detail: "Vous pouvez ici modifier le d\xC3\xA9tail existant. Toutes les caract\xC3\xA9ristiques ne peuvent \xC3\xAAtre modifi\xC3\xA9e (par exemple le type du detail ne peut \xC3\xAAtre modifi\xC3\xA9 de \"Choix dans une liste\" vers \"Date\")\n\n"
+  madb_status: Status
+  madb_replace_file: Remplacer le fichier
+  madb_delete_file: Effacer le fichier
+  madb_pay_with_paypal: Payer avec Paypal.
+  madb_enter_your_email_address_to_have_a_new_password_sent_to_you: "Entrez votre adresse \xC3\xA9lectronique pour recevoir un courriel avec les informations n\xC3\xA9cessaire pour obtenir un nouveau mot de passe."
+  madb_no: Non
+  madb_help_info_spec_of_detail_for_entity: "Pr\xC3\xA9ciser si le champs doit appara\xC3\xAEtre dans les listes. Acutellement, une seule valeur peut-\xC3\xAAtre entr\xC3\xA9e pour un champs."
+  madb_notice_password_updated: Mot de passe mis a jour
+  madb_new_entity: "Cr\xC3\xA9er une table"
+  madb_reset_password_title: "J'ai oubli\xC3\xA9 mon mot de passe et voudrais en changer!"
+  madb_help_info_admin_details_list: "Voici la liste des d\xC3\xA9tails d\xC3\xA9finis pour la base de donn\xC3\xA9es active. Un detail est utilis\xC3\xA9 pour d\xC3\xA9finir les champs des tables de la base de donn\xC3\xA9es. <br>\n\
+    Le type du d\xC3\xA9tail (texte court, texte long, choix dans une liste, email, etc) influencera son affichage dans le formulaire de saisie (les textes longs sont affich\xC3\xA9s dans un cadre de texte) et dans la liste.(les email sont affich\xC3\xA9 sous forme de lien).<br>"
+  madb_account_type_association: Association
+  madb_add_link_to_parent_entity: "D\xC3\xA9finir une nouvelle association vers une entit\xC3\xA9 parente"
+  madb_back: Retour
+  madb_yes_many_parents_allowed: "oui, une entr\xC3\xA9e {{child_entity}} peut \xC3\xAAtre associ\xC3\xA9e a plusieurs entr\xC3\xA9es {{parent_entity}}"
+  madb_invoice_to: A
+  madb_enter_id_of_the_translation: Entrez l'identifiant de la traduction
+  madb_destroy_entity_link_title: "Supprimer la table et toutes ses entr\xC3\xA9es."
+  madb_new_translation: Nouvelle traduction
+  madb_password_not_confirmed: Veuillez entrer la confirmation de votre mot de passe.
+  madb_edit_entity_to_detail_link_title: "D\xC3\xA9cidez de l'affichage du champs dans les listes"
+  madb_entity_details: "D\xC3\xA9tails de l'entr\xC3\xA9e {{entity}}"
+  madb_company_zip_code: Code postal
+  madb_excluding_vat: hors TVA
+  madb_p_products_services: Produits et Services
+  madb_please_login: Veuillez vous identifier
+  madb_click_here_to_disply_main_window: "Afficher la fen\xC3\xAAtre principal"
+  madb_upgrade_subscription_to: Passer au niveau {{subscription_name}}
+  fr: "Fran\xC3\xA7ais"
+  madb_mail_outro: "Nous vous remercions pour votre confiance, et nous tenons \xC3\xA0 votre disposition.\n\n\
+    L'\xC3\xA9quipe de MaDB.net"
+  madb_really_delete_entity_question: "Effacer l'entr\xC3\xA9e {{entity}} avec {{title}} {{value}}?"
+  madb_p_submenu_content_social_bookmarking: Bookmarkez Madb.net
+  madb_delete: Effacer
+  madb_admin_databases: "G\xC3\xA9rer mes DBs"
+  madb_login: Login
+  madb_enter_value_to_search_for: "Entrez la valeur \xC3\xA0 rechercher"
+  madb_proposition_exists: La proposition existe
+  madb_really_delete_all_existing_links_question: Effacer toutes les relations existantes?
+  madb_eot_subject: Expiration de votre complet MaDB.net
+  madb_your_current_subscription_plan: Vous utilisez actuellement un abonnement <span class="subscription_type">{{subscription}}</span>.
+  madb_error_saving_detail: "Probl\xC3\xA8me de sauvegarde du d\xC3\xA9tail."
+  madb_error_in_account: "Erreur dans la cr\xC3\xA9ation de la soci\xC3\xA9t\xC3\xA9 (voir ci-dessus)"
+  madb_login_too_short: "Login trop court (\xC3\xAAtes-vous s\xC3\xBBr qu'il s'agit d\"une adresse \xC3\xA9mail valide?)"
+  madb_your_login_information_is: "Pour rappel, voici votre login. Le mot de passe est celui que vous avez entr\xC3\xA9 lors de la cr\xC3\xA9ation de votre compte."
+  madb_users_was_successfully_created: "Le compte a \xC3\xA9t\xC3\xA9 cr\xC3\xA9\xC3\xA9."
+  madb_p_submenu_content_demos: "<p><b>A propos des d\xC3\xA9mos</b></p>\n\
+    <p>Les d\xC3\xA9mos seront adapt\xC3\xA9es lors de mises \xC3\xA0 jours de l'application si la fonctionalit\xC3\xA9 illustr\xC3\xA9e est modifi\xC3\xA9e. Des modification \"cosm\xC3\xA9tiques\" de l'application ne provoqueront pas la mise a jour de la d\xC3\xA9mo.</p>"
+  madb_invoice_from: De
+  madb_no_detail_saved_enter_at_least_one_valid_value: Veuillez entrer au moins une valeur.
+  madb_maximum_attachment_size: "Taille maximale de fichiers attach\xC3\xA9s"
+  madb_monthly_fee: Prix mensuel
+  madb_detail_name_cannot_be_empty: "Le nom du d\xC3\xA9tail ne peut \xC3\xAAtre laiss\xC3\xA9 blanc."
+  madb_no_only_one_parent: Non
+  madb_destroy: Supprimer
+  madb_p_submenu_content_products: "<p><b>Pour plus d'informations</b></p>\n\
+    <p><a href=\"contact\">Contactez-nous</a>, nous sommes \xC3\xA9galement disponible pour le d\xC3\xA9veloppement d'applications sp\xC3\xA9cifiques!</p>"
+  cancel: Annuler
+  madb_editing_users: Edition d'utilisateur
+  madb_yes_multiple_parent: Oui
+  madb_link_existing_detail: "Ajouter un champs bas\xC3\xA9 sur un d\xC3\xA9tail existant"
+  madb_search: Recherche
+  madb_databases_list: "Bases de donn\xC3\xA9es existantes"
+  madb_change_password_subject: "[MaDB] Changement de mot de passe"
+  madb_limit_of_account_reached: "Vous avez atteint les limites de votre abonnement. Il est peut-\xC3\xAAtre temps de passer \xC3\xA0 un niveau d'abonnement sup\xC3\xA9rieur. Vous trouverez toutes les informations sous la rubrique \"Pr\xC3\xA9f\xC3\xA9rences\" dans le coin sup\xC3\xA9rieur droit de l'\xC3\xA9cran.  Merci pour votre intense utilisation de MaDB.net!"
+  madb_create_user: "Cr\xC3\xA9er un compte"
+  madb_details_list: "{{database}}: liste de d\xC3\xA9tails d\xC3\xA9finis"
+  madb_entities_list: "{{db}}: list des tables"
+  submit_all: Tout appliquer
+  madb_resize: Adapter la taille
+  madb_p_latest_news: "<p><i>Derni\xC3\xA8re mise \xC3\xA0 jour:</i></p>\n\
+    <p><b>File upload available! <a href=\"/demos/file_uploads.html\">Visualisez la d\xC3\xA9mo!</a></b>"
+  madb_error_incorrect_data: "Requ\xC3\xAAte incorrecte."
+  madb_choose_country: Indiquez votre pays
+  madb_login_unsuccessful_account_not_yet_verified: "Votre compte n'a pas encore \xC3\xA9t\xC3\xA9 confirm\xC3\xA9. Lors de votre inscription, vous avez re\xC3\xA7u un mail vous demandant de confirmer votre inscription en suivant simplement un lien. Une fois votre compte confirm\xC3\xA9, vous pourrez vous authentifier."
+  madb_add_new_detail: "Ajouter un champs bas\xC3\xA9 sur un nouveau d\xC3\xA9tail"
+  madb_new_users: Ajouter de nouveaux comptes
+  madb_you_dont_have_sufficient_credentials_for_action: "Vous n'avez pas les droits n\xC3\xA9cessaire pour effectuer cette op\xC3\xA9ration!"
+  madb_reset_password: "R\xC3\xA9initialiser le mot de passe"
+  madb_name: Nom
+  madb_invoiced_item: "Produit factur\xC3\xA9"
+  madb_error_creating_instance: "Probl\xC3\xA8me pour sauvegarder la nouvelle entr\xC3\xA9e"
+  madb_error_saving_database: "La base de donn\xC3\xA9es n'a pu \xC3\xAAtre cr\xC3\xA9\xC3\xA9e"
+  madb_no_only_one_parent_allowed: "Non, une entr\xC3\xA9e {{child_entity}} ne peut \xC3\xAAtre associ\xC3\xA9e qu'\xC3\xA0 une entr\xC3\xA9e {{parent_entity}}\n"
+  madb_email: Email
+  madb_help_info_admin_details_show: "Voici les sp\xC3\xA9cifications du d\xC3\xA9tail: son nom et le type de donn\xC3\xA9e.<br> Les possibilit\xC3\xA9s d'\xC3\xA9ditions d'un d\xC3\xA9tail existant sont limit\xC3\xA9es."
+  madb_your_subscription_is_cancelled: "Votre abonnement a \xC3\xA9t\xC3\xA9 annull\xC3\xA9, et prendra fin le {{end_date}}"
+  madb_p_main_content_home: "<img src=\"/images/myowndb-head.gif\">\n\
+    <h2>Qu'est donc MaDB.net?</h2>\n\
+    <p>MaDB.net est une application web dont le but est de vous faciliter la gestion de vos donn\xC3\xA9es. Vous pouvez comparer l'application \xC3\xA0 une base de donn\xC3\xA9es (dans laquelle vous pouvez d\xC3\xA9finir la structure de vos donn\xC3\xA9es) vous fournissant imm\xC3\xA9diatement une int\xC3\xA9rface utilisateur vous permettant de g\xC3\xA9rer vos donn\xC3\xA9es.</p>\n\n\
+    <div id=\"signup_frame\"> <a href=\"/app/authentication/signup\">Enregistrez-vous!</a></div>\n\n\
+    <h2>Quels sont les avantages?</h2>\n\
+    <p>MaDB.net a plusieurs avantages par rapport aux applications habituelles:\n\
+    <ul>\n\
+    <li><b>interface web</b>: vos donn\xC3\xA9es sont <i>accessible</i> d'o\xC3\xB9 que vous soyez: bureau, maison, hotel, .... Des d\xC3\xA9veloppements futus vous permettront de <i>partager</i> vos donn\xC3\xA9es si vous le d\xC3\xA9sirez.</li>\n\
+    <li><b>multi-utilisateurs</b>: Vous g\xC3\xA9rez les utilisateurs ayant acc\xC3\xA8s \xC3\xA0 l'application. Et pas besoin qu'ils soient \xC3\xA0 cot\xC3\xA9 de vous pour entrer leur mot de passe, entrez simplement leur adress email et ils recevront des instructions d\xC3\xA9taill\xC3\xA9es.!</li>\n\
+    <li><b>facile \xC3\xA0 configurer</b>: <i>Un navigateur internet suffit</i> pour profiter des avantages de maDB.net comme utilisateur (manipulant les donn\xC3\xA9es) ou comme administrateur (d\xC3\xA9finissant les donn\xC3\xA9es stock\xC3\xA9es).</li>\n\
+    <li><b>facile \xC3\xA0 utiliser</b>: l'application a \xC3\xA9t\xC3\xA9 d\xC3\xA9velopp\xC3\xA9e dans le but de vous faciliter la saisie, la modification et la recherche de vos donn\xC3\xA9es. vous ne devriez jamais avois besoin de plus de deux clics de souris pour atteindre la fonctionalit\xC3\xA9 voulue!</li>\n\
+    <li><b>multilingue</b>: tout le monde ne parle pas anglais, et l'interface de l'application est multilingue, avec le fra\xC3\xA7ais et l'anglais disponible d\xC3\xA8s maintenant. Les d\xC3\xA9finitions des donn\xC3\xA9es (noms des tables, des champs,...) seront bient\xC3\xB4t multilingues \xC3\xA9galement.</li>\n\
+    <li><b>aide int\xC3\xA9gr\xC3\xA9e</b>: des explications sont int\xC3\xA9gr\xC3\xA9es dans l'interface pour vous aider \xC3\xA0 rapidement ma\xC3\xAEtriser l'outil. Une fois l'aide superflue, vous pouvez d\xC3\xA9sactiver son affichage dans vos pr\xC3\xA9f\xC3\xA9rences.</li>\n\
+    </ul>"
+  madb_an_error_prevented_the_creation_of_your_account: "Une erreur a empech\xC3\xA9 la cr\xC3\xA9ation de votre compte. Les administrateurs du services ont \xC3\xA9t\xC3\xA9 pr\xC3\xA9venus."
+  madb_password: Mot de passe
+  madb_you_can_add_an_entry: "Vous pouvez ajouter un entr\xC3\xA9e."
+  madb_help_info_admin_details_value_propositions_for_show: "Voici les propositions pour ce d\xC3\xA9tail"
+  madb_p_submenu_content_home: "<p><b>A propos</b><p>\n\
+    <p>MaDB.net est une application web exploitant les derni\xC3\xA8res technoligies pour proposer une application dynamique.</p><p><b><a href=\"/app/authentication/demo_login\">Essayez la d\xC3\xA9mo</a>!</b></p>"
+  madb_login_email: "Email (Sera votre login):"
+  madb_unlimited_number_of_users: "Illimit\xC3\xA9"
+  madb_password_too_short: "Mot de passe trop court (minimum 5 caract\xC3\xA8res)"
+  madb_account_signup: "Cr\xC3\xA9ez votre compte"
+  find_translations_matching: "Afficher uniquement les traductions correspondat \xC3\xA0"
+  madb_help_info_admin_details_new_quick_commit: "Le bouton \"Ajout rapide\" vous permet d'imm\xC3\xA9diatement ajouter un champs bas\xC3\xA9 sur ce nouveau d\xC3\xA9tail. Ce champs sera affich\xC3\xA9 dans les listes et n'acceptera qu'une valeur. Si ces param\xC3\xA8tres par d\xC3\xA9faut ne vous conviennent pas, vous pouvez utiliser le bouton standard, qui vous permettra de pr\xC3\xA9ciser vos propres param\xC3\xA8tres."
+  madb_question: question
+  madb_this_will_erase_the_current_file: "Cette op\xC3\xA9ration effacera d\xC3\xA9finitivement le fichier, \xC3\xAAtes-vous s\xC3\xBBr de vouloir continuer?"
+  madb_cancel: Annuler
+  madb_can_one_child_entity_have_several_parents_question: "Une entr\xC3\xA9e <span class=\"no_css_child_name\">{{child_entity}}</span> peut-elle \xC3\xAAtre associ\xC3\xA9e \xC3\xA0 plusieurs <span class=\"no_css_parent_name\">{{parent_entity}}</span>"
+  madb_add_and_instance: "Ajoutez une nouvelle entr\xC3\xA9e {{entity}}"
+  madb_company_country: Pays (liste en anglais)
+  madb_list_of_databases: "Liste des bases de donn\xC3\xA9es"
+  madb_reactivate_subscription_to: Choisir l'abonnement {{subscription_name}}
+  madb_account_type_enterprise: Entreprise
+  madb_notes: Notes
+  madb_rename: Renommer
+  madb_change_password: Changez votre mot de passe
+  madb_submit: Envoyer
+  madb_forgotten_password: "Mot de passe oubli\xC3\xA9"
+  madb_with_value: "dont la valeur correspond \xC3\xA0"
+  madb_error_data_incorrect: "La requ\xC3\xAAte effectu\xC3\xA9e est invalide (param\xC3\xA8tres invalides)."
+  madb_multiple_children_allowed: Un parent peut-il avoir plusieurs enfants
+  madb_admin_database: Administrer la DB
+  madb_p_main_content_demos: "<h2>D\xC3\xA9mos</h2>\n\
+    Vous trouverez ci-dessous plusieurs d\xC3\xA9monstrations (en anglais, au format flash) d'utilisation de MaDB.net qui devraient vous permettre de vous familiariser rapidement avec l'application.\n\
+    <ul>\n\
+    <li><b>Interface de l'application</b>: une d\xC3\xA9mo tr\xC3\xA8s courte indiquant les principaux \xC3\xA9l\xC3\xA9ment de l'interface. <p class=\"datum\"><a href=\"/demos/intro.html\" target=\"madb_demo\">LANCER LA DEMO</a></p></li>\n\n\
+    <li><b>Sauvegarde de fichiers</b>: D\xC3\xA9monstration de la sauvegarde de fichiers, <p class=\"datum\"><a href=\"/demos/file_uploads.html\" target=\"madb_demo\">LANCER LA DEMO</a>(5.2Mo)</p></li>\n\n\n\
+    <li><b>Fonctionalit\xC3\xA9 de recherche</b>: d\xC3\xA9couvrez la fonctionalit\xC3\xA9 de recherche disponible d\xC3\xA8s que la structure des donn\xC3\xA9es est d\xC3\xA9finie.<p class=\"datum\"><a href=\"/demos/search.html\" target=\"madb_demo\">LANCER LA DEMO</a>(2.4Mo)</p></li>\n\
+    <li><b>D\xC3\xA9finition de donn\xC3\xA9es simple</b>: voyez comment d\xC3\xA9finir une base de donn\xC3\xA9es de suivi d'appels t\xC3\xA9l\xC3\xA9phoniques<p class=\"datum\"><a href=\"/demos/simple_admin.html\" target=\"madb_demo\">LANCER LA DEMO</a>(4.5Mo)</p></li>\n\
+    <li><b>D\xC3\xA9finition et utilisation de liens entre tables</b>: voyez comment d\xC3\xA9finir des liens entre diff\xC3\xA9rentes tables.<p class=\"datum\"><a href=\"/demos/define_links.html\" target=\"madb_demo\">LANCER LA DEMO</a>(4.9Mo)</p></li>\n\
+    <li><b>Export CSV</b>: D\xC3\xA9monstration de l'exportation des donn\xC3\xA9es au format CSV, utilisable dans tous tableurs.<p class=\"datum\"><a href=\"/demos/csv_export.html\" target=\"madb_demo\">LANCER LA DEMO</a>(5.3Mo)</p></li>\n\n\
+    </ul>"
+  madb_p_main_content_contact: "<h2>Contacts</h2>\n\n\
+    Pour tous vos commentaires, remarques, suggestions, requ\xC3\xAAtes d'information, vous pouvez  envoyer un courriel \xC3\xA0 <a href=\"mailto:info@madb.net\">info@madb.net</a> ou le formulaire ci-dessous, g\xC3\xA9n\xC3\xA9r\xC3\xA9 par l'application madb.net.<br>\n\
+    Nous vous r\xC3\xA9pondrons dans les plus brefs d\xC3\xA9lais.\n\n\n\
+    <iframe src=\"http://www.madb.net/app/entities/public_form/838\" style=\"height:22em;width:100%;border:0px\"></iframe>"
+  madb_unlink_detail_from_entity: Effacer le champs
+  madb_help_info_admin_databases_edit: "Vous pouvez modifier une base de donn\xC3\xA9e existante."
+  madb_vat_explanations: "<!--NO NEW LINES NI THIS OR IT BREAKS THE INTERFACE-->Si vous \xC3\xAAtes localis\xC3\xA9 <string>en dehors de l'Union europ\xC3\xA9enne</strong>, vous ne paierez <strong>aucune TVA</strong>.<br/>Si vous agissez au nom d'une <strong>soci\xC3\xA9t\xC3\xA9<strong> \xC3\xA9tablie dans l'Union europ\xC3\xA9enne, fournir votre num\xC3\xA9ro TVA vous permettra de ne pas payer la TVA sur le prix d'abonnement \xC3\xA0 madb.net. Pour les soci\xC3\xA9t\xC3\xA9s belges, 21% de TVA seront ajout\xC3\xA9s, mais pourront \xC3\xAAtre r\xC3\xA9cup\xC3\xA9r\xC3\xA9.<br>Si vous agissez en tant que <strong>particulier \xC3\xA9tablis dans l'Union Europ\xC3\xA9enne, 21% de TVA </strong>seront ajout\xC3\xA9s au prix de l'abonnement."
+  madb_error_saving_account: "Erreur dans l'insertion de votre soci\xC3\xA9t\xC3\xA9"
+  madb_p_main_content_products: "<h2>Produits</h2>\n\
+    Actuellement, l'application MaDB.net est disponible en d\xC3\xA9monstration uniquement.\n\
+    L'application sera tr\xC3\xA8s bient\xC3\xB4t  propos\xC3\xA9e en plusieurs configurations:\n\
+    <ul>\n\
+    <li><b>Application web</b>: apr\xC3\xA8s avoir cr\xC3\xA9\xC3\xA9 votre compte sur MaDB.net, vous utilisez l'application mise \xC3\xA0 disposition sur le web. Ceci est l'offre standard et la plus accessible car utilisant l'infrastructure en place..</li>\n\
+    <li><b>Serveur d\xC3\xA9di\xC3\xA9</b>: cette offre vous permet de stocker vos donn\xC3\xA9es sur un de nos serveur qui n'est utilis\xC3\xA9 que par vous. L'acc\xC3\xA8s au serveur peut \xC3\xA9galement \xC3\xAAtre limit\xC3\xA9 (par exemple, n'accepter que les connections venant de votre entreprise).</i>\n\
+    <li><b>Serveur sur Site</b>: cette offre vous permet d'avoir l'application MaDB.net tournant sur votre serveur, dans vos locaux. Cette offre est la plus flexible pour le client.</li>\n\
+    </ul>\n\n\
+    <h2>Services</h2>\n\
+    Nous proposons diff\xC3\xA9rents services dans le but de vous apporter une meilleure gestion de vos donn\xC3\xA9es:\n\
+    <ul>\n\
+    <li><b>D\xC3\xA9veloppements sp\xC3\xA9cifiques</b>: si vous avez des demandes sp\xC3\xA9cifques, nous pourrons \xC3\xA9ventuellement les int\xC3\xA9grer dans le cycle de d\xC3\xA9veloppement de l'application dispobible \xC3\xA0 <a href=\"http://www.madb.net\">MaDB.net</a>. Ou nous pouvons adapter tr\xC3\xA8s pr\xC3\xA9cis\xC3\xA9ment l'application dans les configurations \"Serveur d\xC3\xA9di\xC3\xA9\" ou \"Serveur sur Site\" d\xC3\xA9crites ci-dessus.</li>\n\
+    <li><b>Organisation des donn\xC3\xA9es</b>: nos pouvons vous aider \xC3\xA0 organiser et structurer vos donn\xC3\xA9es. Une bonne structure de donn\xC3\xA9es est vraiment tr\xC3\xA8s importante car elle apporte la fondation sur laquelle vous pouvez construire vos sonnaissances! Nous pouvons vous conseiller sur la structuration de vos donn\xC3\xA9es.</li>\n\
+    <li><b>Nouvelles Traductions</b>: Si vous devez utiliser MaDB.net dans une langue non propos\xC3\xA9e, nous pouvons vous aider.</li>\n\
+    </ul>\n\n\
+    Pour plus d'information, vous pouvez nous <a href=\"contact\">contacter</a>.\n\n"
+  madb_enter_your_new_password_below: Entrez votre nouveau mot de passe ci-dessous
+  madb_payment_received_and_account_activated: "Votre paiement de {{amount}} {{currency}} a bien \xC3\xA9t\xC3\xA9 r\xC3\xA9ceptionn\xC3\xA9 par l'interm\xC3\xA9diare de Paypal et vous pouvez d\xC3\xA8s \xC3\xA0 pr\xC3\xA9sent utiliser votre compte apr\xC3\xA8s vous avoir authentifi\xC3\xA9 sur la <a href=\"/app/authentication/login\">page de login</a>."
+  madb_maximum_montly_file_transfer_explanations_tooltip: "Une fois cette limite atteinte, il vous est impossible de sauvegarder de nouveau fichier. Une marge de 10% vous est accord\xC3\xA9e pour le download de fichier sauvegard\xC3\xA9s dans madb.net"
+  madb_welcome_to_myowndb_paying_account: |-
+    Bienvenue sur madb.net!
+    
+    Vous trouverez ci-dessous les informations concernant votre compte utilisateur.
+  madb_relation_name: Nom de l'association
+  en: English
+  madb_settings: "Pr\xC3\xA9f\xC3\xA9rences"

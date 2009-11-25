@@ -1,0 +1,9 @@
+<h1><%= t("madb_edit_detail", { :vars => {'detail' => t(@details.name,{ :scope => "account" })} })%></h1>
+<%= help_info("madb_help_info_admin_edit_detail")%>
+
+<% form_tag :action => 'update', :id => @details do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag t("madb_submit") %>  <%=link_to t("madb_back"),session["return-to"] %>
+<% end -%>
+
+

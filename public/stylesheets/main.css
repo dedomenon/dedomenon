@@ -1,0 +1,50 @@
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#ErrorExplanation {
+  border: 2px solid Red;
+  padding: 0.3@em;
+  margin-bottom: 1.5em;
+  background-color: #f0f0f0;
+  text-align: center;
+  font-weight: bold;
+  color: Red;
+}
+
+#ErrorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#ErrorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#ErrorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+#detail_propositions, #proposition_entry {
+	min-width: 200px;
+}
+#flecheform {
+	width: 2em;
+	height: 2em;
+	vertical-align: top;
+}
+.warning {
+  color: red;
+}
+.version {
+  float: left;
+}

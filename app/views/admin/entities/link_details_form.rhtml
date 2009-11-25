@@ -1,0 +1,18 @@
+<!--<div class="section_head"><span><%=t @entity.name %> -> <%=t @detail.name %></span></div>-->
+<h2><span><%=t(@entity.name) %> -> <%=t(@detail.name) %></span></h2>
+<%= help_info("madb_help_info_spec_of_detail_for_entity")%>
+<% form_tag({:action=> @form_action} , {:method => "post"}) do -%>
+<%= form_hidden_fields :id => params["id"], :detail_id => params["detail_id"] %>
+<%= form_hidden_fields( :status_id => (!@detail.status_id.nil? ? @detail.status_id : 1) )%>
+<table>
+
+  <!-- <tr><td><%= t("madb_status") %></td><td> <select name="status_id"><%= options_from_collection_for_select(@detail_status, "id", "name", @detail.status_id )%></select></td></tr> -->
+<tr><td><%= t("madb_displayed_in_list_view")%></td><td><select name="displayed_in_list_view"><%= options_for_select([[t("madb_yes"),'t'],[t("madb_no"),'f']], @displayed_in_list_view?'t':'f') %></select></td></tr>
+<tr><td><%=t("madb_maximum_number_of_values")%></td><td> <select disabled="disabled" name="maximum_number_of_values"><%= form_integer_select(10, @maximum_number_of_values) %></select></td></tr>
+</table>
+<%= submit_tag(t("madb_submit")) %>  <%= link_to t("madb_cancel"), :controller => "/admin/entities", :action => "show" ,  :id => @entity.id %>
+<!-- </form> -->
+<% end -%>
+
+
+

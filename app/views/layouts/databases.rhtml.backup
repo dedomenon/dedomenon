@@ -1,0 +1,12 @@
+<html>
+<head>
+  <title>Admin::Databases: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+</head>
+<body>
+<h1>Admin::Database layout</h1>
+
+<%= @content_for_layout %>
+
+</body>
+</html>

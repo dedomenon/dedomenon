@@ -1,0 +1,65 @@
+<% detail_ids = [] %>
+
+<div id="<%=list_id%>_div">
+
+
+<% if instances.length>0 %>
+
+<!--   <%= pagination_links paginator, :overwrite_params => {}, :name => "#{list_id}_page"  %> -->
+
+
+     <div class="navigation_links">
+<% paginator.each do |page| %>
+    <span class="navigation_link">
+    <% if page!=paginator.current %>
+    <%= link_to_remote( page.number , :update => "#{list_id}_div", :url => { :controller => refresh_controller, :action => refresh_action,  :overwrite_params=> {"#{list_id}_page" => page.number}.update(refresh_params||{})  }) %> </span>
+    <% else %>
+      <%= page.number %>
+    <% end %>
+<% end if paginator.length > 1%>
+     </div>
+
+<%  if refresh_params %>
+<%= link_to t("madb_getcsv"), :action => refresh_params[:action], :overwrite_params => refresh_params %>
+<% end %>
+  <table>
+
+  <% entity.details.each  do |detail| %>
+    <% if detail.displayed_in_list_view=='t' %>
+      <% detail_ids.push detail.id %>
+      <th><%= link_to_remote( t(detail.name) , :update => "#{list_id}_div", :url => { :controller => refresh_controller, :action => refresh_action,  :overwrite_params => {"#{list_id}_order".to_sym => detail.name}  }) %> </th>
+
+    <% end %>
+  <% end %>
+  <% links.each do |link| %>
+    <td><%= t link["header"] %></td>
+  <% end %>
+  <% instances.each do |instance|  %>
+    <tr>
+    <% entity.details.each do |detail| %>
+    <%# FIXME USE EntitiDetail
+    %>
+      <% val = class_from_name(detail.data_type.class_name).find(:all, :conditions => "instance_id=#{instance.id} and detail_id=#{detail.detail_id}")[0] %>
+        <% if detail.displayed_in_list_view=='t' %>
+          <td> <%=val.value if val%> </td>
+        <% end %>
+    <% end %>
+    <% links.each do |link| %>
+      <% options = link["options"] %>
+      <% for eval in link["evals"] %>
+        <% options.update({eval.to_sym => instance.send(eval)}) %>
+      <% end %>
+      <% options["controller"] = refresh_controller %>
+      <%  options["action"] = refresh_action %>
+      <% options.update({:source_id => params["id"]})%>
+      <% if !link["ajax"].nil? and link["ajax"]==true  %>
+        <td><%= link_to_remote( t(link["text"]) , :update => "#{list_id}_div", :url => options ) %> </td>
+      <% else %>
+        <td><%=link_to(t(link["text"]), options) %></td>
+      <% end %>
+    <% end %>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+</div>

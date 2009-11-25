@@ -1,0 +1,18 @@
+[submodule "vendor/rails"]
+	path = vendor/rails
+	url = git://github.com/rails/rails.git
+[submodule "vendor/plugins/country_select"]
+	path = vendor/plugins/country_select
+	url = git://github.com/rails/country_select.git
+[submodule "vendor/plugins/engines"]
+	path = vendor/plugins/engines
+	url = git://github.com/lazyatom/engines.git
+[submodule "vendor/plugins/rest_simple"]
+	path = vendor/plugins/rest_simple
+	url = git://github.com/dedomenon/rest_simple.git
+[submodule "vendor/plugins/madb_file_system_attachments"]
+	path = vendor/plugins/madb_file_system_attachments
+	url = git://github.com/dedomenon/madb_file_system_attachments.git
+[submodule "vendor/plugins/render_component"]
+	path = vendor/plugins/render_component
+	url = git://github.com/lackac/render_component.git

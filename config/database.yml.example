@@ -1,0 +1,51 @@
+################################################################################
+#This file is part of Dedomenon.
+#
+#Dedomenon is free software: you can redistribute it and/or modify
+#it under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#Dedomenon is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU Affero General Public License for more details.
+#
+#You should have received a copy of the GNU Affero General Public License
+#along with Dedomenon.  If not, see <http://www.gnu.org/licenses/>.
+#
+#Copyright 2008 Raphaël Bauduin
+################################################################################
+
+#This is an example database.yml file that you should for connecting
+# your applciation to to the MyOwnDB database
+# Create your own Version!
+# Mohsin Hijazee
+# 31-Jan 2007
+
+# List the main application database that you would use for development
+development:
+  adapter: postgresql
+  database: myowndb_dev
+  host: localhost
+  username: myowndb
+  password: password
+  port: 5432
+
+# Mention your production database here
+production:
+  adapter: postgresql
+  database: myowndb_prod
+  host: localhost
+  username: myowndb
+  password: password
+  port: 5432
+
+# Mention the database you would use for tests
+test:
+  adapter: postgresql
+  database: myowndb_test
+  host: localhost
+  username: myowndbtester
+  password: password
+  port: 5432

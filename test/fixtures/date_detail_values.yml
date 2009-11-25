@@ -1,0 +1,38 @@
+--- 
+date_detail_values_001: 
+  detail_id: "60"
+  instance_id: "95"
+  id: "44"
+  value: 2005-09-10 00:00:00
+date_detail_values_002: 
+  detail_id: "60"
+  instance_id: "100"
+  id: "45"
+  value: 2005-09-10 00:00:00
+# Date Detail Values
+# BEGIN Entity[100] Instance[200]
+books_published_200_1:
+  detail_id: "76"
+  instance_id: "200"
+  id: "46"
+  value: 1979-12-12 00:00:00
+books_published_200_2:
+  detail_id: "76"
+  instance_id: "200"
+  id: "47"
+  value: 2002-09-02 00:00:00
+#END Entity[100] Instance[200]
+
+# Date Detail Values
+# BEGIN Entity[100] Instance[201]
+books_published_201_1:
+  detail_id: "76"
+  instance_id: "201"
+  id: "48"
+  value: 1960-02-12 00:00:00
+books_published_201_2:
+  detail_id: "76"
+  instance_id: "201"
+  id: "49"
+  value: 1970-09-02 00:00:00
+#END Entity[100] Instance[200]

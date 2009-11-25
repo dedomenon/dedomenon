@@ -1,0 +1,431 @@
+--- 
+madb_your_registered_vat_number_confirm_or_change: Here is the VAT number that will be used for invoicing. Please confirm or update the data, and you'll be taken to the upgrade page.
+age: age
+madb_mail_account_expired: |-
+  Dear user,
+  
+  You account on MyOwnDB has expired. We regret to loose you as a user, but hope that futur developments will make you change your mind. If you have remarks about the application, we would appreciate if you took the time to share them with us by sending a mail to info@myowndb.com.
+  
+  Hoping to see you back soon on http://www.myowndb.com
+  
+  the MyOwnDB team.
+madb_admin_entity: Definition of table {entity}
+madb_really_delete_entity_table_question: Drop table {name}?
+madb_tos_accepted: I have read and accept the <a class="link" href="/TOS.html">Terms of Service</a>
+madb_login_successful: Login successful!
+madb_no_only_one_child: "No"
+madb_lastname: Lastname
+madb_choose_password: Your new password
+madb_host: www.myowndb.com
+madb_help_info_search_index: |-
+  <p>The search functionality lets you find records from one database corresponding to the value you enter.</p>
+  <p>
+  The search can be done on one or all tables defined in the database. When you search only on table, you can also decide which field to examine during the search.
+  </p>
+  <p></p>
+ru: ru
+madb_translation_missing_translations: Missing Translations
+madb_entries_found_but_no_details_to_be_displayed_in_list: Records were found, but no fields is configured to be displayed in lists. Please contact your administrator.
+madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty: This table has no detail displayed in lists, and those list will appear as empty, though records may exist in the database.
+madb_use: Use
+madb_confirm_password_creation: Password confirmation
+madb_help_info_entities_view_intro: Here are the details of the record you selected. Note only fields with a value are displayed, empty fields are not displayed! Editing the entry will let you enter values for all fields of the record.
+madb_settings_could_not_be_saved: Your settings could not be saved.
+madb_integer: Integer number
+updated_at: Updated at
+madb_yes_multiple_child: "Yes"
+madb_welcom_to_madb_signup_subject: "[MyOwnDB] - Welcome to MyOwnDB.com"
+madb_could_not_find_account_with_email: We could not find an account with email {mail}.
+madb_help_info_admin_entities_list: |-
+  This page lists all tables for the currently active database. Each table can be 
+  <ul>
+  <li>admistrated, this means you can add fields to the table, rename it, modify it links with other tables, etc</li>
+  <li>deleted. Note that deleting a table deletes all the data it contains!</li>
+  </ul>
+madb_help_info_you_can_disable_help_in_your_settings: You can disable this help in your settings
+madb_busy: Busy
+madb_multiple_parents_allowed: May a child have multiple parents
+madb_administrate: Administrate
+Artists: Artists
+madb_password_must_be_five_chars_and_equal_to_confirmation: Your password must be at least 5 characters long, and you must confirm its value.
+madb_help_info_database_list_entities: This page gives a list of entities (tables) defined in the current database.
+madb_to_parents: Relations to parents
+madb_choose_password_creation: Password
+madb_help_info_admin_entities_define_link: |-
+  You can enter all specifications of a new relation:
+  <ul>
+  <li>the associated table</li>
+  <li>the name of the association,in each direction</li>
+  <li>the type of the relation, in each direction</li>
+  </ul>
+madb_error_saving_user: Error creating the user
+madb_open_in_new_window: In new window
+madb_yes: "Yes"
+madb_help_info_admin_entities_show_links_to_other_entities: |
+  <p>A record in a table can be associated with other records in the same or a different table. In the example of a customers database, a contact is associated with a company.
+  </p>
+  <p>
+  Below you can define the relations in which the current table is used.  A relation, by definition, has a parent side and a child side. This distinction is necessary to be able to define the type of the relation in both directions: from parent to child and from child to parent.
+  <ul>
+  <li>
+  Can a parent record be linked to multiple children record, and vice-versa? For example, a customer can be linked to multiple invoices, but an invoice can only be link to one customer. The choice to label one table as the parent side and the other as a child side is up to the database administrator.
+  </li>
+  </ul>
+
+madb_account_verified: Your account is now verified, and you can log in the application.
+madb_help_info_admin_entities_edit_link: |-
+  You can modify existing relations, with certain restrictions though:
+  <ul>
+  <li>you can't change the table it relates to</li>
+  <li>the sides of the relation that accept many records can't be changed to only accept one record ("to many" relations can't be changed in "to one" relations)</li>
+  </ul>
+madb_modify_entity: Modifiy structure
+madb_add_new_related_entity: Link a new {entity}
+madb_company_street: Address
+madb_show_detail_spec_link_title: Show the specifications of the detail used to define this field.
+next_page: Next page
+madb_file_transfer_quota_reached: You reached the limits of your account regarding file attachments.
+madb_entity_edition: Edition of an entry
+madb_editing_translations: Translation Edition
+madb_define_link: Modify the relation between {parent} and {child}
+nl: Dutch
+madb_display_contextual_help: Show helping explanations
+madb_help_info_admin_entities_show_intro: "<p>You can here define the fields of the tables in your databases by reusing a detail already defined in the database, or by defining a new detail (that you'll be able to reuse to define fields of other tables).</p>\n\
+  <p>The order of the fields can be changed by drag and drop, and this order will be used in all displays (list, drop down lists)</p>\n\
+  <p>\n\
+  For each field, three links let you\n\
+  <ul>\n\
+  <li>visualise the caract\xC3\xA9ristics of the detail used to define this field(eg its type:date, text, choice in a list of propositions) .</li>\n\
+  <li>enter the caracteristics of the field itself (eg is it displayed in lists, can it have multiple values)</li>\n\
+  <li>remove the field from the table. This doesn't delete the detail that was used to define the field (you can reuse the detail to define other fields)</li>\n\
+  </ul>\n\
+  </p>\n\
+  <p>\n\
+  You can also decide to publish the entry form for this table outside this application.\n\
+  </p>"
+madb_new_password_could_not_be_mailed: The mail could not be sent to {email}
+forgotten_password_mail_intro: |+
+  At your request, or at your administrator's request, your password has been reset. If it was not at your request, then you should be aware that someone has entered your email address as theirs in the forgotten password section of MyOwnDB.net.
+  
+  Your new credentials are:
+  
+  
+  
+madb_view: View
+madb_show: Show
+madb_create_new_entity: Add a new {entity_name}
+madb_back_to_vat_change: Back to VAT information
+madb_help_info_admin_details_value_propositions_for_new: This type of detail only accepts the value that you define below. The detail will be displayed as a drop down list in the entry form.
+madb_company_city: City
+madb_edit_entity: Modification of an entity
+madb_please_confirm_your_registration_by_clicking_on_this_link: "Follow this link to confirm your account:"
+madb_all: All
+madb_mail_password_change_intro: |-
+  At your request or your administrator's request, here is your new password for your account on MyOwnDB.net.We advise you to change your password at your first login.
+  
+  Your new login credentials are:
+madb_remove_propositions: Remove proposition
+madb_help_info_entities_edition: You can here edit a record and specify a value for each field.
+madb_page: Page
+madb_child: Child
+madb_duplicate_detail_name_in_db: A detail with the same name already exists in this database.
+madb_parent: Parent
+madb_you_need_to_provide_names_for_the_link_in_both_directions: You need to provide names for the link in both directions.
+madb_help_info_admin_databases_list: |-
+  Here is the list of existing databases.
+  For each database you can access the tables and details defined. Details are used to define the fields of the tables, and each detail can be used several times in several tables. You can also rename and delete each database.
+madb_administrator_user: Administrator user
+madb_browser_demo_login_message_ie: MyOwnDB.com is optimised for Firefox. Do yourself a favour and use a browser supporting modern standards!
+madb_add_new: Enter new record
+madb_details: Details
+madb_maximum_monthly_file_transfer: "Maximum transfer of attached files:"
+madb_really_unlink_detail_question: Really remove field {detail}?
+madb_refresh: Refresh
+madb_edit_detail: Modification of a detail
+Title: Title
+madb_help_info_translations_list_intro: The first list shows existing translations, the second shows missing translations
+madb_help_info_settings_show_intro: You can modify your settings, for example deactivating this help.
+madb_s3_attachment: File attachment
+madb_find_translations_matching: Find translations
+madb_add_proposition: Add proposition
+madb_long_text: Long text
+madb_error_occured_when_deleting_entity: madb_error_occured_when_deleting_entity
+madb_translation_t_id: translation id
+madb_error_record_already_linked: The records you want to link are already linked.
+madb_no_data_found: No data to display
+madb_can_one_parent_entity_have_several_children_question: Can one <span class="no_css_parent_name">{parent_entity}</span>  be linked to several <span class="no_css_child_name">{child_entity}</span>
+madb_searched_detail: Field to search
+madb_from_parent_to_child_relation_name: Name of relation from <span class="no_css_parent_name">{parent_entity}</span> to <span class="no_css_child_name">{child_entity}</span>
+madb_click_button_to_subscribe_through_paypal: Click the button below to subscribe to myowndb.com for {amount} euros paid monthly. You can cancel your subscription any time, but no refund is possible.
+madb_help_info_entities_views_related_entities: |-
+  Below are displayed the entries related to the current entry.
+  <br>
+  Each list display the entries related with one relation
+  <br>
+  If the definition of the relation accepts that you link more entries, two links will be displayed that will let you link an existing entry or link a newly created entry.
+  <br>
+  Each list can be filtered and opened in a new window. It is also possible to display the details of a related entity thanks to the links displayed in the last columns of the lists.
+madb_help_info_admin_details_new: |
+  When creating a detail, you can give it a name, and specify a data type.
+  The type of the detail has implications on the values accepted and the display of the value in the application (a detail of type email only accepts valid email addresses as value, and is displayed as a link).
+
+madb_choose_database: Choose database
+madb_next_page: Next page
+madb_number_of_users: Number of users
+Projects: Projects
+madb_translation_existing_translations: Translated terms
+madb_define_new_detail: Define a new detail
+madb_displayed_in_list_view: Shoudl the field be displayed in lists?
+create_new: Enter a new {entity}
+Songs: Songs
+madb_help_info_admin_details_value_propositions_for_edit: It is currently not possible to edit the propositions list
+madb_entities: Tables
+madb_searched_value: Value searched
+madb_entity: "{entity}"
+madb_welcome_to_myowndb: |-
+  Welcome to MyOwnDB.com!
+  Once you have verified your account by following the link below, you'll have access to the tools made available on MyOwnDB.com to let you manage your data online.
+madb_help_info_admin_entities_add_existing_choose: Choose the detail to use to define the new field.
+madb_listing_translations: List of translations
+madb_account_type_free: Free
+madb_reset: Reset
+madb_create_database: Create a new database.
+madb_account_activation_impossible_because_not_found: You account could not be verified. Check that the link sent to you is displayed on one line in you mail client. You can also try to copy the address of the link sent to you, and paste it in the address bar of your browser. If the problem persists, please contact <a href="mailto:admin@myowndb.com">admin@myowndb.com</a>.
+madb_admin_users: Manage users
+madb_logout: Logout
+madb_choose: Choose
+madb_forgotten_password_mail_outro: It's advisable for you to change your password as soon as you login. It's as simple as navigating to 'Settings'.
+madb_login_not_confirmed: Login confirmation isn't correct.
+madb_translation_ids: Translation ids
+madb_date: Date
+madb_searched_entity: "Display records in "
+madb_create_new: Enter a new {entity}
+madb_short_text: Short text
+madb_delete_detail_question: Are you sure you want to delete the detail {detail}?
+madb_link_to_existing_entity: Link an existing {entity}
+madb_add_link_to_child_entity: Define a new relation to a child entity
+madb_password_reset_mail_sent: A mail has been sent with the new password.
+madb_new_database_title: Creation of a new Database
+madb_maximum_attachment_number: Maximum number of files you may upload
+madb_help_info_database_list: "You find on this page the list of existing databases and you can choose which one you want to use. If this is the first time you use the application, you have to create a database through the entry \"Manage databases\" at the top of the screen. "
+madb_account_not_active_or_cancelled: Account inactive or cancelled.
+madb_input_form_is_publicly_accessible: Make input form public
+madb_search_results: Search results
+details: details
+madb_has_public_form: Public entry form?
+madb_enter_account_name: Enter your company or organisation name (if this is a personal account, enter your fist and last name)
+madb_submit_all: Submit all
+madb_choose_in_list: Choice in proposition list
+madb_show_detail_spec: Detail specs
+madb_delete_user_question: Really delete login {login}?
+tos_acceptance_needed: You must agree to the Terms of Service
+madb_maximum_number_of_values: "Number of values that can be entered for this field:"
+madb_really_delete_database_question: Are you sure you want to delete the database {database}?
+madb_login_cannot_be_blank: The password cannot be blank!
+Test: Test
+madb_register_for_an_account: Sign up
+madb_administrate_entity_link_title: This link gives you access to the definition of this entity like its details and links to other entities.
+madb_related_entities: Related records
+madb_we_have_received_your_first_payment_and_account_is_activated.: "We have received your first payment and your account has been activated. You can login at :"
+madb_details_for_entity: Fields for table {entity}
+madb_detail_name_cannot_be_id: The name of the detail may currently not be "id".
+madb_define_new_link: Define the new link
+madb_login_unsuccessful: Login failed. Check you entered your login and password correctly.
+madb_list: List of {entity}
+"madb_to_children ": Relations to children
+madb_login_not_a_valid_email: Your login has to be a valid email address!
+madb_help_info_entities_list_intro: |-
+  <p>This page lists the entries in the current table and lets you directly enter a new record</p>
+  <p>Records displayed can be filtered by choosing the field to filter on and entering the value you're looking for. You can also open the list in a new window</p>
+  <p>
+  The links in the last columns give you easy access to view an record's details, to edit an entry or to delete it.
+  </p>
+  </p>
+Name: Name
+madb_user_type: User profile
+madb_unlink_detail_from_entity_link_title: Remove filed and all its values
+reset: Reset
+new_translation: New translation
+madb_account_type_signup: Subscription level
+madb_new_password_sent: The new password was sent to {mail}
+madb_urls_where_translation_appears: URLs containing the translation
+madb_quick_submit: Quick submit
+madb_data_type: Type
+madb_go_back_do_no_replace_current_file: Go back and keep current file.
+madb_edit_entity_to_detail: Change field specs
+madb_password_and_confirmation_needed: Please check you typed your password and its confirmation
+madb_entity_menu_link_title: Display list of {entity}
+madb_this_is_a_popup_window_warning: This is a popup window!
+madb_database_menu_link_title: Display table list
+madb_company_name: Company
+madb_translation_check_usage_in_source_code: Check usage
+madb_public_form_will_be_available_at: "The form will be available at "
+madb_confirm_delete_all_links: Deleting this relation will delete all links of this type between records. Do you want to continue?
+madb_insertion_was_successful: Your data has been saved.
+madb_edit_database: Edition of a database
+madb_error_data_not_found: Requested data could not be found.
+madb_company_vat: VAT registration number
+madb_display_info_help: Display integrated help
+admin_databases: Manage DBs
+madb_edit: Edit
+madb_links: Relations
+madb_new_detail_title: New detail
+Age: Age
+previous_page: Previous page
+madb_no_instance_found: No data to display.
+madb_users_list: Users list
+madb_no_only_one_child_allowed: No, a {parent_entity} can be linked to only one {child_entity}
+madb_web_url: Website address
+madb_select_account_type: "your choice:"
+madb_confirm_password: Confirm your new password
+madb_filter_on: Filter on field
+madb_signup: Signup
+madb_firstname: Firstname
+entity: Entity
+madb_madb: MyownDB
+madb_add_detail_to_entity: Add a detail to {entity}
+madb_an_error_occured: An error occured during the requested operation.
+madb_help: Help
+madb_from_child_to_parent_relation_name: Name of relation from <span class="no_css_child_name">{child_entity}</span> to <span class="no_css_parent_name">{parent_entity}</span>
+madb_user_verified: Accoun validated?
+madb_login_already_taken: This login is already taken. If you forgot your password, you can reinitialise it from the login page.
+Email: Email
+madb_my_databases: My databases
+madb_unlink: Unlink
+madb_yes_many_children_allowed: yes, a {parent_entity} can be linked to multiple {child_entity}
+madb_forgot_password_subject: "[MyOwnDB]: forgotten password"
+madb_manage_translations: Manage translations
+madb_searched_database: Database to search in
+mabd_forgot_your_password_question: Forgot your password?
+madb_number_of_records_in_list: "{number} items"
+madb_previous_page: Previous page
+madb_number_of_databases: Number of databases
+madb_email_confirmation: Confirm the email address
+pt: pt
+Type: Type
+madb_company: Company
+madb_export: Export these data
+madb_help_info_admin_entities_edit: You can change the name of the entity
+madb_help_info_admin_details_list: |-
+  Here is the list of details defined for the active database. A detail is used to define the fields of the tables in that database.<br>
+  The type of the detail (short text, long text, choice in list, email, etc) influences the display in the form (long text in text areas) and in the lists (emails are displayed as links)<br>
+madb_reset_password_title: I forgot my password, and I want to change it.
+madb_new_entity: Create table
+madb_notice_password_updated: Password updated
+madb_help_info_spec_of_detail_for_entity: Please configure if the field shold be displayed in lists. Currently only one value can be entered for a field.
+madb_no: "No"
+madb_enter_your_email_address_to_have_a_new_password_sent_to_you: Enter your email address and we'll send you a mail with instructions to get a new password.
+madb_pay_with_paypal: Pay with Paypal.
+madb_delete_file: Delete file
+madb_replace_file: Replace file
+madb_status: Status
+madb_help_info_admin_edit_detail: You can edit an existing detail. Not all characteristics can be changed. For example you can't modify a detail of type "Choice in list" to make it a "Date".
+madb_add_link_to_parent_entity: Define a new relation to a parent entity
+madb_yes_many_parents_allowed: yes, a {child_entity} can be linked to multiple {parent_entity}
+madb_back: Back
+madb_company_zip_code: Zip code
+madb_entity_details: Details of the {entity}
+madb_edit_entity_to_detail_link_title: Toggle field's display in list
+madb_password_not_confirmed: Please confirm your password.
+madb_new_translation: New translation
+madb_destroy_entity_link_title: destroy the table and all its entries
+madb_enter_id_of_the_translation: Enter id of the translation
+madb_click_here_to_disply_main_window: Focus main window
+madb_please_login: Please log in
+madb_excluding_vat: excluding VAT
+madb_really_delete_entity_question: Really delete {entity} with {title} {value}?
+fr: "Fran\xC3\xA7ais"
+madb_mail_outro: |-
+  We thank you for using our services, and stay at your service.
+  
+  The MyOwnDB.com team.
+madb_enter_value_to_search_for: Enter a value to look for
+madb_login: Login
+madb_admin_databases: Manage databases
+madb_delete: Delete
+madb_users_was_successfully_created: Account has been created.
+madb_your_login_information_is: Here is your login, and the password is the one you entered at the creation of your account.
+madb_login_too_short: Login too short (are you sure this is a valid email address?)
+madb_error_in_account: Error in the creation of the company (see above)
+madb_error_saving_detail: Problem saving the detail.
+madb_your_current_subscription_plan: You're currently using a subscription <span class="subscription_type">{subscription}</span>
+madb_eot_subject: MyOwnDB Account expired
+madb_really_delete_all_existing_links_question: Really delete all existing links?
+madb_proposition_exists: The proposition exists
+cancel: Cancel
+madb_destroy: Delete
+madb_no_only_one_parent: "No"
+madb_detail_name_cannot_be_empty: The detail name cannot be blank.
+madb_monthly_fee: Monthly fee
+madb_maximum_attachment_size: Maximum size of attached files
+madb_no_detail_saved_enter_at_least_one_valid_value: Enter at least one value.
+madb_databases_list: Existing databases
+madb_search: Search
+madb_link_existing_detail: Add field based on existing detail
+madb_yes_multiple_parent: "Yes"
+madb_editing_users: User edition
+submit_all: Submit all
+madb_entities_list: "{db}: list of tables"
+madb_details_list: "{database}: list of existing details"
+madb_create_user: Create an account
+madb_limit_of_account_reached: You have reached the limits of your subscription level. Please evaluate upgrading to a higher level. You'll find all necessary information in your settings. Thanks for your intensive use of MyOwnDB.com!
+madb_change_password_subject: "[MyOwnDB] New password"
+it: it
+madb_name: Name
+madb_reset_password: Reset password
+madb_you_dont_have_sufficient_credentials_for_action: You don't have the rights necessary to perform this operation!
+madb_new_users: Add new accounts
+madb_add_new_detail: Add field based on new detail
+madb_login_unsuccessful_account_not_yet_verified: Your account hasn't been verified yet. Please be sure to follow the instructions in the mail sent when you signed up. You should first confirm your account, and you'll then be able to log in successfully.
+madb_choose_country: Indicate your country
+madb_error_incorrect_data: Incorrect request.
+madb_resize: Resize
+madb_help_info_admin_details_show: "Here are the specs of the detail: its name and data type. The scope of changes possible to an existing detail is limited."
+madb_email: Email
+madb_no_only_one_parent_allowed: No, a {child_entity} can be linked to only one {parent_entity}
+madb_error_saving_database: The database could not be created
+madb_error_creating_instance: Problem creating new entry
+madb_password: Password
+madb_an_error_prevented_the_creation_of_your_account: An error prevented the creation of your account. The administrators of the service have been notified.
+madb_help_info_admin_details_new_quick_commit: "The quick commit button lets you immediately add a field based on this new detail. The field will be displayed in lists and accept only one values. If you don't want to use these defaults, you can use the standard submit button. "
+find_translations_matching: Filter translations on
+madb_account_signup: Signup
+madb_password_too_short: Password too short (minimum 5 characters)
+madb_unlimited_number_of_users: Unlimited
+madb_login_email: "Email (Will be your login):"
+madb_help_info_admin_details_value_propositions_for_show: Here are the value propositions for this detail
+madb_you_can_add_an_entry: You can add a new entry
+primary_user: primary_user
+madb_list_of_databases: List of databases
+madb_company_country: Country
+madb_add_and_instance: Enter a new {entity}
+madb_can_one_child_entity_have_several_parents_question: Can one <span class="no_css_child_name">{child_entity}</span>  be linked to several <span class="no_css_parent_name">{parent_entity}</span>
+madb_cancel: Cancel
+madb_this_will_erase_the_current_file: This operation will definitively erase the file, are you sure you want to continue?
+madb_question: question
+normal_user: normal_user
+madb_requested_db_not_found: madb_requested_db_not_found
+madb_change_password: Change password
+madb_rename: Rename
+madb_notes: Notes
+madb_forgotten_password: Lost password
+madb_submit: Submit
+madb_no_available_details_maybe_you_should_create_a_new_detail: madb_no_available_details_maybe_you_should_create_a_new_detail
+madb_admin_database: Administrate database
+madb_multiple_children_allowed: May one parent have multiple children
+madb_error_data_incorrect: The request was invalid (invalid parameters).
+madb_with_value: with value corresponding to
+madb_unlink_detail_from_entity: Remove
+madb_enter_your_new_password_below: Enter your new password  below
+madb_error_saving_account: Error creating your company
+madb_vat_explanations: <!--NO NEW LINES NI THIS OR IT BREAKS THE INTERFACE-->If you're subscribing from <strong>outside the European Union</strong>, <string>no VAT</strong> will be applied.<br/>If you're subscribing in the name of a <strong>company</strong> established in the European Union, filling in your VAT number will allow you to not pay VAT on your subscriptions. Belgian companies have to pay 21% VAT.<br>If you're subscribing as an <strong>individual</strong> established in the European union, 21% VAT will be added to the price of the subscription.
+madb_help_info_admin_databases_edit: You can modify an existing database.
+madb_settings: Settings
+en: English
+madb_relation_name: Relation name
+madb_welcome_to_myowndb_paying_account: |
+  Welcome to MyOwnDB!
+  
+  you'll find below the information about your account.
+
+madb_maximum_montly_file_transfer_explanations_tooltip: Once this limit is reached, you cannot upload more files. A margin of 10% is left so you can still download files.

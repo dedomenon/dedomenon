@@ -1,0 +1,9 @@
+<h1><%= t("madb_editing_databases") %></h1>
+
+<% form_tag :action => 'update', :id => @databases do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag "Edit" %>
+<% end -%>
+
+<%= link_to t('madb_show'), :action => 'show', :id => @databases %> |
+<%= link_to t('madb_back'), :action => 'list' %>

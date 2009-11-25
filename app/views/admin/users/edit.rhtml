@@ -1,0 +1,8 @@
+<h1><%= t("madb_editing_users") %></h1>
+
+<% form_tag :action => 'update', :id => @users do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag t("madb_edit") %>
+  <%= link_to t('madb_cancel'), :action => 'list' %>
+<% end -%>
+

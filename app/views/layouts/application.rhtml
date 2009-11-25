@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title><%=t("madb_madb")%>::<%= @title%></title>
+<%= stylesheet_link_tag 'main' %>
+<% if (RAILS_ENV=="test" and request.env["HTTP_USER_AGENT"].nil?) or request.env["HTTP_USER_AGENT"].include?("MSIE")%>
+<%= stylesheet_link_tag 'ie' %>
+<% else %>
+<%= stylesheet_link_tag 'mozilla' %>
+<% end%>
+
+<!-- css --> 
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/container/assets/skins/sam/container.css">
+<!-- js -->
+<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.5.2/build/yahoo-dom-event/yahoo-dom-event.js&2.5.2/build/animation/animation-min.js&2.5.2/build/connection/connection-min.js&2.5.2/build/container/container-min.js&2.5.2/build/selector/selector-beta-min.js&2.5.2/build/element/element-beta-min.js"></script>
+
+
+
+<%=# stylesheet_link_tag 'yui-container' 
+%>
+<%=# javascript_include_tag "yui-yahoo" 
+%>
+<%=# javascript_include_tag "yui-event" 
+%>
+<%=# javascript_include_tag "yui-dom" 
+%>
+<%=# javascript_include_tag "yui-container" 
+%>
+<%= javascript_include_tag :defaults %>
+
+<%= javascript_include_tag "fat" %>
+<%= javascript_include_tag "scriptaculous" %>
+<%= javascript_include_tag "madb" %>
+<%= javascript_include_tag "gau" %>
+
+</head>
+<body>
+
+<script type="text/javascript">
+function set_lang(ddl)
+{
+  document.cookie="<%=TranslationsConfig.cookie_name%>="+ddl.value+";path=/;";
+  window.location.reload();
+
+}
+</script>
+<% if session['user'].account.respond_to? :allows_transfer? %>
+  <% if !session["user"].account.allows_transfer? %>
+  <script type="text/javascript">
+    YAHOO.madb.translations['madb_file_transfer_quota_reached']="<%=t("madb_file_transfer_quota_reached")%>";
+  </script>
+  <% end %>
+<% end %> <!-- end respond_to? :allows_transfer? -->
+<div id="topbar">
+  <% if File.exist?("#{RAILS_ROOT}/config/version")%>
+    <span class="version">version <%= File.open("#{RAILS_ROOT}/config/version"){|f| f.read}%></span>
+  <%end %>
+  <% #languages = Language.find(:all,:conditions => "active='t'",:order => "lang").collect{|l| [ t(l.lang), l.lang]}%>
+  <% languages= AppConfig.languages.reject {|lang| !['en', 'fr'].include? lang.to_s } %>
+  <% languages.push([ t("madb_translation_ids"), "t_id"]) if ENV['RAILS_ENV']=="translate" %>
+  <select name="lang" onchange="set_lang(this);"><%= options_for_select( languages, cookies[TranslationsConfig.cookie_name.to_s])%> </select>
+
+
+
+<% if session["user"].admin_user? %>
+<%=link_to(t("madb_admin_databases"), :controller => "/admin/databases", :action => "index") %>
+<%=link_to(t("madb_admin_users"), :controller => "/admin/users", :action => "index") %>
+<% end %>
+
+<%=link_to_unless_current(t("madb_settings"), :controller=> "/settings", :action => "show" )%>
+<%=link_to_unless_current(t("madb_logout"), :controller=> "/authentication", :action => "logout" )%>
+
+</div>
+
+
+<div id="container">
+  <div id="xhr_message" style="display:none"><%=t("madb_busy")%></div>
+
+<!-- <div id="header"><h1><span>MyOwnDB</span></h1></div> -->
+<div id="menu">
+<div class="headmenu"><%=link_to_unless_current(t("madb_my_databases"), :controller=> "/database" )%>
+<% if session["user"].admin_user? %>
+<%=link_to(image_tag("icon/small/modify.gif", :size => "9x9", :border =>0), { :controller => "/admin/databases"}, {:title => t("madb_admin_database")}) %>
+<% end %>
+</div>
+
+<% 
+ #session['user'].account.databases.each do |db|
+databases = Database.find(:all, 
+  :conditions => ["account_id = ?", session['user'].account.id])
+databases.each do |db| %>
+  
+<div class="<%= (!@db.nil?  and (@db.id==db.id)) ? "activeDB" : "inactiveDB"%>">
+
+	<table>
+		<thead>
+			<tr><th>
+          
+        
+					<!--<%=link_to(image_tag("expand.gif", :size => "9x8", :border =>0), :controller => "javascript(change'')") %>-->
+					<a href="javascript:change('<%=db.id %>')"><img src="/images/<%= (!@db.nil?  and (@db.id==db.id)) ? "collapse.gif" : "expand.gif"%>" border="0" id="img<%=db.id %>"></a>
+          <%=link_to_unless_current(t(db.name,{:scope => 'account'}),{ :controller=> "/database", :action =>"list_entities", :id => db.id},{ :title => t("madb_database_menu_link_title")}  )%>
+<span class="menu_action">
+	<%=link_to(image_tag("icon/small/search.gif", :size => "9x9", :border =>0, :alt => t("madb_search")), { :controller => "/search", :database_id => db.id}, { :title=> t("madb_search")}) %>
+<% if session["user"].admin_user? %>
+<%=link_to(image_tag("icon/small/modify.gif", :size => "9x9", :border =>0, :alt  => t("madb_admin_database")), { :controller => "/admin/entities",  :db => db.id}, {:title => t("madb_admin_database")}) %>
+<%end%>
+</span>
+			</th> </tr>
+		</thead>
+		<tbody id="<%=db.id %>" visu="<%= (!@db.nil?  and (@db.id==db.id)) ? "1" : "0"%>">
+<% if db.respond_to? :entities %>
+  <% db.entities.sort{ |a,b| a.id<=>b.id }.each do |e| %>
+  <tr><td>
+      <span class="entity_name_menu_item"><%=link_to_unless_current(t(e.name, { :scope => "account" }), {:controller=> "/entities", :action => "list", :id => e.id},{ :title => t("madb_entity_menu_link_title", :vars => { 'entity' => t(e.name, :scope => 'account') })}  )%></span>
+      <span class="menu_action"><%=link_to(image_tag("icon/small/add.gif", :size => "9x9", :border =>0, :alt => t("madb_add_new")), { :controller => "/entities", :action => "add", :id => e.id}, {:title => (t("madb_add_new"))} ) %>
+
+        <%=link_to(image_tag("icon/small/search.gif", :size => "9x9", :border =>0, :alt => (t("madb_search"))), { :controller => "/search", :database_id => db.id, :entity_id => e.id}, { :title=> (t("madb_search"))}) %>
+
+  <% if session["user"].admin_user? %>
+  <%=link_to(image_tag("icon/small/modify.gif", :size => "9x9", :border =>0, :alt  => t("madb_modify_entity")), { :controller => "/admin/entities", :action => "show", :id => e.id}, {:title => t("madb_modify_entity")}) %>
+  <% end %>
+  </span>
+  </td></tr>
+  <% end %>
+  <%end%>
+</tbody>
+</table>
+</div>
+<% end %>
+
+
+</div>
+
+
+<div id="content">
+<%= @content_for_layout %>
+</div>
+<div id="footer"></div>
+</div>
+<%if flash["error"]%>
+	<script type="text/javascript">
+	alert("<%=flash["error"]%>");
+	</script>
+<% end %>
+</body>
+</html>
+

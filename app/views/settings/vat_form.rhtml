@@ -1,0 +1,5 @@
+  <%= t("madb_your_registered_vat_number_confirm_or_change")%>
+  <%= form_remote_tag(:url => { :controller => "settings", :action => "confirm_vat"}, :update => "subscription_upgrade") %>
+   <input type="text" name="vat_number" value="<%=session["user"].account.vat_number%>">
+   <%= submit_tag t("madb_submit")%>
+  </form>

@@ -1,0 +1,7 @@
+--- 
+relation_side_types_001: 
+  name: one
+  id: "1"
+relation_side_types_002: 
+  name: many
+  id: "2"

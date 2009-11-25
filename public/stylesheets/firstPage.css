@@ -1,0 +1,53 @@
+/* CSS Document */
+table, td {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+#container {
+	margin: auto;
+	border: 1px solid #036;
+	width: 30em;
+	padding: 0 5px 5px;
+	text-align: left;
+}
+input[type="text"], input[type="password"] {
+	margin-bottom: 3px;
+}
+.no_butt a {
+	border: none;
+	color: #00E;
+	background-color: transparent;
+	padding: 0;
+	font-weight: normal;
+}
+.no_butt a:hover {
+	border: none;
+	color: Red;
+	background-color: transparent;
+	padding: 0;
+	font-weight: normal;
+}
+form a {
+  text-decoration: underline;
+  padding: 1px 8px;
+border:0px;
+  cursor: default;
+}
+form a:hover {
+  border: 0px;
+  background-color: #FFF;
+color: black;
+}
+
+.overlay {
+	visibility:hidden;
+	position:absolute;
+	color:#333;
+	background-color:#FDFFB4;
+	font-family:arial,helvetica,verdana,sans-serif;
+	padding:2px;
+	border:1px solid #FCC90D;
+	font:100% sans-serif;
+	width:auto;
+}

@@ -1,0 +1,12 @@
+<h1><%=h( @title ) %></h1>
+<%= help_info("madb_help_info_database_list_entities") %>
+<table>
+<thead>
+<tr><th><%= t("madb_name")%></th><th><%=t("madb_view") %></th></tr>
+</thead>
+<tbody>
+<% @entities.each do |e| %>
+<tr><td><%=h(t(e.name, { :scope => "account" })) %></td><td class="action_cell"><%= link_to image_tag("icon/big/view.png",:border => 0, :alt => t("madb_view")), :controller => "entities", :action => "list", :id => e %></td></tr>
+<% end %>
+</tbody>
+</table>

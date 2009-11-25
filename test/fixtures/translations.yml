@@ -1,0 +1,8 @@
+--- 
+translations_001: 
+  scope: system
+  id: "1"
+  id_filter: 
+  value: ca a t traduit
+  t_id: test_traduction
+  lang: fr

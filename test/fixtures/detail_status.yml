@@ -1,0 +1,7 @@
+--- 
+detail_status_001: 
+  name: active
+  id: "1"
+detail_status_002: 
+  name: inactive
+  id: "2"

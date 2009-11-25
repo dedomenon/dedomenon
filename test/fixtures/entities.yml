@@ -1,0 +1,103 @@
+--- 
+entities_011:
+  name: convention_partenaire
+  id: "14"
+  database_id: "6"
+  has_public_form: "f"
+entities_012: 
+  name: formation
+  id: "15"
+  database_id: "6"
+  has_public_form: "f"
+entities_001: 
+  name: stage
+  id: "18"
+  database_id: "6"
+  has_public_form: "f"
+entities_013: 
+  name: engagement
+  id: "16"
+  database_id: "6"
+  has_public_form: "f"
+entities_002: 
+  name: company
+  id: "7"
+  database_id: "3"
+  has_public_form: "f"
+entities_014: 
+  name: documentation
+  id: "17"
+  database_id: "6"
+  has_public_form: "f"
+entities_003: 
+  name: visite
+  id: "19"
+  database_id: "6"
+  has_public_form: "f"
+entities_004: 
+  name: contact
+  id: "8"
+  database_id: "3"
+  has_public_form: "f"
+entities_005: 
+  name: tutoriat
+  id: "20"
+  database_id: "6"
+  has_public_form: "f"
+entities_006: 
+  name: addresses
+  id: "9"
+  database_id: "3"
+  has_public_form: "f"
+entities_007: 
+  name: commentaires_et_suivi
+  id: "21"
+  database_id: "6"
+  has_public_form: "f"
+entities_008: 
+  name: societe
+  id: "11"
+  database_id: "6"
+  has_public_form: "f"
+entities_009: 
+  name: contacts
+  id: "12"
+  database_id: "6"
+  has_public_form: "f"
+entities_010: 
+  name: coaching
+  id: "13"
+  database_id: "6"
+  has_public_form: "f"
+entity_without_details: 
+  name: entity_without_details
+  id: "50"
+  database_id: "7"
+  has_public_form: "f"
+entity_with_no_details_in_list_view_details: 
+  name: entity_with_no_details_in_list_view
+  id: "51"
+  database_id: "7"
+  has_public_form: "f"
+entity_with_all_details_linked:
+  name: entity_with_all_details_linked
+  id: "52"
+  database_id: "8"
+  has_public_form: "f"
+selenium_entity_with_all_existing_datatypes_linked:
+  name: all data types
+  id: "30"
+  database_id: "5"
+  has_public_form: "f"
+# This is the books test table which has the speciality that it has
+# the details of all the data types
+books_test_table:
+  name: Books
+  id: 100
+  database_id: "6"
+  has_public_form: "t"
+person_test_table:
+  name: Persons
+  id: 101
+  database_id: "6"
+  has_public_form: "t"

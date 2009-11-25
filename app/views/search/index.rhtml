@@ -1,0 +1,4 @@
+<h1><%= @title %></h1>
+<%= help_info("madb_help_info_search_index")%>
+
+<%= render_component :controller => "search",  :action => "simple_search_form", :params => {:database_id => params["database_id"], :entity_id => params["entity_id"] }   %>

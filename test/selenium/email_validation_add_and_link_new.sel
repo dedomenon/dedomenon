@@ -1,0 +1,53 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users,preferences||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|click|//a[contains(@href, "javascript:change('6')")]||
+|clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
+|assertTitle|exact:madb_madb::madb_add_and_instance||
+|type|nom[0][value]|test nom|
+|type|prenom[0][value]|test prénom|
+|type|fonction[0][value]|fonction|
+|type|//input[@name="company_email[0][value]"]|hjkdshkjfd|
+|click|commit||
+|pause|500||
+|assertElementPresent|//input[@name="company_email[0][value]" and @class="invalid_form_value"]||
+|type|//input[@name="company_email[0][value]"]|hjkdshkjfd@test.com|
+|type|coordonees_specifiques[0][value]|hj|
+|pause|500||
+|assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||
+|click|commit||
+|pause|1000||
+|assertTextPresent|test prénom||
+|assertTitle|exact:madb_madb::madb_add_and_instance||
+|assertTextPresent|hjkdshkjfd@test.com||
+|assertElementPresent|//a[@href="mailto:hjkdshkjfd@test.com"]||
+|clickAndWait|link=societe||
+|assertTitle|exact:madb_madb::madb_list||
+|clickAndWait|//a[contains(@href, '/app/entities/view/71')]||
+|assertTitle|exact:madb_madb::madb_entity_details||
+|click|link=madb_add_new_related_entity||
+|pause|1000||
+|type|nom[0][value]|test du nom|
+|type|prenom[0][value]|test du prénom|
+|type|//input[@name="company_email[0][value]"]|jkljkljkl|
+|type|coordonees_specifiques[0][value]|jkl|
+|pause|500||
+|assertElementPresent|//input[@name="company_email[0][value]" and @class="invalid_form_value"]||
+|type|//input[@name="company_email[0][value]"]|jkljkljkl@rrezrez.com|
+|type|coordonees_specifiques[0][value]|jklklkl|
+|pause|500||
+|assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||
+|type|//input[@name="company_email[0][value]"]|hjkhkj|
+|click|commit||
+|type|//input[@name="company_email[0][value]"]|hjkhkj@redfds.com|
+|click|commit||
+|pause|1000||
+|assertTextPresent|test du nom||
+|assertTextPresent|test du prénom||
+|assertElementPresent|//a[@href="mailto:hjkhkj@redfds.com"]||
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||

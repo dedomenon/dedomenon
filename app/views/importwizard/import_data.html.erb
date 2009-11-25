@@ -1,0 +1,30 @@
+<h1><%= I18n.t('import_wizard.main_title', :entity => @entity.name.capitalize )%></h1>
+<h2><%= I18n.t('import_wizard.madb_step3_title' )%></h2>
+<%= I18n.t 'import_wizard.madb_imported_and_rejected_items', :imported_items => @imported_instances.size, :rejected_items => @invalid_entries.size %>
+
+<% if session[:imported_instances] and session[:imported_instances].size>0 %>
+  <%= I18n.t 'import_wizard.madb_undo_import'%><%= link_to I18n.t('undo')  , :action => :delete_imported %>
+<%end%>
+
+<%= link_to(I18n.t('import_wizard.go_to_entities_list', :entity => @entity.name), :controller => 'entities', :action => :list, :id => @entity.id) %>
+
+<h2><%= I18n.t('import_wizard.madb_invalid_entries') %></h2>
+
+<table>
+  <thead>
+  <tr>
+    <% @bindings.each do |k,v| %>
+      <th><%= k %></th>
+    <% end%>
+  </tr>
+</thead>
+<tbody>
+  <% @invalid_entries.each do |e| %>
+    <tr>
+      <% @bindings.each do |k,v| %>
+        <td><%= e[v] %></td>
+      <%end%>
+    </tr>
+  <%end%>
+</tbody>
+</table>

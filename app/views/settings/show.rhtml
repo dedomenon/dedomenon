@@ -1,0 +1,33 @@
+<h1><%=t("madb_settings")%></h1>
+<%= help_info("madb_help_info_settings_show_intro")%>
+<h2><%=t("madb_display_contextual_help")%></h2>
+
+<% form_tag({:action => "apply"}) do -%>
+
+<%= t("madb_display_info_help") %>: <select name="setting[display_help]">
+    <%= options_for_select(@display_help_options, @preferences.display_help? ? "true" : "false")%>
+  </select><br>
+  <%= submit_tag "madb_submit"%>
+
+<% end -%>
+
+<%= render_component :controller => "authentication", :action => "change_password" %>
+
+<h2><%= t("dedomenon.settings.this_is_your_api_key_title") %></h2>
+<% if current_user.attribute_names.include?("api_key") %>
+  <% current_user.api_key = String.random(15) and current_user.save if current_user.api_key.nil? %>
+  <%= t("dedomenon.settings.here_is_your_api_key") %>: <%= current_user.api_key %>
+<% else %>
+  <%= t("dedomenon.settings.database_setup_incorrect_for_api_key")%>
+<%end%>
+
+<% AppConfig.plugins.each do |plugin|%>
+  <%= render :file => plugin[:user_setting_view] if plugin[:user_settings_view]%>
+
+<% end %>
+
+
+
+<br/>
+
+

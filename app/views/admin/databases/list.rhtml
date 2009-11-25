@@ -1,0 +1,37 @@
+<h1><%=t("madb_databases_list")%></h1>
+<%= help_info("madb_help_info_admin_databases_list")%>
+
+<span class="button_style"><%= link_to t('madb_create_database'), :action => 'new' %></span>
+<table>
+  <thead>
+  <tr>
+<% for column in Database.content_columns %>
+  <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
+    <th><%= column.human_name %></th>
+<% end %>
+  <th/>
+  <th/>
+  <th/>
+  <th/>
+  </tr>
+</thead>
+  
+<% for database in @databases %>
+<tbody>
+  <tr>
+  <% for column in Database.content_columns %>
+    <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
+    <td><%=h database.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to t('madb_entities'), { :controller => "entities", :action => 'index', :db => database} %></td>
+    <td><%= link_to t('madb_details'), { :controller => "details", :action => 'index', :db => database} %></td>
+    <td><%= link_to t('madb_rename'), :action => 'edit', :id => database %></td>
+    <td><%= link_to t('madb_destroy'), {:action => 'destroy', :id => database}, :confirm => t("madb_really_delete_database_question", :vars => { 'database'=> database.name}), :method => :post %></td>
+  </tr>
+</tbody>
+<% end %>
+</table>
+
+<br />
+
+

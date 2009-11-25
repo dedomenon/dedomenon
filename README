@@ -1,0 +1,12 @@
+== Welcome to Dedomenon
+Dedomenon is your web information management tool. 
+
+See the INSTALL file for installation instructions.
+
+Dedomenon is the engine behind MyOwnDB.com and is published under the AGPL license.
+You can follow the development on http://www.dedomenon.org , where you can also
+join our mailing list.  Developers of Dedomenon can be contacted on the mailing
+list. Other enquiries about Dedomenon and MyOwnDB can be sent by mail to
+info@dedomenon.org
+
+The software is built with Ruby on rails and using a Postgresql database.

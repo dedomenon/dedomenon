@@ -1,0 +1,113 @@
+<h1><%= @title  %></h1>
+
+<!--
+<% for column in Entity.content_columns %>
+<p>
+  <b><%= column.human_name %>:  </b> <%=h @entity.send(column.name) %>
+</p>
+<% end %>
+-->
+
+<%= help_info("madb_help_info_admin_entities_show_intro")%>
+
+
+<!--<div class="relation_head"><span><%= t('details') %></span></div>-->
+<h3><span><%= t('madb_details_for_entity', { :vars => { 'entity' => t(@entity.name, {:scope => "account"})}}) %></span></h3>
+
+
+<% has_list_detail = false %>
+<ul id="entity_details" class="entity_details_list">
+<% for detail in @entity.ordered_details  %>
+ <% has_list_detail = true if detail.displayed_in_list_view!='f' %>
+ <li id="item_<%= detail.detail_id%>">
+  <% for column in Detail.content_columns %>
+    <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
+  <span class="detail_name"><%=h(t(detail.send(column.name).to_s, { :scope => "account"})) %> </span>
+  <div class="">
+    <%= link_to t('madb_show_detail_spec'), { :controller => "/admin/details", :action => 'show', :id => detail.detail_id},{ :title => t('madb_show_detail_spec_link_title')} %>
+    <%= link_to t('madb_edit_entity_to_detail'), {:action => 'edit_existing_precisions', :id => @entity, :detail_id => detail.detail_id},{ :title => t('madb_edit_entity_to_detail_link_title')}  %>
+    <%= link_to t('madb_unlink_detail_from_entity'), {:action => 'unlink_detail', :id => params["id"], :detail_id => detail.detail_id},{ :title => t('madb_unlink_detail_from_entity_link_title'), :confirm => t("madb_really_unlink_detail_question", :vars => { "detail" => t( detail.name, :scope => "account")})} %>
+  </div>
+  <% end %>
+ </li>
+<% end%>
+</ul>
+<% if !has_list_detail %>
+  <span class="big_warning"><%=t("madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty")%></span>
+<% end %>
+<div id="msg"></div>
+<div><span><input type="checkbox" <%= @entity.has_public_form? ? %{CHECKED=CHECKED} : "" %>
+      onclick="new Ajax.Request(
+      '<%= url_for(:action => 'toggle_public_form')%>',
+      {  postBody: 'id='+<%=params["id"]%>+'&value='+this.checked
+      ,onSuccess: new Effect.Highlight(this.parentNode)
+      }
+      );"
+      name="is_public" /><%= t("madb_input_form_is_publicly_accessible") %> ( <%= t("madb_public_form_will_be_available_at")%> <%= link_to(url_for( :only_path => false, :host => t("madb_host"), :controller=> "/entities", :action => "public_form", :id => @entity.id), { :controller=> "/entities", :action => "public_form", :id => @entity.id} ) %> )</span></div>
+
+<% AppConfig.plugins.each do |plugin|%>
+  <%= render :file => plugin[:admin_entities_view] if plugin[:admin_entities_view]%>
+
+<% end %>
+
+
+
+<%= sortable_element 'entity_details',
+      :complete => visual_effect(:highlight, 'entity_details'),
+      :url => { :action => "reorder_details", :id => @entity }
+%>
+
+
+
+<span class="button_style"><%= link_to t('madb_rename'), :action => 'edit', :id => @entity %>
+<%= link_to(t('madb_link_existing_detail'), :action => 'add_existing_choose', :id => @entity) if @existing_details_available %>
+<%= link_to t('madb_add_new_detail'), :controller => 'details',  :action => 'new', :for_entity => @entity %></span>
+
+
+
+
+<!--<div class="section_head"><span><%= t("madb_links")%></span></div>
+<div class="relation_head"><span><%= t("madb_to_children ")%></span></div>-->
+<h2><span><%= t("madb_links")%></span></h2>
+<%= help_info("madb_help_info_admin_entities_show_links_to_other_entities")%>
+<h3><span><%= t("madb_to_children ")%></span></h3>
+<table>
+<thead>
+  <tr><th><%= t("madb_relation_name")%></th><th><%= t("madb_child")%></th> <th><%= t("madb_multiple_parents_allowed")%></th> <th><%= t("madb_multiple_children_allowed")%></th><th><%= t("madb_edit")%></th><th><%= t("madb_delete")%></th> </tr>
+</thead>
+<tbody>
+<% @relations_to_children.each do |r| %>
+<% translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name} %>
+<tr><td><%=h(t(r.from_parent_to_child_name, { :scope => "account" })) %></td><td><%= t(r.child.name,{:scope => "account"}) %></td><td><%=r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars )%></td><td><%=r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars )%></td>
+  <td class="action_cell"><%= link_to image_tag("icon/big/edit.png", :alt =>t("madb_edit"), :border => 0), {:action=> "edit_link", :id => r.id, :source_id => params["id"]}  %></td>
+  <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :alt => t("madb_delete"), :border => 0) , {:action=> "delete_link", :id => r.id, :source_id => params["id"]} ,{:confirm => t("madb_confirm_delete_all_links")} %></td></tr>
+<% end %>
+</tbody>
+
+</table>
+<span class="button_style"><%= link_to t("madb_add_link_to_child_entity"), :action => "define_link" , :parent_id => params["id"] %></span>
+
+
+
+
+<!--<div class="relation_head"><span><%= t("madb_to_parents")%></span></div>-->
+<h3><span><%= t("madb_to_parents")%></span></h3>
+<table>
+<thead>
+<tr><th><%= t("madb_relation_name")%></th><th><%= t("madb_parent")%></th> <th><%= t("madb_multiple_parents_allowed")%></th> <th><%= t("madb_multiple_children_allowed")%></th><th><%= t("madb_edit")%></th><th><%= t("madb_delete")%></th> </tr>
+</thead>
+<tbody>
+<% @relations_to_parents.each do |r| %>
+<% translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name} %>
+<tr><td><%=h(t(r.from_child_to_parent_name, { :scope => "account" }))%></td><td><%= t(r.parent.name,{:scope => "account"}) %></td><td><%=r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars )%></td><td><%=r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars  )%></td>
+  <td class="action_cell"><%= link_to image_tag( "icon/big/edit.png" , :alt =>t("madb_edit"),:border =>0), {:action=> "edit_link", :id => r.id, :source_id => params["id"]}  %></td>
+  <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :alt => t("madb_delete"), :border =>0), {:action=> "delete_link", :id => r.id, :source_id => params["id"]} ,{:confirm => t("madb_really_delete_all_existing_links_question")} %></td></tr>
+
+<% end %>
+</tbody>
+</table>
+<span class="button_style"><%= link_to t("madb_add_link_to_parent_entity"), :action => "define_link" , :child_id => params["id"] %></span>
+
+
+
+

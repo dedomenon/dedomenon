@@ -1,0 +1,57 @@
+--- 
+account_types_001: 
+  name: madb_account_type_free
+  id: "1"
+  active: "t"
+  free: "t"
+  number_of_users: "madb_unlimited"
+  number_of_databases: "1"
+  monthly_fee: 0.0
+  #32 max file size
+  maximum_file_size: 32768
+  maximum_monthly_file_transfer: 104857600
+  maximum_attachment_number: 8
+account_types_002: 
+  name: madb_account_type_basic
+  id: "2"
+  active: "t"
+  free: "f"
+  number_of_users: "madb_unlimited"
+  number_of_databases: "3"
+  monthly_fee: 9.99
+  maximum_file_size: 65536
+  maximum_monthly_file_transfer: 104857600
+  maximum_attachment_number: 5
+account_types_003:
+  name: madb_account_type_bronze
+  id: "3"
+  active: "t"
+  free: "f"
+  number_of_users: "madb_unlimited"
+  number_of_databases: "6"
+  monthly_fee: 24.99
+  maximum_file_size: 131072
+  maximum_monthly_file_transfer: 104857600
+  maximum_attachment_number: 5
+account_types_004:
+  name: madb_account_type_silver
+  id: "4"
+  active: "f"
+  free: "f"
+  number_of_users: "madb_unlimited"
+  number_of_databases: "20"
+  monthly_fee: 50.0
+  maximum_file_size: 262144
+  maximum_monthly_file_transfer: 104857600
+  maximum_attachment_number: 5
+account_types_005:
+  name: madb_account_type_gold
+  id: "5"
+  active: "t"
+  free: "f"
+  number_of_users: "madb_unlimited"
+  number_of_databases: "50"
+  monthly_fee: 120.0
+  maximum_file_size: 524288
+  maximum_monthly_file_transfer: 104857600
+  maximum_attachment_number: 5

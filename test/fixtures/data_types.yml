@@ -1,0 +1,38 @@
+--- 
+data_types_001: 
+  class_name: SimpleDetailValue
+  name: madb_short_text
+  id: "1"
+data_types_002: 
+  class_name: DateDetailValue
+  name: madb_date
+  id: "3"
+data_types_003: 
+  class_name: IntegerDetailValue
+  name: madb_integer
+  id: "4"
+data_types_004: 
+  class_name: DdlDetailValue
+  name: madb_choose_in_list
+  id: "5"
+data_types_005: 
+  class_name: LongTextDetailValue
+  name: madb_long_text
+  id: "2"
+data_types_006: 
+  class_name: EmailDetailValue
+  name: madb_email
+  id: "6"
+data_types_007: 
+  class_name: WebUrlDetailValue
+  name: madb_web_url
+  id: "7"
+data_types_008: 
+  class_name: FileAttachment
+  name: madb_file_attachment
+  id: "8"
+#data_types_009: 
+#  class_name: S3Attachment
+#  name: madb_s3_attachment
+#  id: "9"
+# Notes: FileAttachment is now a core type while S3Attachment is moved to a plugin

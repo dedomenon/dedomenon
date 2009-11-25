@@ -1,0 +1,7 @@
+--- 
+user_types_001: 
+  name: primary_user
+  id: "1"
+user_types_002: 
+  name: normal_user
+  id: "2"

@@ -1,0 +1,10 @@
+<script type="text/javascript">alert('coucou');</script>
+<td>detail</td>
+<td>
+<select id="<%= @ddl_id%>" name="<%= @ddl_id%>">
+<option value="0"><%= t "all" %></option>
+<% @details.each do |detail|  %>
+<option value="<%=detail.id%>"><%= t detail.name %></option>
+<% end %>
+</select>
+</td>

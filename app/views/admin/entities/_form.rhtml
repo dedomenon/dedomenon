@@ -1,0 +1,8 @@
+<%= error_messages_for 'entity' %>
+
+<!--[form:entity]-->
+<input type="hidden" name="db" value="<%= params["db"] %>">
+<p><label for="entity_name"><%= t("madb_name") %></label><br/>
+<%= text_field 'entity', 'name'  %></p>
+<!--[eoform:entity]-->
+

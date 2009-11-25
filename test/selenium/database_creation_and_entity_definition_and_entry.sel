@@ -1,0 +1,61 @@
+|open|/selenium/setup?fixtures=account_types,accounts,databases,user_types,users,entities,data_types,detail_status,details,entities2details,instances,detail_values||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|clickAndWait|link=madb_admin_databases||
+|assertTitle|exact:madb_madb::||
+|clickAndWait|link=madb_create_database||
+|assertTitle|exact:madb_madb::||
+|type|database_name|my newly created db|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::||
+|assertTextPresent|my newly created db||
+|clickAndWait|//tbody[4]/tr/td[2]/a||
+|assertTitle|exact:madb_madb::||
+|clickAndWait|link=madb_new_entity||
+|assertTitle|exact:madb_madb::||
+|type|entity_name|my newly created entity|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::||
+|click|//a[contains(@href, "javascript:change('8')")]||
+|click|//a[contains(@href, "javascript:change('8')")]||
+|clickAndWait|link=madb_administrate||
+|assertTitle|exact:madb_madb::madb_admin_entity||
+|clickAndWait|link=madb_add_new_detail||
+|assertTitle|exact:madb_madb::||
+|type|details_name|newly created detail|
+|select|details[data_type_id]|label=madb_web_url|
+|type|details_name|newly created detail url|
+|clickAndWait|quick_commit||
+|assertTitle|exact:madb_madb::madb_admin_entity||
+|clickAndWait|link=madb_add_new_detail||
+|assertTitle|exact:madb_madb::||
+|type|details_name|long text|
+|select|details[data_type_id]|label=madb_long_text|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::||
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_admin_entity||
+|clickAndWait|//a[contains(@href, '/app/entities/add/102')]||
+|assertTitle|exact:madb_madb::madb_add_and_instance||
+|type|newly_created_detail_url[0][value]|http://www.raphinou.com|
+|type|long_text[0][value]|test long text we'll see what happens pal|
+|click|commit||
+|pause|1000||
+|assertTextPresent|http://www.raphinou.com||
+|open|/app/database||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|click|//a[contains(@href, "javascript:change('9')")]||
+|clickAndWait|link=my newly created entity||
+|assertTitle|exact:madb_madb::madb_list||
+|click|link=madb_create_new_entity||
+|type|newly_created_detail_url[0][value]|http://www.kastagnette.net|
+|type|long_text[0][value]|ceci est à nouveau un mémo qui est stocké dans un long texte qui n'apparaitra pas dans la liste car ca rallongerait vraiment trop la liste|
+|click|commit||
+|pause|2000||
+|assertTextPresent|http://www.kastagnette.net||
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||

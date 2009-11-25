@@ -1,0 +1,13 @@
+<%= error_messages_for 'users' %>
+
+<!--[form:users]-->
+<p><label for="users_lastname"><%= t("madb_lastname") %></label><br/>
+<%= text_field 'users', 'lastname'  %></p>
+
+<p><label for="users_firstname"><%= t("madb_firstname") %></label><br/>
+<%= text_field 'users', 'firstname'  %></p>
+
+<p><label for="users_login"><%= t("madb_login") %></label><br/>
+<%= text_field 'users', 'login', "readonly" => "readonly"  %></p>
+<!--[eoform:users]-->
+

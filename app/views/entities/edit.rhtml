@@ -1,0 +1,28 @@
+<% detail_ids = [] %>
+<h1><%= t("madb_entity_edition", { :vars => { 'entity_name' => t(@instance.entity.name )}}) %></h1>
+
+<%=help_info("madb_help_info_entities_edition")%>
+
+
+   <form id="entity_form" method="post" action="<%= url_for :action => 'apply_edit' %>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
+
+
+
+<input type="hidden" name="instance_id" value="<%=@instance.id%>">
+<input type="hidden" name="entity" value="<%=@instance.entity.id%>">
+
+<%= render :partial => "entity_form", :object => @instance %>
+
+<%= submit_tag t("madb_submit")%> 
+<% if request.env["HTTP_REFERER"] %>
+  <%=link_to t("madb_cancel"),request.env["HTTP_REFERER"] %>
+<% end %>
+</form>
+
+
+<script type="text/javascript">
+
+  var success_action= function() { document.location='<%=session['return-to']%>';};
+  <%= render :partial => "upload_form_function", :entity => @entity %>
+  new EntityFormSubmitter('entity_form', success_action);
+</script>

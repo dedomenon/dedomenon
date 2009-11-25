@@ -1,0 +1,30 @@
+<h1><%=t("madb_entities_list", :vars => {'db'=> t(@db.name, :scope => "account")})%></h1>
+<%= help_info("madb_help_info_admin_entities_list")%>
+
+<table class="list_table">
+  <thead>
+  <tr>
+    <th><%= t("madb_name") %></th>
+    <th><%= t("madb_has_public_form") %></th>
+<th class="action_cell"/>
+<th class="action_cell"/>
+<th class="action_cell"/>
+  </tr>
+  </thead>
+
+<% for entity in @entities %>
+  <tbody>
+  <tr>
+    <td><%=h(t(entity.name, :scope => "account")) %></td>
+    <td><%=h entity.has_public_form? ? t("madb_yes") : t("madb_no") %></td>
+    <td><%= link_to t('madb_administrate'), {:action => 'show', :id => entity}, { :title => t('madb_administrate_entity_link_title')} %></td>
+    <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :border =>0, :alt => t('madb_destroy')), {:action => 'destroy', :id => entity}, :confirm => t("madb_really_delete_entity_table_question", :vars => { 'name' => t(entity.name, :scope => "account")}), :method => :post, :title => t('madb_destroy_entity_link_title')  %></td>
+    <td class="action_cell"><%= link_to image_tag("icon/big/floppy.png", :border =>0, :alt => t('madb_export')), {:controller => '/entities', :action => 'entities_list', :id => entity, :format => "csv" }, :title => t('madb_export')  %></td>
+  </tr>
+  </tbody>
+<% end %>
+</table>
+
+<br />
+
+<span class="button_style"><%= link_to t('madb_new_entity'), :action => 'new', :db => params["db"] %></span>

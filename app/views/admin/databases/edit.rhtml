@@ -1,0 +1,9 @@
+<h1><%=t("madb_edit_database")%></h1>
+<%=help_info("madb_help_info_admin_databases_edit")%>
+<% form_tag :action => 'update', :id => @database do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag t("madb_edit") %>
+<% end -%>
+
+<%= link_to t('madb_show'), :action => 'show', :id => @database %> |
+<%= link_to t('madb_back'), :action => 'list' %>

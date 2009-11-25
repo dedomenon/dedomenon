@@ -1,0 +1,16 @@
+<%= @captcha.to_html%>
+<% if RAILS_ENV=="test" or request.env["HTTP_USER_AGENT"].include?("MSIE")%>
+<hr>
+<p><%=t("madb_browser_demo_login_message_ie") %></p>
+<span style="margin-right:30%;margin-left:30%;">
+<script type="text/javascript"><!--
+  google_ad_client = "pub-2681762820194772";
+  google_ad_width = 125;
+  google_ad_height = 125;
+  google_ad_format = "125x125_as_rimg";
+  google_cpa_choice = "CAAQ5-WZzgEaCDRYqcloyjDbKK2293M";
+  //--></script>
+  <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</span>
+<%end%>

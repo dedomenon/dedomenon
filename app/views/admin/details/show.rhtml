@@ -1,0 +1,7 @@
+
+<h1><span><%=t(@details.name, :scope => "account") %></span></h1>
+<%= help_info("madb_help_info_admin_details_show")%>
+  <%= render :partial => "form" %>
+
+  <span class="button_style"><%= link_to t('madb_edit'), :action => 'edit', :id => @details %> 
+  <%=link_to t("madb_back"),session["return-to"] %></span>

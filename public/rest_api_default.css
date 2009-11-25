@@ -1,0 +1,28 @@
+/* 
+    Document   : rest_api_default
+    Created on : Jan 3, 2008, 5:09:25 PM
+    Author     : mohsinhijazee
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+.one
+{
+    border: thin solid black;
+    border-left: thick solid black;
+    border-top: thick solid black;
+    
+}
+
+.block { border-width: thick;
+        border-color: black;
+       }

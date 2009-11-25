@@ -1,0 +1,7 @@
+<h1><%= I18n.t('import_wizard.main_title', :entity => @entity.name.capitalize )%></h1>
+<h2><%= I18n.t('import_wizard.madb_step1_title' )%></h2>
+<%= I18n.t('import_wizard.upload_csv')%>:
+<form action="<%= url_for :action => :link_fields , :id => params[:id] %>" method="post" enctype="multipart/form-data">
+  <input type="file" name="file_to_import"/>
+  <input type="submit"/>
+</form>

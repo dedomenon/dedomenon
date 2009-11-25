@@ -1,0 +1,13 @@
+<h1><%= t("madb_new_entity", {:vars => {'entity_name' => @entity.name } } ) %></h1>
+
+<% form_tag :action => 'create' do -%>
+  <%= render :partial => "form" %>
+  <%= submit_tag t("madb_submit") %>
+<% end -%>
+
+<!-- See admin/details/new.rhtml for the details regarding the
+       gaurding conditions. 
+  -->
+<%if session["return-to"] %>
+  <%= link_to t('madb_back'), session["return-to"] %>
+<% end %>

@@ -1,0 +1,40 @@
+
+
+
+<h1><%= @title %> </h1>
+  <div id="addition_form_div">
+
+<form id="entity_form" method="post" action="<%= url_for :action => 'apply_edit'%>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
+
+<input type="hidden" name="instance_id" value="-1">
+<input type="hidden" name="entity" value="<%=@entity.id%>">
+
+
+<%= render :partial => "entity_form", :object => @instance %>
+
+<%= submit_tag t("madb_submit")%>
+</form>
+
+<script type="text/javascript">
+// success_action is called by default when the form has been submitted successfully
+// the parameter data is the responseText received from the server
+var success_action = function(data) 
+{
+            list_div = $('<%=@entity.name%>_list_div');
+	    list_div.innerHTML=data;
+	    highlighted_row = YAHOO.util.Dom.getElementsByClassName("highlight", "tr", list_div);
+	    anim = new YAHOO.util.ColorAnim(highlighted_row, {  backgroundColor: { from: '#FFFF33', to: '#fff' } } );
+	    anim.duration=5;
+	    anim.animate();
+	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input','entity_form'); 
+	    YAHOO.util.Dom.batch(invalid_fields, function (e) {YAHOO.util.Dom.removeClass( e,'invalid_form_value');YAHOO.util.Dom.addClass( e,'unchecked_form_value'); });
+	    YAHOO.util.Selector.query('#'+this.form+'  input:not([type=hidden])')[0].focus()
+}
+
+<%= render :partial => "upload_form_function", :entity => @entity %>
+new EntityFormSubmitter('entity_form', success_action);
+</script>
+
+</div>
+<div id="<%="#{@entity.name}_list_div"%>">
+</div>

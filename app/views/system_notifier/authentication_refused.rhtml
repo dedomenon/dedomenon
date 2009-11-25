@@ -1,0 +1,32 @@
+<% require 'pp' %>
+Authentication for <%= @modb_user.login%> (with verified = <%= @modb_user.verified %>) of account <%= @account.id %> (with status = <%= @account.status%>) was refused.
+
+---------------------
+request information
+---------------------
+<% if request %>
+* URL : <%= request.protocol%><%=@host%><%= request.request_uri %>
+* Parameters : <%= request.parameters.inspect %>
+* Rails root : <%= @rails_root %>
+
+---------------------
+Session dump
+--------------------
+
+<% for variable in request.session.instance_variables -%>
+<% next if variable =~ /^@db/ %>
+  * <%= variable %>:
+    <%= PP.pp(request.session.instance_variable_get(variable), "").gsub(/\n/,"\n   ").strip %>
+<%end-%>
+
+----------------
+Environment
+----------------
+<% for key, value in request.env -%>
+  * <%= key %>: <%= value.to_s.strip %>
+  <% end -%>
+  
+<% else %>
+  <h1>Request Object Nil!</h1>
+
+<% end %>

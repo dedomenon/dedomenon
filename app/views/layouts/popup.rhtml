@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><%=t("madb_madb")%>::<%= @title%></title>
+<% if (RAILS_ENV=="test" and request.env["HTTP_USER_AGENT"].nil?) or request.env["HTTP_USER_AGENT"].include?("MSIE")%>
+<%= stylesheet_link_tag 'ie' %>
+<% else %>
+<%= stylesheet_link_tag 'mozilla' %>
+
+<%= javascript_include_tag :defaults %>
+
+<%= javascript_include_tag "fat" %>
+<%= javascript_include_tag "scriptaculous" %>
+<%= javascript_include_tag "madb" %>
+<%= javascript_include_tag "gau" %>
+<% end%>
+
+</head>
+<body>
+
+<div id="container">
+<div id="xhr_message"></div>
+
+<% if !request.xhr? %>
+<span class="big_warning popup_warning"><%=t "madb_this_is_a_popup_window_warning" %>, <%= link_to_function(t("madb_click_here_to_disply_main_window"), "window.opener.focus(); return false;")%></span>
+<%end%>
+<div id="popup_content">
+	<div id="<%=params["list_id"]%>_div">
+		<%= @content_for_layout %>
+	</div>
+</div>
+<div id="footer"></div>
+</div>
+<%if flash["error"]%>
+	<script type="text/javascript">
+	alert("<%=flash["error"]%>");
+	</script>
+<% end %>
+</body>
+</html>
+

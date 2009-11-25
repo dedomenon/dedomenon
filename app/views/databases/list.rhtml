@@ -1,0 +1,26 @@
+<h1><%= t("listing_databases") %>>
+
+<table>
+  <tr>
+<% for column in Databases.content_columns %>
+  <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
+    <th><%= column.human_name %></th>
+<% end %>
+  </tr>
+  
+<% for databases in @databases %>
+  <tr>
+  <% for column in Databases.content_columns %>
+    <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
+    <td><%=h databases.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to t("madb_show"), :action => 'show', :id => databases %></td>
+    <td><%= link_to t("madb_edit"), :action => 'edit', :id => databases %></td>
+    <td><%= link_to t("madb_delete"), {:action => 'destroy', :id => databases}, :confirm => "Are you sure?" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New databases', :action => 'new' %>
