@@ -44,6 +44,7 @@ class Instance < ActiveRecord::Base
   include ModelsClassMethods
   #include InstanceProcessor
 	belongs_to :entity
+        before_destroy :clear_file_attachments
 	has_many :detail_values
 	has_many :email_detail_values
 	if class_available?("FileAttachment")
@@ -89,8 +90,8 @@ class Instance < ActiveRecord::Base
 #    end
 #  end
 
-  def self.before_destroy
-    self.file_attachments.clear
+  def clear_file_attachments
+    file_attachments.clear
   end
   #def class_from_name(className)
   #  ObjectSpace.each_object(Class) do |c|
