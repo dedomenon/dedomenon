@@ -234,6 +234,7 @@ class Entity < ActiveRecord::Base
       elsif e.message=="no detail saved"
         raise e #if RAILS_ENV=="production"
       end
+      #we should raise other exceptions too!
     end
     return  [ instance , []]
   end

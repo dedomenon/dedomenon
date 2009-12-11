@@ -429,7 +429,9 @@ class EntitiesController < ApplicationController
       if e.message == "no detail saved"
         render :text => "__ERROR__"+t("madb_no_detail_saved_enter_at_least_one_valid_value")
         return
+        #we should raise other exceptions
       end
+
     end
 
 
