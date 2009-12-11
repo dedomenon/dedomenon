@@ -482,6 +482,7 @@ en:
   madb_question: question
   madb_this_will_erase_the_current_file: This operation will definitively erase the file, are you sure you want to continue?
   madb_cancel: Cancel
+  madb_done: Done
   madb_can_one_child_entity_have_several_parents_question: Can one <span class="no_css_child_name">{{child_entity}}</span>  be linked to several <span class="no_css_parent_name">{{parent_entity}}</span>
   madb_add_and_instance: Enter a new {{entity}}
   madb_company_country: Country
