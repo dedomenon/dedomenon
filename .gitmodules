@@ -16,3 +16,6 @@
 [submodule "vendor/plugins/render_component"]
 	path = vendor/plugins/render_component
 	url = git://github.com/lackac/render_component.git
+[submodule "vendor/plugins/delayed_job"]
+	path = vendor/plugins/delayed_job
+	url = git://github.com/tobi/delayed_job.git
