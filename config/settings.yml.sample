@@ -1,10 +1,35 @@
 common:
+  #application's host. Setting needed to include links in mails sent out
+  app_host: mdb:3000
+  
+  #use the madb_notifications plugins? yes or no
+  send_notifications: yes
+
+  #where are file attachments stored? Accepted values: file_system and s3
+  file_attachment_storage: file_system
+
+  #if using file_system storage, enter path to directory where file must be stored. 
+  #absolute path if starts with /, or else relative to RAILS_ROOT 
+  file_system_attachments_path: files/
+
+  #if using s3 storage, specify your aws keys here
+  aws_access_key_id: "XXXX"
+  aws_secret_access_key: "XXXXX"
+  #if using s3 storage, enter the bucket name to use
+  s3_bucket_name: attachments
+
+  #address from which system emails will originate from
   system_email_address: system@example.com
+  
+  #send error messages to these addresses
   exception_recipients: --- 
   - my@address.com
+
+    #languages available to users
   languages: ---
   - en
   - fr
+
 development:
 production:
 test:
