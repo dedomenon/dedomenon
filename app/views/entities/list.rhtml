@@ -5,6 +5,10 @@
 <span class="button_style"><%= link_to t("madb_import_csv",  :vars => { 'entity_name' => t(@entity.name, :scope => "account")}), :controller => :importwizard, :id => @entity.id%>
 
 </span>
+<% AppConfig.plugins.each do |plugin|%>
+  <%= render :file => plugin[:entities_list_top_buttons ] if plugin[:entities_list_top_buttons]%>
+<% end %>
+
   <div id="addition_form_div" class="hidden">
 		<%#  :update => "#{@entity.name}_list_div" ,
 		%>
