@@ -13,9 +13,6 @@
 [submodule "vendor/plugins/madb_file_system_attachments"]
 	path = vendor/plugins/madb_file_system_attachments
 	url = git://github.com/dedomenon/madb_file_system_attachments.git
-[submodule "vendor/plugins/render_component"]
-	path = vendor/plugins/render_component
-	url = git://github.com/lackac/render_component.git
 [submodule "vendor/plugins/delayed_job"]
 	path = vendor/plugins/delayed_job
 	url = git://github.com/tobi/delayed_job.git
