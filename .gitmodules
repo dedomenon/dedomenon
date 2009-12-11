@@ -22,3 +22,6 @@
 [submodule "vendor/plugins/ar_events"]
 	path = vendor/plugins/ar_events
 	url = git://github.com/raphinou/ArEvents.git
+[submodule "vendor/plugins/madb_notifications"]
+	path = vendor/plugins/madb_notifications
+	url = git://github.com/dedomenon/madb_notifications.git
