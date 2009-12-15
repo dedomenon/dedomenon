@@ -18,23 +18,12 @@
 <% @entity.entity_details.sort{|a,b| a.display_order<=>b.display_order}.each  do |entity_detail| %>
 <% detail = entity_detail.detail %>
 	<% i=0 %>
-	<% if @instance %>
-		<% values = class_from_name(detail.data_type.class_name).find(:all, :conditions => ("instance_id=#{@instance.id} and detail_id=#{detail.id}")) %>
-		<%# the following is necessary to display details which have no value for this instance
-		%>
-
-		<% if values.length==0%>
-		      <% values= [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] %>
-		<% end %>
-	<% else %>
-		<% values = []
-		%>
-		<% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ]
-		%>
-	<% end %>
+        <%# initialise values array, then fill it with the values from instance. If no instance, or no value for that instance, put a new value in the array %>
+        <% values = [] %>
+        <% values = class_from_name(detail.data_type.class_name).find(:all, :conditions => ("instance_id=#{@instance.id} and detail_id=#{detail.id}")) if @instance %>
+        <% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] unless values.size>0%>
 	<%values.each do |value| %>
   <!-- <input type="hidden" id="<%=@entity.name+'_'+detail.name+"["+i.to_s+"]"%>_id" name="<%=detail.name+"["+i.to_s+"]"%>[id]" value="<%=value.id%>"> -->
-  <%#   breakpoint %>
     <%= value.to_form_row(i, :form_id => form_id, :entity => @entity, :controller => self.controller ) %>
 	<%end%>
 <% end %>
