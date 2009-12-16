@@ -25,17 +25,7 @@
 ------<div id="testForm"> </div>------
 
 <script type="text/javascript">
-YUI({
-    modules: {
-        'gallery-form': {
-            fullpath: 'http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js',
-            requires: ['node','attribute','widget','io-form','substitute'],
-            optional: [],
-            supersedes: []
-      }
- 
-    }
-}).use("gallery-form", 'anim',  function (Y) {
+<% yui_block( :modules => [ "gallery-form" ], :use => [ 'gallery-form', 'anim']) do %>
     // Create a Field Object manually
     var fields = [ ];
     fields.push( new Y.HiddenField({
@@ -76,7 +66,7 @@ YUI({
     });
  
     f.render();
-});
+<% end %>
 </script>
 
 

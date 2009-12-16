@@ -84,6 +84,46 @@ module ApplicationHelper
       return %{<div class="help"><span class="title">&lt; #{t("madb_help") } ! &gt;</span>#{t(s)}<br>#{t("madb_help_info_you_can_disable_help_in_your_settings")}</div>}
     end
   end
-   
 
+  class YuiBlock < BlockHelpers::Base
+    # options:
+    # :modules => { "gallery-forms" => { :fullpath => "http://....", :requires => ['node', 'attribute'], :optional => [], :supersedes => []} }
+    # :use => [ 'gallery-forms', 'console']
+
+    def initialize(options = {})
+      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
+      #build string passed to YUI
+      init = ""
+      options[:modules].each do |m| 
+        if m.kind_of? Array
+          module_name = m[0]
+          module_spec = m[1]
+        else
+          module_name = m
+          module_spec = @modules[m]
+        end
+        init = "{'#{module_name}' : "
+        init+=module_spec.inject("{"){|a,k| a+k[0].to_s+':'+ k[1].to_json.chomp+',' }.chop
+        init+= "}}"
+        
+      end
+        init= "{ modules : #{init}}"
+      #build options passed to use()
+      use = ""
+      use += options[:use].collect{|u| '"'+u.to_s+'"'}.join(',')
+      @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
+    end
+    def display(body)
+      "#{@yui_init} #{body} }); "
+    end
+  end
+# 
+#<% yui_block( :modules => { "gallery-forms" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []} }, :use => [ 'gallery-forms', 'console']) do %>
+#alert("hello");
+#<% end %>
+
+#<% yui_block( :modules => [ "gallery-forms" ], :use => [ 'gallery-forms', 'console']) do %>
+#alert("hello");
+#<% end %>
+#
 end

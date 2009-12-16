@@ -22,3 +22,6 @@
 [submodule "vendor/plugins/madb_notifications"]
 	path = vendor/plugins/madb_notifications
 	url = git://github.com/dedomenon/madb_notifications.git
+[submodule "vendor/plugins/block_helpers"]
+	path = vendor/plugins/block_helpers
+	url = git://github.com/markevans/block_helpers.git
