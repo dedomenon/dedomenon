@@ -3,7 +3,7 @@ module EntitiesHelpers
 
   # div id containing list displayed
   def list_id
-    @list_id || "#{@entity.name}_list"
+    @list_id || "#{@entity.name.underscorize}_list"
   end
 
   #defined which parameter to use for ordering the list

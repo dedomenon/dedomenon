@@ -220,7 +220,7 @@ class EntitiesController < ApplicationController
   def list
     @entity = Entity.find params["id"]
     @title = t("madb_list", :vars => { 'entity' => t(@entity.name, :scope => "account")})
-    @list_id = "#{@entity.name}_list"
+    @list_id = list_id
   end
 
   # *Description*

@@ -42,6 +42,21 @@ class EmailDetailValue < DetailValue
 		   </script>
 		 }
 	end
+	def to_yui_form_row(i=0,o={})
+         entity = %Q{#{o[:form_id]}_#{o[:entity].name}}.gsub(/ /,"_")
+         id = detail.name+"["+i.to_s+"]"
+	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    fields.push( new Y.TextField({
+                  validator : 'email',
+                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  value:"#{value}",
+                  label:"#{detail.name }"}));
+    }
+	end
 
   def self.format_detail(options)
      return "" if options[:value].nil?

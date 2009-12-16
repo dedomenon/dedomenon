@@ -1,0 +1,24 @@
+<% form_id = String.random %>
+fields.push( new Y.HiddenField({
+              name:"form_id",
+              value:"<%= form_id%>"}));
+<% if params["source_id"] %>
+	<input type="hidden" name="source_id" value="<%= params["source_id"] %>">
+fields.push( new Y.HiddenField({
+              name:"source_id",
+              value:"<%= params["source_id"]%>"}));
+<% end %>
+<%# USE class EntityDetail
+%>
+<% @entity.entity_details.sort{|a,b| a.display_order<=>b.display_order}.each  do |entity_detail| %>
+<% detail = entity_detail.detail %>
+	<% i=0 %>
+        <%# initialise values array, then fill it with the values from instance. If no instance, or no value for that instance, put a new value in the array %>
+        <% values = [] %>
+        <% values = class_from_name(detail.data_type.class_name).find(:all, :conditions => ("instance_id=#{@instance.id} and detail_id=#{detail.id}")) if @instance %>
+        <% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] unless values.size>0%>
+	<%values.each do |value| %>
+  <!-- <input type="hidden" id="<%=@entity.name+'_'+detail.name+"["+i.to_s+"]"%>_id" name="<%=detail.name+"["+i.to_s+"]"%>[id]" value="<%=value.id%>"> -->
+    <%= value.to_yui_form_row(i, :form_id => form_id, :entity => @entity, :controller => self.controller ) %>
+	<%end%>
+<% end %>

@@ -20,7 +20,7 @@
 // the parameter data is the responseText received from the server
 var success_action = function(data) 
 {
-            list_div = $('<%=@entity.name%>_list_div');
+            list_div = $('<%=@entity.name.underscorize%>_list_div');
 	    list_div.innerHTML=data;
 	    highlighted_row = YAHOO.util.Dom.getElementsByClassName("highlight", "tr", list_div);
 	    anim = new YAHOO.util.ColorAnim(highlighted_row, {  backgroundColor: { from: '#FFFF33', to: '#fff' } } );
@@ -36,5 +36,5 @@ new EntityFormSubmitter('entity_form', success_action);
 </script>
 
 </div>
-<div id="<%="#{@entity.name}_list_div"%>">
+<div id="<%="#{@entity.name.underscorize}_list_div"%>">
 </div>

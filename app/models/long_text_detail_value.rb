@@ -34,6 +34,18 @@ class LongTextDetailValue < DetailValue
      <input type="hidden" id="#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id" name="#{detail.name}[#{i.to_s}][id]" value="#{id}">
      <tr><td>#{detail.name }:</td><td><textarea cols="30" rows="10" name="#{detail.name+"["+i.to_s+"]"}[value]">#{html_escape(value)}</textarea></td></tr>}
 	end
+	def to_yui_form_row(i=0,o={})
+	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    fields.push( new Y.TextareaField({
+                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  value:"#{html_escape(value)}",
+                  label:"#{detail.name }"}));
+    }
+	end
 	def self.format_detail(options)
 	   return html_escape(options[:value])
   end

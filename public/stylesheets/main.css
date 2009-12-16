@@ -48,3 +48,7 @@
 .version {
   float: left;
 }
+
+body {
+  text-align: left;
+}

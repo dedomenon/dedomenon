@@ -39,5 +39,18 @@ class SimpleDetailValue <  DetailValue
      <input type="hidden" id="#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id" name="#{detail.name}[#{i.to_s}][id]" value="#{self.id}">
      <tr><td>#{detail.name }:</td><td><input type="text" name="#{detail.name+"["+i.to_s+"]"}[value]" value="#{value}" /></td></tr>}
 	end
+  def to_yui_form_row(i=0,o={})
+	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    fields.push( new Y.TextField({
+                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  value:"#{value}",
+                  label:"#{detail.name }"}));
+
+     }
+	end
 end
 
