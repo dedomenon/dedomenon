@@ -262,7 +262,8 @@ class EntitiesController < ApplicationController
   # *Description*
   #   Initiates the addition form.
   def add
-  	init_add_form
+    init_add_form
+    @list_id = list_id
     @title = t("madb_add_and_instance", :vars => { 'entity' => @entity.name})
   end
 

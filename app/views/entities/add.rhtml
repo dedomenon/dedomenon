@@ -3,7 +3,7 @@
 
 <h1><%= @title %> </h1>
   <div id="addition_form_div">
-
+<!-- OLD FORM <% unless true %>
 <form id="entity_form" method="post" action="<%= url_for :action => 'apply_edit'%>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
 
 <input type="hidden" name="instance_id" value="-1">
@@ -15,6 +15,33 @@
 <%= submit_tag t("madb_submit")%>
 </form>
 
+<%end%> -->
+
+<div id="testForm"> </div>
+
+<script type="text/javascript">
+<% yui_block( :modules => [ "gallery-form" ], :use => [ 'gallery-form', 'anim']) do %>
+    // Create a Field Object manually
+    var fields = [ ];
+    fields.push( new Y.HiddenField({
+                  name:"instance_id",
+                  value:"-1"}));
+    fields.push( new Y.HiddenField({
+                  name:"entity",
+                  value:"<%=@entity.id%>"}));
+
+    <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
+
+            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
+            fields.push ( {type : 'reset', label : 'Reset'});
+    <%= default_entity_form( :form_content_box => "testForm", :list_id => @list_id) %>
+ 
+    f.render();
+<% end %>
+</script>
+
+
+<!-- OLD FORM <% unless true %>
 <script type="text/javascript">
 // success_action is called by default when the form has been submitted successfully
 // the parameter data is the responseText received from the server
@@ -34,6 +61,7 @@ var success_action = function(data)
 <%= render :partial => "upload_form_function", :entity => @entity %>
 new EntityFormSubmitter('entity_form', success_action);
 </script>
+<% end %> -->
 
 </div>
 <div id="<%="#{@entity.name.underscorize}_list_div"%>">

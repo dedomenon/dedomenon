@@ -52,3 +52,24 @@
 body {
   text-align: left;
 }
+
+
+.yui-form-field label {
+  float:left;
+  width:30%;
+}
+
+.yui-form-field {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-width: 1px 0 0 0 ;
+	border-style: dotted;
+  
+}
+.yui-hidden-field {
+  display:none;
+  border-style: none;
+}
+.yui-button{
+  display: inline;
+}

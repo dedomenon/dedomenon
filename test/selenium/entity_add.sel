@@ -8,6 +8,7 @@
 |click|//a[contains(@href, "javascript:change('6')")]||
 |clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
+|pause|3000||
 |type|nom[0][value]|AAAAAAlesi|
 |type|prenom[0][value]|Jean|
 |type|fonction[0][value]|pilote|

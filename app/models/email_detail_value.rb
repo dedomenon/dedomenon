@@ -50,11 +50,17 @@ class EmailDetailValue < DetailValue
                   id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
                   name:"#{detail.name}[#{i.to_s}][id]",
                   value:"#{self.id}"}));
-    fields.push( new Y.TextField({
-                  validator : 'email',
+
+    var email_field =  new Y.TextField({
+                  id: "#{form_field_id(i,o)}_value",
+                  validator : get_detail_validator(#{detail.id}),
                   name:"#{detail.name+"["+i.to_s+"]"}[value]",
                   value:"#{value}",
-                  label:"#{detail.name }"}));
+                  label:"#{detail.name }"})
+    email_field.on('blur', Y.bind( function(e) {
+      this.validateField();
+      }, email_field));
+    fields.push(email_field);
     }
 	end
 

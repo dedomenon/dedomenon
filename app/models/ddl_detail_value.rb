@@ -104,6 +104,23 @@ class DdlDetailValue < DetailValue
         } </select></td></tr>}
   end
 
+  def to_yui_form_row(i=0,o={})
+    propositions = detail.detail_value_propositions
+    choices = propositions.collect{|p|  %Q{ { value : "#{ p.id }" ,label:  "#{p.value}"  } }  }.join(',')
+    choices = "[" + choices + "]"
+    	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    fields.push( new Y.SelectField({
+                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  choices: #{choices},
+                  label:"#{detail.name }"}));
+
+     }
+	end
+
   # *Description*
   #     Format detail value for display. 
   #     the parameter format was instroduced for the export to csv, for which html_escape should not be called

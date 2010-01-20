@@ -12,7 +12,7 @@
   <div id="addition_form_div" class="hidden">
 		<%#  :update => "#{@entity.name.underscorize}_list_div" ,
 		%>
-
+<!-- OLD FORM <% unless true %>
     <form id="entity_form" method="post" action="<%= url_for :action=> 'apply_edit' %>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
 
     <input type="hidden" name="instance_id" value="-1">
@@ -21,6 +21,7 @@
     <%=submit_tag t('madb_submit')%> <%= link_to_function t("madb_cancel"), "$('addition_form_div').style.display='none'; new Form.reset_madb_form (document.forms[0]);"%>
     </form>
 
+<% end %> -->
 
 ------<div id="testForm"> </div>------
 
@@ -40,30 +41,7 @@
             fields.push ( { type : 'submit', label : 'Submit'});
             fields.push ( {type : 'reset', label : 'Reset'});
  
-   f = new Y.Form({
-      id:"test",
-        contentBox: '#testForm',
-        action : '<%= url_for :action=> "apply_edit" %>',
-        method : 'post',
-        fields : fields
-    });
- 
-    f.subscribe('success', function (args) {
-        var data = args.response.responseText;
-        var list_div = Y.one("#<%=@list_id%>_div");
-        list_div.set('innerHTML',data);
-        var highlighted_row = list_div.one("tr.highlight");
-        var anim = new Y.Anim({ node: highlighted_row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
-        g=anim;
-        anim.run();
-        f.reset();
-
-        f._formNode.all('input.invalid_form_value').removeClass('invalid_form_value').addClass('unchecked_form_value');
-        Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
-    });
-    f.subscribe('failure', function (args) {
-        alert('Form submission failed');
-    });
+    <%= default_entity_form( :form_content_box => "testForm", :list_id => @list_id) %>
  
     f.render();
 <% end %>
@@ -73,7 +51,7 @@
 
 
 
-
+<!-- OLD FORM  <% unless true %>
 <script type="text/javascript">
   var success_action= function(data)
   {
@@ -99,6 +77,7 @@
    <%= render :partial => "upload_form_function", :entity => @entity %>
   new EntityFormSubmitter('entity_form', success_action);
 </script>
+<% end %> -->
 
   </div>
 <% end %>

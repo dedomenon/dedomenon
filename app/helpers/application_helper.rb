@@ -89,9 +89,11 @@ module ApplicationHelper
     # options:
     # :modules => { "gallery-forms" => { :fullpath => "http://....", :requires => ['node', 'attribute'], :optional => [], :supersedes => []} }
     # :use => [ 'gallery-forms', 'console']
+    # :console => true
 
     def initialize(options = {})
-      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
+#      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
+      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
       #build string passed to YUI
       init = ""
       options[:modules].each do |m| 
@@ -109,9 +111,12 @@ module ApplicationHelper
       end
         init= "{ modules : #{init}}"
       #build options passed to use()
+      options[:use].push('console') if RAILS_ENV=="development" or options[:console] == true
       use = ""
       use += options[:use].collect{|u| '"'+u.to_s+'"'}.join(',')
+
       @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
+      @yui_init += "new Y.Console().render();" if RAILS_ENV=="development" or options[:console] ==true
     end
     def display(body)
       "#{@yui_init} #{body} }); "
@@ -126,4 +131,69 @@ module ApplicationHelper
 #alert("hello");
 #<% end %>
 #
+
+  def default_entity_form(h)
+   (h[:form_content_box] and h[:list_id]) or raise "need both :form_content_box and :list_id passed"
+
+   js = %{f = new Y.Form({
+      id:"test",
+        contentBox: '##{h[:form_content_box]}',
+        action : '#{url_for :controller => :entities, :action=> "apply_edit"}',
+        method : 'post',
+        resetAfterSubmit: false,
+        skipValidationBeforeSubmit: true,
+        fields : fields
+    });
+ 
+    f.subscribe('success', function (args) {
+	var data = args.response.responseText;
+	if (data.match(/(.{8}_([\\w\\s]+_[\\w\\s]*)\\[\\d\](_\\w+)*(######)?)+/))
+	{
+	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input',this.form); 
+	    try {
+	    YAHOO.util.Dom.batch(invalid_fields, function (e) {Element.removeClassName( e,'invalid_form_value');Element.addClassName( e,'unchecked_form_value'); });
+	    }
+	    catch(e)
+	    {
+	    }
+	  ids = data.split('######');
+          console.log(ids);
+	  //<%# comment needed for test code
+	  //%>
+	  for(var i=0;i</*>*/ids.length; i++)
+	  {
+	      value = ids[i];
+
+              YAHOO.util.Dom.removeClass( value,'valid_form_value');
+              YAHOO.util.Dom.removeClass( value,'unchecked_form_value');
+              YAHOO.util.Dom.addClass( value,'invalid_form_value');
+	  }
+	}
+	else if (data.match(/__ERROR__.*/))
+	{
+	  message = data.replace('__ERROR__','');
+	  alert(message);
+	}
+	else
+	{
+          var list_div = Y.one("##{h[:list_id]}_div");
+          list_div.set('innerHTML',data);
+          var highlighted_row = list_div.one("tr.highlight");
+          var anim = new Y.Anim({ node: highlighted_row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
+          g=anim;
+          anim.run();
+
+          f._formNode.all('input.invalid_form_value').removeClass('invalid_form_value').addClass('unchecked_form_value');
+          Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
+        }
+    });
+    f.subscribe('failure', function (args) {
+        alert('Form submission failed');
+    });}
+
+    return js
+
+  end
+
+
 end
