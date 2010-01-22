@@ -113,7 +113,7 @@ module ApplicationHelper
       #build options passed to use()
       options[:use].push('console') if RAILS_ENV=="development" or options[:console] == true
       use = ""
-      use += options[:use].collect{|u| '"'+u.to_s+'"'}.join(',')
+      use += options[:use].collect{|u| '"'+u.to_s+'"'}.push('"madb"').join(',')
 
       @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
       @yui_init += "new Y.Console().render();" if RAILS_ENV=="development" or options[:console] ==true
@@ -132,10 +132,28 @@ module ApplicationHelper
 #<% end %>
 #
 
+  #default entity form
   def default_entity_form(h)
    (h[:form_content_box] and h[:list_id]) or raise "need both :form_content_box and :list_id passed"
 
-   js = %{f = new Y.Form({
+   js = %{
+     
+     
+//We add validation on all fields. 
+//If no validator was specified for the detail (see in model), 
+//the default one is used, accepting all values.
+//If a validator was defined with YUI.madb.get_detail_validator, it will be used.
+    Y.Array.each(fields,
+      function(field,i,a) { 
+        if (field.on)
+        {
+          field.on('blur', Y.bind( function(e) {
+            this.validateField();
+            }, field));
+        }
+    });
+     
+     f = new Y.Form({
       id:"test",
         contentBox: '##{h[:form_content_box]}',
         action : '#{url_for :controller => :entities, :action=> "apply_edit"}',
@@ -157,7 +175,6 @@ module ApplicationHelper
 	    {
 	    }
 	  ids = data.split('######');
-          console.log(ids);
 	  //<%# comment needed for test code
 	  //%>
 	  for(var i=0;i</*>*/ids.length; i++)
