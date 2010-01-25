@@ -101,10 +101,7 @@ function reset_style(id)
 
 //FIXME: doesn't have access to Y as not defined here!
 YUI.add('madb', function(Y) {
- if (!YUI.madb_forms) {
-   YUI.madb = {};
- }
-
+  Y.namespace('madb');
   var get_detail_validator= function (detail_id) {
     var validator=function(val, field) {
       var check_url = '/app/entities/check_detail_value_validity';
@@ -137,7 +134,7 @@ YUI.add('madb', function(Y) {
     return validator;
   }
 
-  YUI.madb = { get_detail_validator: get_detail_validator }
+  Y.madb.get_detail_validator= get_detail_validator; 
 }, '1.0', { requires: ['io-base'], skinnable: false} );
 
 

@@ -93,7 +93,7 @@ module ApplicationHelper
 
     def initialize(options = {})
 #      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
-      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
+      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'event-custom'], :optional => [], :supersedes => []}} 
       #build string passed to YUI
       init = ""
       options[:modules].each do |m| 
@@ -113,7 +113,7 @@ module ApplicationHelper
       #build options passed to use()
       options[:use].push('console') if RAILS_ENV=="development" or options[:console] == true
       use = ""
-      use += options[:use].collect{|u| '"'+u.to_s+'"'}.push('"madb"').join(',')
+      use += options[:use].collect{|u| '"'+u.to_s+'"'}.push('"madb"').push('"event-custom"').join(',')
 
       @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
       @yui_init += "new Y.Console().render();" if RAILS_ENV=="development" or options[:console] ==true

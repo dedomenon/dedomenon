@@ -26,3 +26,31 @@
   <%= render :partial => "upload_form_function", :entity => @entity %>
   new EntityFormSubmitter('entity_form', success_action);
 </script>
+
+
+
+
+<div id="testForm"> </div>
+
+<script type="text/javascript">
+<% yui_block( :modules => [ "gallery-form" ], :use => [ 'gallery-form', 'anim']) do %>
+    // Create a Field Object manually
+    var fields = [ ];
+    fields.push( new Y.HiddenField({
+                  name:"instance_id",
+                  value:"<%= @instance.id%>"}));
+    fields.push( new Y.HiddenField({
+                  name:"entity",
+                  value:"<%=@instance.entity.id%>"}));
+
+    <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
+
+            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
+            fields.push ( {type : 'reset', label : 'Reset'});
+    <%= default_entity_form( :form_content_box => "testForm", :list_id => "dummy_list_id") %>
+ 
+    f.render();
+<% end %>
+</script>
+
+

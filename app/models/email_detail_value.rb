@@ -53,10 +53,16 @@ class EmailDetailValue < DetailValue
 
     var email_field =  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
-                  validator : YUI.madb.get_detail_validator(#{detail.id}),
+                  validator : Y.madb.get_detail_validator(#{detail.id}),
                   name:"#{detail.name+"["+i.to_s+"]"}[value]",
                   value:"#{value}",
                   label:"#{detail.name }"})
+    email_field.on('clear', function(field) {
+             field._fieldNode.removeClass('valid_form_value');
+             field._fieldNode.removeClass('invalid_form_value');
+             field._fieldNode.removeClass('unchecked_form_value');
+
+    });
     fields.push(email_field);
     }
 	end
