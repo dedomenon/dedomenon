@@ -72,7 +72,7 @@ module EntitiesHelpers
       return ""
     else
       detail = Detail.find detail_filter
-      return "\"#{CrosstabObject.connection.quote_string(detail.name.downcase)}\" ilike '#{leading_wildcard}#{CrosstabObject.connection.quote_string(params["value_filter"].to_s)}#{trailing_wildcard}'"
+      return "\"#{CrosstabObject.connection.quote_string(detail.name.downcase)}\"::text ilike '#{leading_wildcard}#{CrosstabObject.connection.quote_string(params["value_filter"].to_s)}#{trailing_wildcard}'"
     end
   end
     
