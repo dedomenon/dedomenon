@@ -20,7 +20,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 #FIXME: The fixtures exists but no table!
-class TranslationTest < Test::Unit::TestCase
+class TranslationTest < ActiveSupport::TestCase
   #fixtures :translations
 
   def setup

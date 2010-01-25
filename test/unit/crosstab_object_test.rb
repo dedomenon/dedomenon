@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CrosstabObjectTest < Test::Unit::TestCase
+class CrosstabObjectTest < ActiveSupport::TestCase
   # The fixtures for the cross_tab objects do not exists.
   # The cross_tab object is being used for a specific purpose
   # and has no role beneath the surface.

@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class RelationTest < Test::Unit::TestCase
+class RelationTest < ActiveSupport::TestCase
   fixtures :relations
 
   def setup

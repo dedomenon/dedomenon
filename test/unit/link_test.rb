@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class LinkTest < Test::Unit::TestCase
+class LinkTest < ActiveSupport::TestCase
   fixtures :links
 
   def setup

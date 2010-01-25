@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DetailValuePropositionTest < Test::Unit::TestCase
+class DetailValuePropositionTest < ActiveSupport::TestCase
   fixtures :detail_value_propositions
 
   def setup

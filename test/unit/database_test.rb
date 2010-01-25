@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DatabaseTest < Test::Unit::TestCase
+class DatabaseTest < ActiveSupport::TestCase
   fixtures :databases
 
   def setup

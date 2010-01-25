@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class AccountTypeTest < Test::Unit::TestCase
+class AccountTypeTest < ActiveSupport::TestCase
   fixtures :account_types
 
   def setup

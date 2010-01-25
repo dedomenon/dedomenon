@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class Entities2DetailTest < Test::Unit::TestCase
+class Entities2DetailTest < ActiveSupport::TestCase
   fixtures :entities2details
 
   def setup

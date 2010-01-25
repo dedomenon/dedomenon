@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class RelationSideTypeTest < Test::Unit::TestCase
+class RelationSideTypeTest < ActiveSupport::TestCase
   fixtures :relation_side_types
 
   def setup

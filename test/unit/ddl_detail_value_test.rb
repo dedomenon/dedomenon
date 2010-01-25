@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DdlDetailValueTest < Test::Unit::TestCase
+class DdlDetailValueTest < ActiveSupport::TestCase
   fixtures :ddl_detail_values
 
   def setup

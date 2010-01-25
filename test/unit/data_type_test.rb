@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class DataTypeTest < Test::Unit::TestCase
+class DataTypeTest < ActiveSupport::TestCase
   fixtures :data_types
 
   def setup

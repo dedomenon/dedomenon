@@ -20,7 +20,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'entities_controller'
 
-class DetailValueTest < Test::Unit::TestCase
+class DetailValueTest < ActiveSupport::TestCase
   fixtures :details, :detail_values
 
   def setup

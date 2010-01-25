@@ -19,7 +19,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class EntityTest < Test::Unit::TestCase
+class EntityTest < ActiveSupport::TestCase
   self.use_transactional_fixtures = false
   fixtures :entities, :data_types, :details, :entities2details, :instances, :detail_values, :integer_detail_values, :date_detail_values, :ddl_detail_values, :detail_value_propositions
 
