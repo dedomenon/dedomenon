@@ -113,7 +113,7 @@ module ApplicationHelper
       #build options passed to use()
       options[:use].push('console') if RAILS_ENV=="development" or options[:console] == true
       use = ""
-      use += options[:use].collect{|u| '"'+u.to_s+'"'}.push('"madb"').push('"event-custom"').join(',')
+      use += options[:use].collect{|u| '"'+u.to_s+'"'}.join(',')
 
       @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
       @yui_init += "new Y.Console().render();" if RAILS_ENV=="development" or options[:console] ==true
