@@ -93,7 +93,7 @@ module ApplicationHelper
 
     def initialize(options = {})
 #      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
-      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'event-custom'], :optional => [], :supersedes => []}} 
+      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
       #build string passed to YUI
       init = ""
       options[:modules].each do |m| 
