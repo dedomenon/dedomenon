@@ -149,7 +149,7 @@ class Entity < ActiveRecord::Base
                 
               # However, if the value is not preset, Sorry! Move next because
               # we do not insert empty values.
-              if value["value"]=="" or ( value["value"].respond_to?( :original_filename) and value["value"].original_filename=="")
+              if value["value"].nil? or value["value"]=="" or ( value["value"].respond_to?( :original_filename) and value["value"].original_filename=="")
                 next
               end
               
