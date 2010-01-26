@@ -149,22 +149,22 @@ class FileAttachment < DetailValue
 
   function delete_file_#{entity}_#{i}()
   {
-    dojo.io.bind({
-        url: "#{o[:controller].url_for(:controller => "detail_values", :action =>"delete", :id => self.id )}",
-        load: function(type, data, evt)
-        { 
-          displayFileUpload_#{entity}_#{i}(null, false);
-          if (document.getElementById('#{hidden_field_id}')!=null) 
-            {
-              document.getElementById('#{hidden_field_id}').setAttribute('value','');
-            }
-        },
-            
-        error: function(type, error){ alert(error.message) },
-        mimetype: "text/plain"
-    });
+    var callback ={ success: function(o) {
+                    displayFileUpload_#{entity}_#{i}(null, false);
+                    if (document.getElementById('#{hidden_field_id}')!=null) 
+                      {
+                        document.getElementById('#{hidden_field_id}').setAttribute('value','');
+                      }
+                  },
+                    failure: function(type, error){ alert(error.message) }
+    }
+                        
+
+    var url = "#{o[:controller].url_for(:controller => "detail_values", :action =>"delete", :id => self.id )}";
+    YAHOO.util.Connect.asyncRequest('POST', url, callback, null);
 
   }
+
   #{upload_file_function}
    function undoFileUpload_#{entity}_#{i}()
      {
