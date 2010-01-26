@@ -41,7 +41,7 @@
             fields.push ( { type : 'submit', label : 'Submit'});
             fields.push ( {type : 'reset', label : 'Reset'});
  
-    <%= default_entity_form( :form_content_box => "testForm", :list_id => @list_id, :upload => @entity.has_file_attachment_detail?) %>
+    <%= default_entity_form( :form_content_box => "testForm", :success_callback => update_list_form_callback(@list_id), :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();
 <% end %>
