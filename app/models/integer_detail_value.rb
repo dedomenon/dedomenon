@@ -83,6 +83,30 @@ class IntegerDetailValue < DetailValue
 		 }
   end
 
+  def to_yui_form_row(i=0,o={})
+    entity = %Q{#{o[:form_id]}_#{o[:entity].name}}.gsub(/ /,"_")
+		 id = detail.name+"["+i.to_s+"]"
+	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    var integer_field=  new Y.TextField({
+                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  validator : Y.madb.get_detail_validator(#{detail.id}),
+                  value:"#{value}",
+                  label:"#{detail.name }"});
+    integer_field.on('clear', function(field) {
+             field._fieldNode.removeClass('valid_form_value');
+             field._fieldNode.removeClass('invalid_form_value');
+             field._fieldNode.removeClass('unchecked_form_value');
+
+    });
+    fields.push(integer_field);
+
+     }
+	end
+
   def self.valid?(value, o={})
     if value.nil? or value.match(/^\d*$/)
       return true
