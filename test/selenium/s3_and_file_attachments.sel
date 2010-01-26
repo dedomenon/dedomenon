@@ -28,9 +28,40 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|SimpleFile[0][value]|~/files/64K|
 |type|S3File[0][value]|~/files/32K|
 |click|commit||
-|pause|10000||
+|pause|1500||
 |assertTable|entities_list_Files.1.0|64K|
 |assertTable|entities_list_Files.1.1|32K|
+|clickAndWait|//img[@alt='Edit']||
+|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
+|assertVisible|//td[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//td[text() = '32K']/img[@alt='delete_file']||
+|click|//td[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
+|assertElementNotPresent|//td[text() = '32K']/img[@alt='replace_file']||
+|assertElementNotPresent|//td[text() = '32K']/img[@alt='delete_file']||
+|assertVisible|//td[text() = 'S3File:']/following-sibling::td/img[@alt="undo_replace_file"]||
+|assertVisible|//td[text() = 'S3File:']/following-sibling::td/input[@type="file"]||
+|click|//td[text() = 'S3File:']/following-sibling::td/img[@alt="undo_replace_file"]||
+|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
+|assertVisible|//td[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//td[text() = '32K']/img[@alt='delete_file']||
+|click|//td[text() = '32K']/img[@alt='replace_file']||
+|type|//td[text() = 'S3File:']/following-sibling::td/input[@type="file"]|~/files/128K|
+|clickAndWait|commit||
+|click|//tbody[@id='1']/tr/td/span/a||
+|pause|1500||
+|assertTable|entities_list_Files.1.0|64K|
+|assertTable|entities_list_Files.1.1|128K|
+|clickAndWait|//img[@alt='Edit']||
+|click|//td[text() = '64K']/img[@alt='delete_file']||
+|pause|500||
+|assertElementPresent|//td[text() = 'SimpleFile:']/following-sibling::td/input[@type="file"]||
+|clickAndWait|//a[ text() = 'madb_cancel']||
+|assertTable|entities_list_Files.1.0||
+|assertTable|entities_list_Files.1.1|128K|
 |click|//img[@alt='Delete']||
 |assertConfirmation|madb_really_delete_entity_question||
 |clickAndWait|link=madb_logout||
