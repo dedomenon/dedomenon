@@ -93,7 +93,7 @@ module ApplicationHelper
 
     def initialize(options = {})
 #      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
-      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
+      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}} 
       #build string passed to YUI
       init = ""
       options[:modules].each do |m| 
@@ -134,10 +134,17 @@ module ApplicationHelper
 
   #default entity form
   def default_entity_form(h)
-   (h[:form_content_box] and h[:list_id]) or raise "need both :form_content_box and :list_id passed"
+   (h[:form_content_box] ) or raise "need :form_content_box passed"
+   h[:upload]=false if h[:upload].nil?
+   h[:success_callback] ="" if h[:success_callback].nil?
+
+   #listen to complete event if this is an upload form
+   #listent to success for normal forms
+   event_to_watch = (h[:upload] ? "complete" : "success")
 
    js = %{
      
+
      
 //We add validation on all fields. 
 //If no validator was specified for the detail (see in model), 
@@ -158,12 +165,13 @@ module ApplicationHelper
         contentBox: '##{h[:form_content_box]}',
         action : '#{url_for :controller => :entities, :action=> "apply_edit"}',
         method : 'post',
+        upload : #{h[:upload]},
         resetAfterSubmit: false,
         skipValidationBeforeSubmit: true,
         fields : fields
     });
  
-    f.subscribe('success', function (args) {
+    f.subscribe('#{event_to_watch}', function (args) {
 	var data = args.response.responseText;
 	if (data.match(/(.{8}_([\\w\\s]+_[\\w\\s]*)\\[\\d\](_\\w+)*(######)?)+/))
 	{
@@ -193,7 +201,21 @@ module ApplicationHelper
 	}
 	else
 	{
-          var list_div = Y.one("##{h[:list_id]}_div");
+          #{h[:success_callback]}
+        }
+    });
+    f.subscribe('failure', function (args) {
+        alert('Form submission failed');
+    });}
+
+    return js
+
+  end
+
+  def update_list_form_callback(list_id)
+
+        js= %{  
+          var list_div = Y.one("##{list_id}_div");
           list_div.set('innerHTML',data);
           var highlighted_row = list_div.one("tr.highlight");
           var anim = new Y.Anim({ node: highlighted_row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
@@ -203,13 +225,8 @@ module ApplicationHelper
           f._formNode.all('input.invalid_form_value').removeClass('invalid_form_value').addClass('unchecked_form_value');
           Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
         }
-    });
-    f.subscribe('failure', function (args) {
-        alert('Form submission failed');
-    });}
 
-    return js
-
+        return js
   end
 
 

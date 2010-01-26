@@ -182,6 +182,24 @@ class FileAttachment < DetailValue
     #end
 	end
 
+	def to_yui_form_row(i=0,o={})
+         entity = %Q{#{o[:form_id]}_#{o[:entity].name}}.gsub(/ /,"_")
+         id = detail.name+"["+i.to_s+"]"
+	   %Q{
+    fields.push( new Y.HiddenField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  name:"#{detail.name}[#{i.to_s}][id]",
+                  value:"#{self.id}"}));
+    var file_field = new Y.FileField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_value",
+                  name:"#{detail.name}[#{i.to_s}][value]",
+                  label:"#{detail.name }"});
+    fields.push(file_field);
+            }
+        end
+        
+                        
+
 
   def self.no_transfer_allowed_icon
     img_id = String.random(8)
