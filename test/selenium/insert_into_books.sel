@@ -46,14 +46,14 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTable|entities_list_Books.4.5|new@new.new|
 |assertTable|entities_list_Books.4.6|exact:http://mohsin.com|
 |assertTable|entities_list_Books.4.7|32K|
-|clickAndWait|//tr[@id='tr_Books_list_203']/td[9]/a/img||
+|clickAndWait|//tr[@id='tr_books_list_203']/td[9]/a/img||
 |clickAndWait|link=madb_edit||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
 |clickAndWait|commit||
 |assertTable|//div[@id='content']/div/table.1.1|This book does nothing so do not read and nothing to be edited|
 |clickAndWait|link=Books||
-|click|//tr[@id='tr_Books_list_204']/td[11]/a/img||
+|click|//tr[@id='tr_books_list_204']/td[11]/a/img||
 |assertConfirmation|madb_really_delete_entity_question||
-|click|//tr[@id='tr_Books_list_203']/td[11]/a/img||
+|click|//tr[@id='tr_books_list_203']/td[11]/a/img||
 |assertConfirmation|madb_really_delete_entity_question||
 |click|link=madb_logout||

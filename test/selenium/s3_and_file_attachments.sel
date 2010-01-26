@@ -25,6 +25,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |select|displayed_in_list_view|label=madb_yes|
 |clickAndWait|commit||
 |clickAndWait|//tbody[@id='1']/tr/td/span[2]/a[1]/img||
+|pause|1000||
 |type|SimpleFile[0][value]|~/files/64K|
 |type|S3File[0][value]|~/files/32K|
 |click|commit||

@@ -7,6 +7,7 @@
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |click|//a[contains(@href, "javascript:change('6')")]||
 |clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
+|pause|1000||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
 |type|nom[0][value]|test nom|
 |type|prenom[0][value]|test prénom|
@@ -15,7 +16,9 @@
 |click|commit||
 |pause|500||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="invalid_form_value"]||
+|focus|//input[@name="company_email[0][value]"]||
 |type|//input[@name="company_email[0][value]"]|hjkdshkjfd@test.com|
+|focus|coordonees_specifiques[0][value]||
 |type|coordonees_specifiques[0][value]|hj|
 |pause|500||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||

@@ -8,10 +8,11 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|commit||
 |click|img6||
 |clickAndWait|//tbody[@id='6']/tr[13]/td/span[2]/a[1]/img||
+|pause|1000||
 |type|Name[0][value]|Mr 64K|
 |type|name=Picture[0][value]|~/files/64K|
 |click|commit||
-|pause|2000||
+|pause|1000||
 |assertTable|entities_list_Persons.1.0|Mohsin Hijazee|
 |assertTable|entities_list_Persons.1.1|logo-Ubuntu.png|
 |assertTable|entities_list_Persons.2.0|Mr 64K|
@@ -26,9 +27,9 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTable|entities_list_Persons.2.1|64K|
 |assertTable|entities_list_Persons.3.0|Mr 32K|
 |assertTable|entities_list_Persons.3.1|32K|
-|click|//tr[@id='tr_Persons_list_203']/td[5]/a/img||
+|click|//tr[@id='tr_persons_list_203']/td[5]/a/img||
 |assertConfirmation|madb_really_delete_entity_question||
-|click|//tr[@id='tr_Persons_list_204']/td[5]/a/img||
+|click|//tr[@id='tr_persons_list_204']/td[5]/a/img||
 |assertConfirmation|madb_really_delete_entity_question||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||
