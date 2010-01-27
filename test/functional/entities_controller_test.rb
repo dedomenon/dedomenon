@@ -69,41 +69,8 @@ class EntitiesControllerTest < ActionController::TestCase
      #link to show the form
      #assert_tag({ :tag => "a", :attributes => { :onclick => Regexp.new("\\$\\('addition_form_div'\\).style.display='block';.*Form.focusFirstElement.*return false;")  }}  )
      #number of rows
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :children => { :only => { :tag => "tr" } , :count => 10 }} }   }  )
+     assert_tag({ :tag => "div", :attributes => { :id => "addition-form" }   }  )
 
-     #form's hidden fields
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form",  :descendant => { :tag => "input", :attributes => { :type => "hidden", :name =>"instance_id", :value => "-1"}    } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :descendant => { :tag => "input", :attributes => { :type => "hidden", :name =>"entity", :value => "11"}  }  } }     )
-     
-     #nom
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"nom[0][id]", :type => "hidden", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"nom[0][value]", :value => ""}  }  } }   }  )
-     #code_nace
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"code_nace[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"code_nace[0][value]", :value => ""}  }  } }   }  )
-     #tva
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"TVA[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"TVA[0][value]", :value => ""}  }  } }   }  )
-     #personnes_occuppees
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"personnes_occuppees[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"personnes_occuppees[0][value]", :value => ""}  }  } }   }  )
-     #address
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"adresse[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"adresse[0][value]", :value => ""}  }  } }   }  )
-     #phone
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"telephone[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"telephone[0][value]", :value => ""}  }  } }   }  )
-     #fax
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"fax[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"fax[0][value]", :value => ""}  }  } }   }  )
-     #status drop down
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "select", :attributes => { :name =>"status[0][value]"}  }  } }   }  )
-     #memo textarea
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"memo[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "textarea", :attributes => { :name =>"memo[0][value]" }  }  } }   }  )
-     #company email
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"company_email[0][id]", :value => ""}  }  } }   }  )
-     assert_tag({ :tag => "div", :attributes => { :id => "addition_form_div", :class => "hidden" }, :child => { :tag => "form", :child => { :tag => "table" ,  :descendant => { :tag => "input", :attributes => { :name =>"company_email[0][value]", :value => ""}  }  } }   }  )
 
   end
 
@@ -1243,36 +1210,6 @@ class EntitiesControllerTest < ActionController::TestCase
 	def test_edit_of_instance
 		get :edit, {:id => 77}, {'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
-		#all details ar present with correct value
-		assert_tag :tag => "input", :attributes => { :name => "nom[0][value]", :value => "Axios"}
-		assert_tag :tag => "input", :attributes => { :name => "code_nace[0][value]", :value => "230202020"}
-		assert_tag :tag => "input", :attributes => { :name => "TVA[0][value]", :value => "BE230202020"}
-		assert_tag :tag => "input", :attributes => { :name => "personnes_occuppees[0][value]", :value => "10"}
-		assert_tag :tag => "input", :attributes => { :name => "adresse[0][value]", :value => "Place De Brouckere 26"}
-		assert_tag :tag => "input", :attributes => { :name => "telephone[0][value]", :value => "+32 2 227 61 00"}
-		assert_tag :tag => "input", :attributes => { :name => "fax[0][value]", :value => "+32 2 227 61 01"}
-		assert_tag :tag => "textarea", :attributes => { :name => "memo[0][value]"}, :content => "Ceci est le m\303\251mo qui est un long text"
-		assert_tag :tag => "select", :attributes => { :name => "status[0][value]"}, :child => { :tag => "option", :attributes => { :value => "11", :selected=> "selected"}, :content => "sprl"}
-		assert_tag :tag => "input", :attributes => { :name => "company_email[0][value]", :value => "inf@consultaix.com"}
-
-		#detail watchers
-		assert_tag :tag =>"script", :content => Regexp.new("new DetailWatcher.*_societe_company_email\\[0\\].*63")
-		assert_tag :tag =>"script", :content => Regexp.new("new DetailWatcher.*_societe_personnes_occuppees\\[0\\].*51")
-		#hidden fields
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"entity", :value=> "11"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"instance_id", :value=> "77"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"form_id", :value=> Regexp.new("........")}
-		#hidden fields for details
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"nom[0][id]", :value=> "347"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"code_nace[0][id]", :value=> "348"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"TVA[0][id]", :value=> "349"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"personnes_occuppees[0][id]", :value=> "8"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"adresse[0][id]", :value=> "350"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"telephone[0][id]", :value=> "351"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"fax[0][id]", :value=> "352"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"memo[0][id]", :value=> "353"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"status[0][id]", :value=> "18"}
-		assert_tag :tag => "input", :attributes => {:type=> "hidden", :name=>"company_email[0][id]", :value=> "354"}
 	end
 
 
