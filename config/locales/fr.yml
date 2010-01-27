@@ -299,6 +299,7 @@ fr:
   madb_status: Status
   madb_replace_file: Remplacer le fichier
   madb_delete_file: Effacer le fichier
+  madb_delete_file_confirmation: Effacer le fichier? Effacer un fichier est définitif, et il ne peut pas être récupéré par après.
   madb_pay_with_paypal: Payer avec Paypal.
   madb_enter_your_email_address_to_have_a_new_password_sent_to_you: "Entrez votre adresse \xC3\xA9lectronique pour recevoir un courriel avec les informations n\xC3\xA9cessaire pour obtenir un nouveau mot de passe."
   madb_no: Non

@@ -71,5 +71,6 @@ body {
   border-style: none;
 }
 .yui-button{
-  display: inline;
+  display: inline-block;
 }
+

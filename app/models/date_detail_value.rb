@@ -90,10 +90,20 @@ class DateDetailValue < DetailValue
                   id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
                   name:"#{detail.name}[#{i.to_s}][id]",
                   value:"#{self.id}"}));
-    fields.push( new Y.TextField({
+    var date_field =  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
+                  validator: Y.madb.get_detail_validator(#{detail.id}),
                   name:"#{detail.name+"["+i.to_s+"]"}[value]",
-                  label:"#{detail.name }"}));
+                  label:"#{detail.name }"})
+    date_field.on('clear', function(field) {
+                     field._fieldNode.removeClass('valid_form_value');
+                     field._fieldNode.removeClass('invalid_form_value');
+                     field._fieldNode.removeClass('unchecked_form_value');
+                 });
+
+    fields.push(date_field);
+
+
 
      }
 	end
@@ -102,6 +112,7 @@ class DateDetailValue < DetailValue
   # *Workflow*
   #     Uses the <tt>DateTime.parse()</tt> function to accomplish the task.
   def self.valid?(value, o={})
+                return true if value.blank?
 		begin
 			DateTime.parse(value)
 			return true

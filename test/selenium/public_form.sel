@@ -19,23 +19,26 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||
 |open|/app/entities/public_form/30||
+|pause|500||
 |assertElementPresent|//form||
-|assertElementPresent|//div[@id="addition_form_div"]||
 |assertElementPresent|//textarea[@name="long_text[0][value]"]||
-|assertElementPresent|//input[@detail_id="65" and @class="unchecked_form_value" and @type="text"  and @name="date[0][value]"]||
+|assertElementPresent|//input[ @type="text"  and @name="date[0][value]"]||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
 |assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
 |assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
-|assertElementPresent|//input[@detail_id="70" and @class="unchecked_form_value" and @type="file" and @name="s3_attachment[0][value]"]||
-|assertElementPresent|//input[@detail_id="72" and @class="unchecked_form_value" and @type="file" and @name="other_s3_attachment[0][value]"]||
-|assertElementPresent|//input[@class="submit" and @name="commit" and @type="submit" and @value="madb_submit"]||
-|type|long_text[0][value]|public form addition|
+|assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
+|assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
+|assertElementPresent|//button[@id="commit" and text()='madb_submit']||
+|focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
+|focus|//input[@type="text" and @name="émail[0][value]"]||
 |type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
-|type|//input[@detail_id="70" and @class="unchecked_form_value" and @type="file" and @name="s3_attachment[0][value]"]|/home/mohsinhijazee/files/64K.file|
-|type|//input[@detail_id="72" and @type="file" and @name="other_s3_attachment[0][value]"]|/home/mohsinhijazee/files/32K.file|
+|type|//input[@type="file" and @name="s3_attachment[0][value]"]|/~/files/64K.file|
+|type|//input[@type="file" and @name="other_s3_attachment[0][value]"]|~/files/32K.file|
+|focus|long_text[0][value]||
+|type|long_text[0][value]|public form addition|
 |pause|1000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
@@ -47,39 +50,44 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |click|commit||
 |pause|5000||
 |assertVisible|//div[@id="insertion_successful"]||
-|assertNotVisible|//div[@id="addition_form_div"]||
+|assertNotVisible|//div[@id="public-form"]||
 |open|/test_public_form.html||
-|assertElementPresent|//form||
-|assertElementPresent|//div[@id="addition_form_div"]||
+|pause|800||
+|assertElementPresent|//div[@id="public-form"]||
+|assertVisible|//div[@id="public-form"]||
 |assertElementPresent|//textarea[@name="long_text[0][value]"]||
-|assertElementPresent|//input[@detail_id="65" and @class="unchecked_form_value" and @type="text"  and @name="date[0][value]"]||
+|assertElementPresent|//input[@type="text"  and @name="date[0][value]"]||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
 |assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
 |assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
-|assertElementPresent|//input[@detail_id="70" and @class="unchecked_form_value" and @type="file" and @name="s3_attachment[0][value]"]||
-|assertElementPresent|//input[@detail_id="72" and @class="unchecked_form_value" and @type="file" and @name="other_s3_attachment[0][value]"]||
-|assertElementPresent|//input[@class="submit" and @name="commit" and @type="submit" and @value="madb_submit"]||
+|assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
+|assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
+|assertElementPresent|//button[@id="commit" and text()='madb_submit']||
 |type|long_text[0][value]|embedded_public form addition|
+|focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
+|focus|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
 |type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
-|type|//input[@detail_id="70" and @class="unchecked_form_value" and @type="file" and @name="s3_attachment[0][value]"]|/home/mohsinhijazee/files/64K.file|
-|type|//input[@detail_id="72" and @type="file" and @name="other_s3_attachment[0][value]"]|/home/mohsinhijazee/files/32K-quater.file|
+|type|//input[@type="file" and @name="s3_attachment[0][value]"]|/home/mohsinhijazee/files/64K.file|
+|type|//input[@type='file' and @name="other_s3_attachment[0][value]"]|/home/mohsinhijazee/files/32K-quater.file|
 |pause|1000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
-|pause||500|
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
 |click|commit||
-|pause|5000||
+|pause|2000||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
+|focus|//input[@type="text"  and @name="integer[0][value]"]||
+|focus|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
 |type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
+|focus|web_url[0][value]||
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|short_text[0][value]|embedded_public_form_addition|
 |click|commit||
-|pause|5000||
+|pause|2000||
 |assertVisible|//div[@id="insertion_successful"]||
-|assertNotVisible|//div[@id="addition_form_div"]||
+|assertElementNotPresent|//div[@class="yui-form"]||
 |open|/app||
 |type|user_login|selenium@raphinou.com|
 |type|user_password|linuxxxx|

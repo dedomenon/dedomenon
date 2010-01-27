@@ -186,13 +186,14 @@ class FileAttachment < DetailValue
          entity = %Q{#{o[:form_id]}_#{o[:entity].name}}.gsub(/ /,"_")
          id = detail.name+"["+i.to_s+"]"
 	   %Q{
-    fields.push( new Y.HiddenField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
-                  name:"#{detail.name}[#{i.to_s}][id]",
-                  value:"#{self.id}"}));
-    var file_field = new Y.FileField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_value",
-                  name:"#{detail.name}[#{i.to_s}][value]",
+    var file_field = new Y.MadbFileField({
+                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]",
+                  name:"#{detail.name}[#{i.to_s}]",
+                  deleteURL:"#{o[:controller].url_for(:controller => "detail_values", :action =>"delete", :id => self.id )}",
+                  value:"#{value.nil? ? '' : value[:filename]}",
+                  detailValueId: "#{self.id}",
+                  localizedStrings: { delete_file_confirmation: "#{ t('madb_delete_file_confirmation')}"},
+                  transferAllowed: "#{allows_upload?.to_s}",
                   label:"#{detail.name }"});
     fields.push(file_field);
             }

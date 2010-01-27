@@ -33,34 +33,38 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTable|entities_list_Files.1.0|64K|
 |assertTable|entities_list_Files.1.1|32K|
 |clickAndWait|//img[@alt='Edit']||
-|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
-|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
-|assertVisible|//td[text() = '32K']/img[@alt='replace_file']||
-|assertVisible|//td[text() = '32K']/img[@alt='delete_file']||
-|click|//td[text() = '32K']/img[@alt='replace_file']||
-|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
-|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
-|assertElementNotPresent|//td[text() = '32K']/img[@alt='replace_file']||
-|assertElementNotPresent|//td[text() = '32K']/img[@alt='delete_file']||
-|assertVisible|//td[text() = 'S3File:']/following-sibling::td/img[@alt="undo_replace_file"]||
-|assertVisible|//td[text() = 'S3File:']/following-sibling::td/input[@type="file"]||
-|click|//td[text() = 'S3File:']/following-sibling::td/img[@alt="undo_replace_file"]||
-|assertVisible|//td[text() = '64K']/img[@alt='delete_file']||
-|assertVisible|//td[text() = '64K']/img[@alt='replace_file']||
-|assertVisible|//td[text() = '32K']/img[@alt='replace_file']||
-|assertVisible|//td[text() = '32K']/img[@alt='delete_file']||
-|click|//td[text() = '32K']/img[@alt='replace_file']||
-|type|//td[text() = 'S3File:']/following-sibling::td/input[@type="file"]|~/files/128K|
+|pause|1000||
+|assertVisible|//div[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//div[text() = '64K']/img[@alt='replace_file']||
+|assertVisible|//div[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//div[text() = '32K']/img[@alt='delete_file']||
+|click|//div[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//div[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//div[text() = '64K']/img[@alt='replace_file']||
+|assertElementNotPresent|//div[text() = '32K']/img[@alt='replace_file']||
+|assertElementNotPresent|//div[text() = '32K']/img[@alt='delete_file']||
+|assertVisible|//label[text() = 'S3File']/following-sibling::div/img[@alt="undo_replace_file"]||
+|assertVisible|//label[text() = 'S3File']/following-sibling::div/input[@type="file"]||
+|click|//label[text() = 'S3File']/following-sibling::div/img[@alt="undo_replace_file"]||
+|assertVisible|//div[text() = '64K']/img[@alt='delete_file']||
+|assertVisible|//div[text() = '64K']/img[@alt='replace_file']||
+|assertVisible|//div[text() = '32K']/img[@alt='replace_file']||
+|assertVisible|//div[text() = '32K']/img[@alt='delete_file']||
+|click|//div[text() = '32K']/img[@alt='replace_file']||
+|type|//label[text() = 'S3File']/following-sibling::div/input[@type="file"]|~/files/128K|
 |clickAndWait|commit||
+|pause|500||
 |click|//tbody[@id='1']/tr/td/span/a||
 |pause|1500||
 |assertTable|entities_list_Files.1.0|64K|
 |assertTable|entities_list_Files.1.1|128K|
 |clickAndWait|//img[@alt='Edit']||
-|click|//td[text() = '64K']/img[@alt='delete_file']||
-|pause|500||
-|assertElementPresent|//td[text() = 'SimpleFile:']/following-sibling::td/input[@type="file"]||
-|clickAndWait|//a[ text() = 'madb_cancel']||
+|pause|2000||
+|click|//div[text() = '64K']/img[@alt='delete_file']||
+|assertConfirmation|madb_delete_file_confirmation||
+|pause|1000||
+|assertElementPresent|//label[text() = 'SimpleFile']/following-sibling::div/input[@type="file"]||
+|clickAndWait|//button[@id = 'cancel' and text()="madb_cancel"]||
 |assertTable|entities_list_Files.1.0||
 |assertTable|entities_list_Files.1.1|128K|
 |click|//img[@alt='Delete']||

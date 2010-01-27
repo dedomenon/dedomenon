@@ -6,8 +6,6 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|user_login|raphinou@yahoo.com|
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
-|click|img6||
-|pause|500||
 |click|//tbody[@id='6']/tr[12]/td/span[2]/a[1]/img||
 |pause|1500||
 |type|Name[0][value]|A new philosophy to testing|
@@ -48,6 +46,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTable|entities_list_Books.4.7|32K|
 |clickAndWait|//tr[@id='tr_books_list_203']/td[9]/a/img||
 |clickAndWait|link=madb_edit||
+|pause|700||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
 |clickAndWait|commit||
 |assertTable|//div[@id='content']/div/table.1.1|This book does nothing so do not read and nothing to be edited|

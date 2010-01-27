@@ -111,12 +111,12 @@ module ApplicationHelper
       end
         init= "{ modules : #{init}}"
       #build options passed to use()
-      options[:use].push('console') if RAILS_ENV=="development" or options[:console] == true
+      options[:use].push('console') if options[:console] == true #or RAILS_ENV=="development"
       use = ""
       use += options[:use].collect{|u| '"'+u.to_s+'"'}.join(',')
 
       @yui_init = "YUI(#{init}).use(#{use}, function(Y) {"
-      @yui_init += "new Y.Console().render();" if RAILS_ENV=="development" or options[:console] ==true
+      @yui_init += "new Y.Console().render();" if options[:console] ==true # or RAILS_ENV=="development" 
     end
     def display(body)
       "#{@yui_init} #{body} }); "
@@ -136,7 +136,7 @@ module ApplicationHelper
   def default_entity_form(h)
    (h[:form_content_box] ) or raise "need :form_content_box passed"
    h[:upload]=false if h[:upload].nil?
-   h[:success_callback] ="" if h[:success_callback].nil?
+   h[:success_callback] ='function(form,data){}'  if h[:success_callback].nil?
 
    #listen to complete event if this is an upload form
    #listent to success for normal forms
@@ -201,7 +201,8 @@ module ApplicationHelper
 	}
 	else
 	{
-          #{h[:success_callback]}
+         var callback =  #{h[:success_callback]} ;
+         callback(f,data);
         }
     });
     f.subscribe('failure', function (args) {
@@ -215,6 +216,8 @@ module ApplicationHelper
   def update_list_form_callback(list_id)
 
         js= %{  
+          function(form,data)
+          {
           var list_div = Y.one("##{list_id}_div");
           list_div.set('innerHTML',data);
           var highlighted_row = list_div.one("tr.highlight");
@@ -224,6 +227,7 @@ module ApplicationHelper
 
           f._formNode.all('input.invalid_form_value').removeClass('invalid_form_value').addClass('unchecked_form_value');
           Effect.Fade('xhr_message',{duration:0.5,queue:'end'});
+          }
         }
 
         return js

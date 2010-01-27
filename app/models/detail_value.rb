@@ -16,6 +16,7 @@
 #
 #Copyright 2008 Raphaël Bauduin
 ################################################################################
+require_dependency 'translations'
 
 require "erb"
 require 'entities2detail.rb'
@@ -48,6 +49,7 @@ include ERB::Util
 #   belongs_to :detail
 #
 class DetailValue <  ActiveRecord::Base
+  include Translations
   
   belongs_to :instance
   belongs_to :detail

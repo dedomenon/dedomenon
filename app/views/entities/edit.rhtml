@@ -3,34 +3,7 @@
 
 <%=help_info("madb_help_info_entities_edition")%>
 
-
-   <form id="entity_form" method="post" action="<%= url_for :action => 'apply_edit' %>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
-
-
-
-<input type="hidden" name="instance_id" value="<%=@instance.id%>">
-<input type="hidden" name="entity" value="<%=@instance.entity.id%>">
-
-<%= render :partial => "entity_form", :object => @instance %>
-
-<%= submit_tag t("madb_submit")%> 
-<% if request.env["HTTP_REFERER"] %>
-  <%=link_to t("madb_cancel"),request.env["HTTP_REFERER"] %>
-<% end %>
-</form>
-
-
-<script type="text/javascript">
-
-  var success_action= function() { document.location='<%=session['return-to']%>';};
-  <%= render :partial => "upload_form_function", :entity => @entity %>
-  new EntityFormSubmitter('entity_form', success_action);
-</script>
-
-
-
-
-<div id="testForm"> </div>
+<div id="edition-form"> </div>
 
 <script type="text/javascript">
 <% yui_block( :modules => [ "gallery-form" ], :use => [ 'gallery-form', 'anim', 'madb']) do %>
@@ -45,11 +18,14 @@
 
     <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
 
-            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
-            fields.push ( {type : 'reset', label : 'Reset'});
-    <%= default_entity_form( :form_content_box => "testForm", :upload => @entity.has_file_attachment_detail?) %>
+            fields.push ( { type : 'submit', label : '<%= t('madb_submit') %>', id: 'commit'});
+            <% if request.env["HTTP_REFERER"] %>
+              fields.push ( { type : 'button', label : '<%= t('madb_cancel')%>', id: 'cancel', onclick: { fn: function(){document.location="<%=request.env['HTTP_REFERER']%>" ;}}  });
+            <% end %>
+    <%= default_entity_form( :form_content_box => "edition-form", :upload => @entity.has_file_attachment_detail?, :success_callback => "function(form,data){ document.location='#{session['return-to']}';}") %>
  
     f.render();
+    f.focus();
 <% end %>
 </script>
 

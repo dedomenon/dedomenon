@@ -353,6 +353,7 @@ en:
   madb_status: Status
   madb_replace_file: Replace file
   madb_delete_file: Delete file
+  madb_delete_file_confirmation: Really delete file? Deleting a file is definitive and can not be undone!
   madb_pay_with_paypal: Pay with Paypal.
   madb_enter_your_email_address_to_have_a_new_password_sent_to_you: Enter your email address and we'll send you a mail with instructions to get a new password.
   madb_no: "No"
