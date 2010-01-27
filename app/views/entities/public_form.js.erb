@@ -1,0 +1,56 @@
+if (typeof YUI == 'undefined')
+{
+console.log('adding yui');
+var s = document.createElement("script");
+s.type="text/javascript";
+s.src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js";
+document.getElementsByTagName("head").item(0).appendChild(s);
+
+  var f = function(){
+    if (typeof YUI == 'undefined')
+    {
+      console.log("YUI undefined");
+      setTimeout ( 'f()', 200 );
+    }
+    else
+    {
+      console.log(YUI);
+
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'io-xdr']) do %>
+    // Create a Field Object manually
+//   Flash XDR config
+       var xdrConfig = { 
+         id: 'flash',
+         yid: Y.id,
+         src:'/IO.swf'
+       };
+       Y.io.transport(xdrConfig);
+       Y.on('io:xdrReady', function() {
+         alert('ready');});
+
+    var fields = [ ];
+    fields.push( new Y.HiddenField({
+                  name:"instance_id",
+                  value:"-1"}));
+    fields.push( new Y.HiddenField({
+                  name:"entity",
+                  value:"<%=@entity.id%>"}));
+
+    <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
+
+            fields.push ( { type : 'submit', label : '<%= t('madb_submit')%>', id: 'commit'});
+            fields.push ( {type : 'reset', label : '<%= t('madb_reset')%>'});
+    <%= default_entity_form( :form_content_box => "form", :success_callback => "function(f,data) { f.get('contentBox').addClass('hidden'); Y.one('#insertion_successful').removeClass('hidden');}", :upload => @entity.has_file_attachment_detail?) %>
+ 
+    f.render();
+    f.focus();
+
+<% end %>
+
+
+    }
+      
+  };
+  setTimeout ( 'f()', 10 );
+
+}

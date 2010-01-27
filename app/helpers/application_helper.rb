@@ -93,10 +93,11 @@ module ApplicationHelper
 
     def initialize(options = {})
 #      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
-      @modules = { "gallery-form" => { :fullpath => "/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}} 
+      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/madb-yui.js", :requires => ['io-base']  }} 
       #build string passed to YUI
-      init = ""
+      inits = []
       options[:modules].each do |m| 
+        init =""
         if m.kind_of? Array
           module_name = m[0]
           module_spec = m[1]
@@ -104,12 +105,13 @@ module ApplicationHelper
           module_name = m
           module_spec = @modules[m]
         end
-        init = "{'#{module_name}' : "
-        init+=module_spec.inject("{"){|a,k| a+k[0].to_s+':'+ k[1].to_json.chomp+',' }.chop
-        init+= "}}"
+        init+= "\"#{module_name}\" : "
+        init+=module_spec.inject("{"){|a,k| a+'"'+k[0].to_s+'":'+ k[1].to_json.chomp+',' }.chop + ""
+        init+= "}"
+        inits.push init
         
       end
-        init= "{ modules : #{init}}"
+        init= "{ modules : { #{inits.join(',')} }}"
       #build options passed to use()
       options[:use].push('console') if options[:console] == true #or RAILS_ENV=="development"
       use = ""

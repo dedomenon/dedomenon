@@ -900,10 +900,18 @@ class EntitiesController < ApplicationController
   end
   
   def check_detail_value_validity
+                if request.env["REQUEST_METHOD"]=="OPTIONS"
+                  headers["Access-Control-Allow-Origin"]="*"
+                  headers["Access-Control-Allow-Methods"] = "*"
+                  headers["Access-Control-Allow-Headers"] = "x-requested-with"
+                  render :nothing => true
+                  return
+                end
 		#called by javascript form observer
 		detail = Detail.find params["detail_id"]
 		value = params["detail_value"]
 		detail_value_class = class_from_name(detail.data_type.class_name)
+                headers["Access-Control-Allow-Origin"]="*"
 		if detail_value_class.valid?(value, :session => session)
 			render :text => '1'
 		else
@@ -917,8 +925,8 @@ class EntitiesController < ApplicationController
       @verification_string = String.random
       @verification_hash = Digest::SHA1.digest(@verification_string)
       session["public_form_check"] =@verification_string
-      if params['embedded']=='t'
-        render :layout => nil
+      if params['embedded']=='t' or params[:format]=='js'
+        render :layout => false
       else
         render :layout => "public"
       end
