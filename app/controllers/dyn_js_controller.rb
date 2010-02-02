@@ -1,6 +1,7 @@
 class DynJsController < ApplicationController
   def madb_yui
-   render :layout => false 
+       response.content_type = Mime::JS
+       render :layout => false 
   end
 
 end
