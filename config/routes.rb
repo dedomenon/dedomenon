@@ -51,6 +51,7 @@ ActionController::Routing::Routes.draw do |map|
   # following is added to support the formats of response.
   map.connect ':controller/:action/:id.:format'
   map.connect '/app/:controller/:action/:id.:format'
+  map.connect '/app/:controller/:action.:format'
   
   
 end
