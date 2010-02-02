@@ -27,11 +27,11 @@ YUI.add('madb', function(Y) {
               success: tH.success
         }
 // Flash XDR config
-        ,
-        xdr: {
-          use: 'flash',
-          responseXML: false
-        }      
+//        ,
+//        xdr: {
+//          use: 'flash',
+//          responseXML: false
+//        }      
 // Native XDR config
 //        ,
 //        xdr: {
@@ -45,5 +45,154 @@ YUI.add('madb', function(Y) {
   }
 
   Y.madb.get_detail_validator= get_detail_validator; 
-}, '1.0', { requires: ['io-base', 'io-xdr'], skinnable: false} );
+
+/**
+ * @class MadbFileField
+ * @extends FormField
+ * @param config {Object} Configuration object
+ * @constructor
+ * @description A password field node
+ */
+function MadbFileField () {
+    MadbFileField.superclass.constructor.apply(this,arguments);
+}
+
+Y.mix(MadbFileField, {
+    NAME : 'madb-file-field',
+    DELETE_ICON_TEMPLATE : '<img class="action_cell" src="/images/icon/big/delete.png" alt="delete_file"/>',
+    REPLACE_ICON_TRANSFER_ALLOWED: '<img class="action_cell" src="/images/icon/big/edit.png" alt="replace_file"/>',
+    REPLACE_ICON_TRANSFER_REFUSED: '<img src="/images/icon/big/error.png" alt="quota_reached"></img>',
+    UNDO_REPLACE_ICON:'<img src="/images/icon/big/undo.png" alt="undo_replace_file" />',
+    FILE_FIELD_TEMPLATE: '<input type="file"></input>',
+    HIDDEN_FIELD_TEMPLATE: '<input type="hidden"></input>',
+    ATTRS : {
+		transferAllowed : {
+			value : true,
+			validator : Y.Lang.isBoolean
+		},
+                deleteURL : {
+                        value: "",
+                        validator: Y.Lang.isString
+                },
+                detailValueId : {
+                        value: "",
+                        validator: Y.Lang.isString
+                },
+                localizedStrings : {
+                        value: {},
+                        validator: Y.Lang.isObject
+                }
+    }
+});
+
+Y.extend(MadbFileField, Y.FormField, {
+    _nodeType : 'file',
+    _replaceIconNode: null,
+    _deleteIconNode: null,
+    _fileField: null,
+    _fieldContainer: null,
+    _replaceIconTemplate: function() {
+      if (this.get('transferAllowed')){
+        return MadbFileField.REPLACE_ICON_TRANSFER_ALLOWED;}
+      else {
+        return MadbFileField.REPLACE_ICON_TRANSFER_REFUSED; }
+    },
+    _initializeContainer: function() {
+                this._fieldContainer.set('innerHTML',this.init_value);
+                this._fieldContainer.appendChild(this._deleteIconNode);
+                this._fieldContainer.appendChild(this._replaceIconNode);
+    },
+    _renderFieldNode : function() {
+      var contentBox = this.get('contentBox'),
+              field = contentBox.query('#' + this.get('id'));
+
+      if (this.get("value")===""){
+        MadbFileField.superclass._renderFieldNode.apply(this, arguments);
+        this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
+        contentBox.appendChild(this._hiddenFieldNode);
+      }
+      else
+      {
+        if (!field) {
+                this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
+                this._fieldContainer = Y.Node.create("<div></div>");
+                this._deleteIconNode = Y.Node.create(MadbFileField.DELETE_ICON_TEMPLATE);
+                this._undoReplaceIconNode = Y.Node.create(MadbFileField.UNDO_REPLACE_ICON);
+                this._replaceIconNode = Y.Node.create(this._replaceIconTemplate());
+                this._initializeContainer();
+                contentBox.appendChild(this._fieldContainer);
+                this._fieldNode=Y.Node.create(MadbFileField.FILE_FIELD_TEMPLATE);
+        }
+      }
+    },
+
+    _displayFileField : function() {
+      this._fieldContainer.set('innerHTML','');
+      this._fieldContainer.appendChild(this._fieldNode);
+      this._fieldContainer.appendChild(this._hiddenFieldNode);
+      if (this._hiddenFieldNode.getAttribute('value')!=='') {
+        this._fieldContainer.appendChild(this._undoReplaceIconNode);
+      }
+    }
+    ,
+    _handleDeleteClick: function() {
+      if (confirm(this.get('localizedStrings').delete_file_confirmation)){
+
+        var callback ={ success: function(o) {
+                        this._hiddenFieldNode.setAttribute('value','');
+                        this._displayFileField();
+                        },
+                        failure: function(o){ alert(o.responseText); }
+        };
+                            
+
+        var cfg= { method: 'POST',
+                   context: this,
+                   on : callback};
+
+        var url = this.get('deleteURL');
+        Y.io( url, cfg);
+      }
+
+    }, 
+    _handleReplaceClick: function() {
+      this._displayFileField();
+    }, 
+    _handleUndoReplaceClick: function() {
+      this._initializeContainer();
+    }, 
+
+    bindUI: function(){
+        MadbFileField.superclass.bindUI.apply(this, arguments);
+        if (this.get('value')!=="")
+        {
+          this._deleteIconNode.on('click', Y.bind(function(e) { this._handleDeleteClick();}, this));
+          this._replaceIconNode.on('click', Y.bind(function(e) { this._handleReplaceClick();}, this));
+          this._undoReplaceIconNode.on('click', Y.bind(function(e) { this._handleUndoReplaceClick();}, this));
+        }
+    },
+    _syncFieldNode: function() {
+                // we override this as we can't set value of file field
+		this._fieldNode.setAttrs({
+			name : this.get('name')+'[value]', 
+			type : this._nodeType,
+			id : this.get('id')+'_value'
+		});
+		this._hiddenFieldNode.setAttrs({
+			name : this.get('name')+'[id]', 
+			id : this.get('id')+'_id',
+                        value : this.get('detailValueId')
+		});
+                this._fieldNode.setAttribute('tabindex', Y.FormField.tabIndex);
+                Y.FormField.tabIndex++;
+      }
+
+});
+
+Y.MadbFileField = MadbFileField;
+
+
+
+
+}, '1.0', { requires: ['io-base', 'io-xdr', 'gallery-form'], skinnable: false} );
 
