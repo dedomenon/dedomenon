@@ -1,6 +1,5 @@
 if (typeof YUI == 'undefined')
 {
-console.log('adding yui');
 var s = document.createElement("script");
 s.type="text/javascript";
 s.src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js";
@@ -9,12 +8,10 @@ document.getElementsByTagName("head").item(0).appendChild(s);
   var f = function(){
     if (typeof YUI == 'undefined')
     {
-      console.log("YUI undefined");
       setTimeout ( 'f()', 200 );
     }
     else
     {
-      console.log(YUI);
 
 <% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'io-xdr']) do %>
     // Create a Field Object manually
@@ -22,6 +19,7 @@ document.getElementsByTagName("head").item(0).appendChild(s);
        var xdrConfig = { 
          id: 'flash',
          yid: Y.id,
+         // With YUI 3.1, we can enter a remote URL here
          src:'/IO.swf'
        };
        Y.io.transport(xdrConfig);
