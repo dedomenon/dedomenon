@@ -92,8 +92,10 @@ module ApplicationHelper
     # :console => true
 
     def initialize(options = {})
-#      @modules = { "gallery-form" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.12.08-22/build/gallery-form/gallery-form-min.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute'], :optional => [], :supersedes => []}} 
-      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
+      #used for development
+      #@modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
+      # this uses the gallery-form in myowndb's repository
+      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/gallery-form/gallery-form#{RAILS_ENV=="development" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
       #build string passed to YUI
       inits = []
       options[:modules].each do |m| 
@@ -106,7 +108,7 @@ module ApplicationHelper
           module_spec = @modules[m]
         end
         init+= "\"#{module_name}\" : "
-        init+=module_spec.inject("{"){|a,k| a+'"'+k[0].to_s+'":'+ k[1].to_json.chomp+',' }.chop + ""
+        init+=module_spec.inject("{"){|a,k| a+'"'+k[0].to_s+'":'+ k[1].to_json.chomp+',' }.chop
         init+= "}"
         inits.push init
         
