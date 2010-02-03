@@ -63,8 +63,8 @@ Y.mix(MadbFileField, {
     REPLACE_ICON_TRANSFER_ALLOWED: '<img class="action_cell" src="/images/icon/big/edit.png" alt="replace_file"/>',
     REPLACE_ICON_TRANSFER_REFUSED: '<img src="/images/icon/big/error.png" alt="quota_reached"></img>',
     UNDO_REPLACE_ICON:'<img src="/images/icon/big/undo.png" alt="undo_replace_file" />',
-    FILE_FIELD_TEMPLATE: '<input type="file"></input>',
-    HIDDEN_FIELD_TEMPLATE: '<input type="hidden"></input>',
+    FILE_FIELD_TEMPLATE: '<input type="file"/>',
+    HIDDEN_FIELD_TEMPLATE: '<input type="hidden"/>',
     ATTRS : {
 		transferAllowed : {
 			value : true,
@@ -114,7 +114,6 @@ Y.extend(MadbFileField, Y.FormField, {
       else
       {
         if (!field) {
-                this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
                 this._fieldContainer = Y.Node.create("<div></div>");
                 this._deleteIconNode = Y.Node.create(MadbFileField.DELETE_ICON_TEMPLATE);
                 this._undoReplaceIconNode = Y.Node.create(MadbFileField.UNDO_REPLACE_ICON);
@@ -122,6 +121,7 @@ Y.extend(MadbFileField, Y.FormField, {
                 this._initializeContainer();
                 contentBox.appendChild(this._fieldContainer);
                 this._fieldNode=Y.Node.create(MadbFileField.FILE_FIELD_TEMPLATE);
+                this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
         }
       }
     },
@@ -175,12 +175,11 @@ Y.extend(MadbFileField, Y.FormField, {
                 // we override this as we can't set value of file field
 		this._fieldNode.setAttrs({
 			name : this.get('name')+'[value]', 
-			type : this._nodeType,
 			id : this.get('id')+'_value'
 		});
 		this._hiddenFieldNode.setAttrs({
 			name : this.get('name')+'[id]', 
-			id : this.get('id')+'_id',
+                        id : this.get('id')+'_id',
                         value : this.get('detailValueId')
 		});
                 this._fieldNode.setAttribute('tabindex', Y.FormField.tabIndex);
