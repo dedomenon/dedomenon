@@ -64,7 +64,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertConfirmation|madb_delete_file_confirmation||
 |pause|1000||
 |assertElementPresent|//label[text() = 'SimpleFile']/following-sibling::div/input[@type="file"]||
-|clickAndWait|//button[@id = 'cancel' and text()="madb_cancel"]||
+|clickAndWait|//div[@id='menu']/div[5]/table/tbody/tr/td/span/a||
 |assertTable|entities_list_Files.1.0||
 |assertTable|entities_list_Files.1.1|128K|
 |click|//img[@alt='Delete']||
