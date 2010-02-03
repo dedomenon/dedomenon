@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   # *Description*
   #   Sets the encoding for the responce to be UTF-8
   def set_encoding
-    unless params["format"]=="csv"
+    unless ["csv", "js"].include? params["format"]
       response.headers["Content-Type"] = "text/html; charset=UTF-8"
     end
   end
