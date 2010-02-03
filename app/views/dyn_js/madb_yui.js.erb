@@ -85,7 +85,7 @@ Y.mix(MadbFileField, {
     }
 });
 
-Y.extend(MadbFileField, Y.FormField, {
+Y.extend(MadbFileField, Y.FileField, {
     _nodeType : 'file',
     _replaceIconNode: null,
     _deleteIconNode: null,
@@ -172,6 +172,7 @@ Y.extend(MadbFileField, Y.FormField, {
         }
     },
     _syncFieldNode: function() {
+                Y.log('sync field node for madb file field');
                 // we override this as we can't set value of file field
 		this._fieldNode.setAttrs({
 			name : this.get('name')+'[value]', 
