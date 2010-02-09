@@ -59,6 +59,7 @@ class ApplicationController < ActionController::Base
   # *Description*
   #   Returns the databases of the user.
   def user_dbs
+    return [] if session["user"].nil?
     session["user"].account.databases
   end
 

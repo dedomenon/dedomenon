@@ -66,53 +66,19 @@ class EntitiesController < ApplicationController
   #
   def check_public_access
     
-    
-    # if the intended action is public_form or public_form_javascript then
-    # the params[:id] is an entitiy id.
-    if params["action"]=="public_form" or params["action"]=="public_form_javascript"
-      entity_id = params["id"]
-    end
-    
-    # if the intended action is apply_edit then the params[:entity] contains the
-    # entity id.
-    if params["action"]=="apply_edit"
-      entity_id = params["entity"]
-    end
-    
-    
+
     entity=Entity.find entity_id
-    
-    # If the user is not in the session, then check whether the entity
-    # has a public form? Otherwise pick the database and check if it is
-    # in the user dbs. If not in user dbs, its error.
-    if !session["user"]
-      # This perhaps does not work under Rails 2.02
-      # See the alternative code below if
-      #return entity.has_public_form?
-      
-      # In rails 2.02, haldilng the processing on a request requires ONLY
-      # to call render or redirect. The "and return false" is not needed but
-      # its being added for backward compatibility.
-      if !entity.has_public_form?
-        render :text => '', :status => 200 and return false;
-      end
+    @db= entity.database
+    return true if user_dbs.include? entity.database
 
-      if params["action"]=="apply_edit" and params[:instance_id]!="-1"
-        render :text => '', :status => 404 and return false;
-      end
 
-      
-    else
-        begin
-          @db = entity.database
-        rescue ActiveRecord::RecordNotFound
-          flash["error"]=t("madb_error_data_not_found")
-          redirect_to :controller => "database" and return false
-        end
-        if ! user_dbs.include? @db
-          flash["error"] = t("madb_instance_not_in_your_dbs")
-        end
+    if !entity.has_public_form?
+        render :text => 'Form inactive or not found', :status => 404 and return false;
     end
+    if params["action"]=="apply_edit"
+      render :text => '', :status => 404 and return false if params[:instance_id]!="-1"
+    end
+    
   end
   
   # *Description**
@@ -439,8 +405,8 @@ class EntitiesController < ApplicationController
     if entity_saved #sets @instance
       @instance = entity_saved
       
-      # if saved and we have a user, list entites otherwise nothing
-      if session["user"]
+      # if saved and we have auser of this database, list entites otherwise nothing
+      if session["user"] and user_dbs.include? @db
         render_component  :controller => "entities", :action => "entities_list", :id => params["entity"], :params =>{ :highlight => @instance.id }
       else
         render :nothing => true and return;
@@ -930,6 +896,23 @@ class EntitiesController < ApplicationController
       else
         render :layout => "public"
       end
+  end
+
+  private
+  def entity_id
+    # if the intended action is public_form or public_form_javascript then
+    # the params[:id] is an entitiy id.
+    if params["action"]=="public_form" or params["action"]=="public_form_javascript"
+      entity_id = params["id"]
+    end
+    
+    # if the intended action is apply_edit then the params[:entity] contains the
+    # entity id.
+    # reject request if instance_id is not -1, ie if it is for an update 
+    if params["action"]=="apply_edit"
+      entity_id = params["entity"]
+    end
+    return entity_id
   end
 
 
