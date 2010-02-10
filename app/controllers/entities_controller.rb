@@ -144,7 +144,7 @@ class EntitiesController < ApplicationController
       @div_class = "unfiltered"
       @separator = "where"
     end
-    crosstab_result =  crosstab_query_for_entity(params["id"], :display=> list_display)
+    crosstab_result =  @entity.crosstab_query_for_entity(:display=> list_display)
 
 
 
@@ -493,7 +493,7 @@ class EntitiesController < ApplicationController
     link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
 
     order=order_by
-    crosstab_result = crosstab_query_for_entity(@entity.id, :display => "detail")
+    crosstab_result = @entity.crosstab_query_for_entity(:display => "detail")
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
@@ -718,7 +718,7 @@ class EntitiesController < ApplicationController
 
 
     filters =  ["id in (#{ids_to_keep})",  clause]
-    crosstab_result = crosstab_query_for_entity(linked_entity_object.id)
+    crosstab_result = linked_entity_object.crosstab_query_for_entity()
     if crosstab_result
       crosstab_query     = crosstab_result[:query]
       @not_in_list_view  = crosstab_result[:not_in_list_view]

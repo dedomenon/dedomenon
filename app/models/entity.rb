@@ -239,6 +239,57 @@ class Entity < ActiveRecord::Base
     return  [ instance , []]
   end
   
+  def crosstab_query_for_entity(h = {})
+    entity_id = self.id
+    defaults = { :display => "detail" }
+    not_in_list_fields = []
+    details_kept = []
+
+    options = defaults.update h
+    entity = Entity.find entity_id
+    details_select = ""
+    as_string = "id int "
+    
+    ordinal = 1
+    entity.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
+      #entity_detail = EntityDetail.find :first, :condition => ["entity_id = ? and detail_id =?",entity.id, detail.id]
+      if detail.displayed_in_list_view=='f'
+        not_in_list_fields.push detail.name.downcase
+        next if options[:display]=="list"
+      end
+      details_kept.push detail
+      #'select name from (select 1 as id , ''contract_description'' as name UNION select 2 as id , ''contract_price'' as name  UNION select 3 as id ,''contractors_name'' as name UNION select 4 as id ,''telephone'' as name) as temporary_table'
+      details_select += " UNION select #{ordinal} as id, ''#{detail.name.downcase}'' as name"
+      ordinal = ordinal + 1
+      case detail.data_type.name
+      #  when "short_text"
+      #  when "long_text"
+      #  when "date"
+         when "madb_integer"
+          as_string += ",  \"#{detail.name.downcase}\" bigint "
+      #  when "choose_in_list"
+         else
+          as_string += ",  \"#{detail.name.downcase}\" text "
+      end
+    end
+
+    if details_select.length==0
+      return nil
+    else
+      details_select = "select name from (#{details_select}) as temporary_table"
+      h = { :values_query =>"select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value from instances i join detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value::text from instances i join date_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value::text from instances i join integer_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, pv.value from instances i join ddl_detail_values dv join detail_value_propositions pv on (pv.id=dv.detail_value_proposition_id)  on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id} order by id, name",
+      :details_query => details_select.sub!(/UNION/,""),
+      :as_string => "#{as_string}" }
+      #[ "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", not_in_list_fields ]
+      return { 
+        :query => "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", 
+        :not_in_list_view => not_in_list_fields, 
+        :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name.downcase }}
+    end
+  end
   #alias to_json old_to_json
        
   #FIXME: Add the options behaviour as a standard behaviour
