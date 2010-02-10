@@ -38,14 +38,6 @@ module EntitiesHelpers
     end 
   end
 
-  def build_details_hash
-    # Pick the details of this entity and populate them in a hash which is keyed by the name of the detail.
-    details = {}
-    EntityDetail.find(:all,:conditions =>  ["entity_id=?", @entity.id], :include => :detail).each do |d|
-      details[d.detail.name.downcase]=d.detail
-    end
-    details
-  end
 
   # method telling if the filter value we got must match the start of the values in the database
   # overwritten in rest::simple

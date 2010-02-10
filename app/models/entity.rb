@@ -77,7 +77,7 @@ class Entity < ActiveRecord::Base
     
   end
   def details_hash
-    @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name => i}) }
+    @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name.downcase => i}) }
   end
   #
   # Cleans params to only key values to be assigned to detail_values related to this entity
@@ -290,6 +290,15 @@ class Entity < ActiveRecord::Base
         :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name.downcase }}
     end
   end
+
+
+
+
+
+
+
+
+
   #alias to_json old_to_json
        
   #FIXME: Add the options behaviour as a standard behaviour

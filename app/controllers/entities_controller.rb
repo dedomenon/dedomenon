@@ -132,7 +132,7 @@ class EntitiesController < ApplicationController
       render :text => t("madb_no_instance_found",{:entity => @entity.name}) and return
     end
 
-    @details = build_details_hash
+    @details = @entity.details_hash
     # list id is of the format "entityname_list like prjects_list"
     @list_id = list_id
     
@@ -488,7 +488,7 @@ class EntitiesController < ApplicationController
       end
     end
 
-    @details = build_details_hash
+    @details = @entity.details_hash
     filter_clause = crosstab_filter
     link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
 

@@ -74,14 +74,14 @@ class ImportwizardControllerTest < ActionController::TestCase
     assert_response :success
     # test drop downs
     assert_tag :tag => "select",  :attributes => { :name => "bindings[status]"}, :children => {:count => 11} 
-    ["nom","code_nace","TVA","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
+    ["nom","code_nace","tva","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
       ["----", "company_name", "NACE", "VAT", "employees", "address", "phone", "fax","memo","status","company_email"].each do |csv_field|
         assert_tag :tag => "select",  :attributes => { :name => "bindings[#{detail}]"}, :descendant => {:tag => 'option', :attributes => { :value => csv_field }} 
       end
     end
 
     #check drop down and title correspond
-    ["nom","code_nace","TVA","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
+    ["nom","code_nace","tva","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
         assert_tag :tag => "td", :content => detail, :sibling => { :tag => "td" , :descendant => { :tag => "select",  :attributes => { :name => "bindings[#{detail}]"} } }
     end
 
