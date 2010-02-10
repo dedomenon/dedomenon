@@ -262,6 +262,7 @@ class Entity < ActiveRecord::Base
   end
   
   def crosstab_query(h = {})
+    return @crosstab_elements if @crosstab_elements
     entity_id = self.id
     defaults = { :display => "detail" }
     not_in_list_fields = []
@@ -304,15 +305,59 @@ class Entity < ActiveRecord::Base
       :details_query => details_select.sub!(/UNION/,""),
       :as_string => "#{as_string}" }
       #[ "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", not_in_list_fields ]
-      return { 
+      @crosstab_elements =  { 
         :query => "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", 
         :not_in_list_view => not_in_list_fields, 
         :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name.downcase }}
     end
   end
 
+  # returns page_number to display according to highlight value or the requested page
+  def page_number(crosstab_query=nil, h = {})
+    if h[:highlight] and h[:highlight]!=""
+      @instance = Instance.find h[:highlight]
+      #ERROR uploading empty file due to params["highlight"]
+      query_filter = join_filters( [ h[:filters], "id=#{CrosstabObject.connection.quote_string(h[:highlight].to_s)}"])
+      value_query = "select #{h[:order_by]} from #{crosstab_query} #{query_filter}"
+      highlight_value_row =  CrosstabObject.connection.execute(value_query)[0]
+      highlight_value = highlight_value_row[0] ? highlight_value_row[0] : highlight_value_row['id']
+      query_filter = join_filters( [h[:filters], "#{h[:order_by]}<'#{CrosstabObject.connection.quote_string(highlight_value.to_s)}'" ])
+      count_query = "select count(*) from #{crosstab_query} #{query_filter}"
+      highlight_row = CrosstabObject.connection.execute(count_query)[0]
+      highlight_count = highlight_row[0] ? highlight_row[0] : highlight_row['count']
+      return  (highlight_count.to_i/MadbSettings.list_length)+1
+    else
+      return h[:default_page]
+    end
+  end
 
+  def join_filters(filters)
+    filters = filters.flatten.reject{|f| f.nil? or f.length==0}
+    query_filter = ""
+    query_filter = " where " + filters.join(" and ")  if filters.length > 0
+    return query_filter
+  end
 
+  def get_paginated_list(h = {})
+    crosstab_query = self.crosstab_query[:query]
+    
+    query_filter = join_filters(h [:filters])
+
+    crosstab_count_row =  CrosstabObject.connection.execute("select count(*) from #{crosstab_query} #{query_filter}")[0]
+    crosstab_count = crosstab_count_row[0] ? crosstab_count_row[0] : crosstab_count_row['count']
+    #determine page to display.If we have a highlight parameter, always display the page of the highlighted item
+    if crosstab_count.to_i>0
+      paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, MadbSettings.list_length, page_number(crosstab_query, h)
+      limit, offset = paginator.current.to_sql
+      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\""
+      if h[:format]!="csv"
+        query += " limit #{limit} offset #{offset}"
+      end
+      return [CrosstabObject.find_by_sql(query), paginator]
+    else
+      return [ [], nil ]
+    end
+  end
 
 
 

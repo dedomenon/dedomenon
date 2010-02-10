@@ -156,7 +156,7 @@ class EntitiesController < ApplicationController
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
     
-    @list = get_paginated_list(crosstab_query, :filters => [ crosstab_filter ])
+    @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"]  , :order_by => order_by )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
 
@@ -492,12 +492,11 @@ class EntitiesController < ApplicationController
     filter_clause = crosstab_filter
     link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
 
-    order=order_by
     crosstab_result = @entity.crosstab_query(:display => "detail")
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
-    @list = get_paginated_list(crosstab_query, :filters => [ filter_clause , link_filter ] )
+    @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"], :order_by => order_by )
 
 
 
@@ -738,12 +737,12 @@ class EntitiesController < ApplicationController
       crosstab_count =0
     end
     if crosstab_count.to_i > 0
-      page_number = page_number(crosstab_query)
+      #page_number = page_number(crosstab_query)
       if params["highlight"]
         response.headers["MYOWNDB_highlight"]  =  params["highlight"].to_s
       end
 
-      @list = get_paginated_list(crosstab_query, :filters =>  filters  )
+      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"], :order_by => order_by )
     else
       @list = []
     end
@@ -915,5 +914,34 @@ class EntitiesController < ApplicationController
     return entity_id
   end
 
+  def order_by
+    session["list_order"]||={}
+    if params[order_param] and ! params["highlight"] or params["highlight"]==""
+      order=CrosstabObject.connection.quote_string(params[order_param].to_s)
+      session["list_order"][list_id]=order
+    elsif session["list_order"].has_key? [list_id]
+      order = session["list_order"][list_id]
+    else
+      order = "id"
+    end
+    return order
+  end
+  def crosstab_filter
+    if detail_filter.nil?
+      return ""
+    else
+      detail = Detail.find detail_filter
+      return "\"#{CrosstabObject.connection.quote_string(detail.name.downcase)}\"::text ilike '#{leading_wildcard}#{CrosstabObject.connection.quote_string(params["value_filter"].to_s)}#{trailing_wildcard}'"
+    end
+  end
+    
+  def detail_filter
+    return nil if params["detail_filter"].nil?
+    if is_id?(params["detail_filter"])
+      return params["detail_filter"]
+    else
+      @details[params["detail_filter"]].id
+    end 
+  end
 
 end
