@@ -160,10 +160,6 @@ class EntitiesController < ApplicationController
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
 
-    if params["format"]=="csv"
-      csv_string = render_to_string :template => "entities/entities_list_csv"
-      send_data(csv_string,:filename => @entity.name+".csv", :type => 'text/csv; charset=UTF-8')
-    end
   end
   
 
@@ -769,46 +765,41 @@ class EntitiesController < ApplicationController
         end
     end
 
-    if params["format"]=="csv"
-      csv_string = get_csv( { "instances" => @list })
-      headers["content_type"]= "text/x-csv"
-      send_data(csv_string,:filename => "export.csv")
-    end
 
   end
 
 
-  def get_csv(data)
-    detail_ids = []
-    data["entity"] = data["instances"][0].entity if data["instances"].length>0
-    s= ""
-    data["entity"].details.each  do |detail|
-      if detail.displayed_in_list_view=='t'
-        detail_ids.push detail.id
-        s+=%Q{"#{t(detail.name)}",}
-      end
-    end
-    s.chop
-    s.chop
-    s+="\n"
-   data["instances"].each do |instance|
-     data["entity"].details.each do |detail|
-       val = class_from_name(detail.data_type.class_name).find(:all, :conditions =>["instance_id=? and detail_id=?",instance.id, detail.id])[
-0]
-       if detail.displayed_in_list_view=='t'
-        if val
-          s+=%Q{"#{val.value}",}
-        else
-          s+=%Q{"",}
-        end
-       end
-     end
-     s.chop
-     s.chop
-     s+="\n"
-   end
-  return s
-  end
+#  def get_csv(data)
+#    detail_ids = []
+#    data["entity"] = data["instances"][0].entity if data["instances"].length>0
+#    s= ""
+#    data["entity"].details.each  do |detail|
+#      if detail.displayed_in_list_view=='t'
+#        detail_ids.push detail.id
+#        s+=%Q{"#{t(detail.name)}",}
+#      end
+#    end
+#    s.chop
+#    s.chop
+#    s+="\n"
+#   data["instances"].each do |instance|
+#     data["entity"].details.each do |detail|
+#       val = class_from_name(detail.data_type.class_name).find(:all, :conditions =>["instance_id=? and detail_id=?",instance.id, detail.id])[
+#0]
+#       if detail.displayed_in_list_view=='t'
+#        if val
+#          s+=%Q{"#{val.value}",}
+#        else
+#          s+=%Q{"",}
+#        end
+#       end
+#     end
+#     s.chop
+#     s.chop
+#     s+="\n"
+#   end
+#  return s
+#  end
 
   # *Description*
   #   The output from the actions of this contorller can be presented in variuos

@@ -602,9 +602,14 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "type", :value => "parents"} }
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "relation_id", :value => "7"} }
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "id", :value => "70"} }
-    #we display the to many  side, so NO need to hide the links
-    assert !assigns["hide_to_new_link"]
-    assert !assigns["hide_to_existing_link"]
+
+		assert_tag :tag => "td", :attributes => {:class => "data_cell"}, :content => "valtech" 
+                #we display the to many  side, so NO need to hide the links
+                assert !assigns["hide_to_new_link"]
+                assert !assigns["hide_to_existing_link"]
+
+                assert_equal 1, assigns["list"].length
+                assert_equal "valtech", assigns["list"][0].nom
 	end
 
 
@@ -618,8 +623,64 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "type", :value => "children"} }
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "relation_id", :value => "7"} }
 		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "id", :value => "77"} }
-    #check details order is used in the list
-     assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
+                #check details order is used in the list
+                assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
+                assert_equal 4, assigns["list"].length
+                assert_equal "Audux", assigns["list"][0].nom
+                assert_equal  "Florence", assigns["list"][0].prenom
+                assert_equal  "Consultante", assigns["list"][0].fonction
+                assert_equal  "", assigns["list"][0].service
+                assert_equal  "florence.audux@consultaix.com", assigns["list"][0].company_email
+
+                assert_equal "Kastagnette", assigns["list"][1].nom
+                assert_equal "Nicole", assigns["list"][1].prenom
+                assert_equal "Consultante", assigns["list"][1].fonction
+                assert_equal "", assigns["list"][1].service
+                assert_equal "nicole.kitsopulos@consultaix.com", assigns["list"][1].company_email
+
+                assert_equal "Biloute", assigns["list"][2].nom
+                assert_equal "Stéphanie", assigns["list"][2].prenom
+                assert_equal "Consultante", assigns["list"][2].fonction
+                assert_equal "", assigns["list"][2].service
+                assert_equal "stephanie.biloute@consultaix.com", assigns["list"][2].company_email
+
+                assert_equal "Danneels", assigns["list"][3].nom
+                assert_equal "Christiane", assigns["list"][3].prenom
+                assert_equal "Secrétaire", assigns["list"][3].fonction
+                assert_equal "Secrétatiat", assigns["list"][3].service
+                assert_equal "christiane.danneels@consultaix.com", assigns["list"][3].company_email
+
+	end
+	def test_children_related_entities_list_correct_user_in_csv
+		get :related_entities_list, {:id => '77', :relation_id => '7', :type=> 'children', :format => "csv"}, { 'user' => User.find_by_id(@db1_user_id)}
+		assert_response :success
+                assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
+                assert_equal 4, assigns["list"].length
+                assert_equal "Audux", assigns["list"][0].nom
+                assert_equal  "Florence", assigns["list"][0].prenom
+                assert_equal  "Consultante", assigns["list"][0].fonction
+                assert_equal  "", assigns["list"][0].service
+                assert_equal  "florence.audux@consultaix.com", assigns["list"][0].company_email
+
+                assert_equal "Kastagnette", assigns["list"][1].nom
+                assert_equal "Nicole", assigns["list"][1].prenom
+                assert_equal "Consultante", assigns["list"][1].fonction
+                assert_equal "", assigns["list"][1].service
+                assert_equal "nicole.kitsopulos@consultaix.com", assigns["list"][1].company_email
+
+                assert_equal "Biloute", assigns["list"][2].nom
+                assert_equal "Stéphanie", assigns["list"][2].prenom
+                assert_equal "Consultante", assigns["list"][2].fonction
+                assert_equal "", assigns["list"][2].service
+                assert_equal "stephanie.biloute@consultaix.com", assigns["list"][2].company_email
+
+                assert_equal "Danneels", assigns["list"][3].nom
+                assert_equal "Christiane", assigns["list"][3].prenom
+                assert_equal "Secrétaire", assigns["list"][3].fonction
+                assert_equal "Secrétatiat", assigns["list"][3].service
+                assert_equal "christiane.danneels@consultaix.com", assigns["list"][3].company_email
+                expected_result =  "\"nom\";\"prenom\";\"fonction\";\"service\";\"coordonees_specifiques\";\"company_email\";\n\"Audux\";\"Florence\";\"Consultante\";\"\";\"\";\"florence.audux@consultaix.com\";\n\"Kastagnette\";\"Nicole\";\"Consultante\";\"\";\"\";\"nicole.kitsopulos@consultaix.com\";\n\"Biloute\";\"Stéphanie\";\"Consultante\";\"\";\"\";\"stephanie.biloute@consultaix.com\";\n\"Danneels\";\"Christiane\";\"Secrétaire\";\"Secrétatiat\";\"\";\"christiane.danneels@consultaix.com\";\n"
+                assert_equal expected_result, @response.body
 	end
 	def test_popup_children_related_entities_list_correct_user
 		get :related_entities_list, {:id => '77', :relation_id => '7', :type=> 'children', :popup => 't'}, { 'user' => User.find_by_id(@db1_user_id)}

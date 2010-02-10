@@ -167,13 +167,10 @@ class SearchController < ApplicationController
 
     ids_list = instances_list.collect{|i| i.id}.join(",")
     if params["#{@list_id}_order"]
-      order=params["#{@list_id}_order"]
+      order_by=params["#{@list_id}_order"]
     else
-      order = "id"
+      order_by = "id"
     end
-
-    @paginator = Paginator.new self, instances_list.length  , 10, params[@list_id+"_page"]
-    limit, offset = @paginator.current.to_sql
 
     if params["format"]=="csv"
       list_display="complete"
@@ -186,15 +183,8 @@ class SearchController < ApplicationController
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
 
-    query = "select * from #{crosstab_query} where id in (#{ids_list}) order by  \"#{order}\""
-    if params["format"]!="csv"
-      query+=" limit #{limit} offset #{offset}"
-    end
-    @list = CrosstabObject.find_by_sql(query)
-    if params["format"]=="csv"
-      csv_string = render_to_string :template => "entities/entities_list_csv"
-      send_data(csv_string,:filename => @e+".csv", :type => 'text/csv; charset=UTF-8')
-    end
+    @list, @paginator = @entity.get_paginated_list(:filters =>  [" id in (#{ids_list})" ] , :format => params[:format], :highlight => params[:highlight], :default_page => params[@list_id+"_page"]  , :order_by => order_by )
+
   end
 
   def corresponding_values(value,entity_id=0, detail_id=0)
