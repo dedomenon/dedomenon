@@ -238,6 +238,28 @@ class Entity < ActiveRecord::Base
     end
     return  [ instance , []]
   end
+  def details_not_displayed_in_list
+    init_details_display_lists unless @details_not_displayed_in_list
+    @details_not_displayed_in_list
+  end
+  def details_displayed_in_list
+    init_details_display_lists unless @details_not_displayed_in_list
+    @details_displayed_in_list
+  end
+  def init_details_display_lists
+    @details_not_displayed_in_list = []
+    @details_displayed_in_list = []
+    self.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
+      if detail.displayed_in_list_view=='f'
+        @details_not_displayed_in_list.push detail.name.downcase
+        next
+      end
+      @details_displayed_in_list.push detail
+    end
+  end
+  def displayed_in_list?(detail)
+    @details_displayed_in_list.include? detail
+  end
   
   def crosstab_query_for_entity(h = {})
     entity_id = self.id
@@ -246,13 +268,11 @@ class Entity < ActiveRecord::Base
     details_kept = []
 
     options = defaults.update h
-    entity = Entity.find entity_id
     details_select = ""
     as_string = "id int "
     
     ordinal = 1
-    entity.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
-      #entity_detail = EntityDetail.find :first, :condition => ["entity_id = ? and detail_id =?",entity.id, detail.id]
+    self.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
       if detail.displayed_in_list_view=='f'
         not_in_list_fields.push detail.name.downcase
         next if options[:display]=="list"

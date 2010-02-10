@@ -73,21 +73,10 @@ class ApplicationController < ActionController::Base
 # PENDING: Document and understand this method
 
   # returns one row with each column being a detail of the object. The name of the column is the id of the detail
-  def details_query_for_instance( instance_id, h={})
-    dt = [ "detail_values", "integer_detail_values", "date_detail_values"]
-    cols = "d.id , v.value::text , e2d.display_order"
-    query = dt.inject("") do  |q, t|
-      q += "select d.id , v.value::text , e2d.display_order  from #{t} v join details d on (v.detail_id = d.id) join instances i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)   where instance_id = #{instance_id} union "
-    end
-
-    query += "select d.id , p.value::text, e2d.display_order  from ddl_detail_values v join details d on (v.detail_id = d.id) join detail_value_propositions p on (p.id=v.detail_value_proposition_id) join instances  i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)  where instance_id =#{instance_id}";
-
-  end
 
 
   
 
- helper_method :details_query_for_instance
   # *Description*
   #  Returns true if the action is part of the request instead of the URL
   def embedded?

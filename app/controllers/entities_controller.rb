@@ -208,7 +208,7 @@ class EntitiesController < ApplicationController
     @instance = Instance.find params["id"]
     @entity = @instance.entity :include => [ :entity_details ]
     @title = t("madb_entity_details", :vars => { 'entity' => t(@entity.name, :scope => "account")})
-    @crosstab_object = CrosstabObject.find_by_sql(details_query_for_instance(@instance.id)+" order by display_order")
+    @crosstab_object = CrosstabObject.find_by_sql(@instance.details_query()+" order by display_order")
   end
 
   def edit
