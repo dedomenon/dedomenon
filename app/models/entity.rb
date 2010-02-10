@@ -261,7 +261,7 @@ class Entity < ActiveRecord::Base
     @details_displayed_in_list.include? detail
   end
   
-  def crosstab_query_for_entity(h = {})
+  def crosstab_query(h = {})
     entity_id = self.id
     defaults = { :display => "detail" }
     not_in_list_fields = []

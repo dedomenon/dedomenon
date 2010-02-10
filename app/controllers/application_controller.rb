@@ -72,11 +72,6 @@ class ApplicationController < ActionController::Base
 
 # PENDING: Document and understand this method
 
-  # returns one row with each column being a detail of the object. The name of the column is the id of the detail
-
-
-  
-
   # *Description*
   #  Returns true if the action is part of the request instead of the URL
   def embedded?

@@ -181,7 +181,7 @@ class SearchController < ApplicationController
       list_display="list"
     end
 
-    crosstab_result  = entity.crosstab_query_for_entity(:display => list_display)
+    crosstab_result  = entity.crosstab_query(:display => list_display)
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]

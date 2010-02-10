@@ -164,6 +164,7 @@ end
     end
   end
 
+  # returns one row with each column being a detail of the object. The name of the column is the id of the detail
   def details_query(h={})
     dt = [ "detail_values", "integer_detail_values", "date_detail_values"]
     cols = "d.id , v.value::text , e2d.display_order"
