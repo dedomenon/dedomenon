@@ -36,7 +36,7 @@ li[id] {
 	height: 2em;
 	line-height: 2em;
 	background-color: #CCC;
-	background: #E5E5E5 url(../images/bckg/hd.png) repeat-x top;
+	background: #E5E5E5 url(../images/bckg/topbar.png) repeat-x top;
 	text-align: right;
 	vertical-align: middle;
 	position:fixed;

@@ -5,24 +5,24 @@
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
 |clickAndWait|//div[@id='menu']/div[5]/table/thead/tr/th/span/a[2]/img||
-|assertText|//div[@id='content']/h1|madb_entities_list|
+|assertText|//div[@id='bd']//h1|madb_entities_list|
 |clickAndWait|link=madb_new_entity||
-|assertText|//div[@id='content']/h1|madb_new_entity|
+|assertText|//div[@id='bd']//h1|madb_new_entity|
 |type|entity_name|Orders|
 |clickAndWait|commit||
-|assertTable|//div[@id='content']/table.1.0|Orders|
+|assertTable|//div[@id='bd']//table.1.0|Orders|
 |clickAndWait|link=madb_new_entity||
-|assertText|//div[@id='content']/h1|madb_new_entity|
+|assertText|//div[@id='bd']//h1|madb_new_entity|
 |type|entity_name|Items|
 |clickAndWait|commit||
-|assertTable|//div[@id='content']/table.1.0|Orders|
-|assertTable|//div[@id='content']/table.2.0|Items|
+|assertTable|//div[@id='bd']//table.1.0|Orders|
+|assertTable|//div[@id='bd']//table.2.0|Items|
 |clickAndWait|link=madb_administrate||
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |assertElementPresent|link=madb_add_link_to_child_entity||
 |assertElementPresent|link=madb_add_link_to_parent_entity||
 |clickAndWait|link=madb_add_link_to_child_entity||
-|assertText|//div[@id='content']/h1|madb_define_new_link|
+|assertText|//div[@id='bd']//h1|madb_define_new_link|
 |assertElementPresent|relation[child_id]||
 |assertElementPresent|relation_from_parent_to_child_name||
 |assertElementPresent|relation_from_child_to_parent_name||
@@ -33,20 +33,20 @@
 |type|relation_from_child_to_parent_name|belongs to an order|
 |select|relation[child_side_type_id]|label=madb_yes_multiple_child|
 |clickAndWait|commit||
-|assertTable|//div[@id='content']/table[1].1.0|has many items|
-|assertTable|//div[@id='content']/table[1].1.1|Items|
-|assertTable|//div[@id='content']/table[1].1.2|madb_no_only_one_parent_allowed|
-|assertTable|//div[@id='content']/table[1].1.3|madb_yes_many_children_allowed|
+|assertTable|//div[@id='bd']//table[1].1.0|has many items|
+|assertTable|//div[@id='bd']//table[1].1.1|Items|
+|assertTable|//div[@id='bd']//table[1].1.2|madb_no_only_one_parent_allowed|
+|assertTable|//div[@id='bd']//table[1].1.3|madb_yes_many_children_allowed|
 |clickAndWait|//img[@alt='madb_edit']||
 |type|relation_from_parent_to_child_name|has many items for fun|
 |type|relation_from_child_to_parent_name|belongs to an order for none|
 |clickAndWait|commit||
-|assertTable|//div[@id='content']/table[1].1.0|has many items for fun|
+|assertTable|//div[@id='bd']//table[1].1.0|has many items for fun|
 |clickAndWait|//tbody[@id='1']/tr[2]/td/span[2]/a[3]/img||
-|assertTable|//div[@id='content']/table[2].1.0|belongs to an order for none|
-|assertTable|//div[@id='content']/table[2].1.1|Orders|
-|assertTable|//div[@id='content']/table[2].1.2|madb_no_only_one_parent_allowed|
-|assertTable|//div[@id='content']/table[2].1.3|madb_yes_many_children_allowed|
+|assertTable|//div[@id='bd']//table[2].1.0|belongs to an order for none|
+|assertTable|//div[@id='bd']//table[2].1.1|Orders|
+|assertTable|//div[@id='bd']//table[2].1.2|madb_no_only_one_parent_allowed|
+|assertTable|//div[@id='bd']//table[2].1.3|madb_yes_many_children_allowed|
 |clickAndWait|//img[@alt='madb_delete']||
 |assertConfirmation|madb_really_delete_all_existing_links_question||
 |clickAndWait|link=madb_logout||

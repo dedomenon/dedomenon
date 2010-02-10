@@ -147,7 +147,7 @@ class SearchControllerTest < ActionController::TestCase
      get :results_page, {'entity_id' => 0, 'value' => "rap", :database_id => 6, :detail_id=>0 }, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
      # we have a div with id content -> used application layout
-		 assert_tag :tag => "div", :attributes => { :id => "content"}
+		 assert_tag :tag => "div", :attributes => { :id => "bd"}
 		 #we have tags for the different entities found matching
 		 assert_tag :tag => "div", :attributes => { :id => "societe_search_result_div"}
 		 assert_tag :tag => "div", :attributes => { :id => "contacts_search_result_div"}

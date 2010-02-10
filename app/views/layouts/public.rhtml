@@ -4,6 +4,7 @@
   <title><%= t("madb_madb")%>::<%= @title%></title>
 <!-- YUI 3 CSS -->
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.0.0/build/cssfonts/fonts-min.css&3.0.0/build/cssreset/reset-min.css&3.0.0/build/cssgrids/grids-min.css&3.0.0/build/cssbase/base-min.css">
+<%= stylesheet_link_tag 'main' %>
 <%= stylesheet_link_tag 'public' %>
 <% if (RAILS_ENV=="test" and request.env["HTTP_USER_AGENT"].nil?) or request.env["HTTP_USER_AGENT"].include?("MSIE")%>
 <%= stylesheet_link_tag 'ie' %>

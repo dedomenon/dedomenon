@@ -574,7 +574,7 @@ class EntitiesControllerTest < ActionController::TestCase
 			get :list, {'id'=> '11'}, { 'user' => User.find_by_id(@db1_user_id)}
 
 			assert_no_tag :tag => "div", :attributes => { :id => "popup_content"}
-			assert_tag :tag => "div", :attributes => { :id => "content"}
+			assert_tag :tag => "div", :attributes => { :id => "bd"}
 			assert_tag :tag => "div", :attributes => { :id => "menu"}
 	end
      #FIXME check that when we are in a popup, the popup window contains the div refreshed by navigation links
@@ -1252,7 +1252,7 @@ class EntitiesControllerTest < ActionController::TestCase
     entity.has_public_form = false
     entity.save
     get :public_form, { :id => 11 }
-    assert_response :success
+    assert_response 404
 
 
     #accessible
@@ -1392,7 +1392,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 0 Instance
 		assert_equal 0, post_instances_count-pre_instances_count
 		#we get html back because insertion was successful 
-		assert_equal "", @response.body
+		assert_equal "Form inactive or not found", @response.body
 	end
 
 
