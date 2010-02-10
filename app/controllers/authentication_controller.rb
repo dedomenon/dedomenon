@@ -74,6 +74,8 @@ class AuthenticationController < ApplicationController
       if session['user']
         if session["user"].account.allows_login?
           flash['notice'] = "madb_login_successful"
+          session["user"].logged_in_at = Time.now
+          session["user"].save
           @user = nil
           redirect_back_or_default :controller => 'database' and return
         else
