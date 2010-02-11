@@ -556,6 +556,7 @@ en:
   madb_settings: Settings
   undo: Undo
   madb_import_csv: Import from CSV
+  madb_use_it: Use it
   import_wizard:
     madb_imported_and_rejected_items: Imported {{imported_items}} items and rejected {{rejected_items}} items.
     madb_undo_import: "You can undo this import by clicking the following link: "

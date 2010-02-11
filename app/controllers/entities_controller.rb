@@ -29,12 +29,6 @@ class EntitiesController < ApplicationController
   require 'entities_module'
   include EntitiesHelpers
   require "time"
-  #model :integer_detail_value
-  #model :date_detail_value
-  #model :long_text_detail_value
-  #model :email_detail_value
-  #model :web_url_detail_value
-  #model :entity_detail
 
   # For all actions, the user must be logged in execpt ones listed in the array.
   before_filter :login_required , :except => ["public_form","public_form_javascript", "apply_edit", "check_detail_value_validity"]
@@ -265,119 +259,6 @@ class EntitiesController < ApplicationController
   #   to the detail value object and saving it.
   #   See the source code for complete details.
   #
-#  def save_entity
-#    id = params["instance_id"].to_i
-#    ret = true
-#    detail_saved = false
-#    @invalid_list = []
-#    detail_values = [] # used to keep all detail_value that we saved, and call destroy on s3 attachments if needed
-#    
-#    begin
-#      Entity.transaction do
-#        entity = Entity.find params["entity"]
-#      # Negative IDs are used for creating the instances
-#      if id>0
-#        @instance = Instance.find(id)
-#      else
-#        @instance = Instance.new
-#        @instance.entity=entity
-#        @instance.save
-#       end
-#	
-#        # We pick all the details of the entity
-#        #FIXME: This code uses EntityDetail class
-#        @instance.entity.entity_details.each  do |entity_detail|
-#          
-#          detail = entity_detail.detail
-#          params[detail.name].each do |i,value|
-#            # if the value id is not provided, that means
-#            # the underlying DetailValue does not exists and we need to create
-#            # it.
-#            if value["id"].nil? or value["id"]==""
-#                
-#              # However, if the value is not preset, Sorry! Move next because
-#              # we do not insert empty values.
-#              if value["value"]=="" or ( value["value"].respond_to?( :original_filename) and value["value"].original_filename=="")
-#                next
-#              end
-#              
-#              # Crucial!
-#              # * Get the class from the datatype.
-#              # * Create an instance of that dataype
-#              # * Set the value
-#              # * Connect to the instance
-#              detail_value_class = class_from_name(detail.data_type.class_name)
-#              detail_value = detail_value_class.new
-#              
-#              # This generates error! AssociationTypeMismatch by detail=
-#              #detail_value.detail = detail # Detail.find(:all, "name='#{detail.name}'")[0]
-#              
-#              # Therefore, this is the hack around!
-#              detail_value.detail_id = detail['id']
-#              detail_value.instance_id = @instance['id']
-#              # Otherwise, if the id is present, we need to updat that!
-#            else
-#              
-#              # We pick the class for the detail.
-#              detail_value_class = class_from_name(detail.data_type.class_name)
-#		
-#              # if the value is left blank, we would be deleting the detail
-#              # of that ID.
-#              if value["value"]==""
-#                detail_value_class.delete(value["id"])
-#                next
-#              end
-#              # Pick the detail value of that class by the ID given
-#              detail_value= detail_value_class.find(value["id"])
-#            end
-#	
-#            begin
-#              # If the provided value is not valid, then the return value would
-#              # be false and we push the detail in the @invalid_list
-#              if ! detail_value_class.valid? value["value"], {:session => session, :entity => entity}
-#                ret = false
-#                @invalid_list.push "#{params["form_id"]}_#{entity.name.gsub(/ /,"_")}_#{detail.name}[#{i}]_value"
-#              end
-#            rescue Exception => e
-#            end
-#	
-#            # If we had any invalide field, we simply do not
-#            # save.
-#            next if @invalid_list.length>0
-#            
-#            # Crucial!
-#            # * Pick the field value
-#            # * Save it
-#            # * Yes, the detail saved!
-#            # * Save it in the list of saved detail values
-#            detail_value.value=value["value"]
-#            detail_value.save
-#            detail_saved = true
-#            detail_values.push detail_value
-#            
-#          end if params[detail.name] # end of do block
-#      
-#        end
-#
-#        #raise exception to rollback if necessary
-#	raise "invalid form" if !ret
-#	raise "no detail saved" if !detail_saved
-#		
-#      end
-#
-#    # If any trouble, we do a bit of cleanup!
-#    rescue Exception => e
-#      #breakpoint "exception"
-#      #flash["error"] = t("madb_error_creating_instance")
-#      if e.message=="invalid form"
-#        detail_values.each do |dv|
-#          dv.destroy if dv.detail.data_type.name == "madb_s3_attachment"
-#        end
-#      end
-#      raise e #if RAILS_ENV=="production"
-#		end
-#    return ret
-#  end
 
   # *Description*
   #   Applys the editing changes.
@@ -405,11 +286,11 @@ class EntitiesController < ApplicationController
       if session["user"] and user_dbs.include? @db
         render_component  :controller => "entities", :action => "entities_list", :id => params["entity"], :params =>{ :highlight => @instance.id }
       else
+        # this case happens with public forms
         render :nothing => true and return;
       end
                        
     else
-			#if request.xhr?
       # Otherwise if not saved, we simply list the fields that are 
       # invalid.
       headers['Content-Type']='text/html; charset=UTF-8'
@@ -496,7 +377,7 @@ class EntitiesController < ApplicationController
 
 
 
-    @links = [ { "header" => "Use it" , "text" => "Use it", "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
+    @links = [ { "header" => t("madb_use_it") , "text" => t("madb_use_it"), "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
 				   ]
   end
 
@@ -552,21 +433,16 @@ class EntitiesController < ApplicationController
           raise "Missing parameter parent_id (#{params["parent_id"]}) or child_id (#{params["child_id"]})"
       end
       relation = Relation.find params["relation_id"]
-      link_entities(parent,relation,child)
+      link_instances(parent,relation,child)
       headers['Content-Type']='text/plain; charset=UTF-8'
     else
-    #	if request.xhr?
             headers['Content-Type']='text/plain; charset=UTF-8'
             render :text => @invalid_list.join('######')
             return
-    #	else
-                #redirect_to_url session['return-to']
-                #redirect_to :action => "list", :id => @instance.entity
-    #	end
     end
   end
 
-  def link_entities(parent,relation,child)
+  def link_instances(parent,relation,child)
 	begin
     if relation.parent_side_type.name=="one"
       #parent side is one, so if child is already linked to one, cannot be linked again.....
@@ -614,11 +490,6 @@ class EntitiesController < ApplicationController
            redirect_to(:action => "view", :id=>child.id) 
         end
     end
-    #if params["parent_id"]
-    #  redirect_to(:action => "view", :id=>parent.id)
-    #elsif params["child_id"]
-    #  redirect_to(:action => "view", :id=>child.id)
-    #end
 	end
   end
 
@@ -642,7 +513,7 @@ class EntitiesController < ApplicationController
 	parent = Instance.find params[parent_id]
 	child = Instance.find params[child_id]
   
-	link_entities(parent,relation,child)
+	link_instances(parent,relation,child)
   end
 
 
