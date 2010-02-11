@@ -683,16 +683,8 @@ class EntitiesController < ApplicationController
         @link_to_many = 't'
       end
 
+    @details = linked_entity_object.details_hash
 
-    EntityDetail.find( :all,:conditions =>  ["entity_id=?", linked_entity_object.id]).each do |d|
-      @details[d.detail.name.downcase]=d.detail
-    end
-
-
-
-
-    #FIXME : the first version of list_id could be used somewhere else
-    #@list_id = "#{@instance.entity.name}_#{linked_entity}_list"
     order = order_by
 
     if !params["detail_filter"].nil?
@@ -769,37 +761,6 @@ class EntitiesController < ApplicationController
   end
 
 
-#  def get_csv(data)
-#    detail_ids = []
-#    data["entity"] = data["instances"][0].entity if data["instances"].length>0
-#    s= ""
-#    data["entity"].details.each  do |detail|
-#      if detail.displayed_in_list_view=='t'
-#        detail_ids.push detail.id
-#        s+=%Q{"#{t(detail.name)}",}
-#      end
-#    end
-#    s.chop
-#    s.chop
-#    s+="\n"
-#   data["instances"].each do |instance|
-#     data["entity"].details.each do |detail|
-#       val = class_from_name(detail.data_type.class_name).find(:all, :conditions =>["instance_id=? and detail_id=?",instance.id, detail.id])[
-#0]
-#       if detail.displayed_in_list_view=='t'
-#        if val
-#          s+=%Q{"#{val.value}",}
-#        else
-#          s+=%Q{"",}
-#        end
-#       end
-#     end
-#     s.chop
-#     s.chop
-#     s+="\n"
-#   end
-#  return s
-#  end
 
   # *Description*
   #   The output from the actions of this contorller can be presented in variuos

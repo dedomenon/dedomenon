@@ -63,8 +63,8 @@ class Instance < ActiveRecord::Base
 	
     
     #has_and_belongs_to_many :children, :class_name => "Instance", :join_table => "links", :foreign_key => "parent_id", :association_foreign_key => "child_id"
-	has_many :links_to_children, :class_name => "Link", :foreign_key => "parent_id"
-	has_many :links_to_parents, :class_name => "Link", :foreign_key => "child_id"
+	has_many :links_to_children, :class_name => "Link", :foreign_key => "parent_id", :include => ["relation"]
+	has_many :links_to_parents, :class_name => "Link", :foreign_key => "child_id", :include => ["relation"]
   
   attr_readonly :id,
                 :entity_id
