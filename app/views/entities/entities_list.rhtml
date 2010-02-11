@@ -104,3 +104,70 @@ Then only the records which have Mohsin as Name would be displayed.
 </div>
 
 
+<div id="demo"></div>
+
+<script type="text/javascript">
+YUI({
+    modules: {
+        'gallery-yui2': {
+            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-min.js',
+            requires: ['node-base','get','async-queue'],
+            optional: [],
+            supersedes: []
+        }
+    }
+}).use('gallery-yui2', function(Y) {
+
+    Y.yui2().use('datatable', 'paginator', function() {
+
+      var view_formatter = function(cell, record, column, data) {
+                               cell.innerHTML='<%=image_tag("icon/big/view.png", :border =>0)%>'; }
+      var edit_formatter = function(cell, record, column, data) {
+                               cell.innerHTML='<%=image_tag("icon/big/edit.png", :border =>0)%>'; }
+      var delete_formatter = function(cell, record, column, data) {
+                               cell.innerHTML='<%=image_tag("icon/big/delete.png", :border =>0)%>'; }
+
+
+
+      var actions = [ { "key" : "<%= t("madb_view")%>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": view_formatter 
+                            
+                     },
+                     { "key": "<%= t("madb_edit")%>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": edit_formatter  },
+                     { "key": "<%=t("madb_delete")%>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": delete_formatter  }]
+
+      var myColumnHeaders = <%= @ordered_fields.collect{|c| { :key => "#{c}"}  }.to_json %> ;
+      myColumnHeaders = myColumnHeaders.concat(actions);
+       
+      var inventory = <%=@list.to_json %>
+      var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
+      var myDataSource = new YAHOO.util.DataSource("<%= url_for :controller => "entities", :action => "entities_list", :format => "js", :id => @entity  %>?");
+      myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+      myDataSource.responseSchema = {
+        resultsList: "records",
+        metaFields: { totalRecords: "totalRecords" },
+        fields: <%= @ordered_fields.to_json %>
+      };
+      var myConfigs = {
+        caption:"Example: Inline Editing",
+        paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= @paginator.items_per_page %> }), 
+        dynamicData: true,
+        sortedBy: {
+            key: "<%= @ordered_fields[0] %>",
+            dir: YAHOO.widget.DataTable.CLASS_ASC
+        },
+        initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
+
+      }
+
+      var myDataTable = new YAHOO.widget.DataTable("demo", myColumnSet, myDataSource,myConfigs);
+      // Update totalRecords on the fly with value from server
+      myDataTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
+          oPayload.totalRecords = oResponse.meta.totalRecords;
+          return oPayload;
+}
+
+}) });
+
+
+</script>
+

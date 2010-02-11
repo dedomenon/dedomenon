@@ -154,6 +154,7 @@ class EntitiesController < ApplicationController
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
 
+
   end
   
 
