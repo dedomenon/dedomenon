@@ -23,5 +23,6 @@ db/*.sql
 Capfile
 config/deploy*
 *swp
+*swo
 #ignore the selenium-on-rails plugin if installed
 selenium-on-rails
