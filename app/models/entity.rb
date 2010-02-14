@@ -63,7 +63,7 @@ class Entity < ActiveRecord::Base
   # Returns the list of details to be displayed in list view. The display in list views can be toggled in the admin part.
   #Should go with details REST 
   def details_in_list_view
-    self.details.sort{|a,b| a.display_order<=>b.display_order}.delete_if{|d| d.displayed_in_list_view!='t'}
+    ordered_details.sort{|a,b| a.display_order<=>b.display_order}.delete_if{|d| d.displayed_in_list_view!='t'}
   end
 
   # returns true if this entity has at least one detail of type file attachment
@@ -76,8 +76,21 @@ class Entity < ActiveRecord::Base
     end
     
   end
+  # Return a hash with 
+  # * key = detail_name
+  # * value = detail
   def details_hash
     @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name.downcase => i}) }
+  end
+
+#filters details_hash and only keeps details that have their value serialized
+  def serialized_details
+    @serialized_details||=details_hash.reject{|name,d| not ["FileAttachment"].include? d.data_type.class_name}
+  end
+
+#returns an array of details whose values are serialized.
+  def serialized_details_names
+    @serialized_details_names||=serialized_details.collect{|name,d| name}
   end
   #
   # Cleans params to only key values to be assigned to detail_values related to this entity
@@ -349,10 +362,11 @@ class Entity < ActiveRecord::Base
     if crosstab_count.to_i>0
       paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, MadbSettings.list_length, page_number(crosstab_query, h)
       limit, offset = paginator.current.to_sql
-      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\""
+      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\" #{h[:direction]}"
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end
+      CrosstabObject.serialize_columns(serialized_details_names)
       return [CrosstabObject.find_by_sql(query), paginator]
     else
       return [ [], nil ]
@@ -364,76 +378,4 @@ class Entity < ActiveRecord::Base
 
 
 
-  #alias to_json old_to_json
-       
-  #FIXME: Add the options behaviour as a standard behaviour
-  #FIXME: When the initial string is null, should proceed next.
-#  def to_json(options={})
-#    
-#    json = JSON.parse(super(options))
-#    replace_with_url(json, 'id', :Entity, options)
-#    replace_with_url(json, 'database_id', :Database, options)
-#    
-#    format = ''
-#    format = '.' + options[:format] if options[:format]
-#    
-#    json[:details_url] = @@lookup[:Entity] % [@@base_url, self.id]
-#    json[:details_url] += (@@lookup[:Detail] % ['', '']).chop + format
-#    
-#    json[:instances_url] = @@lookup[:Entity] % [@@base_url, self.id]
-#    json[:instances_url] += (@@lookup[:Instance] % ['', '']).chop + format
-#    
-#    json[:relations_url] = @@lookup[:Entity] % [@@base_url, self.id]
-#    json[:relations_url] += (@@lookup[:Relation] % ['', '']).chop + format
-#    
-#  
-#    return json.to_json
-#    
-##    #json = old_to_json(opts)
-##    
-##    # remove any whitespace
-##    json.strip!
-##    
-##    # Subtitute the escape sequence chracters
-##    json.gsub!(/\\/, '')
-##    
-##    # Delete the bracket
-##    json.delete!('}')
-##    
-##    # remove the enclosing quote symbols
-##    if json.length > 2
-##      json = json[1, json.length]
-##    end
-##    
-##    json.chop!
-##    
-##    base_url = 'http://localhost:3000/'
-##    self_url = '"' + base_url + "entities/#{id}" + '"'
-##    database_url = '"' + base_url + "databases/#{database_id}" + '"'
-##    
-##    json.gsub!(/("id":\s+\d+)/, '"url": ' + self_url )
-##    json.gsub!(/("database_id":\s+\d+)/, '"database_url": ' + database_url )
-##    
-##    
-##    
-##    base_url = 'http://localhost:3000/'
-##    str = '"has_file_attachment_detail": '  +  j(has_file_attachment_detail?) + ', ' +
-##      '"details_url":'          + '"' + base_url + "entities/#{id}/details.json"   + '"' + ', ' +
-##      '"instances_url": '       + '"' + base_url + "entities/#{id}/instances.json" + '"' + ', ' +
-##      '"relations_url":'        + '"' + base_url + "entities/#{id}/relations.json" + '"'
-##          
-##          
-##    
-##    
-##    
-##    json = json + ', ' + str + '}'
-##    
-##    
-##    
-##    
-##    
-##    return json;
-##    
-##       
-#  end
 end

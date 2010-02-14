@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   
   
   helper_method :t
-  after_filter :set_encoding, :except => ["apply_edit", "apply_link_to_new"]
+  after_filter :set_encoding, :except => ["apply_edit", "apply_link_to_new", "download"] #downlod is in file_attachment_controller
     
   # *Description*
   #   Sets the encoding for the responce to be UTF-8

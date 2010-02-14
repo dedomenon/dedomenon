@@ -149,10 +149,14 @@ class EntitiesController < ApplicationController
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
+    if params[list_id+"_page"] or params[list_id+"_order"]
+        params[:format]='html'
+    end
     
-    @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"]  , :order_by => order_by )
+    @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/MadbSettings.list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
+
 
 
   end
@@ -738,9 +742,17 @@ class EntitiesController < ApplicationController
     return entity_id
   end
 
-  def order_by
+# returns a quoted version of the requestion sort direction
+  def sort_direction
+    CrosstabObject.connection.quote_string(params[:dir].to_s)
+  end
+
+# returns a quoted version of the requestion column sorting
+   def order_by
     session["list_order"]||={}
-    if params[order_param] and ! params["highlight"] or params["highlight"]==""
+    if params[:sort]
+      order=CrosstabObject.connection.quote_string(params[:sort].to_s)
+    elsif params[order_param] and ! params["highlight"] or params["highlight"]==""
       order=CrosstabObject.connection.quote_string(params[order_param].to_s)
       session["list_order"][list_id]=order
     elsif session["list_order"].has_key? [list_id]

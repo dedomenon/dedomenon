@@ -1,9 +1,9 @@
 {
-    "recordsReturned" : <%= @paginator.items_per_page %>,
+    "recordsReturned" : <%= @list.length %>,
     "totalRecords": <%= @paginator.item_count%>,
     "pageSize": <%=  @list.length%>,
     "startIndex": <%= (@paginator.current_page.number-1) * @paginator.items_per_page  %>,
     "records": <%= @list.to_json %>,
-    "sort":null,
-    "dir" : "asc"
+    "sort": "<%= params[:sort] %>",
+    "dir" : "<%= params[:dir] %>"
 }

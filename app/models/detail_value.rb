@@ -104,4 +104,19 @@ class DetailValue <  ActiveRecord::Base
 #    return json.to_json
 #
 #  end
+
+#returns javascript formatter for value to be displayed in yui datatable
+  def self.yui_formatter(h={})
+    "null"
+  end
+#returns javascript parser for value to be displayed in yui datatable
+  def self.yui_parser(h={})
+    "null"
+  end
+# returns the string "true" if the detail is sortable
+  def self.yui_sortable(h={})
+    "true"
+  end
+
+  
 end

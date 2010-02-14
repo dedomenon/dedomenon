@@ -31,4 +31,14 @@ class CrosstabObject < ActiveRecord::Base
   def self.inheritance_column
     "crosstab_inheritance_column"
   end
+  def self.serialize_columns(a)
+    a.each do |c|
+      m = %{ def #{c} 
+               str = read_attribute(:#{c}) 
+               return "" if str.nil?
+               YAML.load(str)
+             end }
+      self.class_eval(m)
+    end
+  end
 end

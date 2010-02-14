@@ -104,13 +104,15 @@ Then only the records which have Mohsin as Name would be displayed.
 </div>
 
 
-<div id="demo"></div>
 
 <script type="text/javascript">
+// For YUI2 debug files
+//YAHOO_config = {
+//  filter: 'debug' };
 YUI({
     modules: {
         'gallery-yui2': {
-            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-min.js',
+            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-debug.js',
             requires: ['node-base','get','async-queue'],
             optional: [],
             supersedes: []
@@ -135,7 +137,8 @@ YUI({
                      { "key": "<%= t("madb_edit")%>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": edit_formatter  },
                      { "key": "<%=t("madb_delete")%>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": delete_formatter  }]
 
-      var myColumnHeaders = <%= @ordered_fields.collect{|c| { :key => "#{c}"}  }.to_json %> ;
+      // we have the id here, enabling initial sorting by id
+      var myColumnHeaders = [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ;
       myColumnHeaders = myColumnHeaders.concat(actions);
        
       var inventory = <%=@list.to_json %>
@@ -145,21 +148,29 @@ YUI({
       myDataSource.responseSchema = {
         resultsList: "records",
         metaFields: { totalRecords: "totalRecords" },
-        fields: <%= @ordered_fields.to_json %>
+      // we have the id here, enabling initial sorting by id
+        fields: [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %>, {"key": "id"} ]
       };
       var myConfigs = {
         caption:"Example: Inline Editing",
-        paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= @paginator.items_per_page %> }), 
+        paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %> }), 
         dynamicData: true,
         sortedBy: {
-            key: "<%= @ordered_fields[0] %>",
+            // eventually replace this with the second line
+            key: "id",
+            //key: "<%= @ordered_fields[0] %>",
             dir: YAHOO.widget.DataTable.CLASS_ASC
         },
-        initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
+        // eventually replace this list with the commented one. 
+        // Temporarily leaving asis for selenium tests
+        initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
+        //initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
 
       }
 
-      var myDataTable = new YAHOO.widget.DataTable("demo", myColumnSet, myDataSource,myConfigs);
+
+
+      var myDataTable = new YAHOO.widget.DataTable("yui-entities-list", myColumnSet, myDataSource,myConfigs);
       // Update totalRecords on the fly with value from server
       myDataTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
           oPayload.totalRecords = oResponse.meta.totalRecords;

@@ -76,6 +76,13 @@ class Detail < ActiveRecord::Base
   def value_class
     class_from_name(data_type.class_name)
   end
-  
+
+  def yui_column(h={})
+    "{ key: '#{name.downcase}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
+  end
+
+  def yui_field(h={})
+    "{ key: '#{name.downcase}', parser: #{value_class.yui_parser(h)} }"
+  end
   
 end
