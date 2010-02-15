@@ -359,18 +359,19 @@ class Entity < ActiveRecord::Base
     crosstab_count_row =  CrosstabObject.connection.execute("select count(*) from #{crosstab_query} #{query_filter}")[0]
     crosstab_count = crosstab_count_row[0] ? crosstab_count_row[0] : crosstab_count_row['count']
     #determine page to display.If we have a highlight parameter, always display the page of the highlighted item
+    paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, MadbSettings.list_length, page_number(crosstab_query, h)
     if crosstab_count.to_i>0
-      paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, MadbSettings.list_length, page_number(crosstab_query, h)
       limit, offset = paginator.current.to_sql
       query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\" #{h[:direction]}"
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end
       CrosstabObject.serialize_columns(serialized_details_names)
-      return [CrosstabObject.find_by_sql(query), paginator]
+      list = CrosstabObject.find_by_sql(query)
     else
-      return [ [], nil ]
+      list =  []
     end
+    return [list , paginator]
   end
 
 
