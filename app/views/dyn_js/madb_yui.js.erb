@@ -46,6 +46,12 @@ YUI.add('madb', function(Y) {
 
   Y.madb.get_detail_validator= get_detail_validator; 
 
+  var translate = function(str, obj) {
+    var s = str.replace(/\{\{/g,'{').replace(/\}\}/g,'}');
+    return Y.substitute(s, obj);
+
+  }
+  Y.madb.translate = translate;
 /**
  * @class MadbFileField
  * @extends FormField
@@ -194,5 +200,5 @@ Y.MadbFileField = MadbFileField;
 
 
 
-}, '1.0', { requires: ['io-base', 'io-xdr', 'gallery-form'], skinnable: false} );
+}, '1.0', { requires: ['io-base', 'io-xdr', 'gallery-form', 'substitute'], skinnable: false} );
 

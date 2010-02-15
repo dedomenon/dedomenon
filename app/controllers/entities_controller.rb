@@ -672,7 +672,10 @@ class EntitiesController < ApplicationController
       flash["error"] = t("madb_error_occured_when_deleting_entity")
       logger.error "ERROR : in entities_controller, line #{__LINE__} :   #{e}"
     end
-    redirect_to :overwrite_params => { :action => "entities_list", :id => entity.id , :highlight => nil }
+    respond_to do |format|
+      format.html { redirect_to :overwrite_params => { :action => "entities_list", :id => entity.id , :highlight => nil } }
+      format.js { render :nothing => true }
+    end
   end
 
 

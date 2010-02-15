@@ -118,7 +118,7 @@ YUI({
             supersedes: []
         }
     }
-}).use('gallery-yui2', function(Y) {
+}).use('substitute', 'gallery-yui2', 'madb', 'io-base', function(Y) {
 
     Y.yui2().use('datatable', 'paginator', function() {
 
@@ -131,11 +131,11 @@ YUI({
 
 
 
-      var actions = [ { "key" : "<%= t("madb_view")%>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": view_formatter 
+      var actions = [ { "key" : "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": view_formatter 
                             
                      },
-                     { "key": "<%= t("madb_edit")%>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": edit_formatter  },
-                     { "key": "<%=t("madb_delete")%>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": delete_formatter  }]
+                     { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": edit_formatter  },
+                     { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": delete_formatter  }]
 
       // we have the id here, enabling initial sorting by id
       var myColumnHeaders = [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ;
@@ -175,8 +175,45 @@ YUI({
       myDataTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
           oPayload.totalRecords = oResponse.meta.totalRecords;
           return oPayload;
-}
 
+
+
+}
+myDataTable.subscribe('cellClickEvent',function (oArgs) {
+                  var target = oArgs.target;
+                  var record = this.getRecord(target);
+                  var column = this.getColumn(target);
+                  if (column.key==='delete_action_column') {
+                    var first_column = this.getColumnSet().keys[0].key; 
+                    var first_value = record.getData(this.getColumnSet().keys[0].key);
+                    if (confirm(Y.madb.translate('<%= t("madb_really_delete_entity_question") %>', { entity: '<%= @entity.name%>', title: first_column  , value: first_value}  ))) {
+                      var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+record.getData('id')+'.js';
+                      var config = { method: 'POST', 
+                                     on: { success : function() { myDataTable.deleteRow(target); },
+                                           failure : function() { alert('<%= t('madb_an_error_occured')%>');}
+                                     }
+                      };
+                      Y.io(url, config);
+                    }
+                  }
+      });
+
+myDataTable.subscribe('cellClickEvent',function (oArgs) {
+                  var target = oArgs.target;
+                  var record = this.getRecord(target);
+                  var column = this.getColumn(target);
+                  if (column.key==='view_action_column') {
+                    window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ record.getData('id') ;
+                  }
+      });
+myDataTable.subscribe('cellClickEvent',function (oArgs) {
+                  var target = oArgs.target;
+                  var record = this.getRecord(target);
+                  var column = this.getColumn(target);
+                  if (column.key==='edit_action_column') {
+                    window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ record.getData('id') ;
+                  }
+      });
 }) });
 
 
