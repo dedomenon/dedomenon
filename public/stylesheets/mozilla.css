@@ -91,7 +91,7 @@ span.menu_action {
 .icon:hover {
 	background-color: #FFF;
 }
-.action_cell img, .icon img, .icon:hover, img.action_cell {
+.action_cell img, .icon img, img.icon,  .icon:hover, img.action_cell {
 	width: 1.5em;
 	height: 1.5em;
 	border: 0;

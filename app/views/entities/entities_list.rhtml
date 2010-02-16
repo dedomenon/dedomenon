@@ -118,7 +118,7 @@ YUI({
             supersedes: []
         }
     }
-}).use('substitute', 'gallery-yui2', 'madb', 'io-base', function(Y) {
+}).use('substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', function(Y) {
 
     Y.yui2().use('datatable', 'paginator', function() {
 
@@ -141,6 +141,7 @@ YUI({
       var myColumnHeaders = [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ;
       myColumnHeaders = myColumnHeaders.concat(actions);
        
+//problems with fields named test, which seems to be a private method, and a method with the same name as the field is called when serializing to json....
       var inventory = <%=@list.to_json %>
       var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
       var myDataSource = new YAHOO.util.DataSource("<%= url_for :controller => "entities", :action => "entities_list", :format => "js", :id => @entity  %>?");
@@ -166,7 +167,7 @@ YUI({
       var filter_submit = Y.Node.create(filter_submit_template);
       var filter_reset_template = '<button><%= t("madb_reset") %></button>';
       var filter_reset = Y.Node.create(filter_reset_template);
-      var filter_csv_icon_template = '<%=link_to  image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export")  ), {:controller => "entities", :action => "entities_list", :id => params["id"], :overwrite_params => { :format => "csv"  }}, { :class => "icon"} %>';
+      var filter_csv_icon_template = '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>';
       var filter_csv_icon = Y.Node.create(filter_csv_icon_template);
       
       var filter_container = Y.one('#yui-entities-list-filter');
@@ -290,10 +291,30 @@ YUI({
         myDataTable.detail_filter = filter_select.get('value');
         myDataTable.value_filter = filter_field.get('value');
         myDataTable.refresh();
+        });
+
+    filter_csv_icon.on('click', function(evt) {
+        var s = myDataTable.get('generateRequest')(myDataTable.getState(), myDataTable  );
+        window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list', :id => @entity%>.csv?'+s;
+        });
 
 
 
-      });
+    var handle = Y.on('key', function(e) {
+        // stopPropagation() and preventDefault()
+        e.halt();
+        // unsubscribe so this only happens once
+        //handle.detach();
+        myDataTable.detail_filter = filter_select.get('value');
+        myDataTable.value_filter = filter_field.get('value');
+        myDataTable.refresh();
+ 
+    // Attach to filter_field, specify keydown, keyCode 13, make Y the context, add arguments
+    }, [filter_field,filter_select] , 'down:13', Y);
+
+
+
+
       filter_reset.on('click', function(evt) {
         myDataTable.detail_filter = "";
         filter_field.set('value', ""); 

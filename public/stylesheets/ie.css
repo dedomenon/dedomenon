@@ -106,7 +106,7 @@ span.menu_action {
 	vertical-align: text-bottom;
   padding: 0px;
 }
-.action_cell img, .icon img, .icon:hover, img.action_cell {
+.action_cell img, .icon img, img.icon, .icon:hover, img.action_cell {
 	width: 1.5em;
 	height: 1.5em;
 	border: 0;
