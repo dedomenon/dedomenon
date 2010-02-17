@@ -104,238 +104,6 @@ Then only the records which have Mohsin as Name would be displayed.
 </div>
 
 
-
-<script type="text/javascript">
-// For YUI2 debug files
-//YAHOO_config = {
-//  filter: 'debug' };
-YUI({
-    modules: {
-        'gallery-yui2': {
-            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-debug.js',
-            requires: ['node-base','get','async-queue'],
-            optional: [],
-            supersedes: []
-        }
-    }
-}).use('substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', function(Y) {
-
-    Y.yui2().use('datatable', 'paginator', function() {
-
-      var view_formatter = function(cell, record, column, data) {
-                               cell.innerHTML='<%=image_tag("icon/big/view.png", :border =>0)%>'; }
-      var edit_formatter = function(cell, record, column, data) {
-                               cell.innerHTML='<%=image_tag("icon/big/edit.png", :border =>0)%>'; }
-      var delete_formatter = function(cell, record, column, data) {
-                               cell.innerHTML='<%=image_tag("icon/big/delete.png", :border =>0)%>'; }
-
-
-
-      var actions = [ { "key" : "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": view_formatter 
-                            
-                     },
-                     { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": edit_formatter  },
-                     { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": delete_formatter  }]
-
-      // we have the id here, enabling initial sorting by id
-      var myColumnHeaders = [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ;
-      myColumnHeaders = myColumnHeaders.concat(actions);
-       
-//problems with fields named test, which seems to be a private method, and a method with the same name as the field is called when serializing to json....
-      var inventory = <%=@list.to_json %>
-      var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
-      var myDataSource = new YAHOO.util.DataSource("<%= url_for :controller => "entities", :action => "entities_list", :format => "js", :id => @entity  %>?");
-      myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-      myDataSource.responseSchema = {
-        resultsList: "records",
-        metaFields: { totalRecords: "totalRecords" },
-      // we have the id here, enabling initial sorting by id
-        fields: [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %>, {"key": "id"} ]
-      };
-      
-      // Define the filtering fields
-      //////////////////////////////
-      var filter_select_label_template = '<span><%= t("madb_filter_on") %> </span>';
-      var filter_select_label = Y.Node.create(filter_select_label_template);
-      var filter_select_template = '<select><%=options_for_select(details_for_filter).gsub(/\n/,'') %></select>';
-      var filter_select = Y.Node.create(filter_select_template);
-      var filter_field_label_template = '<span> <%= t("madb_with_value")%> </span>';
-      var filter_field_label =Y.Node.create(filter_field_label_template);
-      var filter_field_template = '<input type="text" name="value_filter"/>';
-      var filter_field = Y.Node.create(filter_field_template);
-      var filter_submit_template = '<button><%= t("madb_submit") %></button>';
-      var filter_submit = Y.Node.create(filter_submit_template);
-      var filter_reset_template = '<button><%= t("madb_reset") %></button>';
-      var filter_reset = Y.Node.create(filter_reset_template);
-      var filter_csv_icon_template = '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>';
-      var filter_csv_icon = Y.Node.create(filter_csv_icon_template);
-      
-      var filter_container = Y.one('#yui-entities-list-filter');
-
-      filter_container.append(filter_select_label).append(filter_select).append(filter_field_label).append(filter_field).append(filter_submit).append(filter_reset).append(filter_csv_icon);
-
-
-        var requestBuilder= function (oState, oSelf) {
-                var sort, dir, startIndex, results, s;
-                oState = oState || {pagination: null, sortedBy: null};
-        
-                sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
-                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc"; 
-                
-                startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
-                results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
-                
-                s= "&results="     + results +
-                            "&startIndex="  + startIndex +
-                            "&sort=" + sort +
-                            "&dir=" + dir;
-                if (oSelf.value_filter!=="")
-                {
-                          s+="&detail_filter="   + oSelf.detail_filter +
-                             "&value_filter="    + oSelf.value_filter ; 
-                }
-                return s;
-        }
-
-
-
-
-
-      // Define the datatable
-      ///////////////////////
-      var myConfigs = {
-        caption:"Example: Inline Editing",
-        paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %> }), 
-        dynamicData: true,
-        sortedBy: {
-            // eventually replace this with the second line
-            key: "id",
-            //key: "<%= @ordered_fields[0] %>",
-            dir: YAHOO.widget.DataTable.CLASS_ASC
-        },
-        // eventually replace this list with the commented one. 
-        // Temporarily leaving asis for selenium tests
-        initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
-        //initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=@paginator.items_per_page%>",
-        generateRequest: requestBuilder
-      }
-
-
-
-      var myDataTable = new YAHOO.widget.DataTable("yui-entities-list", myColumnSet, myDataSource,myConfigs);
-      // Update totalRecords on the fly with value from server
-      myDataTable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
-          oPayload.totalRecords = oResponse.meta.totalRecords;
-          return oPayload; }
-      myDataTable.subscribe('cellClickEvent',function (oArgs) {
-                        var target = oArgs.target;
-                        var record = this.getRecord(target);
-                        var column = this.getColumn(target);
-                        if (column.key==='delete_action_column') {
-                          var first_column = this.getColumnSet().keys[0].key; 
-                          var first_value = record.getData(this.getColumnSet().keys[0].key);
-                          if (confirm(Y.madb.translate('<%= t("madb_really_delete_entity_question") %>', { entity: '<%= @entity.name%>', title: first_column  , value: first_value}  ))) {
-                            var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+record.getData('id')+'.js';
-                            var config = { method: 'POST', 
-                                           on: { success : function() { myDataTable.deleteRow(target); },
-                                                 failure : function() { alert('<%= t('madb_an_error_occured')%>');}
-                                           }
-                            };
-                            Y.io(url, config);
-                          }
-                        }
-            });
-
-      myDataTable.subscribe('cellClickEvent',function (oArgs) {
-                        var target = oArgs.target;
-                        var record = this.getRecord(target);
-                        var column = this.getColumn(target);
-                        if (column.key==='view_action_column') {
-                          window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ record.getData('id') ;
-                        }
-            });
-      myDataTable.subscribe('cellClickEvent',function (oArgs) {
-                        var target = oArgs.target;
-                        var record = this.getRecord(target);
-                        var column = this.getColumn(target);
-                        if (column.key==='edit_action_column') {
-                          window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ record.getData('id') ;
-                        }
-            });
-      myDataTable.detail_filter = "";
-      myDataTable.value_filter = "";
-
-    myDataTable.refresh = function() {
-
-      var oState = this.getState(),
-                request,
-                oCallback;
-      // display first page
-      oState.pagination.recordOffset = 0;
-      
-      oCallback = {
-          success : this.onDataReturnSetRows,
-          failure : this.onDataReturnSetRows,
-          argument : oState,
-          scope : this
-      };
-
-      // Generate a query string
-      request = this.get("generateRequest")(oState, this);
-      
-      // Fire off a request for new data.
-      this.getDataSource().sendRequest(request, oCallback);
-    }
-
-      filter_submit.on('click', function(evt) {
-        myDataTable.detail_filter = filter_select.get('value');
-        myDataTable.value_filter = filter_field.get('value');
-        myDataTable.refresh();
-        });
-
-    filter_csv_icon.on('click', function(evt) {
-        var s = myDataTable.get('generateRequest')(myDataTable.getState(), myDataTable  );
-        window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list', :id => @entity%>.csv?'+s;
-        });
-
-
-
-    var handle = Y.on('key', function(e) {
-        // stopPropagation() and preventDefault()
-        e.halt();
-        // unsubscribe so this only happens once
-        //handle.detach();
-        myDataTable.detail_filter = filter_select.get('value');
-        myDataTable.value_filter = filter_field.get('value');
-        myDataTable.refresh();
- 
-    // Attach to filter_field, specify keydown, keyCode 13, make Y the context, add arguments
-    }, [filter_field,filter_select] , 'down:13', Y);
-
-
-
-
-      filter_reset.on('click', function(evt) {
-        myDataTable.detail_filter = "";
-        filter_field.set('value', ""); 
-        myDataTable.value_filter = "";
-        myDataTable.refresh();
-      });
-
-}) });
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
 <h1>test widget</h1>
 
 
@@ -435,6 +203,8 @@ YUI({
           cell.innerHTML='<%=image_tag("icon/big/delete.png", :border =>0)%>'; 
         },
         initializer: function(){
+          // used to reference ourself when in an object definition
+          var self = this;
           this._filter_select_label = Y.Node.create(EntitiesTable.FILTER_SELECT_LABEL_TEMPLATE);
           this._filter_select = Y.Node.create(EntitiesTable.FILTER_SELECT_TEMPLATE);
           this._filter_field_label =Y.Node.create(EntitiesTable.FILTER_FIELD_LABEL_TEMPLATE);
@@ -475,7 +245,7 @@ YUI({
             // Temporarily leaving asis for selenium tests
             initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
             //initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
-            generateRequest: this._requestBuilder
+            generateRequest: Y.bind(self._requestBuilder, self)
           }
 
         },
@@ -560,13 +330,12 @@ YUI({
                     oCallback;
           // display first page
           oState.pagination.recordOffset = 0;
-          
+         var dt = this._datatable; 
           oCallback = {
-              // PROBLEM HERE
-              success : this._datatable.onDataReturnSetRows,
-              failure : this._datatable.onDataReturnSetRows,
+              success : dt.onDataReturnSetRows,
+              failure : dt.onDataReturnSetRows,
               argument : oState,
-              scope : this
+              scope : dt
           };
 
           // Generate a query string
@@ -579,13 +348,13 @@ YUI({
           this._filter_submit.on('click', function(evt) {
             this._detail_filter = this._filter_select.get('value');
             this._value_filter = this._filter_field.get('value');
-            this.refresh();
-            });
+            this._refresh_table();
+            }, this);
 
           this._filter_csv_icon.on('click', function(evt) {
             var s = this._requestBuilder(this._datatable.getState(), this._datatable  );
             window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s;
-            });
+            }, this);
 
 
           var handle = Y.on('key', function(e) {
@@ -593,15 +362,15 @@ YUI({
               e.halt();
               // unsubscribe so this only happens once
               //handle.detach();
-              this._detail_filter = filter_select.get('value');
-              this._value_filter = filter_field.get('value');
+              this._detail_filter = this._filter_select.get('value');
+              this._value_filter = this._filter_field.get('value');
               this._refresh_table();
        
           // Attach to filter_field, specify keydown, keyCode 13, make Y the context, add arguments
 
 
 
-              }, [this._filter_field,this._filter_select] , 'down:13', Y);
+              }, [this._filter_field,this._filter_select] , 'down:13', this);
 
 
             this._filter_reset.on('click', function(evt) {
@@ -622,7 +391,7 @@ YUI({
    t = new EntitiesTable({column_headers: [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ,
                   list:  <%=@list.to_json %> ,
                   source_url: "<%= url_for :controller => "entities", :action => "entities_list", :format => "js", :id => @entity  %>?",
-                  fields_definition : [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> ],
+                  fields_definition : [ <%= @entity.details_in_list_view.collect{|d| d.yui_field(:controller => self)  }.join(',') %> ],
                   entity_name: '<%= @entity.name%>',
                   entity_id : <%= @entity.id %>,
                   contentBox: '#table-widget'});
