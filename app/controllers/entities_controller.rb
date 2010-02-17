@@ -153,8 +153,8 @@ class EntitiesController < ApplicationController
     if params[list_id+"_page"] or params[list_id+"_order"]
         params[:format]='html'
     end
-    
-    @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/MadbSettings.list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction )
+    list_length = params[:results].to_i || MadbSettings.list_length 
+    @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction, :list_length => list_length )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
 

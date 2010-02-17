@@ -338,7 +338,7 @@ class Entity < ActiveRecord::Base
       count_query = "select count(*) from #{crosstab_query} #{query_filter}"
       highlight_row = CrosstabObject.connection.execute(count_query)[0]
       highlight_count = highlight_row[0] ? highlight_row[0] : highlight_row['count']
-      return  (highlight_count.to_i/MadbSettings.list_length)+1
+      return  (highlight_count.to_i/h[:list_length])+1
     else
       return h[:default_page]
     end
@@ -353,13 +353,14 @@ class Entity < ActiveRecord::Base
 
   def get_paginated_list(h = {})
     crosstab_query = self.crosstab_query[:query]
+    h[:list_length]||=MadbSettings.list_length
     
     query_filter = join_filters(h [:filters])
 
     crosstab_count_row =  CrosstabObject.connection.execute("select count(*) from #{crosstab_query} #{query_filter}")[0]
     crosstab_count = crosstab_count_row[0] ? crosstab_count_row[0] : crosstab_count_row['count']
     #determine page to display.If we have a highlight parameter, always display the page of the highlighted item
-    paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, MadbSettings.list_length, page_number(crosstab_query, h)
+    paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, h[:list_length], page_number(crosstab_query, h)
     if crosstab_count.to_i>0
       limit, offset = paginator.current.to_sql
       query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\" #{h[:direction]}"

@@ -68,6 +68,8 @@ YUI.add('madb-tables', function(Y) {
         _filter_container: null,
         _datatable_container: null,
         _datatable_container_id: null,
+        _paginator_container: null,
+        _paginator: null,
         _datatable: null,
         _data_source:null,
         _view_formatter: function(cell, record, column, data) {
@@ -113,9 +115,16 @@ YUI.add('madb-tables', function(Y) {
           // we have the id here, enabling initial sorting by id
             fields: this.get('fields_definition').concat([ {"key": "id"} ] )
           };
+
           this._datatable_config = {
             caption:"Example: Inline Editing",
-            paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %> }), 
+            paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %>, 
+                                                    template              : "{PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} |  <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
+                                                    pageReportTemplate    : "<%= I18n.t 'entities_table.page_x_of_y'%>",
+                                                    previousPageLinkLabel : "<%= I18n.t 'entities_table.previous' %>",
+                                                    nextPageLinkLabel     : "<%= I18n.t 'entities_table.next' %>",
+                                                    rowsPerPageOptions    : [10,20,30,50,100]
+                  }), 
             dynamicData: true,
             sortedBy: {
                 // eventually replace this with the second line
