@@ -123,7 +123,8 @@ class EntitiesController < ApplicationController
 
     # If the table(entity) contains no record then error
     if Instance.count(:all, :conditions=> ["entity_id=?",params["id"]])==0
-      render :text => t("madb_no_instance_found",{:entity => @entity.name}) and return
+      @list = []
+      render
     end
 
     @details = @entity.details_hash
