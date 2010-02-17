@@ -327,3 +327,322 @@ YUI({
 
 </script>
 
+
+
+
+
+
+
+
+
+
+<h1>test widget</h1>
+
+
+
+<div id="table-widget"></div>
+
+
+<script type="text/javascript">
+YAHOO_config = {
+                filter: 'debug'
+                };
+
+
+YUI({
+    modules: {
+        'gallery-yui2': {
+            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-debug.js',
+            requires: ['node-base','get','async-queue'],
+            optional: [],
+            supersedes: []
+        }
+    }
+}).use('substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget', function(Y) {
+
+    Y.yui2().use('datatable', 'paginator', function() {
+
+
+
+      function EntitiesTable() {
+        EntitiesTable.superclass.constructor.apply(this,arguments);
+      }
+
+      Y.mix(EntitiesTable,{ 
+        NAME: 'entitiestable',
+        FILTER_SELECT_LABEL_TEMPLATE : '<span><%= t("madb_filter_on") %> </span>',
+        FILTER_SELECT_TEMPLATE : '<select><%=options_for_select(details_for_filter).gsub(/\n/,'') %></select>',
+        FILTER_FIELD_LABEL_TEMPLATE : '<span> <%= t("madb_with_value")%> </span>',
+        FILTER_FIELD_TEMPLATE : '<input type="text" name="value_filter"/>',
+        FILTER_SUBMIT_TEMPLATE : '<button><%= t("madb_submit") %></button>',
+        FILTER_RESET_TEMPLATE : '<button><%= t("madb_reset") %></button>',
+        FILTER_CSV_ICON_TEMPLATE : '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>',
+        ATTRS : {
+                  column_headers : {
+                    validator: Y.Lang.isArray
+                  },
+                  actions : {
+                    value : [ { "key": "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
+                              { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
+                              { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  }],
+                    validator: Y.Lang.isArray
+                  },
+                  list: {
+                    validator: Y.Lang.isArray
+                  },
+                  source_url : {
+                    validator: Y.Lang.isString
+                  },
+                  fields_definition : {
+                    validator: Y.Lang.isArray
+                  },
+                  entity_name: {
+                    validator: Y.Lang.isString
+                  },
+                  entity_id: {
+                    validator: Y.Lang.isNumeric
+                  }
+
+
+                }
+      });
+
+      Y.extend(EntitiesTable, Y.Widget, {
+        _filter_select_label : null,
+        _filter_select: null,
+        _filter_field_label: null,
+        _filter_field: null,
+        _filter_submit: null,
+        _filter_reset: null,
+        _filter_csv_icon: null,
+        _filter_container: null,
+        _detail_filter: "",
+        _value_filter: "",
+        _column_set : null,
+        _datatable_config: null,
+        _filter_container: null,
+        _datatable_container: null,
+        _datatable_container_id: null,
+        _datatable: null,
+        _data_source:null,
+        _view_formatter: function(cell, record, column, data) {
+          cell.innerHTML='<%=image_tag("icon/big/view.png", :border =>0)%>'; 
+        }, 
+        _edit_formatter : function(cell, record, column, data) {
+          cell.innerHTML='<%=image_tag("icon/big/edit.png", :border =>0)%>'; 
+        },
+        _delete_formatter : function(cell, record, column, data) {
+          cell.innerHTML='<%=image_tag("icon/big/delete.png", :border =>0)%>'; 
+        },
+        initializer: function(){
+          this._filter_select_label = Y.Node.create(EntitiesTable.FILTER_SELECT_LABEL_TEMPLATE);
+          this._filter_select = Y.Node.create(EntitiesTable.FILTER_SELECT_TEMPLATE);
+          this._filter_field_label =Y.Node.create(EntitiesTable.FILTER_FIELD_LABEL_TEMPLATE);
+          this._filter_field = Y.Node.create(EntitiesTable.FILTER_FIELD_TEMPLATE);
+          this._filter_submit = Y.Node.create(EntitiesTable.FILTER_SUBMIT_TEMPLATE);
+          this._filter_reset = Y.Node.create(EntitiesTable.FILTER_RESET_TEMPLATE);
+          this._filter_csv_icon = Y.Node.create(EntitiesTable.FILTER_CSV_ICON_TEMPLATE);
+
+          var contentBox= this.get('contentBox');
+          this._filter_container = Y.Node.create('<div></div>');
+          contentBox.append(this._filter_container);
+
+          this._datatable_container = Y.Node.create('<div></div>');
+          this._datatable_container_id = Y.guid();
+          this._datatable_container.set('id', this._datatable_container_id);
+          contentBox.append(this._datatable_container);
+
+          this._column_set = new YAHOO.widget.ColumnSet( this.get('column_headers').concat(this.get('actions')) ) ;
+          this._data_source = new YAHOO.util.DataSource(this.get('source_url'));
+          this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSON;
+          this._data_source.responseSchema = {
+            resultsList: "records",
+            metaFields: { totalRecords: "totalRecords" },
+          // we have the id here, enabling initial sorting by id
+            fields: this.get('fields_definition').concat([ {"key": "id"} ] )
+          };
+          this._datatable_config = {
+            caption:"Example: Inline Editing",
+            paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %> }), 
+            dynamicData: true,
+            sortedBy: {
+                // eventually replace this with the second line
+                key: "id",
+                //key: this._column_set[0].key
+                dir: YAHOO.widget.DataTable.CLASS_ASC
+            },
+            // eventually replace this list with the commented one. 
+            // Temporarily leaving asis for selenium tests
+            initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+            //initialRequest: "sort=<%= @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+            generateRequest: this._requestBuilder
+          }
+
+        },
+        renderUI: function() {
+          this._renderFilter();
+          this._renderDataTable();
+        },
+        _renderFilter: function() {
+          this._filter_container.append(this._filter_select_label).append(this._filter_select).append(this._filter_field_label).append(this._filter_field).append(this._filter_submit).append(this._filter_reset).append(this._filter_csv_icon);
+
+        },
+        _renderDataTable: function() {
+          // ATTENTION YUI2
+          //this._datatable = new YAHOO.widget.DataTable(Y.Node.getDOMNode(this._datatable_container), this._column_set, this._data_source, this._datatable_config);
+          this._datatable = new YAHOO.widget.DataTable(this._datatable_container_id, this._column_set, this._data_source, this._datatable_config);
+          this._datatable.handleDataReturnPayload = function (oRequest, oResponse, oPayload) {
+            oPayload.totalRecords = oResponse.meta.totalRecords;
+            return oPayload; 
+          }
+          this._datatable.subscribe('cellClickEvent',function (oArgs) {
+            var target = oArgs.target;
+            var record = this.getRecord(target);
+            var column = this.getColumn(target);
+            if (column.key==='delete_action_column') {
+              var first_column = this.getColumnSet().keys[0].key; 
+              var first_value = record.getData(this.getColumnSet().keys[0].key);
+              if (confirm(Y.madb.translate('<%= t("madb_really_delete_entity_question") %>', { entity: this.get('entity_name') , title: first_column  , value: first_value}  ))) {
+                var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+record.getData('id')+'.js';
+                var config = { method: 'POST', 
+                               on: { success : function() { this._datatable.deleteRow(target); },
+                                     failure : function() { alert('<%= t('madb_an_error_occured')%>');}
+                               }
+                };
+                Y.io(url, config);
+              }
+            }
+            }, this);
+
+            this._datatable.subscribe('cellClickEvent',function (oArgs) {
+              var target = oArgs.target;
+              var record = this.getRecord(target);
+              var column = this.getColumn(target);
+              if (column.key==='view_action_column') {
+                window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ record.getData('id') ;
+              }
+            }, this);
+            this._datatable.subscribe('cellClickEvent',function (oArgs) {
+              var target = oArgs.target;
+              var record = this.getRecord(target);
+              var column = this.getColumn(target);
+              if (column.key==='edit_action_column') {
+                window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ record.getData('id') ;
+              }
+            }, this);
+
+        },
+        _requestBuilder: function (oState, oSelf) {
+                var sort, dir, startIndex, results, s;
+                oState = oState || {pagination: null, sortedBy: null};
+        
+                sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
+                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "asc"; 
+                
+                startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
+                results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
+                
+                s= "&results="     + results +
+                            "&startIndex="  + startIndex +
+                            "&sort=" + sort +
+                            "&dir=" + dir;
+                if (this._value_filter!=="")
+                {
+                          s+="&detail_filter="   + this._detail_filter +
+                             "&value_filter="    + this._value_filter ; 
+                }
+                return s;
+        },
+        _refresh_table: function() {
+
+          var oState = this._datatable.getState(),
+                    request,
+                    oCallback;
+          // display first page
+          oState.pagination.recordOffset = 0;
+          
+          oCallback = {
+              // PROBLEM HERE
+              success : this._datatable.onDataReturnSetRows,
+              failure : this._datatable.onDataReturnSetRows,
+              argument : oState,
+              scope : this
+          };
+
+          // Generate a query string
+          request = this._requestBuilder(oState, this._datatable);
+          
+          // Fire off a request for new data.
+          this._data_source.sendRequest(request, oCallback);
+        },
+        bindUI: function() {
+          this._filter_submit.on('click', function(evt) {
+            this._detail_filter = this._filter_select.get('value');
+            this._value_filter = this._filter_field.get('value');
+            this.refresh();
+            });
+
+          this._filter_csv_icon.on('click', function(evt) {
+            var s = this._requestBuilder(this._datatable.getState(), this._datatable  );
+            window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s;
+            });
+
+
+          var handle = Y.on('key', function(e) {
+              // stopPropagation() and preventDefault()
+              e.halt();
+              // unsubscribe so this only happens once
+              //handle.detach();
+              this._detail_filter = filter_select.get('value');
+              this._value_filter = filter_field.get('value');
+              this._refresh_table();
+       
+          // Attach to filter_field, specify keydown, keyCode 13, make Y the context, add arguments
+
+
+
+              }, [this._filter_field,this._filter_select] , 'down:13', Y);
+
+
+            this._filter_reset.on('click', function(evt) {
+              this._detail_filter = "";
+              this._filter_field.set('value', ""); 
+              this._value_filter = "";
+              this._refresh_table();
+            }, this );
+        }
+
+      });
+
+      Y.madb.EntitiesTable = EntitiesTable;
+
+// Usage :
+
+
+   t = new EntitiesTable({column_headers: [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> , {"key": "id", "hidden": true}  ] ,
+                  list:  <%=@list.to_json %> ,
+                  source_url: "<%= url_for :controller => "entities", :action => "entities_list", :format => "js", :id => @entity  %>?",
+                  fields_definition : [ <%= @entity.details_in_list_view.collect{|d| d.yui_column(:controller => self)  }.join(',') %> ],
+                  entity_name: '<%= @entity.name%>',
+                  entity_id : <%= @entity.id %>,
+                  contentBox: '#table-widget'});
+   t.render();
+    
+    
+    
+
+
+
+//YUI2USE
+}) 
+    
+    
+    
+    });
+
+
+
+
+
+
+</script>

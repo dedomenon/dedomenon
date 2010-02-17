@@ -1,5 +1,9 @@
 YUI.add('madb', function(Y) {
   Y.namespace('madb');
+
+
+// Detail validator
+///////////////////
   var get_detail_validator= function (detail_id) {
     var validator=function(val, field) {
       var check_url = 'http://<%=AppConfig.app_host%>/app/entities/check_detail_value_validity';
@@ -52,6 +56,7 @@ YUI.add('madb', function(Y) {
 
   }
   Y.madb.translate = translate;
+
 /**
  * @class MadbFileField
  * @extends FormField
