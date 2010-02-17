@@ -39,11 +39,39 @@
 
 
 <div id="<%= @list_id%>_div">
-<%= render_component :controller => "entities", :action => "entities_list", :id => params["id"] %>
 </div>
 
 
+<script type="text/javascript">
+YAHOO_config = {
+                filter: 'debug'
+                };
 
-++++<div id="yui-entities-list-filter"></div>
-++++
-<div id="yui-entities-list"></div>
+YUI({
+    modules: {
+        'gallery-yui2': {
+            fullpath: 'http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2-debug.js',
+            requires: ['node-base','get','async-queue'],
+            optional: [],
+            supersedes: []
+        },
+        'madb-tables': {
+            fullpath: 'http://<%= AppConfig.app_host %>/app/dyn_js/entities_table.js',
+            requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget'],
+            optional: [],
+            supersedes: []
+        }
+    }
+}).use('substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', function(Y) {
+
+<%= entities_table(:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
+
+});
+
+
+
+
+
+
+</script>
+
