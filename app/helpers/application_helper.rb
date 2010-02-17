@@ -136,6 +136,20 @@ module ApplicationHelper
 #<% end %>
 #
 
+  def entities_table(h={})
+    raise "Missing options" if h[:controller].nil? or h[:entity].nil? or h[:content_box].nil?
+    entity = h[:entity]
+    js = %{
+       t = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
+                  source_url: "#{url_for :controller => "entities", :action => "entities_list", :format => "js", :id => entity  }?",
+                  fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
+                  entity_name: '#{ entity.name}',
+                  entity_id : #{ entity.id },
+                  filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ d.name, d.detail_id]}).gsub(/\n/,'') }', 
+                  contentBox: '#{h[:content_box]}'});
+       t.render();
+    }
+  end
   #default entity form
   def default_entity_form(h)
    (h[:form_content_box] ) or raise "need :form_content_box passed"
