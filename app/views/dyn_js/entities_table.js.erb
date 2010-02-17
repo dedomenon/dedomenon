@@ -3,11 +3,12 @@
  * EntitiesList DataTable
  */
 
+console.log('hello from datatadle file');
+
 YUI.add('madb-tables', function(Y) {
   Y.namespace('madb_tables');
 
 //    Y.yui2().use('datatable', 'paginator', function() {
-
 
 
       function EntitiesTable() {
@@ -68,8 +69,6 @@ YUI.add('madb-tables', function(Y) {
         _filter_container: null,
         _datatable_container: null,
         _datatable_container_id: null,
-        _paginator_container: null,
-        _paginator: null,
         _datatable: null,
         _data_source:null,
         _view_formatter: function(cell, record, column, data) {
@@ -117,10 +116,12 @@ YUI.add('madb-tables', function(Y) {
           };
 
           this._datatable_config = {
-            caption:"Example: Inline Editing",
+            //caption:"Example: Inline Editing",
             paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %>, 
-                                                    template              : "{PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} |  <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
+                                                    template              : "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} | {CurrentPageReport} | <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
                                                     pageReportTemplate    : "<%= I18n.t 'entities_table.page_x_of_y'%>",
+                                                    firstPageLinkLabel    : "<%= I18n.t 'entities_table.first' %>",
+                                                    lastPageLinkLabel     : "<%= I18n.t 'entities_table.last' %>",
                                                     previousPageLinkLabel : "<%= I18n.t 'entities_table.previous' %>",
                                                     nextPageLinkLabel     : "<%= I18n.t 'entities_table.next' %>",
                                                     rowsPerPageOptions    : [10,20,30,50,100]
@@ -163,11 +164,11 @@ YUI.add('madb-tables', function(Y) {
             if (column.key==='delete_action_column') {
               var first_column = this.getColumnSet().keys[0].key; 
               var first_value = record.getData(this.getColumnSet().keys[0].key);
-              if (confirm(Y.madb.translate('<%= t("madb_really_delete_entity_question") %>', { entity: this.get('entity_name') , title: first_column  , value: first_value}  ))) {
+              if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: this.get('entity_name') , title: first_column  , value: first_value}  ))) {
                 var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+record.getData('id')+'.js';
                 var config = { method: 'POST', 
                                on: { success : function() { this._datatable.deleteRow(target); },
-                                     failure : function() { alert('<%= t('madb_an_error_occured')%>');}
+                                     failure : function() { alert("<%= t('madb_an_error_occured')%>");}
                                }
                 };
                 Y.io(url, config);

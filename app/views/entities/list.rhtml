@@ -49,9 +49,7 @@ YAHOO_config = {
 
 
 <% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget']) do %>
-
-<%= entities_table(:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
-
+  <%= entities_table(:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
 <% end %>
 
 

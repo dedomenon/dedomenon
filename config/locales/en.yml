@@ -4,6 +4,13 @@ en:
       this_is_your_api_key_title: "Simple API key"
       database_setup_incorrect_for_api_key: "The database is not correctly set up, please contact your admin."
       here_is_your_api_key: "Here is your key"
+  entities_table:
+    page_x_of_y: Page {currentPage} of {totalPages} (record {startRecord} to {endRecord} of {totalRecords})
+    previous: "&lt; Prev"
+    rows_per_page: Rows per page
+    next: "Next &gt;"
+    first: "&lt;&lt;First"
+    last: "Last&gt;&gt;"
   age: age
   madb_invoice_vat_amount: VAT
   madb_your_registered_vat_number_confirm_or_change: Here is the VAT number that will be used for invoicing. Please confirm or update the data, and you'll be taken to the upgrade page.

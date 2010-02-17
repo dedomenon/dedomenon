@@ -1,4 +1,11 @@
 fr:
+  entities_table:
+    page_x_of_y: Page {currentPage} de {totalPages} (rangées {startRecord} à {endRecord} de {totalRecords})
+    previous: "&lt; Préc"
+    rows_per_page: Rangées par page
+    next: "Suivant &gt;"
+    first: "&lt;&lt;"
+    last: "&gt;&gt;"
   madb_invoice_vat_amount: TVA
   madb_your_registered_vat_number_confirm_or_change: "Voici les donn\xC3\xA9es TVA qui seront utilis\xC3\xA9es pour la facturation. Veuillez confirmer ou adapter ces donn\xC3\xA9es, et vous serez ensuite redirig\xC3\xA9 vers la page des mise \xC3\xA0 jours."
   madb_mail_account_expired: "Cher utilisateur,\n\n\
@@ -474,3 +481,4 @@ fr:
   en: English
   madb_settings: "Pr\xC3\xA9f\xC3\xA9rences"
   madb_use_it: Sélectionner
+  madb_import_csv: Importer un fichier CSV
