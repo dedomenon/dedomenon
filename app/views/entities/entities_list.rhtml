@@ -150,9 +150,7 @@ YUI({
                     validator: Y.Lang.isArray
                   },
                   actions : {
-                    value : [ { "key": "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
-                              { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
-                              { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  }],
+                    value : null,
                     validator: Y.Lang.isArray
                   },
                   list: {
@@ -194,6 +192,7 @@ YUI({
         _datatable: null,
         _data_source:null,
         _view_formatter: function(cell, record, column, data) {
+Y.log(this);
           cell.innerHTML='<%=image_tag("icon/big/view.png", :border =>0)%>'; 
         }, 
         _edit_formatter : function(cell, record, column, data) {
@@ -203,6 +202,11 @@ YUI({
           cell.innerHTML='<%=image_tag("icon/big/delete.png", :border =>0)%>'; 
         },
         initializer: function(){
+
+          var actions = [ { "key": "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
+                            { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
+                            { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  }]
+
           // used to reference ourself when in an object definition
           var self = this;
           this._filter_select_label = Y.Node.create(EntitiesTable.FILTER_SELECT_LABEL_TEMPLATE);
@@ -222,7 +226,7 @@ YUI({
           this._datatable_container.set('id', this._datatable_container_id);
           contentBox.append(this._datatable_container);
 
-          this._column_set = new YAHOO.widget.ColumnSet( this.get('column_headers').concat(this.get('actions')) ) ;
+          this._column_set = new YAHOO.widget.ColumnSet( this.get('column_headers').concat(actions));
           this._data_source = new YAHOO.util.DataSource(this.get('source_url'));
           this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSON;
           this._data_source.responseSchema = {
@@ -383,7 +387,6 @@ YUI({
 
       });
 
-      Y.madb.EntitiesTable = EntitiesTable;
 
 // Usage :
 
