@@ -290,7 +290,9 @@ class EntitiesController < ApplicationController
       
       # if saved and we have auser of this database, list entites otherwise nothing
       if session["user"] and user_dbs.include? @db
-        render_component  :controller => "entities", :action => "entities_list", :id => params["entity"], :params =>{ :highlight => @instance.id }
+#returning json here caused the file dialog to open...
+#might have to be adapted in the gallery-form code
+        render :text => @instance.to_hash.to_json and return
       else
         # this case happens with public forms
         render :nothing => true and return;

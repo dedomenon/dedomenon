@@ -13,7 +13,7 @@
 <div id="addition-form"> </div>
 
 <script type="text/javascript">
-<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb']) do %>
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb', 'event-custom']) do %>
     // Create a Field Object manually
     var fields = [ ];
     fields.push( new Y.HiddenField({
@@ -28,8 +28,9 @@
             fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
             fields.push ( {type : 'reset', label : 'Reset'});
             fields.push ( {type : 'button', label : 'Cancel', onclick : { fn : function(e) {f.get("boundingBox").get('parentNode').addClass('hidden'); }}});
+    Y.publish('entity_created', { broadcast: 2} );
  
-    <%= default_entity_form( :form_content_box => "addition-form", :success_callback => update_list_form_callback(@list_id), :upload => @entity.has_file_attachment_detail?) %>
+    <%= default_entity_form( :form_content_box => "addition-form", :success_callback => %{ function(form,data){ Y.fire('entity_created', '#{@list_id}', data  );    }   }, :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();
 <% end %>
@@ -48,8 +49,25 @@ YAHOO_config = {
                 };
 
 
-<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget']) do %>
-  <%= entities_table(:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
+<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim']) do %>
+  <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
+
+
+  Y.Global.on('entity_created', function(list, data) {
+      Y.log('list = ' + list);
+      if (list == "<%= @list_id %>")
+      {
+        var record = Y.JSON.parse(data);
+        dt._datatable.addRow(record,0);
+        var row = Y.one(dt._datatable.getFirstTrEl());
+        var anim = new Y.Anim({ node: row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
+        anim.run();
+      }
+
+      
+  });  
+
+
 <% end %>
 
 
@@ -72,7 +90,7 @@ YUI({
     }
 }).use('substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', function(Y) {
 
-<%= entities_table(:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
+<%= entities_table(:js_var => "test", :entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
 
 });
 

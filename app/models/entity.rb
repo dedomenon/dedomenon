@@ -344,7 +344,7 @@ class Entity < ActiveRecord::Base
     end
   end
 
-  def join_filters(filters)
+  def join_filters(filters=[])
     filters = filters.flatten.reject{|f| f.nil? or f.length==0}
     query_filter = ""
     query_filter = " where " + filters.join(" and ")  if filters.length > 0
@@ -363,7 +363,7 @@ class Entity < ActiveRecord::Base
     paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, h[:list_length], page_number(crosstab_query, h)
     if crosstab_count.to_i>0
       limit, offset = paginator.current.to_sql
-      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by]}\" #{h[:direction]}"
+      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by].nil? ? 'id' : h[:order_by]}\" #{h[:direction].nil? ? 'ASC' : h[:direction]}"
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end

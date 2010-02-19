@@ -140,17 +140,17 @@ module ApplicationHelper
 #
 
   def entities_table(h={})
-    raise "Missing options" if h[:controller].nil? or h[:entity].nil? or h[:content_box].nil?
+    raise "Missing options" if h[:controller].nil? or h[:entity].nil? or h[:content_box].nil? or h[:js_var].nil?
     entity = h[:entity]
     js = %{
-       t = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
+       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
                   source_url: "#{url_for :controller => "entities", :action => "entities_list", :format => "js", :id => entity  }?",
                   fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
                   entity_name: '#{ entity.name}',
                   entity_id : #{ entity.id },
                   filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ d.name, d.detail_id]}).gsub(/\n/,'') }', 
                   contentBox: '#{h[:content_box]}'});
-       t.render();
+       #{h[:js_var]}.render();
     }
   end
   #default entity form
@@ -243,7 +243,6 @@ module ApplicationHelper
           list_div.set('innerHTML',data);
           var highlighted_row = list_div.one("tr.highlight");
           var anim = new Y.Anim({ node: highlighted_row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
-          g=anim;
           anim.run();
 
           f._formNode.all('input.invalid_form_value').removeClass('invalid_form_value').addClass('unchecked_form_value');

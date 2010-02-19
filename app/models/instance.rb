@@ -169,10 +169,14 @@ end
     dt = [ "detail_values", "integer_detail_values", "date_detail_values"]
     cols = "d.id , v.value::text , e2d.display_order"
     query = dt.inject("") do  |q, t|
-      q += "select d.id , v.value::text , e2d.display_order  from #{t} v join details d on (v.detail_id = d.id) join instances i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)   where instance_id = #{self.id} union "
+      q += "select d.id , d.name,  v.value::text , e2d.display_order  from #{t} v join details d on (v.detail_id = d.id) join instances i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)   where instance_id = #{self.id} union "
     end
 
-    query += "select d.id , p.value::text, e2d.display_order  from ddl_detail_values v join details d on (v.detail_id = d.id) join detail_value_propositions p on (p.id=v.detail_value_proposition_id) join instances  i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)  where instance_id =#{self.id}";
+    query += "select d.id , d.name,  p.value::text, e2d.display_order  from ddl_detail_values v join details d on (v.detail_id = d.id) join detail_value_propositions p on (p.id=v.detail_value_proposition_id) join instances  i on (i.id=v.instance_id) join entities e on (e.id=i.entity_id) join entities2details e2d on (e2d.detail_id=d.id and e2d.entity_id = e.id)  where instance_id =#{self.id}";
 
+  end
+
+  def to_hash
+    self.entity.get_paginated_list(:filters => [ "id = #{self.id}"])[0][0]
   end
 end
