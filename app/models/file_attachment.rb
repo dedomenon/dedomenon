@@ -265,19 +265,11 @@ class FileAttachment < DetailValue
         s = '<a href="#{h[:controller].url_for(:controller =>  "file_attachments", :action => "download")}/'+data.detail_value_id+'">'+data.filename+'</a>';
       else
         s = '';
+        console.log(s);
       cell.innerHTML= s;
       } }
     end
 
-    def self.yui_parser(h={})
-      %{function(data) {
-      if (data.filename)
-        s = data.filename
-      else
-        s = '';
-      return s;
-      } }
-    end
   def self.yui_sortable(h={})
     "false"
   end

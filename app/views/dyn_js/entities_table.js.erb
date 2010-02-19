@@ -82,7 +82,7 @@ YUI.add('madb-tables', function(Y) {
         },
         initializer: function(){
 
-          var actions = [ { "key": "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
+          var actions = [ {  "key": "<%= t("madb_view").downcase %>_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
                             { "key": "<%= t("madb_edit").downcase %>_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
                             { "key": "<%=t("madb_delete").downcase %>_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  }]
 
