@@ -31,8 +31,8 @@ YUI.add('madb-tables', function(Y) {
                     value : null,
                     validator: Y.Lang.isArray
                   },
-                  source_url : {
-                    validator: Y.Lang.isString
+                  source : {
+                    value: null
                   },
                   fields_definition : {
                     validator: Y.Lang.isArray
@@ -46,7 +46,12 @@ YUI.add('madb-tables', function(Y) {
                   filter_options: {
                     value: "",
                     validator: Y.Lang.isString
+                  },
+                  dynamic_data: {
+                    value: true,
+                    validator: Y.Lang.isBoolean
                   }
+
 
 
                 }
@@ -105,40 +110,74 @@ YUI.add('madb-tables', function(Y) {
           contentBox.append(this._datatable_container);
 
           this._column_set = new YAHOO.widget.ColumnSet( this.get('column_headers').concat(actions));
-          this._data_source = new YAHOO.util.DataSource(this.get('source_url'));
-          this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSON;
-          this._data_source.responseSchema = {
-            resultsList: "records",
-            metaFields: { totalRecords: "totalRecords" },
-          // we have the id here, enabling initial sorting by id
-            fields: this.get('fields_definition').concat([ {"key": "id"} ] )
-          };
+          if (this.get('dynamic_data'))
+          {
+            Y.log("dynamic data");
+            this._data_source = new YAHOO.util.DataSource(this.get('source'));
+            this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSON;
+            this._data_source.responseSchema = {
+              resultsList: "records",
+              metaFields: { totalRecords: "totalRecords" },
+            // we have the id here, enabling initial sorting by id
+              fields: this.get('fields_definition').concat([ {"key": "id"} ] )
+            };
 
-          this._datatable_config = {
-            //caption:"Example: Inline Editing",
-            paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %>, 
-                                                    template              : "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} | {CurrentPageReport} | <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
-                                                    pageReportTemplate    : "<%= I18n.t 'entities_table.page_x_of_y'%>",
-                                                    firstPageLinkLabel    : "<%= I18n.t 'entities_table.first' %>",
-                                                    lastPageLinkLabel     : "<%= I18n.t 'entities_table.last' %>",
-                                                    previousPageLinkLabel : "<%= I18n.t 'entities_table.previous' %>",
-                                                    nextPageLinkLabel     : "<%= I18n.t 'entities_table.next' %>",
-                                                    rowsPerPageOptions    : [10,20,30,50,100]
-                  }), 
-            dynamicData: true,
-            sortedBy: {
-                // eventually replace this with the second line
-                key: "id",
-                //key: this._column_set[0].key
-                dir: YAHOO.widget.DataTable.CLASS_ASC
-            },
-            // eventually replace this list with the commented one. 
-            // Temporarily leaving asis for selenium tests
-            initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
-            //initialRequest: "sort=<%# @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
-            generateRequest: Y.bind(self._requestBuilder, self)
+            this._datatable_config = {
+              //caption:"Example: Inline Editing",
+              paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %>, 
+                                                      template              : "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} | {CurrentPageReport} | <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
+                                                      pageReportTemplate    : "<%= I18n.t 'entities_table.page_x_of_y'%>",
+                                                      firstPageLinkLabel    : "<%= I18n.t 'entities_table.first' %>",
+                                                      lastPageLinkLabel     : "<%= I18n.t 'entities_table.last' %>",
+                                                      previousPageLinkLabel : "<%= I18n.t 'entities_table.previous' %>",
+                                                      nextPageLinkLabel     : "<%= I18n.t 'entities_table.next' %>",
+                                                      rowsPerPageOptions    : [10,20,30,50,100]
+                    }), 
+              dynamicData: true,
+              sortedBy: {
+                  // eventually replace this with the second line
+                  key: "id",
+                  //key: this._column_set[0].key
+                  dir: YAHOO.widget.DataTable.CLASS_ASC
+              },
+              // eventually replace this list with the commented one. 
+              // Temporarily leaving asis for selenium tests
+              initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+              //initialRequest: "sort=<%# @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+              generateRequest: Y.bind(self._requestBuilder, self)
+            }
           }
+          else {
+            Y.log(this.get('source'));
+            this._data_source = new YAHOO.util.DataSource(Y.JSON.parse(this.get('source')));
+            this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+            this._data_source.responseSchema = {
+              fields: this.get('fields_definition').concat([ {"key": "id"} ] )
+            };
 
+            this._datatable_config = {
+              //caption:"Example: Inline Editing",
+              paginator: new YAHOO.widget.Paginator({ rowsPerPage: <%= MadbSettings.list_length %>, 
+                                                      template              : "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} | {CurrentPageReport} | <%= I18n.t 'entities_table.rows_per_page' %>: {RowsPerPageDropdown}",
+                                                      pageReportTemplate    : "<%= I18n.t 'entities_table.page_x_of_y'%>",
+                                                      firstPageLinkLabel    : "<%= I18n.t 'entities_table.first' %>",
+                                                      lastPageLinkLabel     : "<%= I18n.t 'entities_table.last' %>",
+                                                      previousPageLinkLabel : "<%= I18n.t 'entities_table.previous' %>",
+                                                      nextPageLinkLabel     : "<%= I18n.t 'entities_table.next' %>",
+                                                      rowsPerPageOptions    : [10,20,30,50,100]
+                    }), 
+              dynamicData: false,
+              sortedBy: {
+                  // eventually replace this with the second line
+                  key: "id",
+                  //key: this._column_set[0].key
+                  dir: YAHOO.widget.DataTable.CLASS_ASC
+              },
+              // eventually replace this list with the commented one. 
+              // Temporarily leaving asis for selenium tests
+              //initialRequest: "sort=<%# @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+            }
+          }
         },
         renderUI: function() {
           this._renderFilter();
@@ -283,4 +322,4 @@ YUI.add('madb-tables', function(Y) {
 //}) 
 
 
-}, '1.0', { requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget'], skinnable: false} );
+}, '1.0', { requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget', 'json-parse'], skinnable: false} );

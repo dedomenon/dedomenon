@@ -144,7 +144,8 @@ module ApplicationHelper
     entity = h[:entity]
     js = %{
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
-                  source_url: "#{url_for :controller => "entities", :action => "entities_list", :format => "js", :id => entity  }?",
+                  source: "#{h[:source].nil? ? url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?" : h[:source].to_json  }",
+                  dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
                   fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
                   entity_name: '#{ entity.name}',
                   entity_id : #{ entity.id },
@@ -166,6 +167,7 @@ module ApplicationHelper
    js = %{
      
 
+Y.publish('madb:entity_created', { broadcast: 2} );
      
 //We add validation on all fields. 
 //If no validator was specified for the detail (see in model), 

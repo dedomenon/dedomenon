@@ -30,7 +30,7 @@
             fields.push ( {type : 'button', label : 'Cancel', onclick : { fn : function(e) {f.get("boundingBox").get('parentNode').addClass('hidden'); }}});
     Y.publish('entity_created', { broadcast: 2} );
  
-    <%= default_entity_form( :form_content_box => "addition-form", :success_callback => %{ function(form,data){ Y.fire('entity_created', '#{@list_id}', data  );    }   }, :upload => @entity.has_file_attachment_detail?) %>
+    <%= default_entity_form( :form_content_box => "addition-form", :success_callback => %{ function(form,data){ Y.fire('madb:entity_created', '#{@list_id}', data  );    }   }, :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();
 <% end %>
@@ -53,8 +53,7 @@ YAHOO_config = {
   <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@list_id}_div" )%>
 
 
-  Y.Global.on('entity_created', function(list, data) {
-      Y.log('list = ' + list);
+  Y.Global.on('madb:entity_created', function(list, data) {
       if (list == "<%= @list_id %>")
       {
         var record = Y.JSON.parse(data);
