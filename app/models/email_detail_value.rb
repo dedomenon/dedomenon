@@ -86,4 +86,7 @@ class EmailDetailValue < DetailValue
 		end
 		return false
 	end
+  def self.yui_formatter(h={})
+    '"email"'
+  end
 end
