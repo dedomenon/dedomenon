@@ -97,7 +97,6 @@ class EntitiesControllerTest < ActionController::TestCase
   def test_list_with_entity_without_details
      get :list, {'id'=> entities(:entity_without_details).id }, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     assert_tag :content => "\nmadb_no_instance_found\n"
   end
 
   
@@ -202,96 +201,22 @@ class EntitiesControllerTest < ActionController::TestCase
   #Unfiltered list
   def test_unfiltered_entities_list_with_correct_account_user
   #FIXME: WE should test with more params passed in the URL
-     get :entities_list, {'id'=> @db1_entity_id, :value_filter => nil}, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> @db1_entity_id, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
+     result = JSON.parse(@response.body)
+     assert_equal 10,  result['pageSize']
+     assert_equal 11,  result['totalRecords']
+     assert_equal "", result['dir']
+     assert_equal 0,  result['startIndex']
+     assert_equal 10, result["records"].size
      assert_equal 11, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "unfiltered", assigns["div_class"]
      assert_equal 10, assigns["list"].length
      assert_equal "raphinou", assigns["list"][1].nom
      assert_equal "valtech", assigns["list"][0].nom
+     assert_equal([{"nom"=>"valtech", "personnes_occuppees"=>"2", "id"=>69, "company_email"=>"", "code_nace"=>"hjhjhjk", "tva"=>""}, {"nom"=>"raphinou", "personnes_occuppees"=>"1", "id"=>71, "company_email"=>"rb@raphinou.com", "code_nace"=>"", "tva"=>"BE 738 832 298"}, {"nom"=>"O-nuclear", "personnes_occuppees"=>"2500", "id"=>73, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Axios", "personnes_occuppees"=>"10", "id"=>77, "company_email"=>"inf@consultaix.com", "code_nace"=>"230202020", "tva"=>"BE230202020"}, {"nom"=>"BARDAF", "personnes_occuppees"=>"200", "id"=>78, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Banque Degroof", "personnes_occuppees"=>"150", "id"=>79, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Commission  européenne", "personnes_occuppees"=>"6000", "id"=>80, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Easynet Belgium", "personnes_occuppees"=>"65", "id"=>88, "company_email"=>"info@be.easynet.net", "code_nace"=>"", "tva"=>""}, {"nom"=>"Experteam", "personnes_occuppees"=>"30", "id"=>89, "company_email"=>"info@experteam.be", "code_nace"=>"", "tva"=>""}, {"nom"=>"Mind", "personnes_occuppees"=>nil, "id"=>91, "company_email"=>"info@mind.be", "code_nace"=>"", "tva"=>""}], JSON.parse(@response.body)['records'])
      assert_equal 5, assigns["not_in_list_view"].length
      assert_equal ["adresse", "fax", "memo", "status", "telephone"], assigns["not_in_list_view"]
 
-     assert_nil session["list_order"][assigns["list_id"]]
-     assert_tag( {:tag =>"div", :attributes =>{ :class=> "navigation_links"}, :children => { :only => {:tag => "span", :attributes=>{ :class=> "navigation_link" } }, :count => 2}} )
-     #check order url are generated correctly with overwrite_params
-     assert_tag( { :tag => "table" , :attributes => { :class => "entities_list"} , :parent => { :tag => "div", :attributes => {:id => "societe_list_table_div" } }, :descendant => {:tag =>"a", :attributes => {:onclick=>/societe_list_order=code_nace/}}  })
-     #check open in new window links
-#     assert_tag( { :tag => "a" , :attributes => { :target => "societe_list_window", :href=> Regexp.new("/entities/entities_list/11\\?id=11&amp;popup=t" ) }} )
-
-#check the "view" link does not use the source_id parameter
-     assert_tag(  { :tag => "tbody" , \
-     	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_69" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/view/69$") }}, 
-		}
-	}, 
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_71" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/view/71$") } }, 
-		}
-	}, \
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_73" }, \
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/view/73$") } 
-			} 
-		}
-	}
-	} )
-#check the "edit link" 
-     assert_tag(  { :tag => "tbody" , \
-     	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_69" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/edit/69$") }}, 
-		}
-	}, 
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_71" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/edit/71$") } }, 
-		}
-	}, \
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_73" }, \
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :href=> Regexp.new("/entities/edit/73$") } 
-			} 
-		}
-	}
-	} )
-#check the "delete link" 
-     assert_tag(  { :tag => "tbody" , \
-     	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_69" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :onclick=> Regexp.new("new Ajax.Updater\\('societe_list_div', '(/\\w+)*/entities/delete/69.*_page.*'") }}, 
-		}
-	}})  
-
-     assert_tag(  { :tag => "tbody" , \
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_71" }, 
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :onclick=> Regexp.new("new Ajax.Updater\\('societe_list_div', '(/\\w+)*/entities/delete/71.*_page.*'") } }, 
-		}
-	}})
-     assert_tag(  { :tag => "tbody" , \
-	:child => { :tag => "tr" , :attributes => { :id => "tr_societe_list_73" }, \
-		:child => { :tag => "td", :attributes => { :class => "action_cell"} , 
-			:child => { :tag =>"a", :attributes => { :onclick=> Regexp.new("new Ajax.Updater\\('societe_list_div', '(/\\w+)*/entities/delete/73.*_page.*'") } 
-			} 
-		}
-	}})
-
-  #number of columns, by checking number of headers
-	assert_tag( :tag => "thead", :child => { :tag => "tr" , :children => { :only => { :tag => "th"} , :count => 8 }})
-  # 10 rows in tbody, one in thead
-	assert_tag( :tag => "thead",  :children => { :only => { :tag => "tr"} , :count => 1 })
-	assert_tag( :tag => "tbody",  :children => { :only => { :tag => "tr"} , :count => 10 })
-  #check no header for non displayed field
-  assert_no_tag( {:tag => "th", :content => "adresse"})
-
-	#correct layout (nil)  used ?
-	assert_no_tag :tag => "div" , :attributes=> { :id => "content"}
-	assert_no_tag :tag => "div" , :attributes=> { :id => "popup_content"}
-  #
      #check details order is used
      assert_equal %w(nom code_nace tva personnes_occuppees company_email), assigns["ordered_fields"]
   end
@@ -341,22 +266,14 @@ class EntitiesControllerTest < ActionController::TestCase
   #Filtered list with result
   def test_filtered_entities_list_with_correct_account_user_with_result
      #filter on detail "nom", which has id 48
-     get :entities_list, {'id'=> @db1_entity_id, 'detail_filter' => 48, 'value_filter' => "aph"}, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> @db1_entity_id, 'detail_filter' => 48, 'value_filter' => "aph", 'format' => "js"}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     assert_equal @db1_entity_id, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "filtered", assigns["div_class"]
-     assert_equal 1, assigns["list"].length
-     assert_equal "raphinou", assigns["list"][0].nom
-     assert_equal 5, assigns["not_in_list_view"].length
-     assert_equal ["adresse", "fax", "memo", "status", "telephone"], assigns["not_in_list_view"]
-    #number of columns, by checking number of headers
-    assert_tag( :tag => "thead", :child => { :tag => "tr" , :children => { :only => { :tag => "th"} , :count => 8 }})
-    # 1 row in tbody, one in thead
-    assert_tag( :tag => "thead",  :children => { :only => { :tag => "tr"} , :count => 1 })
-    assert_tag( :tag => "tbody",  :children => { :only => { :tag => "tr"} , :count => 1 })
-     #check we don't display headers for non list fields
-     assert_no_tag( {:tag => "th", :content => "adresse"})
+     result = JSON.parse(@response.body)
+     assert_equal 1,  result['pageSize']
+     assert_equal "", result['dir']
+     assert_equal 0,  result['startIndex']
+     assert_equal 1, result["records"].size
+     assert_equal({"nom"=>"raphinou", "personnes_occuppees"=>"1", "memo"=>"", "id"=>71, "adresse"=>"kasteellaan 17", "company_email"=>"rb@raphinou.com", "code_nace"=>"", "fax"=>"", "telephone"=>"+32 479 989 969", "status"=>"sprl", "tva"=>"BE 738 832 298"}, result["records"][0])
   end
 
 
@@ -386,100 +303,73 @@ class EntitiesControllerTest < ActionController::TestCase
   #Filtered list without result
   def test_filtered_entities_list_with_correct_account_user_without_result
      #filter on detail "nom", which has id 48
-     get :entities_list, {'id'=> @db1_entity_id, 'detail_filter' => 48, 'value_filter' => "unknownvalue"}, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> @db1_entity_id, 'detail_filter' => 48, 'value_filter' => "unknownvalue", "format" => "js"}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     assert_equal @db1_entity_id, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "filtered", assigns["div_class"]
-     assert_equal 0, assigns["list"].length
+     result = JSON.parse(@response.body)
+     assert_equal 0, result["recordsReturned"]
+     assert_equal 0, result["records"].size
   end
 
   #Ordered list
   def test_integer_ordered_entities_list_with_correct_account_user
      #order on detail "personnes_occuppees", which has id 51
-     get :entities_list, {'id'=> @db1_entity_id, "societe_list_order" => "personnes_occuppees" }, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> @db1_entity_id, "sort" => "personnes_occuppees", "format" => "js" }, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     assert_equal @db1_entity_id, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "unfiltered", assigns["div_class"]
-     assert_equal 10, assigns["list"].length
-     assert_equal "raphinou", assigns["list"][0].nom
-     assert_equal "valtech", assigns["list"][1].nom
-     assert_not_nil session["list_order"][assigns["list_id"]]
-     assert_equal "personnes_occuppees", session["list_order"][assigns["list_id"]]
-     assert_tag( {:tag =>"div", :attributes =>{ :class=> "navigation_links"}, :children => { :only => {:tag => "span", :attributes=>{ :class=> "navigation_link" } }, :count => 2}} )
+     result = JSON.parse(@response.body)
+     assert_equal 10, result["recordsReturned"]
+     assert_equal 10, result["records"].size
+     assert_equal "raphinou", result["records"][0]["nom"]
+     assert_equal "valtech", result["records"][1]["nom"]
+     assert_equal "Axios", result["records"][2]["nom"]
+     assert_equal "Experteam", result["records"][3]["nom"]
+     assert_equal "Easynet Belgium", result["records"][4]["nom"]
+     assert_equal "Banque Degroof", result["records"][5]["nom"]
+     assert_equal "BARDAF", result["records"][6]["nom"]
+     assert_equal "O-nuclear", result["records"][7]["nom"]
+     assert_equal "Commission  européenne", result["records"][8]["nom"]
+     assert_equal "Mind", result["records"][9]["nom"]
+     assert_equal "personnes_occuppees", result["sort"]
+     assert_equal 0 , result["startIndex"]
+     assert_equal "" , result["dir"]
   end
 
   #Filtered & Ordered list requested by xhr
   def test_filtered_ordered_entities_list_with_correct_account_user
      #order on detail "personnes_occuppees", which has id 51
-     xhr :get, :entities_list, {'id'=> @db1_entity_id, "societe_list_order" => "personnes_occuppees", 'detail_filter' => 48, 'value_filter' => "i" }, { 'user' => User.find_by_id(@db1_user_id)}
+     xhr :get, :entities_list, {'id'=> @db1_entity_id, "sort" => "personnes_occuppees", 'detail_filter' => 48, 'value_filter' => "i", "format" => "js" }, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     assert_equal "personnes_occuppees", session["list_order"][assigns["list_id"]]
-     #right layout used?
-     assert_no_tag :tag => "div", :attributes => { :id => "content"}
-     #no menu displayed?
-     assert_no_tag :tag => "div", :attributes => { :class => "menu"}
-     #no navigation links ?
-     assert_no_tag({:tag => "span", :attributes=>{ :class=> "navigation_link"} })
-     #the div targetted by remote links must not be in the result
-     assert_no_tag :tag => "div" , :attributes => { :id => "societe_list_div"} 
-     #do remote links and form target correct div? 
-     assert_tag :tag => "a" , :content => "code_nace", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "company_email", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "nom", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "madb_reset", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "form" ,:attributes => {:method => "post", :onsubmit=> Regexp.new("#{assigns["list_id"]}_div")} 
-     #form present?
-     assert_tag :tag => "form", :attributes => { :method => "post", :onsubmit => Regexp.new("societe_list_div") }
-     #check detail drop down list
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "code_nace", :attributes => { :value => "49" } },
-	     :child => { :tag =>"option", :content => "TVA", :attributes => { :value => "50" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "personnes_occuppees", :attributes => { :value => "51" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "telephone", :attributes => { :value => "53" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "fax", :attributes => { :value => "54" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "memo", :attributes => { :value => "55" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "status", :attributes => { :value => "62" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "company_email", :attributes => { :value => "63" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "adresse", :attributes => { :value => "52" } }
-     assert_equal @db1_entity_id, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "filtered", assigns["div_class"]
-     assert_equal 6, assigns["list"].length
-     assert_no_tag({:tag => "span", :attributes=>{ :class=> "navigation_link"} })
-     assert_equal "raphinou", assigns["list"][0].nom
-     assert_equal "Axios", assigns["list"][1].nom
-     assert_equal "Easynet Belgium", assigns["list"][2].nom
+     result = JSON.parse(@response.body)
+     assert_equal "personnes_occuppees", result["sort"]
+     assert_equal 6, result["recordsReturned"]
+     assert_equal 6, result["records"].size
+     assert_equal "raphinou", result["records"][0]["nom"]
+     assert_equal "Axios", result["records"][1]["nom"]
+     assert_equal "Easynet Belgium", result["records"][2]["nom"]
+     assert_equal "Commission  européenne", result["records"][3]["nom"]
+     assert_equal "Mind", result["records"][4]["nom"]
+     assert_equal "O'Conolly & Associates", result["records"][5]["nom"]
   end
 
 
   #Filtered on memo (long_text) list requested by xhr
   def test_filtered_on_long_text_entities_list_with_correct_account_user
-     xhr :get, :entities_list, {'id'=> 11,  'detail_filter' => 55, 'value_filter' => "text" }, { 'user' => User.find_by_id(@db1_user_id)}
+     xhr :get, :entities_list, {'id'=> 11,  'detail_filter' => 55, 'value_filter' => "text", "format" => "js" }, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
-     #right layout used?
-     assert_no_tag :tag => "div", :attributes => { :id => "content"}
-     #no menu displayed?
-     assert_no_tag :tag => "div", :attributes => { :class => "menu"}
-     #no navigation links ?
-     assert_no_tag({:tag => "span", :attributes=>{ :class=> "navigation_link"} })
-     assert_equal 11, assigns["entity"].id
-     assert_equal 1, assigns["list"].length
+     result = JSON.parse(@response.body)
+     assert_equal 1, result["recordsReturned"]
+     assert_equal 1, result["records"].length
+     assert_equal 1, result["pageSize"]
+     assert_equal "Axios", result["records"][0]["nom"]
   end
 
 
   def test_unfiltered_entities_list_with_no_details_displayed_in_list
   #FIXME: WE should test with more params passed in the URL
-     get :entities_list, {'id'=> 51}, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> 51, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
+     result = JSON.parse(@response.body)
+     assert_equal 0, result["recordsReturned"]
+     assert_equal 0, result["records"].length
      assert_equal 51, assigns["entity"].id
   end
 
@@ -490,102 +380,65 @@ class EntitiesControllerTest < ActionController::TestCase
  
   
   #popup Filtered & Ordered list
-  def test_popup_filtered_ordered_entities_list_with_correct_account_user
-     #order on detail "personnes_occuppees", which has id 51
-     get :entities_list, {'id'=> "11", "societe_list_order" => "personnes_occuppees", 'detail_filter' => 48, 'value_filter' => "i" , :popup => "t" , :list_id => "societe_list"}, { 'user' => User.find_by_id(@db1_user_id)}
-     assert_response :success
-     assert_equal "personnes_occuppees", session["list_order"][assigns["list_id"]]
-     #right layout used?
-     assert_tag :tag => "div", :attributes => { :id => "popup_content"}
-     #no menu displayed?
-     assert_no_tag :tag => "div", :attributes => { :id => "menu"}
-     #no navigation links ?
-     assert_no_tag({:tag => "span", :attributes=>{ :class=> "navigation_link"} })
-     #div for remote update present?
-     assert_tag :tag => "div" , :attributes => { :id => "#{assigns["list_id"]}_div"} 
-     #do remote links and form target correct div? 
-     assert_tag :tag => "a" , :content => "code_nace", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "company_email", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "nom", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "a" , :content => "madb_reset", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
-     assert_tag :tag => "form" ,:attributes => {:method => "post", :onsubmit=> Regexp.new("#{assigns["list_id"]}_div")} 
-
-     #form present?
-     assert_tag :tag => "form", :attributes => { :method => "post", :onsubmit => Regexp.new("societe_list_div") }
-     #check detail drop down list
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "code_nace", :attributes => { :value => "49" } },
-	     :child => { :tag =>"option", :content => "TVA", :attributes => { :value => "50" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "personnes_occuppees", :attributes => { :value => "51" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "telephone", :attributes => { :value => "53" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "fax", :attributes => { :value => "54" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "memo", :attributes => { :value => "55" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "status", :attributes => { :value => "62" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "company_email", :attributes => { :value => "63" } }
-     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
-	     :child => { :tag =>"option", :content => "adresse", :attributes => { :value => "52" } }
-     assert_equal 11, assigns["entity"].id
-     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
-     assert_equal "filtered", assigns["div_class"]
-     assert_equal 6, assigns["list"].length
-     assert_equal "raphinou", assigns["list"][0].nom
-     assert_equal "Axios", assigns["list"][1].nom
-     assert_equal "Easynet Belgium", assigns["list"][2].nom
-  end
+# functionality is not there at this time
+#  def test_popup_filtered_ordered_entities_list_with_correct_account_user
+#     #order on detail "personnes_occuppees", which has id 51
+#     get :entities_list, {'id'=> "11", "societe_list_order" => "personnes_occuppees", 'detail_filter' => 48, 'value_filter' => "i" , :popup => "t" , :list_id => "societe_list"}, { 'user' => User.find_by_id(@db1_user_id)}
+#     assert_response :success
+#     assert_equal "personnes_occuppees", session["list_order"][assigns["list_id"]]
+#     #right layout used?
+#     assert_tag :tag => "div", :attributes => { :id => "popup_content"}
+#     #no menu displayed?
+#     assert_no_tag :tag => "div", :attributes => { :id => "menu"}
+#     #no navigation links ?
+#     assert_no_tag({:tag => "span", :attributes=>{ :class=> "navigation_link"} })
+#     #div for remote update present?
+#     assert_tag :tag => "div" , :attributes => { :id => "#{assigns["list_id"]}_div"} 
+#     #do remote links and form target correct div? 
+#     assert_tag :tag => "a" , :content => "code_nace", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
+#     assert_tag :tag => "a" , :content => "company_email", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
+#     assert_tag :tag => "a" , :content => "nom", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
+#     assert_tag :tag => "a" , :content => "madb_reset", :attributes => { :onclick=> Regexp.new("#{assigns["list_id"]}_div")} 
+#     assert_tag :tag => "form" ,:attributes => {:method => "post", :onsubmit=> Regexp.new("#{assigns["list_id"]}_div")} 
+#
+#     #form present?
+#     assert_tag :tag => "form", :attributes => { :method => "post", :onsubmit => Regexp.new("societe_list_div") }
+#     #check detail drop down list
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "code_nace", :attributes => { :value => "49" } },
+#	     :child => { :tag =>"option", :content => "TVA", :attributes => { :value => "50" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "personnes_occuppees", :attributes => { :value => "51" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "telephone", :attributes => { :value => "53" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "fax", :attributes => { :value => "54" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "memo", :attributes => { :value => "55" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "status", :attributes => { :value => "62" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "company_email", :attributes => { :value => "63" } }
+#     assert_tag :tag => "select", :attributes => { :name=> "detail_filter"},  
+#	     :child => { :tag =>"option", :content => "adresse", :attributes => { :value => "52" } }
+#     assert_equal 11, assigns["entity"].id
+#     assert_equal assigns["entity"].name+"_list", assigns["list_id"]
+#     assert_equal "filtered", assigns["div_class"]
+#     assert_equal 6, assigns["list"].length
+#     assert_equal "raphinou", assigns["list"][0].nom
+#     assert_equal "Axios", assigns["list"][1].nom
+#     assert_equal "Easynet Belgium", assigns["list"][2].nom
+#  end
 
 
   #Wrong user
   def test_entities_list_with_wrong_account_user
-     get :entities_list, {'id'=> @db1_entity_id}, { 'user' => User.find_by_id(@db2_user_id)}
+     get :entities_list, {'id'=> @db1_entity_id, 'format' => 'js'}, { 'user' => User.find_by_id(@db2_user_id)}
      assert_response :redirect
      assert_redirected_to({:controller => "database"})
   end
 
      #check that we use the correct layout: popup if popup=t, none if xhr request, applicatin else
-	def test_popup_layout
-			#http://localhost:3456/entities/entities_list/11?list_id=societe_list&popup=t
-			get :entities_list, {'id'=> '11', 'list_id'=> "societe_list", 'popup'=>'t'}, { 'user' => User.find_by_id(@db1_user_id)}
-
-			assert_tag :tag => "div", :attributes => { :id => "popup_content"}
-	end
-	def test_xhr_layout_with_popup_is_t
-			#http://localhost:3456/entities/entities_list/11?list_id=societe_list&popup=t
-			xhr :get, :entities_list, {'id'=> '11', 'list_id'=> "societe_list", 'popup'=>'t'}, { 'user' => User.find_by_id(@db1_user_id)}
-
-			assert_no_tag :tag => "div", :attributes => { :id => "popup_content"}
-			assert_no_tag :tag => "div", :attributes => { :id => "content"}
-			assert_no_tag :tag => "div", :attributes => { :id => "menu"}
-	end
-	def test_xhr_layout_with__no_popup
-			xhr :get, :entities_list, {'id'=> '11', 'list_id'=> "societe_list"}, { 'user' => User.find_by_id(@db1_user_id)}
-
-			assert_no_tag :tag => "div", :attributes => { :id => "popup_content"}
-			assert_no_tag :tag => "div", :attributes => { :id => "content"}
-			assert_no_tag :tag => "div", :attributes => { :id => "menu"}
-	end
-	def test_normal_layout
-			#http://localhost:3456/entities/entities_list/11?list_id=societe_list&popup=t
-			get :list, {'id'=> '11'}, { 'user' => User.find_by_id(@db1_user_id)}
-
-			assert_no_tag :tag => "div", :attributes => { :id => "popup_content"}
-			assert_tag :tag => "div", :attributes => { :id => "bd"}
-			assert_tag :tag => "div", :attributes => { :id => "menu"}
-	end
-     #FIXME check that when we are in a popup, the popup window contains the div refreshed by navigation links
-	def test_popup_contains_xhr_updated_div
-			#http://localhost:3456/entities/entities_list/11?list_id=societe_list&popup=t
-			get :entities_list, {'id'=> '11', 'list_id'=> "societe_list", 'popup'=>'t'}, { 'user' => User.find_by_id(@db1_user_id)}
-
-			assert_tag :tag => "div", :attributes => { :id => "societe_list_div"}
-	end
- #FIXME:  check refresh link, orders links use the relation type. Also check the div in which the lists are placed (in the view action) are named with the relation type included.
-	
 	
 	#---------------------
 	#related_entities_list
@@ -913,18 +766,13 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_equal 1, post_ddl_values_count-pre_ddl_values_count
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
-		#we get html back because insertion was successful 
-    #FIXME: send_data does not sets HTTP Content-Type
-		#assert_equal "text/html; charset=UTF-8", @response.headers["Content-Type"]
+                #we get a kson representation of the added instance
+                assert_equal({"['nom']"=>"nom", "['id']"=>205, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
 
 		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
 		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
-    instance = Instance.find instance_id
-    assert_not_nil instance.created_at
-		# we highlight the created instance
-		assert_equal instance_id.to_s, @response.headers["MYOWNDB_highlight"]
-		# the row to be highlighted is present
-		assert_tag :tag => "tr", :attributes => {:id => "tr_societe_list_#{instance_id}"} 
+                instance = Instance.find instance_id
+                assert_not_nil instance.created_at
 	end
 	
 	def test_success_full_insertion_with_one_text_and_integer_fields_empty
@@ -948,14 +796,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
 		#we get html back because insertion was successful 
-    #FIXME: send_data does not set HTTP Content-Type
-		#assert_equal "text/html; charset=UTF-8", @response.headers["Content-Type"]
-		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
-		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
-		# we highlight the created instance
-		assert_equal instance_id.to_s, @response.headers["MYOWNDB_highlight"]
-		# the row to be highlighted is present
-		assert_tag :tag => "tr", :attributes => {:id => "tr_societe_list_#{instance_id}"} 
+                assert_equal({"['nom']"=>"nom", "['id']"=>207, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 
 	def test_success_full_insertion_with_email_field_empty
@@ -978,17 +819,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_equal 1, post_ddl_values_count-pre_ddl_values_count
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
-		#we get html back because insertion was successful 
-    #FIXME: send_data does not set the HTTP Content-Type
-		#assert_equal "text/html; charset=UTF-8", @response.headers["Content-Type"]
-    
-    		instance_row =  Instance.connection.execute("select last_value from instances_id_seq")[0]
-		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
-
-		# we highlight the created instance
-		assert_equal instance_id.to_s, @response.headers["MYOWNDB_highlight"]
-		# the row to be highlighted is present
-		assert_tag :tag => "tr", :attributes => {:id => "tr_societe_list_#{instance_id}"} 
+                #we get the added record in json form
+                assert_equal({"['nom']"=>"nom", "['id']"=>206, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 	
 	###############
@@ -1260,8 +1092,6 @@ class EntitiesControllerTest < ActionController::TestCase
 	def test_add_entity
 		get :add, { :id => 11},{'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
-		entity =Entity.find 11
-		assert_tag :tag=>"div" , :attributes => { :id => "#{entity.name}_list_div"}
 	end
 	
 	#####################
@@ -1295,11 +1125,12 @@ class EntitiesControllerTest < ActionController::TestCase
 	# ################
 	def test_delete_entity
 		pre_instances_count = Instance.count
-		xhr :get, :delete, { :id => "77",:societe_list_page=>6 }, {'user' => User.find_by_id(@db1_user_id)}
+		xhr :get, :delete, { :id => "77",:format => 'js'  }, {'user' => User.find_by_id(@db1_user_id)}
 		post_instances_count = Instance.count
 		# redirected to entities_list
-		assert_response :redirect
-		assert_redirected_to :overwrite_params => { :action =>"entities_list", :highlight=>nil,:id => 11}
+		assert_response :success
+
+		assert_equal '{"status":"success"}', @response.body
 		#FIXME: when assert_redirected_to handle sthe overwite params well, check tha tthe url generated is corrected by codin an assert_redirected_to without using the overwrite_params
 		assert_equal -1 , post_instances_count-pre_instances_count
 

@@ -43,42 +43,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- OLD FORM <% unless true %>
-<script type="text/javascript">
-// success_action is called by default when the form has been submitted successfully
-// the parameter data is the responseText received from the server
-var success_action = function(data) 
-{
-            list_div = $('<%=@entity.name.underscorize%>_list_div');
-	    list_div.innerHTML=data;
-	    highlighted_row = YAHOO.util.Dom.getElementsByClassName("highlight", "tr", list_div);
-	    anim = new YAHOO.util.ColorAnim(highlighted_row, {  backgroundColor: { from: '#FFFF33', to: '#fff' } } );
-	    anim.duration=5;
-	    anim.animate();
-	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input','entity_form'); 
-	    YAHOO.util.Dom.batch(invalid_fields, function (e) {YAHOO.util.Dom.removeClass( e,'invalid_form_value');YAHOO.util.Dom.addClass( e,'unchecked_form_value'); });
-	    YAHOO.util.Selector.query('#'+this.form+'  input:not([type=hidden])')[0].focus()
-}
-
-<%= render :partial => "upload_form_function", :entity => @entity %>
-new EntityFormSubmitter('entity_form', success_action);
-</script>
-<% end %> -->
-
 </div>
 <div id="<%="#{@entity.name.underscorize}_list_div"%>">
 </div>

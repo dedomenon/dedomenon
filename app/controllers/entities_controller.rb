@@ -144,16 +144,14 @@ class EntitiesController < ApplicationController
 
 
     if crosstab_result.nil?
-      render :text => t("madb_entries_found_but_no_details_to_be_displayed_in_list")
-      return
+      @list = []
+      @paginator = nil
+      render and return
     end
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
-    if params[list_id+"_page"] or params[list_id+"_order"]
-        params[:format]='html'
-    end
-    list_length = params[:results].to_i || MadbSettings.list_length 
+    list_length = params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
     @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction, :list_length => list_length )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
@@ -679,7 +677,7 @@ class EntitiesController < ApplicationController
     end
     respond_to do |format|
       format.html { redirect_to :overwrite_params => { :action => "entities_list", :id => entity.id , :highlight => nil } }
-      format.js { render :nothing => true }
+      format.js { render :json => { :status => :success } }
     end
   end
 
