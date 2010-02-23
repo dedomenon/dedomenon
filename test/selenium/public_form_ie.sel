@@ -2,11 +2,39 @@
 netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 </script>
 |open|/selenium/setup?fixtures=account_types,account_type_values,accounts,databases,data_types,detail_status,details,detail_value_propositions,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|echo||anonymous user logged in try to access form that is not public |
 |open|/app/entities/public_form/30||
 |assertElementNotPresent|//form||
 |assertElementNotPresent|//div||
 |assertElementNotPresent|//input||
 |assertElementNotPresent|//span||
+|echo||other user logged in try to access form that is not public|
+|open|/app||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/public_form/30||
+|assertElementNotPresent|//form||
+|assertElementNotPresent|//div||
+|assertElementNotPresent|//input||
+|assertElementNotPresent|//span||
+|assertTextPresent|Form inactive or not found||
+|open|/app/database||
+|clickAndWait|link=madb_logout||
+|echo||owner user logged in try to access form that is not public: form is displayed|
+|open|/app||
+|type|user_login|selenium@raphinou.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/public_form/30||
+|pause|500||
+|assertElementPresent|//form||
+|assertElementPresent|//div||
+|assertElementPresent|//input||
+|open|/app/database||
+|clickAndWait|link=madb_logout||
 |open|/app||
 |type|user_login|selenium@raphinou.com|
 |type|user_password|linuxxxx|
@@ -16,6 +44,46 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |click|is_public||
 |pause|500||
+|clickAndWait|link=madb_logout||
+|assertTitle|exact:madb_madb::||
+|echo||other user logged in try to access form that is public |
+|open|/app||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/public_form/30||
+|pause|500||
+|assertElementPresent|//form||
+|assertElementPresent|//textarea[@name="long_text[0][value]"]||
+|assertElementPresent|//input[ @type="text"  and @name="date[0][value]"]||
+|assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
+|assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
+|assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
+|assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
+|assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
+|assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
+|assertElementPresent|//button[@id="commit" and text()='madb_submit']||
+|focus|//input[@type="text"  and @name="integer[0][value]"]||
+|type|//input[@type="text"  and @name="integer[0][value]"]|tr|
+|select|ddl[0][value]|label=deuxième proposition|
+|focus|//input[@type="text" and @name="émail[0][value]"]||
+|type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
+|focus|long_text[0][value]||
+|type|long_text[0][value]|public form addition|
+|pause|3000||
+|assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
+|assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
+|click|commit||
+|pause|5000||
+|type|//input[@type="text"  and @name="integer[0][value]"]|3|
+|type|web_url[0][value]|http://www.raphinou.com|
+|type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
+|click|commit||
+|pause|5000||
+|assertVisible|//div[@id="insertion_successful"]||
+|assertNotVisible|//div[@id="public-form"]||
+|open|/app/database||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||
 |open|/app/entities/public_form/30||
@@ -62,13 +130,13 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
 |assertElementPresent|//button[@id="commit" and text()='madb_submit']||
+|type|long_text[0][value]|embedded_public form addition|
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
 |focus|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
 |type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
-|focus|long_text[0][value]|embedded_public form addition|
-|type|long_text[0][value]|embedded_public form addition|
+|focus|//input[@type="text"  and @name="integer[0][value]"]||
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
@@ -92,19 +160,16 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=all data types||
 |assertTitle|exact:madb_madb::madb_list||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td[.="public form addition"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td[.="3"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td[.="deuxième proposition"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td/a[@href="mailto:rb@raphinou.com" and .="rb@raphinou.com"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_204"]/td[.="public form addition"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td[.="embedded_public form addition"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td[.="3"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td[.="deuxième proposition"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td/a[@href="mailto:rb@raphinou.com" and .="rb@raphinou.com"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
-|assertElementPresent|//tr[@id="tr_all_data_types_list_206"]/td[.="embedded_public_form_addition"]||
+|pause|2000||
+|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="public form addition"]||
+|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="embedded_public form addition"]||
+|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||

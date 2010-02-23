@@ -78,11 +78,13 @@ class Detail < ActiveRecord::Base
   end
 
   def yui_column(h={})
-    "{ key: '#{name.downcase}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
+# datasource utf-8 fix
+    "{ field:  \"['#{name.downcase}']\" , label:  '#{name.downcase}', key: '#{name.downcase}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
   end
 
   def yui_field(h={})
-    "{ key: '#{name.downcase}', parser: #{value_class.yui_parser(h)} }"
+# datasource utf-8 fix
+    "{ key: \"['#{name.downcase}']\" , parser: #{value_class.yui_parser(h)} }"
   end
   
 end

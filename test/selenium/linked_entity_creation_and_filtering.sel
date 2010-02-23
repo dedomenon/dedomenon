@@ -7,9 +7,9 @@
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=societe||
 |assertTitle|exact:madb_madb::madb_list||
-|clickAndWait|//a[contains(@href, '/app/entities/view/73')]||
+|pause|1000||
+|clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='73']||
 |assertTitle|exact:madb_madb::madb_entity_details||
-|click|//a[contains(@href, "javascript:change('6')")]||
 |assertNotVisible|//div[@id="add_new_child_contact_de_la_societe_div"]||
 |click|link=madb_add_new_related_entity||
 |pause|1000||

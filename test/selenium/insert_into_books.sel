@@ -19,13 +19,14 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|Picture[0][value]|~/files/64K|
 |click|commit||
 |pause|1500||
-|assertTable|entities_list_Books.3.0|A new philosophy to testing|
-|assertTable|entities_list_Books.3.1|This book does nothing so do not read|
-|assertTable|entities_list_Books.3.2|2008-08-22 21:34:24|
-|assertTable|entities_list_Books.3.4|Computer Science|
-|assertTable|entities_list_Books.3.5|nobook@books.biz|
-|assertTable|entities_list_Books.3.6|http://www.linux.org|
-|assertTable|entities_list_Books.3.7|64K|
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="A new philosophy to testing"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-description")]/div[@class="yui-dt-liner" and .="This book does nothing so do not read"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-category")]/div[@class="yui-dt-liner" and .="Computer Science"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-pages")]/div[@class="yui-dt-liner" and .="112"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-email")]/div[@class="yui-dt-liner" and .="nobook@books.biz"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-website")]/div[@class="yui-dt-liner" and .="http://www.linux.org"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |type|Name[0][value]|Another philosophy|
 |type|Description[0][value]|This again nothing|
 |type|Published[0][value]|2008-08-22 21:34:24|
@@ -37,22 +38,26 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|Picture[0][value]|~/files/32K|
 |click|commit||
 |pause|1500||
-|assertTable|entities_list_Books.4.0|Another philosophy|
-|assertTable|entities_list_Books.4.1|This again nothing|
-|assertTable|entities_list_Books.4.2|2008-08-22 21:34:24|
-|assertTable|entities_list_Books.4.4|Romance|
-|assertTable|entities_list_Books.4.5|new@new.new|
-|assertTable|entities_list_Books.4.6|exact:http://mohsin.com|
-|assertTable|entities_list_Books.4.7|32K|
-|clickAndWait|//tr[@id='tr_books_list_203']/td[9]/a/img||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Another philosophy"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-description")]/div[@class="yui-dt-liner" and .="This again nothing"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-category")]/div[@class="yui-dt-liner" and .="Romance"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-pages")]/div[@class="yui-dt-liner" and .="112"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-email")]/div[@class="yui-dt-liner" and .="new@new.new"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-website")]/div[@class="yui-dt-liner" and .="http://mohsin.com"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner" and .="32K"]||
+|clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='203']||
 |clickAndWait|link=madb_edit||
 |pause|700||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
 |clickAndWait|commit||
-|assertTable|//div[@id='bd']//div/table.1.1|This book does nothing so do not read and nothing to be edited|
+|assertElementPresent|//td[@class="data_cell" and contains(.,"This book does nothing so do not read and nothing to be edited")]||
 |clickAndWait|link=Books||
-|click|//tr[@id='tr_books_list_204']/td[11]/a/img||
+|pause|1500||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='204']||
 |assertConfirmation|madb_really_delete_entity_question||
-|click|//tr[@id='tr_books_list_203']/td[11]/a/img||
+|pause|500||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='203']||
 |assertConfirmation|madb_really_delete_entity_question||
+|pause|500||
 |click|link=madb_logout||

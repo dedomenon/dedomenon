@@ -5,7 +5,6 @@
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::madb_list_of_databases||
-|click|//a[contains(@href, "javascript:change('6')")]||
 |clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
 |pause|1000||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
@@ -30,7 +29,8 @@
 |assertElementPresent|//a[@href="mailto:hjkdshkjfd@test.com"]||
 |clickAndWait|link=societe||
 |assertTitle|exact:madb_madb::madb_list||
-|clickAndWait|//a[contains(@href, '/app/entities/view/71')]||
+|pause|1000||
+|clickAndWait|//img[@record_id= '71' and @alt="View"]||
 |assertTitle|exact:madb_madb::madb_entity_details||
 |click|link=madb_add_new_related_entity||
 |pause|1000||

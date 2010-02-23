@@ -6,30 +6,27 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|user_login|raphinou@yahoo.com|
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
-|click|img6||
 |clickAndWait|//tbody[@id='6']/tr[13]/td/span[2]/a[1]/img||
 |pause|1000||
 |type|Name[0][value]|Mr 64K|
 |type|name=Picture[0][value]|~/files/64K|
 |click|commit||
 |pause|1000||
-|assertTable|entities_list_Persons.1.0|Mohsin Hijazee|
-|assertTable|entities_list_Persons.1.1|logo-Ubuntu.png|
-|assertTable|entities_list_Persons.2.0|Mr 64K|
-|assertTable|entities_list_Persons.2.1|64K|
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |type|Name[0][value]|Mr 32K|
 |type|name=Picture[0][value]|~/files/32K|
 |click|commit||
 |pause|2000||
-|assertTable|entities_list_Persons.1.0|Mohsin Hijazee|
-|assertTable|entities_list_Persons.1.1|logo-Ubuntu.png|
-|assertTable|entities_list_Persons.2.0|Mr 64K|
-|assertTable|entities_list_Persons.2.1|64K|
-|assertTable|entities_list_Persons.3.0|Mr 32K|
-|assertTable|entities_list_Persons.3.1|32K|
-|click|//tr[@id='tr_persons_list_203']/td[5]/a/img||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 32K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="32K"]||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='203']||
 |assertConfirmation|madb_really_delete_entity_question||
-|click|//tr[@id='tr_persons_list_204']/td[5]/a/img||
+|pause|500||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='204']||
 |assertConfirmation|madb_really_delete_entity_question||
+|pause|500||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||

@@ -89,7 +89,6 @@ new EntityFormSubmitter('entity_form', success_action);
 
 
   Y.Global.on('madb:entity_created', function(list, data) {
-      Y.log('list = ' + list);
       if (list == "<%= @list_id %>")
       {
         var record = Y.JSON.parse(data);
