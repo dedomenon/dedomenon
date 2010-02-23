@@ -98,7 +98,7 @@ class Entity < ActiveRecord::Base
      h.reject{|k,v| not details.collect{|d| d.name}.include?(k)}
   end
 
-  # Build params to pass to save_entity
+  # Build params to pass to save_entity, used in hash based instanciation (ie not in the code handling the form submission
   def self.build_params(h)
     h.inject({}) do |acc,i|
       acc.merge({ i[0] => { "0" => {"value" => i[1] }}})
@@ -251,10 +251,12 @@ class Entity < ActiveRecord::Base
     end
     return  [ instance , []]
   end
+  #returns arrays of details names
   def details_not_displayed_in_list
     init_details_display_lists unless @details_not_displayed_in_list
     @details_not_displayed_in_list
   end
+  #returns arrays of details
   def details_displayed_in_list
     init_details_display_lists unless @details_not_displayed_in_list
     @details_displayed_in_list
@@ -327,21 +329,7 @@ class Entity < ActiveRecord::Base
 
   # returns page_number to display according to highlight value or the requested page
   def page_number(crosstab_query=nil, h = {})
-    if h[:highlight] and h[:highlight]!=""
-      @instance = Instance.find h[:highlight]
-      #ERROR uploading empty file due to params["highlight"]
-      query_filter = join_filters( [ h[:filters], "id=#{CrosstabObject.connection.quote_string(h[:highlight].to_s)}"])
-      value_query = "select #{h[:order_by]} from #{crosstab_query} #{query_filter}"
-      highlight_value_row =  CrosstabObject.connection.execute(value_query)[0]
-      highlight_value = highlight_value_row[0] ? highlight_value_row[0] : highlight_value_row['id']
-      query_filter = join_filters( [h[:filters], "#{h[:order_by]}<'#{CrosstabObject.connection.quote_string(highlight_value.to_s)}'" ])
-      count_query = "select count(*) from #{crosstab_query} #{query_filter}"
-      highlight_row = CrosstabObject.connection.execute(count_query)[0]
-      highlight_count = highlight_row[0] ? highlight_row[0] : highlight_row['count']
-      return  (highlight_count.to_i/h[:list_length])+1
-    else
       return h[:default_page]
-    end
   end
 
   def join_filters(filters=[])

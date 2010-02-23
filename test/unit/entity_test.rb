@@ -31,6 +31,46 @@ class EntityTest < ActiveSupport::TestCase
     assert_equal  @entity.details.sort{|a,b| a.display_order<=>b.display_order},  @entity.ordered_details
     assert_equal ["nom", "prenom", "fonction", "service", "coordonees_specifiques", "company_email"], @entity.ordered_details.map{|d| d.name}
   end
+
+  def test_details_in_list_view
+    assert_equal ["nom", "prenom", "fonction", "service", "company_email"] , @entity.details_in_list_view.collect{|d| d.name}
+  end
+
+  def test_list_display_details_lists
+    assert_equal ["coordonees_specifiques"], @entity.details_not_displayed_in_list
+    assert_equal  ["company_email", "fonction", "nom", "prenom", "service"], @entity.details_displayed_in_list.collect{|d| d.name}
+  end
+
+  def test_join_filters
+    assert_equal " where name = 'Dupont' and city='Brussels'", @entity.join_filters( [ "name = 'Dupont'" , "city='Brussels'"] )
+    assert_equal " where name = 'Dupont' and city='Brussels' and gender='male'", @entity.join_filters( [ "name = 'Dupont'" , "city='Brussels'", "gender='male'"] )
+  end
+
+  def test_clean_params
+    entity=Entity.find(30)
+    non_details = { :format => 'js', :controller => 'entities', :action => 'create', "another_params" => "anothervar"}
+    details = { "émail" => "raphinou@yahoo.com", "ddl" => "first proposition", "s3_attachment" => "blah", "integer" => 5 }
+    assert_equal details, entity.clean_params( non_details.merge(details)   )
+
+    #only keeps string keys, not :symbols
+    non_details = { :format => 'js', :controller => 'entities', :action => 'create', :dll => "first_proposition"}
+    details = { "émail" => "raphinou@yahoo.com", "s3_attachment" => "blah", "integer" => 5 }
+    assert_equal details, entity.clean_params( non_details.merge(details)   )
+  end
+
+  def test_serialized_details
+    assert_equal({}, @entity.serialized_details)
+    assert_equal ["picture"], Entity.find(101).serialized_details.collect{|k,v| k}
+    assert_equal ["s3_attachment", "other_s3_attachment"], Entity.find(30).serialized_details.collect{|k,v| k}
+
+  end
+
+  def test_serialized_details_names
+    assert_equal [], @entity.serialized_details_names
+    assert_equal ["picture"], Entity.find(101).serialized_details_names
+    assert_equal ["s3_attachment", "other_s3_attachment"], Entity.find(30).serialized_details_names
+
+  end
   
   def test_list_details
     assert_equal  5, @entity.details_in_list_view.size
