@@ -777,13 +777,5 @@ class EntitiesController < ApplicationController
     end
   end
     
-  def detail_filter
-    return nil if params["detail_filter"].nil?
-    if is_id?(params["detail_filter"])
-      return params["detail_filter"]
-    else
-      @details[params["detail_filter"]].id
-    end 
-  end
 
 end
