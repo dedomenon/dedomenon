@@ -82,6 +82,9 @@ class Entity < ActiveRecord::Base
   def details_hash
     @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name.downcase => i}) }
   end
+  def details_names
+    @details_names||=details_hash.collect{|name,d| name}
+  end
 
 #filters details_hash and only keeps details that have their value serialized
   def serialized_details
@@ -355,7 +358,8 @@ class Entity < ActiveRecord::Base
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end
-      CrosstabObject.serialize_columns(serialized_details_names)
+      CrosstabObject.define_accessors(details_names, serialized_details_names)
+#      CrosstabObject.serialize_columns(serialized_details_names)
       list = CrosstabObject.find_by_sql(query)
     else
       list =  []

@@ -36,8 +36,24 @@ class CrosstabObject < ActiveRecord::Base
       m = %{ def #{c} 
                str = read_attribute(:#{c}) 
                return "" if str.nil?
-               YAML.load(str)
              end }
+      self.class_eval(m)
+    end
+  end
+  def self.define_accessors(all_details, serialized)
+    all_details.each do |c|
+      m = %{ def #{c} 
+               str = read_attribute(:#{c}) 
+      }
+      if serialized.include?(c)
+        m+= %{ return "" if str.nil?
+                return YAML.load(str) 
+            }
+      end 
+               #{serialized.include?(c) ? "return YAML.load(str)" : "return str"}
+               
+      m+=" end "
+               #{serialized.include?(c) ? "puts 'return emtpy string' and return "" if str.nil?; return YAML.load(str)" : "return str"}
       self.class_eval(m)
     end
   end
