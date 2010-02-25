@@ -143,7 +143,7 @@ module ApplicationHelper
     raise "Missing options" if h[:controller].nil? or h[:entity].nil? or h[:content_box].nil? or h[:js_var].nil?
     entity = h[:entity]
     if entity.details_in_list_view.size==0
-      return t("madb_entries_found_but_no_details_to_be_displayed_in_list")
+      return "alert('#{t("madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty")}');"
     end
     js = %{
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
