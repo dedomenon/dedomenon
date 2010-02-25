@@ -124,7 +124,7 @@ class EntitiesController < ApplicationController
     # If the table(entity) contains no record then error
     if Instance.count(:all, :conditions=> ["entity_id=?",params["id"]])==0
       @list = []
-      render
+      render and return
     end
 
     @details = @entity.details_hash
