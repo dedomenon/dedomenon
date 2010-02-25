@@ -31,17 +31,17 @@ class CrosstabObject < ActiveRecord::Base
   def self.inheritance_column
     "crosstab_inheritance_column"
   end
-  def self.serialize_columns(a)
-    a.each do |c|
-      m = %{ def #{c} 
-               str = read_attribute(:#{c}) 
-               return "" if str.nil?
-             end }
-      self.class_eval(m)
-    end
-  end
+#  def self.serialize_columns(a)
+#    a.each do |c|
+#      m = %{ def #{c} 
+#               str = read_attribute(:#{c}) 
+#               return "" if str.nil?
+#             end }
+#      self.class_eval(m)
+#    end
+#  end
   def self.define_accessors(all_details, serialized)
-    all_details.each do |c|
+    all_details.reject{|d| not d.match( /^\w+$/ ) }.each do |c|
       m = %{ def #{c} 
                str = read_attribute(:#{c}) 
       }
