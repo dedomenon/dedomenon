@@ -74,14 +74,14 @@ class ImportwizardControllerTest < ActionController::TestCase
     assert_response :success
     # test drop downs
     assert_tag :tag => "select",  :attributes => { :name => "bindings[status]"}, :children => {:count => 11} 
-    ["nom","code_nace","tva","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
+    ["nom","code_nace","TVA","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
       ["----", "company_name", "NACE", "VAT", "employees", "address", "phone", "fax","memo","status","company_email"].each do |csv_field|
         assert_tag :tag => "select",  :attributes => { :name => "bindings[#{detail}]"}, :descendant => {:tag => 'option', :attributes => { :value => csv_field }} 
       end
     end
 
     #check drop down and title correspond
-    ["nom","code_nace","tva","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
+    ["nom","code_nace","TVA","personnes_occuppees","adresse","telephone","fax","memo","status","company_email"]. each do |detail|
         assert_tag :tag => "td", :content => detail, :sibling => { :tag => "td" , :descendant => { :tag => "select",  :attributes => { :name => "bindings[#{detail}]"} } }
     end
 
@@ -101,6 +101,7 @@ class ImportwizardControllerTest < ActionController::TestCase
 
   def test_step3_import_data
     pre_ids = Instance.find(:all).collect{|i| i.id}
+    max_id = pre_ids.max
     pre_instance_count = Instance.count
     pre_detail_values_count = DetailValue.count
     pre_integer_detail_values_count = IntegerDetailValue.count
@@ -119,7 +120,7 @@ class ImportwizardControllerTest < ActionController::TestCase
     assert_equal 3,post_ddl_detail_values_count-pre_ddl_detail_values_count
     #ids of instances created: [203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214]
     12.times do |i| 
-      inst = Instance.find(203+i)
+      inst = Instance.find(max_id+1+i)
       assert_equal "company"+(i+1).to_s, inst.get('nom')[0]
       assert_equal "nace"+(i+1).to_s, inst.get('code_nace')[0]
       assert_equal "vat"+(i+1).to_s, inst.get('TVA')[0]
@@ -130,18 +131,19 @@ class ImportwizardControllerTest < ActionController::TestCase
       assert_equal "memo for company"+(i+1).to_s, inst.get('memo')[0]
       assert_equal "contact@"+(i+1).to_s+".com", inst.get('company_email')[0]
     end
-    inst = Instance.find(203)
+    inst = Instance.find(max_id+1)
     assert_equal "asbl", inst.get("status")[0]
-    inst = Instance.find(204)
+    inst = Instance.find(max_id+2)
     assert_equal "sprl", inst.get("status")[0]
-    inst = Instance.find(205)
+    inst = Instance.find(max_id+3)
     assert_equal "sa", inst.get("status")[0]
-    inst = Instance.find(206)
+    inst = Instance.find(max_id+4)
     assert_equal nil, inst.get("status")[0]
   end
 
   def test_step3_import_data_with_fields_left_out
     pre_ids = Instance.find(:all).collect{|i| i.id}
+    max_id = pre_ids.max
     pre_instance_count = Instance.count
     pre_detail_values_count = DetailValue.count
     pre_integer_detail_values_count = IntegerDetailValue.count
@@ -160,7 +162,7 @@ class ImportwizardControllerTest < ActionController::TestCase
     assert_equal 3,post_ddl_detail_values_count-pre_ddl_detail_values_count
     #ids of instances created: [203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214]
     12.times do |i| 
-      inst = Instance.find(203+i)
+      inst = Instance.find(max_id+1+i)
       assert_nil inst.get('code_nace')[0]
       assert_nil inst.get('memo')[0]
 
@@ -172,19 +174,20 @@ class ImportwizardControllerTest < ActionController::TestCase
       assert_equal (i+1).to_s*5+"2", inst.get('fax')[0]
       assert_equal "contact@"+(i+1).to_s+".com", inst.get('company_email')[0]
     end
-    inst = Instance.find(203)
+    inst = Instance.find(max_id+1)
     assert_equal "asbl", inst.get("status")[0]
-    inst = Instance.find(204)
+    inst = Instance.find(max_id+2)
     assert_equal "sprl", inst.get("status")[0]
-    inst = Instance.find(205)
+    inst = Instance.find(max_id+3)
     assert_equal "sa", inst.get("status")[0]
-    inst = Instance.find(206)
+    inst = Instance.find(max_id+4)
     assert_nil inst.get("status")[0]
   end
 
 
   def test_step3_import_data_with_invalid_fields
     pre_ids = Instance.find(:all).collect{|i| i.id}
+    max_id = pre_ids.max
     pre_instance_count = Instance.count
     pre_detail_values_count = DetailValue.count
     pre_integer_detail_values_count = IntegerDetailValue.count
@@ -205,17 +208,17 @@ class ImportwizardControllerTest < ActionController::TestCase
     assert_equal 9,post_integer_detail_values_count-pre_integer_detail_values_count
     assert_equal 1,post_ddl_detail_values_count-pre_ddl_detail_values_count
     assert_raise(ActiveRecord::RecordNotFound) do
-      inst = Instance.find(203)
+      inst = Instance.find(max_id+1)
     end
     assert_raise(ActiveRecord::RecordNotFound) do
-      inst = Instance.find(204)
+      inst = Instance.find(max_id+2)
     end
-    inst = Instance.find(205)
+    inst = Instance.find(max_id+3)
     assert_equal "company3", inst.get("nom")[0]
     assert_raise(ActiveRecord::RecordNotFound) do
-      inst = Instance.find(206)
+      inst = Instance.find(max_id+4)
     end
-    inst = Instance.find(207)
+    inst = Instance.find(max_id+5)
     assert_equal "company5", inst.get("nom")[0]
   end
 end

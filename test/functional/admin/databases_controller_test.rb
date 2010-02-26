@@ -285,8 +285,8 @@ class Admin::DatabasesControllerTest < ActionController::TestCase
     }
     
     assert_equal -1, post_databases_count-pre_databases_count
-    assert_equal -13, post_entities_count-pre_entities_count
-    assert_equal -196, post_detail_values_count-pre_detail_values_count
+    assert_equal -14, post_entities_count-pre_entities_count
+    assert_equal -200, post_detail_values_count-pre_detail_values_count
   end
 
 end

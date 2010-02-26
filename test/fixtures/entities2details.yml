@@ -647,3 +647,21 @@ person_picture:
   display_order: "2"
   displayed_in_list_view: t
 # END PERSON DETAILS
+
+# Accented details
+ostalteste:
+  maximum_number_of_values: "1"
+  entity_id: "102"
+  detail_id: "83"
+  id: "1020"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+will_participate_url:
+  maximum_number_of_values: "1"
+  entity_id: "102"
+  detail_id: "84"
+  id: "1021"
+  status_id: "1"
+  display_order: "2"
+  displayed_in_list_view: t

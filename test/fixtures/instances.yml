@@ -98,5 +98,14 @@ instance_books_02:
 pictures_instance_01:
   entity_id: "101"
   id: "202"
+#accented_details
+accented_details_01:
+  entity_id: "102"
+  id: "203"
+accented_details_02:
+  entity_id: "102"
+  id: "204"
+
+
 
 #if you create new instances, find an id that is still free under 100, or it breaks selenium tests

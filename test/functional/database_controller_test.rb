@@ -66,7 +66,7 @@ class DatabaseControllerTest < ActionController::TestCase
     user = User.find_by_id(2)
     get :list_entities, {:id =>6 }, { 'user' => user, 'account_id' => user.account_id }
     assert_response :success
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
   end
   
 	

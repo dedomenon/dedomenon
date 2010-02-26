@@ -21,7 +21,7 @@
 |assertTextPresent|societe||
 |assertTextPresent|contacts||
 |assertTextPresent|coaching||
-|clickAndWait|//tr[8]/td[2]/a||
+|clickAndWait|//tr[9]/td[2]/a||
 |assertTitle|exact:madb_madb::madb_list||
 |pause|1500||
 |assertElementPresent|//div[@class='yui-dt-liner' and .='valtech']||

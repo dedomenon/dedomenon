@@ -80,7 +80,7 @@ class Entity < ActiveRecord::Base
   # * key = detail_name
   # * value = detail
   def details_hash
-    @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name.downcase => i}) }
+    @details_hash||=entity_details.collect{|ed| ed.detail}.inject({}){|acc,i| acc.merge( { i.name => i}) }
   end
   def details_names
     @details_names||=details_hash.collect{|name,d| name}
@@ -267,9 +267,9 @@ class Entity < ActiveRecord::Base
   def init_details_display_lists
     @details_not_displayed_in_list = []
     @details_displayed_in_list = []
-    self.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
+    self.details.sort{ |a,b| a.name <=>b.name }.each do |detail|
       if detail.displayed_in_list_view=='f'
-        @details_not_displayed_in_list.push detail.name.downcase
+        @details_not_displayed_in_list.push detail.name
         next
       end
       @details_displayed_in_list.push detail
@@ -291,24 +291,24 @@ class Entity < ActiveRecord::Base
     as_string = "id int "
     
     ordinal = 1
-    self.details.sort{ |a,b| a.name.downcase <=>b.name.downcase }.each do |detail|
+    self.ordered_details.each do |detail|
       if detail.displayed_in_list_view=='f'
-        not_in_list_fields.push detail.name.downcase
+        not_in_list_fields.push detail.name
         next if options[:display]=="list"
       end
       details_kept.push detail
       #'select name from (select 1 as id , ''contract_description'' as name UNION select 2 as id , ''contract_price'' as name  UNION select 3 as id ,''contractors_name'' as name UNION select 4 as id ,''telephone'' as name) as temporary_table'
-      details_select += " UNION select #{ordinal} as id, ''#{detail.name.downcase}'' as name"
+      details_select += " UNION select #{ordinal} as id, ''#{detail.name}'' as name"
       ordinal = ordinal + 1
       case detail.data_type.name
       #  when "short_text"
       #  when "long_text"
       #  when "date"
          when "madb_integer"
-          as_string += ",  \"#{detail.name.downcase}\" bigint "
+          as_string += ",  \"#{detail.name}\" bigint "
       #  when "choose_in_list"
          else
-          as_string += ",  \"#{detail.name.downcase}\" text "
+          as_string += ",  \"#{detail.name}\" text "
       end
     end
 
@@ -316,17 +316,17 @@ class Entity < ActiveRecord::Base
       return nil
     else
       details_select = "select name from (#{details_select}) as temporary_table"
-      h = { :values_query =>"select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value from instances i join detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
-      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value::text from instances i join date_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id}
-      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, dv.value::text from instances i join integer_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
-      union select distinct on (i.id, d.name) i.id, lower(d.name) as name, pv.value from instances i join ddl_detail_values dv join detail_value_propositions pv on (pv.id=dv.detail_value_proposition_id)  on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id} order by id, name",
+      h = { :values_query =>"select distinct on (i.id, d.name) i.id, d.name as name, dv.value from instances i join detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, d.name as name, dv.value::text from instances i join date_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, d.name as name, dv.value::text from instances i join integer_detail_values dv on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id) where i.entity_id=#{entity_id}
+      union select distinct on (i.id, d.name) i.id, d.name as name, pv.value from instances i join ddl_detail_values dv join detail_value_propositions pv on (pv.id=dv.detail_value_proposition_id)  on (dv.instance_id=i.id) join details d on (d.id=dv.detail_id)  where i.entity_id=#{entity_id} order by id, name",
       :details_query => details_select.sub!(/UNION/,""),
       :as_string => "#{as_string}" }
       #[ "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", not_in_list_fields ]
       @crosstab_elements =  { 
         :query => "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", 
         :not_in_list_view => not_in_list_fields, 
-        :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name.downcase }}
+        :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name }}
     end
   end
 

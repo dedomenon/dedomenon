@@ -46,7 +46,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-email")]/div[@class="yui-dt-liner" and .="new@new.new"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-website")]/div[@class="yui-dt-liner" and .="http://mohsin.com"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner" and .="32K"]||
-|clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='203']||
+|clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='205']||
 |clickAndWait|link=madb_edit||
 |pause|700||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
@@ -54,10 +54,10 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//td[@class="data_cell" and contains(.,"This book does nothing so do not read and nothing to be edited")]||
 |clickAndWait|link=Books||
 |pause|1500||
-|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='204']||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='206']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||
-|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='203']||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='205']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||
 |click|link=madb_logout||

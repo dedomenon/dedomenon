@@ -62,7 +62,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_response :success
     assert_template  'list'
     # we have 11 entities (NOW ITS 18)
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     # test first 2 entities
     # These were the following two when their were 11 records,
     # They are now something else.
@@ -363,7 +363,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -402,7 +402,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -442,7 +442,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -481,7 +481,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -505,7 +505,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
 
   def test_edit_link_from_bad_source_id
     #-----------------------------------------------
-    get :edit_link, {:id => 9, :source_id => 13}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
+    get :edit_link, {:id => 9, :source_id => 14}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
 
     #success?
     assert_response :redirect
@@ -515,7 +515,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
 
   def test_edit_link_from_inexistant_source_id
     #-----------------------------------------------
-    get :edit_link, {:id => 9, :source_id => 1334}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
+    get :edit_link, {:id => 9, :source_id => 1434}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
 
     #success?
     assert_response :redirect
@@ -525,7 +525,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
   
   def test_edit_inexistant_link
     #--------------------------
-    get :edit_link, {:id => 9, :source_id => 1334}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
+    get :edit_link, {:id => 9, :source_id => 1434}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
 
     #success?
     assert_response :redirect
@@ -581,7 +581,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
   def test_add_link88_edition_change_child_entity
     #-------------------------------------------
 
-    post :add_link, {"relation"=>{"name"=>"test-edit", "parent_side_type_id"=>"2", "child_side_type_id"=>"2", "child_id"=>"13"}, "relation_id"=>"9", "source_id"=>"12"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
+    post :add_link, {"relation"=>{"name"=>"test-edit", "parent_side_type_id"=>"2", "child_side_type_id"=>"2", "child_id"=>"14"}, "relation_id"=>"9", "source_id"=>"12"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
     #
     #correct redirection?
     assert_response :redirect
@@ -592,7 +592,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
   def test_add_link_new
     #----------------------
     pre_relations_count = Relation.count
-    post :add_link, {"relation"=>{"from_parent_to_child_name"=>"test-addition","from_child_to_parent_name"=>"added", "parent_side_type_id"=>"1", "child_side_type_id"=>"2", "parent_id"=>"13", :child_id => "11"},  "source_id"=>"11"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
+    post :add_link, {"relation"=>{"from_parent_to_child_name"=>"test-addition","from_child_to_parent_name"=>"added", "parent_side_type_id"=>"1", "child_side_type_id"=>"2", "parent_id"=>"14", :child_id => "11"},  "source_id"=>"11"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
     post_relations_count = Relation.count
     #
     #correct redirection?
@@ -600,13 +600,13 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_redirected_to :action => "show", :id => "11"
     
     #edition successfull?
-    relation = Relation.find(:first, :conditions => "from_parent_to_child_name='test-addition' and parent_id=13 and child_id=11")
+    relation = Relation.find(:first, :conditions => "from_parent_to_child_name='test-addition' and parent_id=14 and child_id=11")
     assert_equal  "test-addition", relation.from_parent_to_child_name
     assert_equal  "added", relation.from_child_to_parent_name
     assert_equal  1, relation.parent_side_type_id
     assert_equal  2, relation.child_side_type_id
     assert_equal  11, relation.child_id
-    assert_equal  13, relation.parent_id
+    assert_equal  14, relation.parent_id
 
     #no link added
     assert_equal 1 , post_relations_count-pre_relations_count
@@ -615,7 +615,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
   def test_add_link_new_empty_name
     #-----------------------------
     pre_relations_count = Relation.count
-    post :add_link, {"relation"=>{"from_child_to_parent_name"=>"added", "parent_side_type_id"=>"1", "child_side_type_id"=>"2", "parent_id"=>"13", :child_id => "11"},  "source_id"=>"11"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
+    post :add_link, {"relation"=>{"from_child_to_parent_name"=>"added", "parent_side_type_id"=>"1", "child_side_type_id"=>"2", "parent_id"=>"14", :child_id => "11"},  "source_id"=>"11"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
     post_relations_count = Relation.count
     #
     #correct redirection?
@@ -649,7 +649,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -689,7 +689,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     #form tag
     assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
-    assert_equal 13, assigns["entities"].length
+    assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
@@ -841,7 +841,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
       #success?
       assert_response :success
       #do not propose details used
-      assert_equal 15, assigns["details"].length
+      assert_equal 17, assigns["details"].length
       assert !assigns["details"].include?(Detail.find(52))
       assert !assigns["details"].include?(Detail.find(53))
       assert !assigns["details"].include?(Detail.find(54))

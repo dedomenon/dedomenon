@@ -213,12 +213,12 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal 10, assigns["list"].length
      assert_equal "raphinou", assigns["list"][1].nom
      assert_equal "valtech", assigns["list"][0].nom
-     assert_equal([{"nom"=>"valtech", "personnes_occuppees"=>"2", "id"=>69, "company_email"=>"", "code_nace"=>"hjhjhjk", "tva"=>""}, {"nom"=>"raphinou", "personnes_occuppees"=>"1", "id"=>71, "company_email"=>"rb@raphinou.com", "code_nace"=>"", "tva"=>"BE 738 832 298"}, {"nom"=>"O-nuclear", "personnes_occuppees"=>"2500", "id"=>73, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Axios", "personnes_occuppees"=>"10", "id"=>77, "company_email"=>"inf@consultaix.com", "code_nace"=>"230202020", "tva"=>"BE230202020"}, {"nom"=>"BARDAF", "personnes_occuppees"=>"200", "id"=>78, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Banque Degroof", "personnes_occuppees"=>"150", "id"=>79, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Commission  européenne", "personnes_occuppees"=>"6000", "id"=>80, "company_email"=>"", "code_nace"=>"", "tva"=>""}, {"nom"=>"Easynet Belgium", "personnes_occuppees"=>"65", "id"=>88, "company_email"=>"info@be.easynet.net", "code_nace"=>"", "tva"=>""}, {"nom"=>"Experteam", "personnes_occuppees"=>"30", "id"=>89, "company_email"=>"info@experteam.be", "code_nace"=>"", "tva"=>""}, {"nom"=>"Mind", "personnes_occuppees"=>nil, "id"=>91, "company_email"=>"info@mind.be", "code_nace"=>"", "tva"=>""}], JSON.parse(@response.body)['records'])
+     assert_equal([{"nom"=>"valtech", "personnes_occuppees"=>"2", "id"=>69, "company_email"=>"", "code_nace"=>"hjhjhjk", "TVA"=>""}, {"nom"=>"raphinou", "personnes_occuppees"=>"1", "id"=>71, "company_email"=>"rb@raphinou.com", "code_nace"=>"", "TVA"=>"BE 738 832 298"}, {"nom"=>"O-nuclear", "personnes_occuppees"=>"2500", "id"=>73, "company_email"=>"", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Axios", "personnes_occuppees"=>"10", "id"=>77, "company_email"=>"inf@consultaix.com", "code_nace"=>"230202020", "TVA"=>"BE230202020"}, {"nom"=>"BARDAF", "personnes_occuppees"=>"200", "id"=>78, "company_email"=>"", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Banque Degroof", "personnes_occuppees"=>"150", "id"=>79, "company_email"=>"", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Commission  européenne", "personnes_occuppees"=>"6000", "id"=>80, "company_email"=>"", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Easynet Belgium", "personnes_occuppees"=>"65", "id"=>88, "company_email"=>"info@be.easynet.net", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Experteam", "personnes_occuppees"=>"30", "id"=>89, "company_email"=>"info@experteam.be", "code_nace"=>"", "TVA"=>""}, {"nom"=>"Mind", "personnes_occuppees"=>nil, "id"=>91, "company_email"=>"info@mind.be", "code_nace"=>"", "TVA"=>""}], JSON.parse(@response.body)['records'])
      assert_equal 5, assigns["not_in_list_view"].length
-     assert_equal ["adresse", "fax", "memo", "status", "telephone"], assigns["not_in_list_view"]
+     assert_equal ["adresse", "telephone", "fax", "memo", "status"], assigns["not_in_list_view"]
 
      #check details order is used
-     assert_equal %w(nom code_nace tva personnes_occuppees company_email), assigns["ordered_fields"]
+     assert_equal %w(nom code_nace TVA personnes_occuppees company_email), assigns["ordered_fields"]
   end
 
   def test_csv_entities_list_with_correct_account_user
@@ -232,7 +232,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal "raphinou", assigns["list"][1].nom
      assert_equal "valtech", assigns["list"][0].nom
      assert_equal 5, assigns["not_in_list_view"].length
-     assert_equal ["adresse", "fax", "memo", "status", "telephone"], assigns["not_in_list_view"]
+     assert_equal ["adresse", "telephone", "fax", "memo", "status"], assigns["not_in_list_view"]
      
     # The content-type header is not set by the send_data function!
     # what might be wrong? ASSERTION IS DISABLED TO CLEAR THE TESTS.
@@ -245,8 +245,8 @@ class EntitiesControllerTest < ActionController::TestCase
      
     
      assert_equal 12, lines 
-     #expected_csv="\"nom\";\"code_nace\";\"tva\";\"adresse\";\"personnes_occuppees\";\"telephone\";\"fax\";\"memo\";\"status\";\"company_email\";\n\"valtech\";\"hjhjhjk\";\"\";\"rue de perck\";\"2\";\"\";\"\";\"\";\"sprl\";\"\";\n\"raphinou\";\"\";\"BE 738 832 298\";\"kasteellaan 17\";\"1\";\"+32 479 989 969\";\"\";\"\";\"sprl\";\"rb@raphinou.com\";\n\"O-nuclear\";\"\";\"\";\"Braine-l'Alleud\";\"2500\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Axios\";\"230202020\";\"BE230202020\";\"Place De Brouckere 26\";\"10\";\"+32 2 227 61 00\";\"+32 2 227 61 01\";\"Ceci est le m\303\251mo qui est un long text\";\"sprl\";\"inf@consultaix.com\";\n\"BARDAF\";\"\";\"\";\"Rue d'Arlon\";\"200\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Banque Degroof\";\"\";\"\";\"Rue B\303\251liard\";\"150\";\"\";\"\";\"\";\"sa\";\"\";\n\"Commission  europ\303\251enne\";\"\";\"\";\"\";\"6000\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Easynet Belgium\";\"\";\"\";\"Gulledelle 92\";\"65\";\"+32 2 432 37 00\";\"+32 2 432 37 01\";\"\";\"sa\";\"info@be.easynet.net\";\n\"Experteam\";\"\";\"\";\"\";\"30\";\"\";\"\";\"\";\"sprl\";\"info@experteam.be\";\n\"Mind\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"sprl\";\"info@mind.be\";\n\"O'Conolly & Associates\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"sprl\";\"\";\n"
-     expected_csv = %Q~"nom";"code_nace";"tva";"adresse";"personnes_occuppees";"telephone";"fax";"memo";"status";"company_email";
+     #expected_csv="\"nom\";\"code_nace\";\"TVA\";\"adresse\";\"personnes_occuppees\";\"telephone\";\"fax\";\"memo\";\"status\";\"company_email\";\n\"valtech\";\"hjhjhjk\";\"\";\"rue de perck\";\"2\";\"\";\"\";\"\";\"sprl\";\"\";\n\"raphinou\";\"\";\"BE 738 832 298\";\"kasteellaan 17\";\"1\";\"+32 479 989 969\";\"\";\"\";\"sprl\";\"rb@raphinou.com\";\n\"O-nuclear\";\"\";\"\";\"Braine-l'Alleud\";\"2500\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Axios\";\"230202020\";\"BE230202020\";\"Place De Brouckere 26\";\"10\";\"+32 2 227 61 00\";\"+32 2 227 61 01\";\"Ceci est le m\303\251mo qui est un long text\";\"sprl\";\"inf@consultaix.com\";\n\"BARDAF\";\"\";\"\";\"Rue d'Arlon\";\"200\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Banque Degroof\";\"\";\"\";\"Rue B\303\251liard\";\"150\";\"\";\"\";\"\";\"sa\";\"\";\n\"Commission  europ\303\251enne\";\"\";\"\";\"\";\"6000\";\"\";\"\";\"\";\"sprl\";\"\";\n\"Easynet Belgium\";\"\";\"\";\"Gulledelle 92\";\"65\";\"+32 2 432 37 00\";\"+32 2 432 37 01\";\"\";\"sa\";\"info@be.easynet.net\";\n\"Experteam\";\"\";\"\";\"\";\"30\";\"\";\"\";\"\";\"sprl\";\"info@experteam.be\";\n\"Mind\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"sprl\";\"info@mind.be\";\n\"O'Conolly & Associates\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"sprl\";\"\";\n"
+     expected_csv = %Q~"nom";"code_nace";"TVA";"adresse";"personnes_occuppees";"telephone";"fax";"memo";"status";"company_email";
 "valtech";"hjhjhjk";"";"rue de perck";"2";"";"";"";"sprl";"";
 "raphinou";"";"BE 738 832 298";"kasteellaan 17";"1";"+32 479 989 969";"";"";"sprl";"rb@raphinou.com";
 "O-nuclear";"";"";"Braine-l'Alleud";"2500";"";"";"";"sprl";"";
@@ -273,7 +273,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal "", result['dir']
      assert_equal 0,  result['startIndex']
      assert_equal 1, result["records"].size
-     assert_equal({"nom"=>"raphinou", "personnes_occuppees"=>"1", "memo"=>"", "id"=>71, "adresse"=>"kasteellaan 17", "company_email"=>"rb@raphinou.com", "code_nace"=>"", "fax"=>"", "telephone"=>"+32 479 989 969", "status"=>"sprl", "tva"=>"BE 738 832 298"}, result["records"][0])
+     assert_equal({"nom"=>"raphinou", "personnes_occuppees"=>"1", "memo"=>"", "id"=>71, "adresse"=>"kasteellaan 17", "company_email"=>"rb@raphinou.com", "code_nace"=>"", "fax"=>"", "telephone"=>"+32 479 989 969", "status"=>"sprl", "TVA"=>"BE 738 832 298"}, result["records"][0])
   end
 
 
@@ -287,7 +287,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal 1, assigns["list"].length
      assert_equal "raphinou", assigns["list"][0].nom
      assert_equal 5, assigns["not_in_list_view"].length
-     assert_equal ["adresse", "fax", "memo", "status", "telephone"], assigns["not_in_list_view"]
+     assert_equal ["adresse", "telephone", "fax", "memo", "status"], assigns["not_in_list_view"]
      
      #FIXME: Why this not being settled.
      #assert_equal "text/csv; charset=UTF-8", @response.headers["Content-Type"]
@@ -295,8 +295,8 @@ class EntitiesControllerTest < ActionController::TestCase
      lines=0
      @response.body.each_line do |l| lines+=1 end
      assert_equal 2, lines 
-     expected_csv = "\"nom\";\"code_nace\";\"tva\";\"adresse\";\"personnes_occuppees\";\"telephone\";\"fax\";\"memo\";\"status\";\"company_email\";\n\"raphinou\";\"\";\"BE 738 832 298\";\"kasteellaan 17\";\"1\";\"+32 479 989 969\";\"\";\"\";\"sprl\";\"rb@raphinou.com\";\n"
-     assert_equal @response.body, expected_csv
+     expected_csv = "\"nom\";\"code_nace\";\"TVA\";\"adresse\";\"personnes_occuppees\";\"telephone\";\"fax\";\"memo\";\"status\";\"company_email\";\n\"raphinou\";\"\";\"BE 738 832 298\";\"kasteellaan 17\";\"1\";\"+32 479 989 969\";\"\";\"\";\"sprl\";\"rb@raphinou.com\";\n"
+     assert_equal expected_csv, @response.body
   end
 
 
@@ -767,7 +767,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get a kson representation of the added instance
-                assert_equal({"['nom']"=>"nom", "['id']"=>205, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>207, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
 
 		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
 		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
@@ -796,7 +796,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
 		#we get html back because insertion was successful 
-                assert_equal({"['nom']"=>"nom", "['id']"=>207, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>209, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 
 	def test_success_full_insertion_with_email_field_empty
@@ -820,7 +820,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get the added record in json form
-                assert_equal({"['nom']"=>"nom", "['id']"=>206, "['tva']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>208, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 	
 	###############
@@ -1364,6 +1364,10 @@ class EntitiesControllerTest < ActionController::TestCase
 
   end
 
+  def test_accented_details_names
+     get :entities_list, {'id'=> 102, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
+     assert_response :success
+  end
 
   
 	#FIXME: check that the list for link_to_existing doesn't show instances already linked

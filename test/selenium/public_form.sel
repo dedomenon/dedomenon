@@ -77,12 +77,12 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
 |click|commit||
-|pause|5000||
+|pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
 |click|commit||
-|pause|5000||
+|pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertNotVisible|//div[@id="public-form"]||
 |open|/app/database||
@@ -113,12 +113,12 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
 |click|commit||
-|pause|5000||
+|pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
 |click|commit||
-|pause|5000||
+|pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertNotVisible|//div[@id="public-form"]||
 |open|/test_public_form.html||
@@ -146,7 +146,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
 |click|commit||
-|pause|2000||
+|pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
 |focus|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
@@ -155,7 +155,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|short_text[0][value]|embedded_public_form_addition|
 |click|commit||
-|pause|2000||
+|pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertElementNotPresent|//div[@class="yui-form"]||
 |open|/app||
@@ -165,20 +165,20 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=all data types||
 |assertTitle|exact:madb_madb::madb_list||
-|pause|2000||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="public form addition"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-other_s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1218" and .="32K.file"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1222" and .="64K.file"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="embedded_public form addition"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-other_s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1232" and .="32K-quater.file"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1236" and .="64K.file"]||
+|pause|1500||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="public form addition"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-other_s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1222" and .="32K.file"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1226" and .="64K.file"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="embedded_public form addition"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-other_s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1236" and .="32K-quater.file"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-s3_attachment")]/div[@class="yui-dt-liner"]/a[@href="/app/file_attachments/download/1240" and .="64K.file"]||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||

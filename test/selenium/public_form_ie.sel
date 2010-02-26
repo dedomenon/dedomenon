@@ -161,15 +161,15 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|link=all data types||
 |assertTitle|exact:madb_madb::madb_list||
 |pause|2000||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="public form addition"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
-|assertElementPresent|//tr[@record_id="204"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="embedded_public form addition"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
-|assertElementPresent|//tr[@record_id="208"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="public form addition"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="206"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-long_text")]/div[@class="yui-dt-liner" and .="embedded_public form addition"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-integer")]/div[@class="yui-dt-liner" and .="3"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-ddl")]/div[@class="yui-dt-liner" and .="deuxième proposition"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-mail")]/div[@class="yui-dt-liner"]/a[.="rb@raphinou.com"]||
+|assertElementPresent|//tr[@record_id="210"]//td[contains(@class,"yui-dt0-col-web_url")]/div[@class="yui-dt-liner" and .="http://www.raphinou.com"]||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||

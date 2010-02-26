@@ -147,7 +147,7 @@ class SearchController < ApplicationController
     @details = {}
     # Create a hash keyed by the name of the details.
     EntityDetail.find(:all,:conditions =>  ["entity_id=?", @entity.id], :include => :detail).each do |d|
-      @details[d.detail.name.downcase]=d.detail
+      @details[d.detail.name]=d.detail
     end
     @list = {}
     instances_list = []

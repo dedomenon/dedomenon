@@ -311,6 +311,18 @@ picture_detail_for_person:
   id: "82"
   status_id: "1"
   database_id: "6"
+detail_with_uppercase_trema:
+  name: ÖstalTesté
+  data_type_id: "7"
+  id: "83"
+  status_id: "1"
+  database_id: "6"
+detail_with_question_mark:
+  name: will_participate_url?
+  data_type_id: "7"
+  id: "84"
+  status_id: "1"
+  database_id: "6"
 #
 #if you create a new detail find an id under 100 that is free or it breaks selenium tests
 # currently available range: from 72

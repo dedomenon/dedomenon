@@ -101,3 +101,8 @@ person_test_table:
   id: 101
   database_id: "6"
   has_public_form: "t"
+accented_details:
+  name: Accents
+  id: 102
+  database_id: "6"
+  has_public_form: "t"
