@@ -20,8 +20,6 @@
 |type|entity_name|my newly created entity|
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::||
-|click|//a[contains(@href, "javascript:change('8')")]||
-|click|//a[contains(@href, "javascript:change('8')")]||
 |clickAndWait|link=madb_administrate||
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |clickAndWait|link=madb_add_new_detail||
@@ -39,7 +37,7 @@
 |assertTitle|exact:madb_madb::||
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::madb_admin_entity||
-|clickAndWait|//a[contains(@href, '/app/entities/add/103')]||
+|clickAndWait|//a[contains(@href, '/app/entities/add/100001')]||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
 |pause|1000||
 |type|newly_created_detail_url[0][value]|http://www.raphinou.com|
@@ -49,7 +47,6 @@
 |assertTextPresent|http://www.raphinou.com||
 |open|/app/database||
 |assertTitle|exact:madb_madb::madb_list_of_databases||
-|click|//a[contains(@href, "javascript:change('9')")]||
 |clickAndWait|link=my newly created entity||
 |assertTitle|exact:madb_madb::madb_list||
 |click|link=madb_create_new_entity||

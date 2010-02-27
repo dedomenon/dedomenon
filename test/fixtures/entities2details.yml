@@ -651,7 +651,7 @@ person_picture:
 # Accented details
 ostalteste:
   maximum_number_of_values: "1"
-  entity_id: "102"
+  entity_id: "100000"
   detail_id: "83"
   id: "1020"
   status_id: "1"
@@ -659,8 +659,8 @@ ostalteste:
   displayed_in_list_view: t
 will_participate_url:
   maximum_number_of_values: "1"
-  entity_id: "102"
-  detail_id: "84"
+  entity_id: "100000"
+  detail_id: "100000"
   id: "1021"
   status_id: "1"
   display_order: "2"

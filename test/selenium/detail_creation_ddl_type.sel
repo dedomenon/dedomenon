@@ -36,7 +36,7 @@
 |assertElementPresent|//select[@id="detail_propositions"]/option[@value="proposition3"]||
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::||
-|clickAndWait|//a[contains(@href, '/app/admin/details/show/101')]||
+|clickAndWait|//a[contains(@href, '/app/admin/details/show/100001')]||
 |assertTitle|exact:madb_madb::||
 |assertElementPresent|//select[@id="detail_propositions"]/option[@value="1008"]||
 |assertElementPresent|//select[@id="detail_propositions"]/option[@value="1009"]||

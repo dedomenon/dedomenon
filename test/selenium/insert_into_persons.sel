@@ -22,10 +22,10 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Mr 32K"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="32K"]||
-|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='205']||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='100001']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||
-|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='206']||
+|click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='100002']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||
 |clickAndWait|link=madb_logout||

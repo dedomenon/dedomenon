@@ -767,7 +767,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get a kson representation of the added instance
-                assert_equal({"['nom']"=>"nom", "['id']"=>207, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100003, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
 
 		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
 		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
@@ -796,7 +796,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
 		#we get html back because insertion was successful 
-                assert_equal({"['nom']"=>"nom", "['id']"=>209, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100005, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 
 	def test_success_full_insertion_with_email_field_empty
@@ -820,7 +820,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get the added record in json form
-                assert_equal({"['nom']"=>"nom", "['id']"=>208, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100004, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 	
 	###############
@@ -1365,7 +1365,7 @@ class EntitiesControllerTest < ActionController::TestCase
   end
 
   def test_accented_details_names
-     get :entities_list, {'id'=> 102, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
+     get :entities_list, {'id'=> 100000, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
   end
 
