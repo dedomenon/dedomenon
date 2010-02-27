@@ -30,8 +30,8 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|S3File[0][value]|~/files/32K|
 |click|commit||
 |pause|1500||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-simplefile")]/div[@class="yui-dt-liner"]/a[.="64K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-s3file")]/div[@class="yui-dt-liner"]/a[.="32K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-SimpleFile")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-S3File")]/div[@class="yui-dt-liner"]/a[.="32K"]||
 |clickAndWait|//img[@alt='Edit']||
 |pause|1000||
 |assertVisible|//div[text() = '64K']/img[@alt='delete_file']||
@@ -56,8 +56,8 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|500||
 |click|//tbody[@id='1']/tr/td/span/a||
 |pause|2500||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-simplefile")]/div[@class="yui-dt-liner"]/a[.="64K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-s3file")]/div[@class="yui-dt-liner"]/a[.="128K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-SimpleFile")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-S3File")]/div[@class="yui-dt-liner"]/a[.="128K"]||
 |clickAndWait|//img[@alt='Edit']||
 |pause|2000||
 |click|//div[text() = '64K']/img[@alt='delete_file']||
@@ -66,8 +66,8 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//label[text() = 'SimpleFile']/following-sibling::div/input[@type="file"]||
 |clickAndWait|//div[@id='menu']/div[5]/table/tbody/tr/td/span/a||
 |pause|1500||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-simplefile")]/div[@class="yui-dt-liner" and .=""]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-s3file")]/div[@class="yui-dt-liner"]/a[.="128K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-SimpleFile")]/div[@class="yui-dt-liner" and .=""]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-S3File")]/div[@class="yui-dt-liner"]/a[.="128K"]||
 |click|//img[@alt='Delete']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||

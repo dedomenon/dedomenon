@@ -41,8 +41,8 @@ class CrosstabObject < ActiveRecord::Base
 #    end
 #  end
   def self.define_accessors(all_details, serialized)
-    all_details.reject{|d| not d.match( /^\w+$/ ) }.each do |c|
-      m = %{ def #{c} 
+    all_details.each do |c|
+      m = %{ def #{c.madb_sanitize} 
                str = read_attribute(:#{c}) 
       }
       if serialized.include?(c)

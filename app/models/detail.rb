@@ -79,7 +79,7 @@ class Detail < ActiveRecord::Base
 
   def yui_column(h={})
 # datasource utf-8 fix
-    "{ field:  \"['#{name}']\" , label:  '#{name}', key: '#{sanitized_name}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
+    "{ field:  \"['#{name}']\" , label:  '#{name}', key: '#{name}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
   end
 
   def yui_field(h={})
@@ -87,13 +87,5 @@ class Detail < ActiveRecord::Base
     "{ key: \"['#{name}']\" , parser: #{value_class.yui_parser(h)} }"
   end
 
-  def sanitized_name
-    #ActiveSupport::JSON::Encoding.escape(name).gsub(/"/, "").gsub(/\\/,"")
-    s = name.downcase.gsub(/[^a-z0-9 _]/, "").gsub(/ /,"_")
-    if s==""
-      s=ActiveSupport::JSON::Encoding.escape(name).gsub(/"/, "").gsub(/\\/,"")
-    end
-    return s
-  end
   
 end

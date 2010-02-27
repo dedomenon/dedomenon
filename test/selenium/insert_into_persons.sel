@@ -12,16 +12,16 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|name=Picture[0][value]|~/files/64K|
 |click|commit||
 |pause|1000||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |type|Name[0][value]|Mr 32K|
 |type|name=Picture[0][value]|~/files/32K|
 |click|commit||
 |pause|2000||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Mr 32K"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="32K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Mr 64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Mr 32K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="32K"]||
 |click|//td[contains(@class, 'yui-dt0-col-delete')]/div/img[@record_id='205']||
 |assertConfirmation|madb_really_delete_entity_question||
 |pause|500||

@@ -60,14 +60,14 @@ class EntityTest < ActiveSupport::TestCase
 
   def test_serialized_details
     assert_equal({}, @entity.serialized_details)
-    assert_equal ["picture"], Entity.find(101).serialized_details.collect{|k,v| k}
+    assert_equal ["Picture"], Entity.find(101).serialized_details.collect{|k,v| k}
     assert_equal ["s3_attachment", "other_s3_attachment"], Entity.find(30).serialized_details.collect{|k,v| k}
 
   end
 
   def test_serialized_details_names
     assert_equal [], @entity.serialized_details_names
-    assert_equal ["picture"], Entity.find(101).serialized_details_names
+    assert_equal ["Picture"], Entity.find(101).serialized_details_names
     assert_equal ["s3_attachment", "other_s3_attachment"], Entity.find(30).serialized_details_names
 
   end

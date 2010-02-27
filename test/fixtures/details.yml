@@ -313,7 +313,7 @@ picture_detail_for_person:
   database_id: "6"
 detail_with_uppercase_trema:
   name: ÖstalTesté
-  data_type_id: "7"
+  data_type_id: "8"
   id: "83"
   status_id: "1"
   database_id: "6"

@@ -19,14 +19,14 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|Picture[0][value]|~/files/64K|
 |click|commit||
 |pause|1500||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="A new philosophy to testing"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-description")]/div[@class="yui-dt-liner" and .="This book does nothing so do not read"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-category")]/div[@class="yui-dt-liner" and .="Computer Science"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-pages")]/div[@class="yui-dt-liner" and .="112"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-email")]/div[@class="yui-dt-liner" and .="nobook@books.biz"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-website")]/div[@class="yui-dt-liner" and .="http://www.linux.org"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="A new philosophy to testing"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Description")]/div[@class="yui-dt-liner" and .="This book does nothing so do not read"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Category")]/div[@class="yui-dt-liner" and .="Computer Science"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Pages")]/div[@class="yui-dt-liner" and .="112"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Email")]/div[@class="yui-dt-liner" and .="nobook@books.biz"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Website")]/div[@class="yui-dt-liner" and .="http://www.linux.org"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |type|Name[0][value]|Another philosophy|
 |type|Description[0][value]|This again nothing|
 |type|Published[0][value]|2008-08-22 21:34:24|
@@ -38,14 +38,14 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|Picture[0][value]|~/files/32K|
 |click|commit||
 |pause|1500||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-name")]/div[@class="yui-dt-liner" and .="Another philosophy"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-description")]/div[@class="yui-dt-liner" and .="This again nothing"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-category")]/div[@class="yui-dt-liner" and .="Romance"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-pages")]/div[@class="yui-dt-liner" and .="112"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-email")]/div[@class="yui-dt-liner" and .="new@new.new"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-website")]/div[@class="yui-dt-liner" and .="http://mohsin.com"]||
-|assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner" and .="32K"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Another philosophy"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Description")]/div[@class="yui-dt-liner" and .="This again nothing"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Published")]/div[@class="yui-dt-liner" and .="2008-08-22 21:34:24"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Category")]/div[@class="yui-dt-liner" and .="Romance"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Pages")]/div[@class="yui-dt-liner" and .="112"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Email")]/div[@class="yui-dt-liner" and .="new@new.new"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Website")]/div[@class="yui-dt-liner" and .="http://mohsin.com"]||
+|assertElementPresent|//td[contains(@class,"yui-dt0-col-Picture")]/div[@class="yui-dt-liner" and .="32K"]||
 |clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='205']||
 |clickAndWait|link=madb_edit||
 |pause|700||
