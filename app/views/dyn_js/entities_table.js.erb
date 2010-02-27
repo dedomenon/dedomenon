@@ -219,6 +219,7 @@ YUI.add('madb-tables', function(Y) {
 
         },
         _renderDataTable: function() {
+          var self = this;
           // ATTENTION YUI2
           //this._datatable = new YAHOO.widget.DataTable(Y.Node.getDOMNode(this._datatable_container), this._column_set, this._data_source, this._datatable_config);
           this._datatable = new YAHOO.widget.DataTable(this._datatable_container_id, this._column_set, this._data_source, this._datatable_config);
@@ -233,8 +234,9 @@ YUI.add('madb-tables', function(Y) {
             var column = this.getColumn(target);
             if (column.key==='delete_action_column') {
               var first_column = this.getColumnSet().keys[0].key; 
-              var first_value = record.getData(this.getColumnSet().keys[0].key);
-              if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: this.get('entity_name') , title: first_column  , value: first_value}  ))) {
+// datasource utf-8 fix
+              var first_value = record.getData("['"+this.getColumnSet().keys[0].key+"']");
+              if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
 // datasource utf-8 fix
                 var record_id;
                 if (record.getData().id)
