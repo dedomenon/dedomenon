@@ -57,5 +57,8 @@ class WebUrlDetailValue < DetailValue
                   label: "#{form_field_label}"}));
     }
 	end
+  def self.yui_formatter(h={})
+    '"link"'
+  end
 
 end
