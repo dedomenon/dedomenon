@@ -188,7 +188,7 @@ class FileAttachment < DetailValue
 	   %Q{
     var file_field = new Y.MadbFileField({
                   id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]",
-                  name:"#{detail.field_name}[#{i.to_s}]",
+                  name:"#{form_field_name(i,o)}",
                   deleteURL:"#{o[:controller].url_for(:controller => "detail_values", :action =>"delete", :id => self.id )}",
                   value:"#{value.nil? ? '' : value[:filename]}",
                   detailValueId: "#{self.id}",

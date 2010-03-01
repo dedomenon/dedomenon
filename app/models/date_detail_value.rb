@@ -88,12 +88,12 @@ class DateDetailValue < DetailValue
     	   %Q{
     fields.push( new Y.HiddenField({
                   id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
-                  name:"#{detail.field_name}[#{i.to_s}][id]",
+                  name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
     var date_field =  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
                   validator: Y.madb.get_detail_validator(#{detail.id}),
-                  name:"#{detail.field_name+"["+i.to_s+"]"}[value]",
+                  name:"#{form_field_name(i,o)}[value]",
                   label:"#{form_field_label}"})
     date_field.on('clear', function(field) {
                      field._fieldNode.removeClass('valid_form_value');

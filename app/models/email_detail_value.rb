@@ -48,13 +48,13 @@ class EmailDetailValue < DetailValue
 	   %Q{
     fields.push( new Y.HiddenField({
                   id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
-                  name:"#{detail.field_name}[#{i.to_s}][id]",
+                  name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
 
     var email_field =  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
                   validator : Y.madb.get_detail_validator(#{detail.id}),
-                  name:"#{detail.field_name+"["+i.to_s+"]"}[value]",
+                  name:"#{form_field_name(i,o)}[value]",
                   value:"#{value}",
                   label:"#{form_field_label}"})
     email_field.on('clear', function(field) {

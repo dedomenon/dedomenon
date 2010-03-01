@@ -93,6 +93,10 @@ class DetailValue <  ActiveRecord::Base
   def form_field_label
     detail.name.gsub(/"/,'\\"')
   end
+
+  def form_field_name(i,o)
+    detail.field_name+"["+i.to_s+"]"
+  end
   
 #  #FIXME: How to determine the value of detail_value?
 #  def to_json(options = {})

@@ -111,11 +111,11 @@ class DdlDetailValue < DetailValue
     	   %Q{
     fields.push( new Y.HiddenField({
                   id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
-                  name:"#{detail.field_name}[#{i.to_s}][id]",
+                  name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
     fields.push( new Y.SelectField({
                   id: "#{form_field_id(i,o)}_value",
-                  name:"#{detail.field_name+"["+i.to_s+"]"}[value]",
+                  name:"#{form_field_name(i,o)}[value]",
                   choices: #{choices},
                   label:"#{form_field_label}"}));
 
