@@ -110,7 +110,7 @@ class DdlDetailValue < DetailValue
     choices = "[" + choices + "]"
     	   %Q{
     fields.push( new Y.HiddenField({
-                  id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
+                  id: "#{form_field_id(i,o)}_id",
                   name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
     fields.push( new Y.SelectField({

@@ -88,7 +88,7 @@ class IntegerDetailValue < DetailValue
 		 id = detail.name+"["+i.to_s+"]"
 	   %Q{
     fields.push( new Y.HiddenField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
+                  id: "#{form_field_id(i,o)}_id",
                   name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
     var integer_field=  new Y.TextField({
