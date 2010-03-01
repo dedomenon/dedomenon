@@ -89,11 +89,11 @@ class IntegerDetailValue < DetailValue
 	   %Q{
     fields.push( new Y.HiddenField({
                   id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
-                  name:"#{detail.name}[#{i.to_s}][id]",
+                  name:"#{form_field_name(i,o)}[id]",
                   value:"#{self.id}"}));
     var integer_field=  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
-                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  name:"#{form_field_name(i,o)}[value]",
                   validator : Y.madb.get_detail_validator(#{detail.id}),
                   value:"#{value}",
                   label:"#{detail.name }"});
