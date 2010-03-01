@@ -301,7 +301,7 @@ class Entity < ActiveRecord::Base
       details_kept.push detail
       #'select name from (select 1 as id , ''contract_description'' as name UNION select 2 as id , ''contract_price'' as name  UNION select 3 as id ,''contractors_name'' as name UNION select 4 as id ,''telephone'' as name) as temporary_table'
       #details_select += " UNION select #{ordinal} as id, E''#{Entity.connection.quote_string(detail.name)}'' as name"
-      details_select += " UNION select #{ordinal} as id, E'#{Entity.connection.quote_string(detail.name)}' as name".gsub(/'/, "''");
+      details_select += " UNION select #{ordinal} as id, E'#{Entity.connection.quote_string(detail.name)}' as name".gsub(/'/, "''").gsub(/\\/,"\\\\\\\\");
       ordinal = ordinal + 1
       case detail.data_type.name
       #  when "short_text"
