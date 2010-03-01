@@ -40,8 +40,8 @@
 |clickAndWait|//a[contains(@href, '/app/entities/add/100001')]||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
 |pause|1000||
-|type|newly_created_detail_url[0][value]|http://www.raphinou.com|
-|type|long_text[0][value]|test long text we'll see what happens pal|
+|type|be9f6e388d97176b89cf3005772bbc0a0f97979d[0][value]|http://www.raphinou.com|
+|type|48903c196b37135bc68d87344a542b291e35d584[0][value]|test long text we'll see what happens pal|
 |click|commit||
 |pause|1000||
 |assertTextPresent|http://www.raphinou.com||
@@ -51,8 +51,8 @@
 |assertTitle|exact:madb_madb::madb_list||
 |click|link=madb_create_new_entity||
 |pause|1000||
-|type|newly_created_detail_url[0][value]|http://www.kastagnette.net|
-|type|long_text[0][value]|ceci est à nouveau un mémo qui est stocké dans un long texte qui n'apparaitra pas dans la liste car ca rallongerait vraiment trop la liste|
+|type|be9f6e388d97176b89cf3005772bbc0a0f97979d[0][value]|http://www.kastagnette.net|
+|type|48903c196b37135bc68d87344a542b291e35d584[0][value]|ceci est à nouveau un mémo qui est stocké dans un long texte qui n'apparaitra pas dans la liste car ca rallongerait vraiment trop la liste|
 |click|commit||
 |pause|1000||
 |assertTextPresent|http://www.kastagnette.net||

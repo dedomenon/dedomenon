@@ -87,14 +87,14 @@ class DateDetailValue < DetailValue
   def to_yui_form_row(i=0,o={})
     	   %Q{
     fields.push( new Y.HiddenField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
-                  name:"#{detail.name}[#{i.to_s}][id]",
+                  id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
+                  name:"#{detail.field_name}[#{i.to_s}][id]",
                   value:"#{self.id}"}));
     var date_field =  new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
                   validator: Y.madb.get_detail_validator(#{detail.id}),
-                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
-                  label:"#{detail.name }"})
+                  name:"#{detail.field_name+"["+i.to_s+"]"}[value]",
+                  label:"#{form_field_label}"})
     date_field.on('clear', function(field) {
                      field._fieldNode.removeClass('valid_form_value');
                      field._fieldNode.removeClass('invalid_form_value');

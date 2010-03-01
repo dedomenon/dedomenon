@@ -1215,11 +1215,17 @@ will_participate_url1:
   id: "1217"
   value: "http://www.raphinou.com"
   type: "WebUrlDetailValue"
+chinese1:
+  detail_id: "84"
+  instance_id: "203"
+  id: "1218"
+  value: "遨游"
+  type: "LongTextDetailValue"
 
 ostal_teste2:
   detail_id: "83"
   instance_id: "100000"
-  id: "1218"
+  id: "1219"
   value: " --- \n :uploaded: true\n :filename: logo-dedomenon.png\n :valueid: 1218\n :detail_value_id: 1218\n :filetype: \"image/png\r\"\n"
   type: "FileAttachment"
 will_participate_url2:
@@ -1228,3 +1234,16 @@ will_participate_url2:
   id: "100000"
   value: "http://www.nsa.be"
   type: "WebUrlDetailValue"
+chinese2:
+  detail_id: "84"
+  instance_id: "203"
+  id: "1220"
+  value: "मी काच खाऊ शकतो, मला ते दुखत नाही."
+  type: "LongTextDetailValue"
+with_quote:
+  detail_id: "85"
+  instance_id: "203"
+  id: "1221"
+  value: "Here is also \"a value\" with double and single ' quote"
+  type: "LongTextDetailValue"
+#if you create a new detail_value find an id under 100000 that is free or it breaks selenium tests

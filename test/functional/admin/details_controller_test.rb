@@ -317,7 +317,7 @@ class Admin::DetailsControllerTest < ActionController::TestCase
     #success?
     assert_response :success
     #correct_number_of_details?
-    assert_equal 27, assigns["details"].length
+    assert_equal 29, assigns["details"].length
     #all details from db with id 6?
     database_ids = assigns["details"].collect{|d| d.database_id.to_i}.uniq
     assert_equal 1, database_ids.length
@@ -377,7 +377,7 @@ class Admin::DetailsControllerTest < ActionController::TestCase
     #no error message
     assert_nil flash["error"]
     #number of details displayed
-    assert_equal 27, assigns["details"].length
+    assert_equal 29, assigns["details"].length
     # db_id of details
     db_ids=assigns["details"].collect{|d| d.database_id}.uniq
     assert_equal 1,db_ids.length

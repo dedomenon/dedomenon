@@ -311,19 +311,36 @@ picture_detail_for_person:
   id: "82"
   status_id: "1"
   database_id: "6"
+
+#Special detail names
 detail_with_uppercase_trema:
   name: ÖstalTesté
   data_type_id: "8"
   id: "83"
   status_id: "1"
   database_id: "6"
+
 detail_with_question_mark:
   name: will_participate_url?
   data_type_id: "7"
   id: "100000"
   status_id: "1"
   database_id: "6"
+
+chinese_name:
+  name: "些 世 咹 水 晶"
+  data_type_id: "2"
+  id: "84"
+  status_id: "1"
+  database_id: "6"
+
+with_quote:
+  name: "Doesn't or does?\" he said with a \ in his eyes"
+  data_type_id: "2"
+  id: "85"
+  status_id: "1"
+  database_id: "6"
+
 #
-#if you create a new detail find an id under 100 that is free or it breaks selenium tests
-# currently available range: from 72
+#if you create a new detail find an id under 100000 that is free or it breaks selenium tests
 

@@ -94,7 +94,7 @@
 |select|displayed_in_list_view|label=madb_yes|
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::madb_admin_entity||
-|assertText|//li[@id='item_100006']/span|Download_URL|
+|assertText|//li[@id='item_100006']/span|Download URL|
 |assertText|//li[@id='item_100006']/div/a[1]|madb_show_detail_spec|
 |assertText|//li[@id='item_100006']/div/a[2]|madb_edit_entity_to_detail|
 |assertText|//li[@id='item_100006']/div/a[3]|madb_unlink_detail_from_entity|
@@ -126,7 +126,7 @@
 |assertText|//div[@id='bd']//table/tbody/tr[1]/td[1]|Cover|
 |assertText|//div[@id='bd']//table/tbody/tr[2]/td[1]|Date|
 |assertText|//div[@id='bd']//table/tbody/tr[3]/td[1]|Description|
-|assertText|//div[@id='bd']//table/tbody/tr[4]/td[1]|Download_URL|
+|assertText|//div[@id='bd']//table/tbody/tr[4]/td[1]|Download URL|
 |assertText|//div[@id='bd']//table/tbody/tr[5]/td[1]|Format|
 |assertText|//div[@id='bd']//table/tbody/tr[6]/td[1]|Name|
 |assertText|//div[@id='bd']//table/tbody/tr[7]/td[1]|Pages|
@@ -147,7 +147,7 @@
 |assertText|//li[@id='item_100003']/span|Date|
 |assertText|//li[@id='item_100004']/span|Pages|
 |assertText|//li[@id='item_100005']/span|Format|
-|assertText|//li[@id='item_100006']/span|Download_URL|
+|assertText|//li[@id='item_100006']/span|Download URL|
 |assertText|//li[@id='item_100007']/span|Cover|
 |assertText|//li[@id='item_100008']/span|TarBall|
 |clickAndWait|link=madb_unlink_detail_from_entity||
@@ -173,7 +173,7 @@
 |assertText|//div[@id='bd']//table/tbody/tr[1]/td[1]|Cover|
 |assertText|//div[@id='bd']//table/tbody/tr[2]/td[1]|Date|
 |assertText|//div[@id='bd']//table/tbody/tr[3]/td[1]|Description|
-|assertText|//div[@id='bd']//table/tbody/tr[4]/td[1]|Download_URL|
+|assertText|//div[@id='bd']//table/tbody/tr[4]/td[1]|Download URL|
 |assertText|//div[@id='bd']//table/tbody/tr[5]/td[1]|Format|
 |assertText|//div[@id='bd']//table/tbody/tr[6]/td[1]|Name|
 |assertText|//div[@id='bd']//table/tbody/tr[7]/td[1]|Pages|

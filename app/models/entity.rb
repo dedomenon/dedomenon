@@ -98,7 +98,7 @@ class Entity < ActiveRecord::Base
   #
   # Cleans params to only key values to be assigned to detail_values related to this entity
   def clean_params(h)
-     h.reject{|k,v| not details.collect{|d| d.name}.include?(k)}
+     h.reject{|k,v| not details.collect{|d| [d.name, d.hashed_name ]}.flatten.include?(k)}
   end
 
   # Build params to pass to save_entity, used in hash based instanciation (ie not in the code handling the form submission
@@ -157,7 +157,9 @@ class Entity < ActiveRecord::Base
         entity.entity_details.each  do |entity_detail|
           
           detail = entity_detail.detail
-          params[detail.name].each do |i,value|
+          #accept names based on the detail's name or its hash
+          values = params[detail.name] || params[detail.hashed_name]
+          values.each do |i,value|
             # if the value id is not provided, that means
             # the underlying DetailValue does not exists and we need to create
             # it. This block assigns the variable detail_value
@@ -207,7 +209,7 @@ class Entity < ActiveRecord::Base
               # be false and we push the detail in the invalid_list
               if ! detail_value_class.valid?(value["value"], :detail => detail)
                 ret = false
-                invalid_list.push "#{form_id}_#{entity.name.gsub(/ /,"_")}_#{detail.name}[#{i}]_value"
+                invalid_list.push "#{form_id}_#{entity.name.gsub(/ /,"_")}_#{detail.field_name}[#{i}]_value"
               end
             rescue Exception => e
               #this rescue is for detail_values classes not implementing self.valid?
@@ -228,7 +230,7 @@ class Entity < ActiveRecord::Base
             detail_saved = true
             detail_values.push detail_value
             
-          end if params[detail.name] # end of do block
+          end if params[detail.name] or params[detail.hashed_name]  # end of do block
       
         end
 
@@ -298,20 +300,20 @@ class Entity < ActiveRecord::Base
       end
       details_kept.push detail
       #'select name from (select 1 as id , ''contract_description'' as name UNION select 2 as id , ''contract_price'' as name  UNION select 3 as id ,''contractors_name'' as name UNION select 4 as id ,''telephone'' as name) as temporary_table'
-      details_select += " UNION select #{ordinal} as id, ''#{detail.name}'' as name"
+      #details_select += " UNION select #{ordinal} as id, E''#{Entity.connection.quote_string(detail.name)}'' as name"
+      details_select += " UNION select #{ordinal} as id, E'#{Entity.connection.quote_string(detail.name)}' as name".gsub(/'/, "''");
       ordinal = ordinal + 1
       case detail.data_type.name
       #  when "short_text"
       #  when "long_text"
       #  when "date"
          when "madb_integer"
-          as_string += ",  \"#{detail.name}\" bigint "
+          as_string += ",  #{Entity.connection.quote_column_name(detail.name)} bigint "
       #  when "choose_in_list"
          else
-          as_string += ",  \"#{detail.name}\" text "
+          as_string += ",  #{Entity.connection.quote_column_name(detail.name)} text "
       end
     end
-
     if details_select.length==0
       return nil
     else
@@ -324,7 +326,7 @@ class Entity < ActiveRecord::Base
       :as_string => "#{as_string}" }
       #[ "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", not_in_list_fields ]
       @crosstab_elements =  { 
-        :query => "crosstab('#{h[:values_query]}', '#{h[:details_query]}') as (#{h[:as_string]})", 
+        :query => "crosstab(E'#{h[:values_query]}', E'#{h[:details_query]}') as (#{h[:as_string]})", 
         :not_in_list_view => not_in_list_fields, 
         :ordered_fields => details_kept.sort{|a,b| a.display_order<=>b.display_order}.collect{|d| d.name }}
     end
@@ -354,7 +356,7 @@ class Entity < ActiveRecord::Base
     paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, h[:list_length], page_number(crosstab_query, h)
     if crosstab_count.to_i>0
       limit, offset = paginator.current.to_sql
-      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by].nil? ? 'id' : h[:order_by]}\" #{h[:direction].nil? ? 'ASC' : h[:direction]}"
+      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by].nil? ? 'id' : Entity.connection.quote_string(h[:order_by])}\" #{h[:direction].nil? ? 'ASC' : Entity.connection.quote_string(h[:direction])}"
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end

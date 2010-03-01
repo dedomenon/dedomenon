@@ -41,6 +41,8 @@
 
 require 'json'
 class Detail < ActiveRecord::Base
+# for escape_javascript in js_name
+include ActionView::Helpers::JavaScriptHelper
   
   has_many :detail_value_propositions
   has_many :entity_details
@@ -79,12 +81,27 @@ class Detail < ActiveRecord::Base
 
   def yui_column(h={})
 # datasource utf-8 fix
-    "{ field:  \"['#{name}']\" , label:  '#{name}', key: '#{name}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
+    "{ field:  \"['#{name.gsub(/'/, "\\'").gsub(/"/,"\\\"")}']\" , label:  '#{name.gsub(/'/, "\\'").gsub(/"/,"\\\"")}', key: '#{name.gsub(/'/, "\\'").gsub(/"/,"\\\"")}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
+    "{ field:  \"['#{js_name}']\" , label:  '#{js_name}', key: '#{js_name}', formatter: #{value_class.yui_formatter(h)}, sortable: #{value_class.yui_sortable(h)} }"
   end
 
   def yui_field(h={})
 # datasource utf-8 fix
-    "{ key: \"['#{name}']\" , parser: #{value_class.yui_parser(h)} }"
+    "{ key: \"['#{js_name}']\" , parser: #{value_class.yui_parser(h)} }"
+  end
+
+  def hashed_name
+    Digest::SHA1.hexdigest(name)
+  end
+  def js_name
+    escape_javascript(name)
+  end
+  def field_name
+    if name.match(/[^a-zA-Z0-9_]/)
+      return hashed_name
+    else
+      return name
+    end
   end
 
   

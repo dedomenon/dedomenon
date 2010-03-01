@@ -841,7 +841,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
       #success?
       assert_response :success
       #do not propose details used
-      assert_equal 17, assigns["details"].length
+      assert_equal 19, assigns["details"].length
       assert !assigns["details"].include?(Detail.find(52))
       assert !assigns["details"].include?(Detail.find(53))
       assert !assigns["details"].include?(Detail.find(54))

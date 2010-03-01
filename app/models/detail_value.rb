@@ -87,7 +87,11 @@ class DetailValue <  ActiveRecord::Base
   #called in to_form_row, to build the html element's id. This id is also used in Entity.save_entity to identify invalid fields.
   def form_field_id(i,o)
     entity = %Q{#{o[:form_id]}_#{o[:entity].name}}.gsub(/ /,"_")
-    entity += "_"+detail.name+"["+i.to_s+"]"
+    entity += "_"+detail.field_name+"["+i.to_s+"]"
+  end
+
+  def form_field_label
+    detail.name.gsub(/"/,'\\"')
   end
   
 #  #FIXME: How to determine the value of detail_value?

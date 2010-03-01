@@ -648,7 +648,7 @@ person_picture:
   displayed_in_list_view: t
 # END PERSON DETAILS
 
-# Accented details
+# Special detail names
 ostalteste:
   maximum_number_of_values: "1"
   entity_id: "100000"
@@ -664,4 +664,20 @@ will_participate_url:
   id: "1021"
   status_id: "1"
   display_order: "2"
+  displayed_in_list_view: t
+chinese_name:
+  maximum_number_of_values: "1"
+  entity_id: "100000"
+  detail_id: "84"
+  id: "1022"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t
+with_quote:
+  maximum_number_of_values: "1"
+  entity_id: "100000"
+  detail_id: "85"
+  id: "1023"
+  status_id: "1"
+  display_order: "1"
   displayed_in_list_view: t

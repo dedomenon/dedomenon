@@ -145,7 +145,7 @@ end
   # FIXME : I think those 2 methods are not used anywhere
   # Builds a has with key being the detail name, and the value being the detail itself
   def details_hash
-    @entity_details||=entity.entity_details.inject({}){|acc,i| acc.merge({ i.detail.name => i.detail}) }
+    @entity_details||=entity.details_hash
   end
 
 

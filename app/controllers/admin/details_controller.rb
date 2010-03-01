@@ -182,8 +182,8 @@ class Admin::DetailsController < ApplicationController
   def create
     
     @details = Detail.new(params[:details])
-    @details.name = @details.name.gsub(/ /,"_")
-    @details.name = @details.name.gsub(/'/,"_")
+    #@details.name = @details.name.gsub(/ /,"_")
+    #@details.name = @details.name.gsub(/'/,"_")
     # This complete if block is used to select the database from either
     # the entity.id or from db param
     if params["for_entity"]

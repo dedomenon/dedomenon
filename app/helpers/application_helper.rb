@@ -152,7 +152,7 @@ module ApplicationHelper
                   fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
                   entity_name: '#{ entity.name}',
                   entity_id : #{ entity.id },
-                  filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ d.name, d.detail_id]}).gsub(/\n/,'') }', 
+                  filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ escape_javascript(d.name), d.detail_id]}).gsub(/\n/,'') }', 
                   contentBox: '#{h[:content_box]}'});
        #{h[:js_var]}.render();
     }

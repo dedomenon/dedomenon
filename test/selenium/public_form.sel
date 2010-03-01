@@ -59,7 +59,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[ @type="text"  and @name="date[0][value]"]||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
 |assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]||
 |assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
@@ -67,20 +67,20 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
-|focus|//input[@type="text" and @name="émail[0][value]"]||
-|type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
+|focus|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]||
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]|incorrect email|
 |type|//input[@type="file" and @name="s3_attachment[0][value]"]|/~/files/64K.file|
 |type|//input[@type="file" and @name="other_s3_attachment[0][value]"]|~/files/32K.file|
 |focus|long_text[0][value]||
 |type|long_text[0][value]|public form addition|
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
 |click|commit||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
-|type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
 |click|commit||
 |pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
@@ -95,7 +95,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[ @type="text"  and @name="date[0][value]"]||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
 |assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]||
 |assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
@@ -103,20 +103,20 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
-|focus|//input[@type="text" and @name="émail[0][value]"]||
-|type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
+|focus|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]||
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]|incorrect email|
 |type|//input[@type="file" and @name="s3_attachment[0][value]"]|/~/files/64K.file|
 |type|//input[@type="file" and @name="other_s3_attachment[0][value]"]|~/files/32K.file|
 |focus|long_text[0][value]||
 |type|long_text[0][value]|public form addition|
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
 |click|commit||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
-|type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
 |click|commit||
 |pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
@@ -129,7 +129,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//input[@type="text"  and @name="date[0][value]"]||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]"]||
 |assertElementPresent|//select[@name="ddl[0][value]"]/option[@value="1000" and .="première proposition"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]||
 |assertElementPresent|//input[@type="text" and @name="web_url[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="s3_attachment[0][value]"]||
 |assertElementPresent|//input[@type="file" and @name="other_s3_attachment[0][value]"]||
@@ -138,19 +138,19 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
 |type|//input[@type="text"  and @name="integer[0][value]"]|tr|
 |select|ddl[0][value]|label=deuxième proposition|
-|focus|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
-|type|//input[@type="text" and @name="émail[0][value]"]|incorrect email|
+|focus|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]|incorrect email|
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]"]|incorrect email|
 |type|//input[@type="file" and @name="s3_attachment[0][value]"]|/home/mohsinhijazee/files/64K.file|
 |type|//input[@type='file' and @name="other_s3_attachment[0][value]"]|/home/mohsinhijazee/files/32K-quater.file|
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
-|assertElementPresent|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
+|assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
 |click|commit||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
-|focus|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]||
-|type|//input[@type="text" and @name="émail[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
+|focus|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
+|type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
 |focus|web_url[0][value]||
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|short_text[0][value]|embedded_public_form_addition|

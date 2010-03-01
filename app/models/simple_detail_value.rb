@@ -42,13 +42,14 @@ class SimpleDetailValue <  DetailValue
   def to_yui_form_row(i=0,o={})
 	   %Q{
     fields.push( new Y.HiddenField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]_id",
-                  name:"#{detail.name}[#{i.to_s}][id]",
+                  id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]_id",
+                  name:"#{detail.field_name}[#{i.to_s}][id]",
                   value:"#{self.id}"}));
     fields.push( new Y.TextField({
-                  name:"#{detail.name+"["+i.to_s+"]"}[value]",
+                  id: "#{form_field_id(i,o)}_value",
+                  name:"#{detail.field_name+"["+i.to_s+"]"}[value]",
                   value:"#{value}",
-                  label:"#{detail.name }"}));
+                  label:"#{form_field_label}"}));
 
      }
 	end

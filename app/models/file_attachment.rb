@@ -187,14 +187,14 @@ class FileAttachment < DetailValue
          id = detail.name+"["+i.to_s+"]"
 	   %Q{
     var file_field = new Y.MadbFileField({
-                  id: "#{o[:entity].name}_#{detail.name}[#{i.to_s}]",
-                  name:"#{detail.name}[#{i.to_s}]",
+                  id: "#{o[:entity].name}_#{detail.field_name}[#{i.to_s}]",
+                  name:"#{detail.field_name}[#{i.to_s}]",
                   deleteURL:"#{o[:controller].url_for(:controller => "detail_values", :action =>"delete", :id => self.id )}",
                   value:"#{value.nil? ? '' : value[:filename]}",
                   detailValueId: "#{self.id}",
                   localizedStrings: { delete_file_confirmation: "#{ t('madb_delete_file_confirmation')}"},
                   transferAllowed: "#{allows_upload?.to_s}",
-                  label:"#{detail.name }"});
+                  label:"#{form_field_label}"});
     fields.push(file_field);
             }
         end

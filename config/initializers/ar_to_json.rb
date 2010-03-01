@@ -1,6 +1,6 @@
 class String
   def madb_sanitize
-    s = self.downcase.gsub(/[ ?!.-\/]/, "_").gsub(/ /,"_")
+    s = self.downcase.gsub(/[ ?!.-\/'"\\]/, "_").gsub(/ /,"_")
     if s==""
       s=ActiveSupport::JSON::Encoding.escape(name).gsub(/"/, "").gsub(/\\/,"")
     end

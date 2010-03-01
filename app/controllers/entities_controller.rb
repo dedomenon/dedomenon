@@ -290,6 +290,10 @@ class EntitiesController < ApplicationController
       if session["user"] and user_dbs.include? @db
 #returning json here caused the file dialog to open...
 #might have to be adapted in the gallery-form code
+
+
+        #FIXME PROBLEM HERE, we don't return the correct JSON
+
         yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
         render :text => yui_hash.to_json and return
         #render :text => @instance.to_hash.to_json and return

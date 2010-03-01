@@ -92,6 +92,7 @@ class IntegerDetailValue < DetailValue
                   name:"#{detail.name}[#{i.to_s}][id]",
                   value:"#{self.id}"}));
     var integer_field=  new Y.TextField({
+                  id: "#{form_field_id(i,o)}_value",
                   name:"#{detail.name+"["+i.to_s+"]"}[value]",
                   validator : Y.madb.get_detail_validator(#{detail.id}),
                   value:"#{value}",

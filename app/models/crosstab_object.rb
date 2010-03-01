@@ -43,7 +43,7 @@ class CrosstabObject < ActiveRecord::Base
   def self.define_accessors(all_details, serialized)
     all_details.each do |c|
       m = %{ def #{c.madb_sanitize} 
-               str = read_attribute(:#{c}) 
+               str = read_attribute("#{c.gsub(/"/,"\\\"")}") 
       }
       if serialized.include?(c)
         m+= %{ return "" if str.nil?
