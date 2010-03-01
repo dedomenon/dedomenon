@@ -16,7 +16,7 @@
                   name:"entity",
                   value:"<%=@instance.entity.id%>"}));
 
-    <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
+    <%= render :partial => "entity_yui_form_fields", :locals => { :instance => @instance }  %>
 
             fields.push ( { type : 'submit', label : '<%= t('madb_submit') %>', id: 'commit'});
             <% if request.env["HTTP_REFERER"] %>

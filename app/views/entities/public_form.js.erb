@@ -34,7 +34,7 @@ document.getElementsByTagName("head").item(0).appendChild(s);
                   name:"entity",
                   value:"<%=@entity.id%>"}));
 
-    <%= render :partial => "entity_yui_form", :locals => { :instance => @instance }  %>
+    <%= render :partial => "entity_yui_form_fields", :locals => { :instance => @instance }  %>
 
             fields.push ( { type : 'submit', label : '<%= t('madb_submit')%>', id: 'commit'});
             fields.push ( {type : 'reset', label : '<%= t('madb_reset')%>'});
