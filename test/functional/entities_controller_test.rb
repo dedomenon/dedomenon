@@ -206,7 +206,7 @@ class EntitiesControllerTest < ActionController::TestCase
      result = JSON.parse(@response.body)
      assert_equal 10,  result['pageSize']
      assert_equal 11,  result['totalRecords']
-     assert_equal "", result['dir']
+     assert_equal nil, result['dir']
      assert_equal 0,  result['startIndex']
      assert_equal 10, result["records"].size
      assert_equal 11, assigns["entity"].id
@@ -270,7 +270,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_response :success
      result = JSON.parse(@response.body)
      assert_equal 1,  result['pageSize']
-     assert_equal "", result['dir']
+     assert_equal nil, result['dir']
      assert_equal 0,  result['startIndex']
      assert_equal 1, result["records"].size
      assert_equal({"nom"=>"raphinou", "personnes_occuppees"=>"1", "memo"=>"", "id"=>71, "adresse"=>"kasteellaan 17", "company_email"=>"rb@raphinou.com", "code_nace"=>"", "fax"=>"", "telephone"=>"+32 479 989 969", "status"=>"sprl", "TVA"=>"BE 738 832 298"}, result["records"][0])
@@ -330,7 +330,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal "Mind", result["records"][9]["nom"]
      assert_equal "personnes_occuppees", result["sort"]
      assert_equal 0 , result["startIndex"]
-     assert_equal "" , result["dir"]
+     assert_equal nil , result["dir"]
   end
 
   #Filtered & Ordered list requested by xhr
@@ -1367,8 +1367,80 @@ class EntitiesControllerTest < ActionController::TestCase
   def test_accented_details_names
      get :entities_list, {'id'=> 100000, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
      assert_response :success
+     json = JSON.parse(@response.body)
+     expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203},
+                 {"Doesn't or does?\" he said with a \\ in his eyes"=>"Another text value#", "will_participate_url?"=>"http://www.nsa.be", "ÖstalTesté"=>{"valueid"=>1218, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1218, "filename"=>"logo-dedomenon.png"}, "些 世 咹 水 晶"=>"मी काच खाऊ शकतो, मला ते दुखत नाही.", "id"=>100000}]
+     assert_equal expected.length , json["records"].length
+     expected.each_index do |i|
+       expected[i].each do |k,v|
+        assert_equal v, json["records"][i][k]
+       end
+     end
+     assert_equal expected, json["records"]
+     
   end
 
+  def test_accented_and_uppercase_details_names_filter
+    # uppercase and quotes and backslash
+    get :entities_list, {'id'=> 100000, :value_filter => "also", :detail_filter=> 85, :results => 10, :startIndex => 0, :sort => "id",   'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
+    assert_response :success
+
+    json = JSON.parse(@response.body)
+    records = json["records"]
+    assert_equal 1, records.length
+    expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
+
+    expected.each_index do |i|
+      expected[i].each do |k,v|
+        assert_equal v, records[i][k]
+      end
+    end
+    assert_equal expected, records
+
+
+
+    # Filter on a special alphabet
+    get :entities_list, {'id'=> 100000, :value_filter => "遨游", :detail_filter=> 84, :results => 10, :startIndex => 0, :sort => "id",   'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
+    assert_response :success
+
+    json = JSON.parse(@response.body)
+    records = json["records"]
+    assert_equal 1, records.length
+    expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
+
+    expected.each_index do |i|
+      puts expected[i]["id"]
+      expected[i].each do |k,v|
+        assert_equal v, records[i][k]
+      end
+    end
+    assert_equal expected, records
+
+
+  end
+
+  def test_accented_and_uppercase_details_names_sort
+    get :entities_list, {'id'=> 100000, :results => 10, :startIndex => 0, :sort => "Doesn't or does?\" he said with a \\ in his eyes",   'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
+    
+    assert_response :success
+
+    json = JSON.parse(@response.body)
+    records = json["records"]
+    
+    assert_equal 2, records.length
+
+
+     expected = [
+                 {"Doesn't or does?\" he said with a \\ in his eyes"=>"Another text value#", "will_participate_url?"=>"http://www.nsa.be", "ÖstalTesté"=>{"valueid"=>1218, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1218, "filename"=>"logo-dedomenon.png"}, "些 世 咹 水 晶"=>"मी काच खाऊ शकतो, मला ते दुखत नाही.", "id"=>100000},
+                 {"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
+    expected.each_index do |i|
+      puts expected[i]["id"]
+      expected[i].each do |k,v|
+        assert_equal v, records[i][k]
+      end
+    end
+    assert_equal expected, records
+  end
   
 	#FIXME: check that the list for link_to_existing doesn't show instances already linked
   #FIXME: hcekc that the links keep the popup value from params, so that a popup window never shows the menu

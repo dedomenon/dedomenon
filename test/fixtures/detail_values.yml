@@ -1236,7 +1236,7 @@ will_participate_url2:
   type: "WebUrlDetailValue"
 chinese2:
   detail_id: "84"
-  instance_id: "203"
+  instance_id: "100000"
   id: "1220"
   value: "मी काच खाऊ शकतो, मला ते दुखत नाही."
   type: "LongTextDetailValue"
@@ -1245,5 +1245,11 @@ with_quote:
   instance_id: "203"
   id: "1221"
   value: "Here is also \"a value\" with double and single ' quote"
+  type: "LongTextDetailValue"
+with_quote2:
+  detail_id: "85"
+  instance_id: "100000"
+  id: "1222"
+  value: "Another text value#"
   type: "LongTextDetailValue"
 #if you create a new detail_value find an id under 100000 that is free or it breaks selenium tests

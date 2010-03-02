@@ -1,0 +1,73 @@
+<script type="text/javascript">
+netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
+</script>
+|open|/selenium/setup?fixtures=account_types,account_type_values,accounts,databases,data_types,detail_status,details,detail_value_propositions,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|click|//tbody[@id='6']/tr[14]/td/span[1]/a||
+|echo|"to test the sorting, we use the yui-recX id given by the datatable to the rows"||
+|pause|4000||
+|assertElementPresent|//thead//a[@class="yui-dt-sortable" and .="些 世 咹 水 晶"]||
+|assertElementPresent|//thead//a[@class="yui-dt-sortable" and .=concat("Doesn't or",' does?" he said with a \ in his eyes')]||
+|assertElementPresent|//thead//span[@class="yui-dt-label" and .="ÖstalTesté"]||
+|assertElementPresent|//thead//a[@class="yui-dt-sortable" and .="will_participate_url?"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec0"]/td/div[@class='yui-dt-liner' and .="遨游"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec0"]/td/div[@class='yui-dt-liner' and .=concat("Here is also ",'"a value" with double', " and single ' quote")]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec0"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1216" and .="logo-Ubuntu.png"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec0"]/td/div[@class='yui-dt-liner']/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec1"]/td/div[@class='yui-dt-liner' and .="मी काच खाऊ शकतो, मला ते दुखत नाही."]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec1"]/td/div[@class='yui-dt-liner' and .="Another text value#"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec1"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1218" and .="logo-dedomenon.png"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec1"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
+|click|link=exact:Doesn't or does?" he said with a \ in his eyes||
+|pause|1000||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec3"]/td/div[@class='yui-dt-liner' and .="遨游"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec3"]/td/div[@class='yui-dt-liner' and .=concat("Here is also ",'"a value" with double', " and single ' quote")]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec3"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1216" and .="logo-Ubuntu.png"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec3"]/td/div[@class='yui-dt-liner']/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec2"]/td/div[@class='yui-dt-liner' and .="मी काच खाऊ शकतो, मला ते दुखत नाही."]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec2"]/td/div[@class='yui-dt-liner' and .="Another text value#"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec2"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1218" and .="logo-dedomenon.png"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec2"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
+|type|value_filter|遨游|
+|click|//div[@id='accents_list_div']/div[1]/button[1]||
+|pause|1000||
+|assertElementPresent|//tr[@record_id=203]/td/div[@class='yui-dt-liner' and .="遨游"]||
+|assertElementPresent|//tr[@record_id=203]/td/div[@class='yui-dt-liner' and .=concat("Here is also ",'"a value" with double', " and single ' quote")]||
+|assertElementPresent|//tr[@record_id=203]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1216" and .="logo-Ubuntu.png"]||
+|assertElementPresent|//tr[@record_id=203]/td/div[@class='yui-dt-liner']/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
+|assertElementNotPresent|//tr[@record_id=100000]||
+|click|//div[@id='accents_list_div']/div[1]/button[2]||
+|pause|500||
+|click|link=些 世 咹 水 晶||
+|pause|500||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec8"]/td/div[@class='yui-dt-liner' and .="遨游"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec8"]/td/div[@class='yui-dt-liner' and .=concat("Here is also ",'"a value" with double', " and single ' quote")]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec8"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1216" and .="logo-Ubuntu.png"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec8"]/td/div[@class='yui-dt-liner']/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec7"]/td/div[@class='yui-dt-liner' and .="मी काच खाऊ शकतो, मला ते दुखत नाही."]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec7"]/td/div[@class='yui-dt-liner' and .="Another text value#"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec7"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1218" and .="logo-dedomenon.png"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec7"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
+|click|link=些 世 咹 水 晶||
+|pause|500||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec9"]/td/div[@class='yui-dt-liner' and .="遨游"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec9"]/td/div[@class='yui-dt-liner' and .=concat("Here is also ",'"a value" with double', " and single ' quote")]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec9"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1216" and .="logo-Ubuntu.png"]||
+|assertElementPresent|//tr[@record_id=203 and @id="yui-rec9"]/td/div[@class='yui-dt-liner']/a[@href="http://www.raphinou.com" and .="http://www.raphinou.com"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner' and .="मी काच खाऊ शकतो, मला ते दुखत नाही."]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner' and .="Another text value#"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1218" and .="logo-dedomenon.png"]||
+|assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
+|clickAndWait|//tbody[@id='6']/tr[14]/td/span[2]/a[3]/img||
+|click|link=madb_add_link_to_child_entity||
+|type|relation_from_parent_to_child_name|accent's person|
+|type|relation_from_child_to_parent_name|person's accent|
+|select|relation[parent_side_type_id]|label=madb_yes_multiple_parent|
+|select|relation[child_side_type_id]|label=madb_yes_multiple_child|
+|click|commit||
+|click|link=Persons||
+|open|/app/entities/view/202||
+|click|link=madb_link_to_existing_entity||

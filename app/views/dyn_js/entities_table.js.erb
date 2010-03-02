@@ -303,7 +303,7 @@ YUI.add('madb-tables', function(Y) {
                           s+="&detail_filter="   + this._detail_filter +
                              "&value_filter="    + this._value_filter ; 
                 }
-                return s;
+                return s.replace("\\","%5C");
         },
         _refresh_table: function() {
 

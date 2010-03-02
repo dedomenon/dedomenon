@@ -761,9 +761,11 @@ class EntitiesController < ApplicationController
    def order_by
     session["list_order"]||={}
     if params[:sort]
-      order=CrosstabObject.connection.quote_string(params[:sort].to_s)
+      # quoting is done later
+      #order=CrosstabObject.connection.quote_column_name(params[:sort].to_s)
+      order = params[:sort]
     elsif params[order_param] and ! params["highlight"] or params["highlight"]==""
-      order=CrosstabObject.connection.quote_string(params[order_param].to_s)
+      order=params[order_param]
       session["list_order"][list_id]=order
     elsif session["list_order"].has_key? [list_id]
       order = session["list_order"][list_id]
@@ -777,7 +779,7 @@ class EntitiesController < ApplicationController
       return ""
     else
       detail = Detail.find detail_filter
-      return "\"#{CrosstabObject.connection.quote_string(detail.name.downcase)}\"::text ilike '#{leading_wildcard}#{CrosstabObject.connection.quote_string(params["value_filter"].to_s)}#{trailing_wildcard}'"
+      return "#{CrosstabObject.connection.quote_column_name(detail.name)}::text ilike '#{leading_wildcard}#{CrosstabObject.connection.quote_string(params["value_filter"].to_s)}#{trailing_wildcard}'"
     end
   end
     

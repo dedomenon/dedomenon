@@ -356,7 +356,7 @@ class Entity < ActiveRecord::Base
     paginator = ApplicationController::Paginator.new self, crosstab_count.to_i, h[:list_length], page_number(crosstab_query, h)
     if crosstab_count.to_i>0
       limit, offset = paginator.current.to_sql
-      query = "select * from #{crosstab_query}  #{query_filter} order by \"#{h[:order_by].nil? ? 'id' : Entity.connection.quote_string(h[:order_by])}\" #{h[:direction].nil? ? 'ASC' : Entity.connection.quote_string(h[:direction])}"
+      query = "select * from #{crosstab_query}  #{query_filter} order by #{h[:order_by].nil? ? 'id' : CrosstabObject.connection.quote_column_name(h[:order_by].to_s)} #{h[:direction].nil? ? 'ASC' : Entity.connection.quote_string(h[:direction])}"
       if h[:format]!="csv"
         query += " limit #{limit} offset #{offset}"
       end
