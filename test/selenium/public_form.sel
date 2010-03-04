@@ -40,7 +40,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::madb_list_of_databases||
-|clickAndWait|//a[img/@alt='madb_modify_entity']||
+|clickAndWait|//a[@href="/app/admin/entities/show/30"]/img[@alt='madb_modify_entity']||
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |click|is_public||
 |pause|500||

@@ -1,9 +1,7 @@
 class String
   def madb_sanitize
-    s = self.downcase.gsub(/[ ?!.\-\/'"\\#]/, "_").gsub(/ /,"_")
-    if s==""
-      s=ActiveSupport::JSON::Encoding.escape(name).gsub(/"/, "").gsub(/\\/,"")
-    end
+    return self if ["id"].include? self
+    s= "acc_"+ Digest::SHA1.hexdigest(self)
     return s
   end
 end
@@ -14,6 +12,7 @@ module ActiveRecord #:nodoc:
       class Serializer #:nodoc:
          def serializable_record
             returning(serializable_record = {}) do
+
               serializable_names.each { |name| serializable_record[name] = @record.send(name.madb_sanitize) }
               add_includes do |association, records, opts|
                 if records.is_a?(Enumerable)

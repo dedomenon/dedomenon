@@ -1252,4 +1252,10 @@ with_quote2:
   id: "1222"
   value: "Another text value#"
   type: "LongTextDetailValue"
+value_for_detail_name_with_colun:
+  detail_id: "86"
+  instance_id: "204"
+  id: "1223"
+  value: "hello"
+  type: "LongTextDetailValue"
 #if you create a new detail_value find an id under 100000 that is free or it breaks selenium tests

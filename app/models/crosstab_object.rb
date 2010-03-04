@@ -42,6 +42,7 @@ class CrosstabObject < ActiveRecord::Base
 #  end
   def self.define_accessors(all_details, serialized)
     all_details.each do |c|
+      puts "defining #{c.madb_sanitize} for #{c}"
       m = %{ def #{c.madb_sanitize} 
                str = self.attributes[#{c.dump}] 
       }

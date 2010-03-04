@@ -24,3 +24,7 @@ databases_005:
   name: Tasks
   account_id:  "1"
   id:  "1"
+database_for_functional_tests:
+  name:  for functional tests
+  account_id: "100"
+  id: "9"

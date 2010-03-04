@@ -681,3 +681,11 @@ with_quote:
   status_id: "1"
   display_order: "1"
   displayed_in_list_view: t
+with_colon:
+  maximum_number_of_values: "1"
+  entity_id: "102"
+  detail_id: "86"
+  id: "1024"
+  status_id: "1"
+  display_order: "1"
+  displayed_in_list_view: t

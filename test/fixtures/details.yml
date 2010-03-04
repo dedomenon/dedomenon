@@ -341,6 +341,12 @@ with_quote:
   status_id: "1"
   database_id: "6"
 
+with_colon:
+  name: "choice:"
+  data_type_id: "2"
+  id: "86"
+  status_id: "1"
+  database_id: "9"
 #
 #if you create a new detail find an id under 100000 that is free or it breaks selenium tests
 

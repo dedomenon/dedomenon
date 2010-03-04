@@ -1441,6 +1441,13 @@ class EntitiesControllerTest < ActionController::TestCase
     end
     assert_equal expected, records
   end
+
+  def test_detail_with_colon
+    get :entities_list, {'id'=> 102, :results => 10, :startIndex => 0, :sort => "id", :dir => 'asc','format' => 'js'}, { 'user' => User.find_by_id(6)}
+    
+    assert_response :success
+
+  end
   
 	#FIXME: check that the list for link_to_existing doesn't show instances already linked
   #FIXME: hcekc that the links keep the popup value from params, so that a popup window never shows the menu

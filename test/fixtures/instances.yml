@@ -105,6 +105,9 @@ accented_details_01:
 accented_details_02:
   entity_id: "100000"
   id: "100000"
+colon_in_detail_name:
+  entity_id: "102"
+  id: "204"
 
 
 
