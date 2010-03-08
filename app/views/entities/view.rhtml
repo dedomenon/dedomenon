@@ -27,20 +27,62 @@
 
 <% [ {:from => "parent", :to => "child"}, {:from => "child", :to => "parent"} ].each do |type| %>
   <% if @entity.send("relations_to_#{type[:to].pluralize}").size>0 %>
-
   <!-- <div class="section_head"><span><%= t("madb_related_#{type[:to].pluralize}_objects")%></span></div> -->
 
     <% @entity.send("relations_to_#{type[:to].pluralize}").each do |relation| %>
     <% relation_name = relation.send("from_#{type[:from]}_to_#{type[:to]}_name") %>
+    <%# Used by entity_linked event to identify the linkable list who fired the event %>
+    <% yui_linkable_list = "#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_linkable_list" %>
     <% list_id = "#{relation_name}_#{type[:to]}_div" %>
           <h2><%= t(relation_name,{:scope => "account"}) %></h2>
           <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
           <% link_from_many = relation.send("#{type[:from]}_side_type").name=='many' %>
+
+
+          <!-- Linked entities list -->
+          <div id="demo_<%=relation_name%>"></div>
+
+
+<script type="text/javascript">
+YAHOO_config = {
+                filter: 'debug'
+                };
+
+
+<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+  <%= entities_table( :js_var => "dt",:entity => relation.send(type[:to]) , :controller => self, :content_box => "#demo_#{relation_name}", 
+          :source => url_for(
+                  :controller => "entities", :action => "related_entities_list", :id => @instance.id, :format => 'js', :params => { :relation_id => relation.id, :type => type[:to].pluralize}),
+          :actions => ["view", "edit", "unlink"],
+          :data => { :relation_id => relation.id, :type => type[:to].pluralize, :shown_instance => @instance.id } 
+          )
+          
+          %>
+
+  Y.Global.on('madb:entity_linked', function(source,h){ 
+    Y.log(source);
+    Y.log("<%= yui_linkable_list %>");
+    
+                                        if (source=="<%= yui_linkable_list %>")
+                                        {
+                                          Y.log('will add row with this data:');
+                                          Y.log(h.record.getData() );
+                                          dt.getDataTable().addRow(h.record.getData(), 0);  
+                                        }
+                                    });
+<%end%>
+</script>
+
+
+
+
+
+
           <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style">
 
             <span id="<%=list_id%>_add_existing_<%=type[:to]%>_link">
               <%=link_to_function t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}), "
-            new Ajax.Updater('link_existing_#{type[:to]}_#{relation_name}_div',  '#{url_for :controller => "entities", :action => "link_to_existing" ,  "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "link_existing_#{type[:to]}_#{relation_name}_div", :link_to_many => (link_to_many ? 't':'f'), :update => list_id }  ', {asynchronous:true} );
+            new Ajax.Updater('link_existing_#{type[:to]}_#{relation_name}_div',  '#{url_for :controller => "entities", :action => "link_to_existing" , :format => "html",  "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "link_existing_#{type[:to]}_#{relation_name}_div", :link_to_many => (link_to_many ? 't':'f'), :update => list_id }  ', {asynchronous:true, evalScripts:true} );
             $('link_existing_#{type[:to]}_#{relation_name}_div').innerHTML='';
             Element.show('link_existing_#{type[:to]}_#{relation_name}_div');
 
@@ -93,6 +135,7 @@
                 "  %>
               </span>
           </div>
+<div id="link_existing_<%=type[:to]%>_id_<%=relation_name%>_linkable_list_yui_div"></div>
           <div id="add_new_<%=type[:to]%>_<%=relation_name%>_div" style="display:none; "></div>
           <div id="link_existing_<%=type[:to]%>_<%=relation_name%>_div" style="display:none; "></div>
 

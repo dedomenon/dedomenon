@@ -118,6 +118,8 @@ class EntitiesController < ApplicationController
   # *Description*
   #   Most of the logic is inclined towards views.
   def entities_list
+    # sets @sort and @dir
+    setup_sort_and_dir
     #FIXME: check we get the params id when editing an instance
     @entity = Entity.find params["id"]
 
@@ -151,7 +153,6 @@ class EntitiesController < ApplicationController
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
-    list_length = params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
     @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction, :list_length => list_length )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
@@ -356,8 +357,8 @@ class EntitiesController < ApplicationController
       #if parent_side_type is many, we filter out all entities already link to this entity
       if @relation.parent_side_type.name!="one"
         @link_to_many = 't'
-        other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
       end
+        other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     else
       @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
       #links_div contains the links to link a new/existing parent
@@ -369,24 +370,34 @@ class EntitiesController < ApplicationController
       #if child_side_type is many, we filter out only entities already linked to this entity
       if @relation.child_side_type.name!="one"
         @link_to_many = 't'
-        other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
       end
+        other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     end
 
     @details = @entity.details_hash
     filter_clause = crosstab_filter
     link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
 
-    crosstab_result = @entity.crosstab_query(:display => "detail")
-    crosstab_query     = crosstab_result[:query]
-    @not_in_list_view  = crosstab_result[:not_in_list_view]
-    @ordered_fields   = crosstab_result[:ordered_fields]
-    @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"], :order_by => order_by )
-
+    existing_links = Link.count_by_sql("select count(*) from links where relation_id = #{@relation.id} #{other_side_type_filter}")
+    if @link_to_many!='t' and existing_links>0 
+      @list = []
+      @paginator = nil 
+    else
+      crosstab_result = @entity.crosstab_query(:display => "detail")
+      crosstab_query     = crosstab_result[:query]
+      @not_in_list_view  = crosstab_result[:not_in_list_view]
+      @ordered_fields   = crosstab_result[:ordered_fields]
+      @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length )
+    end
 
 
     @links = [ { "header" => t("madb_use_it") , "text" => t("madb_use_it"), "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
 				   ]
+    params[:format]="html" unless params[:format]=='js'
+    respond_to do |format|
+      format.html
+      format.js { render :action => 'entities_list' }
+    end
   end
 
 
@@ -396,11 +407,13 @@ class EntitiesController < ApplicationController
   	@relation = Relation.find params["relation_id"]
     if params["parent_id"]
       @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
+      @yui_list_id = "#{@relation.from_parent_to_child_name}_from_parent_to_child_linkable_list"
       @related_id = "child_id"
       @self_id = "parent_id"
       @entity = @relation.child
     else
       @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
+      @yui_list_id = "#{@relation.from_child_to_parent_name}_from_child_to_parent_linkable_list"
       @related_id = "parent_id"
       @self_id = "child_id"
       @entity = @relation.parent
@@ -533,6 +546,8 @@ class EntitiesController < ApplicationController
   #   type
   #
   def related_entities_list
+    # sets @sort and @dir
+    setup_sort_and_dir
 
     @relation = Relation.find params["relation_id"]
     @type = params["type"]
@@ -609,7 +624,7 @@ class EntitiesController < ApplicationController
         response.headers["MYOWNDB_highlight"]  =  params["highlight"].to_s
       end
 
-      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"], :order_by => order_by )
+      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length)
     else
       @list = []
     end
@@ -634,6 +649,11 @@ class EntitiesController < ApplicationController
         if available_instances.length<1
           @hide_to_existing_link = true;
         end
+    end
+    params[:format]='html' if params[:format].nil?
+    respond_to do |format|
+      format.html {  }
+      format.js { render :action => 'entities_list' }
     end
 
 
@@ -750,23 +770,12 @@ class EntitiesController < ApplicationController
 
 # returns a quoted version of the requestion sort direction
   def sort_direction
-    CrosstabObject.connection.quote_string(params[:dir].to_s)
+    CrosstabObject.connection.quote_string(@dir.to_s)
   end
 
 # returns a quoted version of the requestion column sorting
-   def order_by
-    session["list_order"]||={}
-    if params[:sort]
-      order=CrosstabObject.connection.quote_string(params[:sort].to_s)
-    elsif params[order_param] and ! params["highlight"] or params["highlight"]==""
-      order=CrosstabObject.connection.quote_string(params[order_param].to_s)
-      session["list_order"][list_id]=order
-    elsif session["list_order"].has_key? [list_id]
-      order = session["list_order"][list_id]
-    else
-      order = "id"
-    end
-    return order
+  def order_by
+      order=CrosstabObject.connection.quote_string(@sort.to_s)
   end
   def crosstab_filter
     if detail_filter.nil?
@@ -784,6 +793,14 @@ class EntitiesController < ApplicationController
     else
       @details[params["detail_filter"]].id
     end 
+  end
+
+  def setup_sort_and_dir
+    @sort = params[:sort].nil? ? "id" : params[:sort]
+    @dir =  params[:dir].nil? ? "ASC" : params[:dir]
+  end
+  def list_length
+     params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
   end
 
 end

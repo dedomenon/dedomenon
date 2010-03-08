@@ -147,12 +147,14 @@ module ApplicationHelper
     end
     js = %{
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
-                  source: "#{h[:source].nil? ? url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?" : h[:source].to_json  }",
+                  source: #{h[:source].nil? ? '"'+(url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?")+'"' : h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
                   fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
                   entity_name: '#{ entity.name}',
                   entity_id : #{ entity.id },
                   filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ d.name, d.detail_id]}).gsub(/\n/,'') }', 
+                  actions: #{h[:actions].to_json} , 
+                  data : #{(h[:data]||nil).to_json},
                   contentBox: '#{h[:content_box]}'});
        #{h[:js_var]}.render();
     }

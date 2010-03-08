@@ -1,2 +1,64 @@
 <div id="<%=@list_id %>_div">
-  <%= render_component :controller => "entities", :action => "list_available_for_link", :params => { @self_id.to_sym => params[@self_id], :relation_id => params["relation_id"] , :update => params["update"], :embedded => params["embedded"], :link_to_many => params['link_to_many']   } %>
+  <%= render_component :controller => "entities", :action => "list_available_for_link", :format => "html", :params => { @self_id.to_sym => params[@self_id], :relation_id => params["relation_id"] , :update => params["update"], :embedded => params["embedded"], :link_to_many => params['link_to_many']   } %>
+
+<div id="<%=@yui_list_id %>_yui_div">
+<%=@yui_list_id %>_yui_div
+
+<script type="text/javascript">
+//YAHOO_config = {
+//                filter: 'debug'
+//                };
+//
+
+<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+  Y.publish('madb:entity_linked', { broadcast: 2} )
+  <%= entities_table( :js_var => "dt",:entity => @entity , :controller => self, :content_box => "#link_existing_#{@related_id}_#{@list_id}_yui_div", 
+          :source => url_for(
+                  :controller => "entities", :action => "list_available_for_link", :format => 'js', :params => { @self_id.to_sym => params[@self_id], :relation_id => params["relation_id"] ,  :link_to_many => params['link_to_many']   }),
+          :actions => ["link"],
+          :data => { :relation_id => params["relation_id"], @self_id.to_sym => params[@self_id], :link_to_many => params['link_to_many']  } 
+          )
+          
+          %>
+  Y.on('madb:link', function(h) { Y.log('got madb:link event'); 
+                                  Y.log(h);
+                                  var url = '<%= url_for(:controller => 'entities', :action => 'link')%>/'+h.record_id+'?<%=@self_id%>=<%=params[@self_id]%>&relation_id=<%=params["relation_id"]%>&link_to_many=<%= params['link_to_many']%>';
+                                  var config = { method: 'POST', 
+                                                 on: { success : function() { 
+                                                                              Y.fire('madb:entity_linked', '<%= @yui_list_id %>', h );
+                                                                              //  if to many, allow multiple additions
+                                                                              if ('<%= params['link_to_many']%>'=='t') {
+                                                                                Y.log('fireing madb:entity_linked with record');
+                                                                                Y.log(h.record);
+                                                                                Y.log('will deleteRow with this argument:');
+                                                                                Y.log(h.target);
+                                                                                try{
+                                                                                  this.deleteRow(h.target);
+                                                                                }
+                                                                                catch(err)
+                                                                                {
+                                                                                  // if the last row of the page was deleted, refresh the table.
+                                                                                  if (err=="TypeError: Cannot call method 'getId' of undefined")
+                                                                                  {
+                                                                                    dt._refresh_table();
+                                                                                  }
+
+                                                                                }
+                                                                              }
+                                                                              //  if to one, only allow one addition, so clear the table after this addition
+                                                                              else
+                                                                              {
+                                                                                    var recs = dt.getDataTable().getRecordSet().getRecords();
+                                                                                    dt.getDataTable().deleteRows(0, recs.length);
+
+                                                                              }
+                                                                            },
+                                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                                 },
+                                                 context: dt.getDataTable()
+                                  };
+                                  Y.io(url, config);
+
+                                });
+<%end%>
+</script>
