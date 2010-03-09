@@ -35,6 +35,7 @@
     <% self_id = type[:from]+"_id" %>
     <% yui_linked_list = "#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_linked_list" %>
     <% yui_linkable_list ="#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_linkable_list" %> 
+    <% yui_form ="#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_form" %> 
     <% list_id = "#{relation_name}_#{type[:to]}_div" %>
           <h2><%= t(relation_name,{:scope => "account"}) %></h2>
           <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
@@ -95,6 +96,17 @@ YAHOO_config = {
                                           dt.getDataTable().addRow(h.record.getData(), 0);  
                                         }
                                     });
+  Y.Global.on('madb:new_entity_linked', function(source, data) {
+      if (source == "<%= yui_form %>")
+      {
+        var record = Y.JSON.parse(data);
+        dt._datatable.addRow(record,0);
+        var row = Y.one(dt._datatable.getFirstTrEl());
+        var anim = new Y.Anim({ node: row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
+        anim.run();
+      }
+  });
+
 <%end%>
 </script>
 
@@ -127,42 +139,10 @@ YAHOO_config = {
               if (document.getElementById('add_new_#{type[:to]}_#{relation_name}_div').childNodes.length<1)
               {
               new Ajax.Updater('add_new_#{type[:to]}_#{relation_name}_div',  '#{url_for :controller => "entities", :action => "link_to_new" , :id => relation.send(type[:to]).id, "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "add_new_#{type[:to]}_#{relation_name}_div", :update => list_id}  ', {evalScripts:true, onComplete:function(request){
-              /*
-                $('add_new_#{type[:to]}_#{relation_name}_div').style.height = $('add_new_#{type[:to]}_#{relation_name}_div').original_height;
-                $('add_new_#{type[:to]}_#{relation_name}_div').style.width = $('add_new_#{type[:to]}_#{relation_name}_div').original_width;
-                */
-                form = $('add_new_#{type[:to]}_#{relation_name}_div').childNodes[0].getElementsByTagName('form')[0];
-                if (form!=undefined)
-                {
-                  form.reset();
-                }
-                Element.show('add_new_#{type[:to]}_#{relation_name}_div');
-                new Form.focusFirstElement(form);
-                  /* Works only with ff 1.5
-                Element.show('add_new_#{type[:to]}_#{relation_name}_div');
-                new Form.focusFirstElement(form);
-                */
                }
               });
               }
-              else
-              {
-              /*
-              $('add_new_#{type[:to]}_#{relation_name}_div').style.height = $('add_new_#{type[:to]}_#{relation_name}_div').original_height;
-              $('add_new_#{type[:to]}_#{relation_name}_div').style.width = $('add_new_#{type[:to]}_#{relation_name}_div').original_width;
-                */
-                form = $('add_new_#{type[:to]}_#{relation_name}_div').childNodes[0].getElementsByTagName('form')[0];
-                if (form!=undefined)
-                {
-                  form.reset();
-                  Element.show('add_new_#{type[:to]}_#{relation_name}_div');
-                  new Form.focusFirstElement(form);
-                  /* Works only with ff 1.5
-                  Element.show('add_new_#{type[:to]}_#{relation_name}_div');
-                  new Form.focusFirstElement(form);
-                  */
-                }
-              }
+              Element.show('#{yui_form}_container');
 
                 "  %>
               </span>
@@ -172,6 +152,10 @@ YAHOO_config = {
 <div id="<%= yui_linkable_list %>_container" class="tool_in_page" style="display:none;">
   <div id="<%= yui_linkable_list %>" /></div>
   <span class="button_style"><a href="#" onclick="Element.hide('<%= yui_linkable_list%>_container');return false;"><%= t('madb_done')%></a></span>
+</div>
+<div id="<%= yui_form %>_container" class="tool_in_page" style="display:none;">
+  <div id="<%= yui_form %>"></div>
+  <span class="button_style"><a href="#" onclick="Element.hide('<%= yui_form%>_container');return false;"><%= t('madb_done')%></a></span>
 </div>
 
           <div id="add_new_<%=type[:to]%>_<%=relation_name%>_div" style="display:none; "></div>

@@ -164,6 +164,7 @@ module ApplicationHelper
    (h[:form_content_box] ) or raise "need :form_content_box passed"
    h[:upload]=false if h[:upload].nil?
    h[:success_callback] ='function(form,data){}'  if h[:success_callback].nil?
+   h[:form_action] = url_for(:controller => :entities, :action=> "apply_edit") if h[:form_action].nil?
 
    #listen to complete event if this is an upload form
    #listent to success for normal forms
@@ -191,7 +192,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
      f = new Y.Form({
       id:"test",
         contentBox: '##{h[:form_content_box]}',
-        action : '#{url_for :controller => :entities, :action=> "apply_edit"}',
+        action : '#{h[:form_action]}',
         method : 'post',
         upload : #{h[:upload]},
         resetAfterSubmit: false,

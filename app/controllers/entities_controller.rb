@@ -423,12 +423,14 @@ class EntitiesController < ApplicationController
 
   def link_to_new
   	init_add_form
+    	@relation = Relation.find params['relation_id']
 	if params["parent_id"] 
 		linked_id = "parent_"+params["parent_id"]
+                @yui_form_id = "#{@relation.from_parent_to_child_name}_from_parent_to_child_form"
 	elsif params["child_id"] 
 		linked_id = "child_"+params["child_id"]
+                @yui_form_id = "#{@relation.from_child_to_parent_name}_from_child_to_parent_form"
 	end
-    	@relation = Relation.find params['relation_id']
 	@form_id = @relation.id.to_s+"_"+@entity.id.to_s+"_"+linked_id
   end
 
@@ -455,7 +457,8 @@ class EntitiesController < ApplicationController
       end
       relation = Relation.find params["relation_id"]
       link_instances(parent,relation,child)
-      headers['Content-Type']='text/plain; charset=UTF-8'
+      yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
+      render :text => yui_hash.to_json and return
     else
             headers['Content-Type']='text/plain; charset=UTF-8'
             render :text => @invalid_list.join('######')
@@ -498,19 +501,6 @@ class EntitiesController < ApplicationController
 	rescue Exception => @e
       flash["error"] = t("madb_an_error_occured")
   ensure
-      if params["parent_id"]
-        if params["embedded"]
-           redirect_to :controller => "entities", :action => "related_entities_list", :id => params["parent_id"],  :relation_id => relation.id, :type => "children", :highlight => child.id 
-        else
-          redirect_to(:action => "view", :id=>parent.id) 
-        end
-      elsif params["child_id"]
-        if params["embedded"]
-           redirect_to :controller => "entities", :action => "related_entities_list", :id => params["child_id"],  :relation_id => relation.id, :type => "parents", :highlight => parent.id 
-        else
-           redirect_to(:action => "view", :id=>child.id) 
-        end
-    end
 	end
   end
 
