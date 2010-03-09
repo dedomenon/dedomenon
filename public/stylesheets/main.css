@@ -116,6 +116,8 @@ H2, H3 {
     font-variant: small-caps;
 }
 h2:before, h3:before { content: " > ";}
+
+h2 {padding-top: 10px; background: #cfeeff; }
 H3 {
 	padding-left: 20px;
 	border-bottom-style: dotted;

@@ -260,8 +260,6 @@ YUI.add('madb-tables', function(Y) {
               var datatable = this;
               var target = oArgs.target;
               var record = datatable.getRecord(target);
-              Y.log('in cellclickevent handler');
-              Y.log(record);
               var column = datatable.getColumn(target);
               var record_id;
 // datasource utf-8 fix
@@ -325,7 +323,7 @@ YUI.add('madb-tables', function(Y) {
           {
             this.publish('madb:unlink');
             this._define_action_listener("unlink", function(h) {
-                Y.log('<%= url_for({ :controller => "entities", :action => "unlink"})%>/'+ h.record_id) ;
+                Y.fire('madb:unlink',h); 
             })
     
           };
@@ -335,8 +333,6 @@ YUI.add('madb-tables', function(Y) {
           {
             this.publish('madb:link');
             this._define_action_listener("link", function(h) {
-                Y.log('will fire event madb:link') ;
-                Y.log(h);
                 Y.fire('madb:link',h); 
             })
     

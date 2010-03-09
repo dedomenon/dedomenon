@@ -336,7 +336,7 @@ class EntitiesController < ApplicationController
       render_id = "child_id"
       type = "parents"
     end
-  	Link.delete_all("parent_id=#{params[parent_id]} AND child_id=#{params[child_id]} AND relation_id=#{params["relation_id"]}")
+  	Link.delete_all( [ "parent_id=? AND child_id=? AND relation_id=?", params[parent_id],params[child_id],params["relation_id"] ] )
     #overwrite_params doesn't work with render_component
       render_component(:controller => "entities", :action => "related_entities_list", :id => params[render_id],:params => { :relation_id => params["relation_id"] , :type => type }) 
   end
