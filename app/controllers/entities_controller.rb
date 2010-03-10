@@ -525,6 +525,7 @@ class EntitiesController < ApplicationController
 	child = Instance.find params[child_id]
   
 	link_instances(parent,relation,child)
+        render :nothing => true
   end
 
 
