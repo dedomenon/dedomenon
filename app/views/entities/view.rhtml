@@ -33,9 +33,13 @@
     <% relation_name = relation.send("from_#{type[:from]}_to_#{type[:to]}_name") %>
     <%# Used by entity_linked event to identify the linkable list who fired the event %>
     <% self_id = type[:from]+"_id" %>
-    <% yui_linked_list = "#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_linked_list" %>
-    <% yui_linkable_list ="#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_linkable_list" %> 
-    <% yui_form ="#{relation_name}_from_#{type[:from]}_to_#{type[:to]}_form" %> 
+    <% prefix = "#{relation_name}_from_#{type[:from]}_to_#{type[:to]}" %>
+    <% yui_linked_list = "#{prefix}_linked_list" %>
+    <% yui_linkable_list ="#{prefix}_linkable_list" %> 
+    <% yui_form ="#{prefix}_form" %> 
+    <%# CSS class given to all elements (and to buttons only) used to add a new related instance %>
+    <% addition_element = "#{prefix}_addition" %>
+    <% addition_button = "#{prefix}_button" %>
     <% list_id = "#{relation_name}_#{type[:to]}_div" %>
           <h2><%= t(relation_name,{:scope => "account"}) %></h2>
           <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
@@ -47,7 +51,7 @@
           </script>
 
 
-          <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style">
+          <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style <%= addition_element %> <%= addition_button %>">
             <span id="<%=list_id%>_add_existing_<%=type[:to]%>_link">
               <%=link_to_function t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}), "
             if (#{yui_linkable_list}_counter==0)
@@ -55,7 +59,7 @@
             #{yui_linkable_list}_counter++;
             $('link_existing_#{type[:to]}_#{relation_name}_div').innerHTML='';
             //Element.show('link_existing_#{type[:to]}_#{relation_name}_div');
-            Element.show('#{yui_linkable_list}_container');
+            Element.toggleClassName('#{yui_linkable_list}_container', 'hidden');
 
               " %>
             </span>
@@ -69,19 +73,19 @@
                }
               });
               }
-              Element.show('#{yui_form}_container');
+              Element.toggleClassName('#{yui_form}_container', 'hidden');
 
                 "  %>
               </span>
           </div>
 <!-- Adding new linked instances -->
-<div id="<%= yui_linkable_list %>_container" class="tool_in_page" style="display:none;">
+<div id="<%= yui_linkable_list %>_container" class="tool_in_page hidden <%= addition_element %>">
   <div id="<%= yui_linkable_list %>" /></div>
-  <span class="button_style"><a href="#" onclick="Element.hide('<%= yui_linkable_list%>_container');return false;"><%= t('madb_done')%></a></span>
+  <span class="button_style"><a href="#" onclick="Element.toggleClassName('<%= yui_linkable_list%>_container', 'hidden');return false;"><%= t('madb_done')%></a></span>
 </div>
-<div id="<%= yui_form %>_container" class="tool_in_page" style="display:none;">
+<div id="<%= yui_form %>_container" class="tool_in_page hidden  <%= addition_element %>">
   <div id="<%= yui_form %>"></div>
-  <span class="button_style"><a href="#" onclick="Element.hide('<%= yui_form%>_container');return false;"><%= t('madb_done')%></a></span>
+  <span class="button_style"><a href="#" onclick="Element.toggleClassName('<%= yui_form%>_container', 'hidden');return false;"><%= t('madb_done')%></a></span>
 </div>
 
 
@@ -142,7 +146,8 @@ YAHOO_config = {
   Y.Global.on('madb:new_entity_linked', function(source, data) {
       if (source == "<%= yui_form %>")
       {
-        var record = Y.JSON.parse(data);
+        var result = Y.JSON.parse(data);
+        var record = result.record;
         dt._datatable.addRow(record,0);
         var row = Y.one(dt._datatable.getFirstTrEl());
         var anim = new Y.Anim({ node: row, from: { backgroundColor: '#FFFF33' }, to : { backgroundColor: '#fff' }, duration: 2 } );
@@ -150,6 +155,57 @@ YAHOO_config = {
       }
   });
 
+  Y.Global.on('madb:refresh_related', function(source, data) {
+      if (source == "<%= yui_form %>" || source == '<%= yui_linkable_list %>')
+      {
+        dt._refresh_table();
+      }
+  });
+
+
+  <% unless link_to_many %>
+  <%# if link to one relation, hide elements to add new linked instances %>
+  Y.Global.on('madb:table_refreshed', function(source, data) {
+    Y.log('got event madb:table_refreshed from '+ source);
+    Y.log('react only for <%= prefix %>_linked_list');
+      if (source == "<%= prefix %>_linked_list")
+      {
+        Y.log("data.response.meta.totalRecords=");
+        Y.log(data.response.meta.totalRecords);
+        if (data.response.meta.totalRecords>0)
+        {
+          Y.log('hiding because totalrecords = '+ data.response.meta.totalRecords +'!')
+          // hide addition buttons and refresh linkable list
+          Y.all(".<%= addition_element%>").addClass('hidden');
+        }
+        if (data.response.meta.totalRecords==0)
+        {
+          Y.log('showing because totalrecords = '+ data.response.meta.totalRecords +'!')
+          // show addition buttons and refresh linkable list
+          Y.all(".<%= addition_button%>").removeClass('hidden');
+          Y.fire('madb:refresh_related', '<%=prefix%>_linked_list');
+        }
+      }
+  });
+    Y.Global.on('madb:entity_linked', function(source, data) {
+        if (source=="<%= yui_linkable_list %>")
+        {
+          Y.all(".<%= addition_element%>").addClass('hidden');
+        }
+    });
+    Y.Global.on('madb:new_entity_linked', function(source, data) {
+        if (source == "<%= yui_form %>")
+        {
+          Y.all(".<%= addition_element%>").addClass('hidden');
+        }
+    });
+    Y.Global.on('madb:entity_unlinked', function(source, data) {
+        if (source=="<%= yui_linked_list %>")
+        {
+          Y.all(".<%= addition_button %>").removeClass('hidden');
+        }
+    });
+  <%end%>
 <%end%>
 </script>
 

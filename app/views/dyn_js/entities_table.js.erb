@@ -24,6 +24,9 @@ YUI.add('madb-tables', function(Y) {
         FILTER_RESET_TEMPLATE : '<button><%= t("madb_reset") %></button>',
         FILTER_CSV_ICON_TEMPLATE : '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>',
         ATTRS : {
+                  identifier : {
+                    validator: Y.Lang.isString
+                  },
                   column_headers : {
                     validator: Y.Lang.isArray
                   },
@@ -128,6 +131,7 @@ YUI.add('madb-tables', function(Y) {
           return this._datatable;
         },
         initializer: function(){
+          Y.publish('madb:table_refreshed', {broadcast: 2});
 
           var available_actions = { "view" : {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
                                     "edit": { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
@@ -388,6 +392,7 @@ YUI.add('madb-tables', function(Y) {
               this._refresh_table();
         },
         bindUI: function() {
+          var self = this;
           this._filter_submit.on('click', function(evt) {
              this._filter_list();
             }, this);
@@ -419,6 +424,12 @@ YUI.add('madb-tables', function(Y) {
               this._value_filter = "";
               this._refresh_table();
             }, this );
+            this._datatable.subscribe("dataReturnEvent", function(o) {
+              Y.log(o.request);
+              Y.log(o.response);
+              Y.log('firing madb:table_refreshed from ' + self.get('identifier'));
+              Y.fire('madb:table_refreshed', self.get('identifier'), o);
+            });
         }
 
       });

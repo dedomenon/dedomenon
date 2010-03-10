@@ -577,3 +577,4 @@ en:
     goes_into: "goes into"
     go_to_entities_list: "Go back to {{entity}} list"
     csv_format_invalid: "Parsing of CSV file failed"
+  madb_form_submission_failed: The form submission was not successful 

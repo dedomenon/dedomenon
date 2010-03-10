@@ -482,3 +482,4 @@ fr:
   madb_settings: "Pr\xC3\xA9f\xC3\xA9rences"
   madb_use_it: Sélectionner
   madb_import_csv: Importer un fichier CSV
+  madb_form_submission_failed: Le formulaire n'a pas pu être traité correctement

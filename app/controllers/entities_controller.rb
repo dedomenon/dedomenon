@@ -456,9 +456,15 @@ class EntitiesController < ApplicationController
           raise "Missing parameter parent_id (#{params["parent_id"]}) or child_id (#{params["child_id"]})"
       end
       relation = Relation.find params["relation_id"]
-      link_instances(parent,relation,child)
-      yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
-      render :text => yui_hash.to_json and return
+      result = link_instances(parent,relation,child)
+      if result[:status]==:success
+        yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
+        info= { :status => :success, :record => yui_hash} 
+        render :text => info.to_json  and return
+      else
+        @instance.destroy
+        render :json => result, :status => 400 and return
+      end
     else
             headers['Content-Type']='text/plain; charset=UTF-8'
             render :text => @invalid_list.join('######')
@@ -468,39 +474,42 @@ class EntitiesController < ApplicationController
 
   def link_instances(parent,relation,child)
 	begin
-    if relation.parent_side_type.name=="one"
-      #parent side is one, so if child is already linked to one, cannot be linked again.....
-      if Link.count(:conditions => "child_id=#{parent.id} and relation_id=#{relation.id}")>0
-        raise "madb_not_respecting_to_one_relation"
-      end
-    end
-    if relation.child_side_type.name=="one"
-      if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
-        raise "madb_not_respecting_to_one_relation"
-      end
-    end
-		link = Link.new
-		link.child = child
-		link.parent = parent
-		link.relation = relation
-		link.save
+            if relation.parent_side_type.name=="one"
+              #parent side is one, so if child is already linked to one, cannot be linked again.....
+              if Link.count(:conditions => "child_id=#{parent.id} and relation_id=#{relation.id}")>0
+                raise "madb_not_respecting_to_one_relation"
+              end
+            end
+            if relation.child_side_type.name=="one"
+              if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
+                raise "madb_not_respecting_to_one_relation"
+              end
+            end
 
+            link = Link.new
+            link.child = child
+            link.parent = parent
+            link.relation = relation
+            link.save
+            return { :status => :success }
 
 	rescue ActiveRecord::StatementInvalid=> @e
 		existing_links = Link.find(:all, :conditions => [ "relation_id=? AND parent_id=? AND child_id=?", params["relation_id"],params["parent_id"],params["id"]])
 		if existing_links.length>0
-			flash["error"]  = t("madb_error_record_already_linked")
+			msg  = t("madb_error_record_already_linked")
 		else
-			flash["error"] = t "madb_an_error_occured"
+			msg = t "madb_an_error_occured"
 		end
+                return { :status => :error, :message => msg }
 	rescue RuntimeError => @e
-    if @e.message=="madb_not_respecting_to_one_relation"
-      flash["error"] = t("madb_not_respecting_to_one_relation")
-    end
-
+                if @e.message=="madb_not_respecting_to_one_relation"
+                  msg = t("madb_not_respecting_to_one_relation")
+                end
+                return { :status => :error, :message => msg }
 	rescue Exception => @e
-      flash["error"] = t("madb_an_error_occured")
-  ensure
+                msg = t("madb_an_error_occured")
+                return { :status => :error, :message => msg }
+        ensure
 	end
   end
 
@@ -524,8 +533,12 @@ class EntitiesController < ApplicationController
 	parent = Instance.find params[parent_id]
 	child = Instance.find params[child_id]
   
-	link_instances(parent,relation,child)
-        render :nothing => true
+        result = link_instances(parent,relation,child)
+        if result[:status]==:success
+          render :json => result  and return
+        else
+          render :json => result, :status => 400 and return
+        end
   end
 
 
