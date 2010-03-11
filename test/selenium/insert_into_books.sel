@@ -8,6 +8,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|commit||
 |click|//tbody[@id='6']/tr[12]/td/span[2]/a[1]/img||
 |pause|3500||
+|assertElementNotPresent|//img[@class="icon" and @title="madb_export"]||
 |type|Name[0][value]|A new philosophy to testing|
 |type|Description[0][value]|This book does nothing so do not read|
 |type|Published[0][value]|2008-08-22 21:34:24|
@@ -48,7 +49,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-picture")]/div[@class="yui-dt-liner" and .="32K"]||
 |clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='203']||
 |clickAndWait|link=madb_edit||
-|pause|700||
+|pause|1000||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
 |clickAndWait|commit||
 |assertElementPresent|//td[@class="data_cell" and contains(.,"This book does nothing so do not read and nothing to be edited")]||

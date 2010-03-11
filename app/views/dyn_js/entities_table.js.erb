@@ -214,7 +214,7 @@ YUI.add('madb-tables', function(Y) {
             }
           }
           else {
-            this._data_source = new YAHOO.util.DataSource(Y.JSON.parse(this.get('source')));
+            this._data_source = new YAHOO.util.DataSource(this.get('source'));
             this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
             this._data_source.responseSchema = {
               fields: this.get('fields_definition').concat([ {"key": "id"} ] )
@@ -250,7 +250,10 @@ YUI.add('madb-tables', function(Y) {
           this._renderDataTable();
         },
         _renderFilter: function() {
-          this._filter_container.append(this._filter_select_label).append(this._filter_select).append(this._filter_field_label).append(this._filter_field).append(this._filter_submit).append(this._filter_reset).append(this._filter_csv_icon);
+          this._filter_container.append(this._filter_select_label).append(this._filter_select).append(this._filter_field_label).append(this._filter_field).append(this._filter_submit).append(this._filter_reset);
+          if (this.get("dynamic_data")) {
+            this._filter_container.append(this._filter_csv_icon);
+          }
 
         },
 /*
@@ -399,7 +402,10 @@ YUI.add('madb-tables', function(Y) {
 
           this._filter_csv_icon.on('click', function(evt) {
             var s = this._requestBuilder(this._datatable.getState(), this._datatable  );
-            window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s;
+            var url = this.get("source").replace(/\.js\?/,".csv?")+s;
+            Y.log(url);
+            Y.log("old was :" + '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s);
+            //window.location = url;
             }, this);
 
 

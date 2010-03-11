@@ -33,14 +33,14 @@
     <% relation_name = relation.send("from_#{type[:from]}_to_#{type[:to]}_name") %>
     <%# Used by entity_linked event to identify the linkable list who fired the event %>
     <% self_id = type[:from]+"_id" %>
-    <% prefix = "#{relation_name}_from_#{type[:from]}_to_#{type[:to]}" %>
+    <% prefix = "e_#{relation.id}_from_#{type[:from]}_to_#{type[:to]}" %>
     <% yui_linked_list = "#{prefix}_linked_list" %>
     <% yui_linkable_list ="#{prefix}_linkable_list" %> 
     <% yui_form ="#{prefix}_form" %> 
     <%# CSS class given to all elements (and to buttons only) used to add a new related instance %>
     <% addition_element = "#{prefix}_addition" %>
     <% addition_button = "#{prefix}_button" %>
-    <% list_id = "#{relation_name}_#{type[:to]}_div" %>
+    <% list_id = "#{prefix}_#{type[:to]}_div" %>
           <h2><%= t(relation_name,{:scope => "account"}) %></h2>
           <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
           <% link_from_many = relation.send("#{type[:from]}_side_type").name=='many' %>

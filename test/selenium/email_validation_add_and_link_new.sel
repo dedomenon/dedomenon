@@ -19,7 +19,7 @@
 |type|//input[@name="company_email[0][value]"]|hjkdshkjfd@test.com|
 |focus|coordonees_specifiques[0][value]||
 |type|coordonees_specifiques[0][value]|hj|
-|pause|500||
+|pause|1000||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||
 |click|commit||
 |pause|1000||
@@ -29,18 +29,22 @@
 |assertElementPresent|//a[@href="mailto:hjkdshkjfd@test.com"]||
 |clickAndWait|link=societe||
 |assertTitle|exact:madb_madb::madb_list||
-|pause|1000||
+|pause|1500||
 |clickAndWait|//img[@record_id= '71' and @alt="View"]||
 |assertTitle|exact:madb_madb::madb_entity_details||
 |click|link=madb_add_new_related_entity||
 |pause|1000||
+|focus|//input[@name="company_email[0][value]"]||
+|type|//input[@name="company_email[0][value]"]|jkljkljkl|
+|focus|nom[0][value]||
 |type|nom[0][value]|test du nom|
 |type|prenom[0][value]|test du prénom|
-|type|//input[@name="company_email[0][value]"]|jkljkljkl|
 |type|coordonees_specifiques[0][value]|jkl|
 |pause|500||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="invalid_form_value"]||
+|focus|//input[@name="company_email[0][value]"]||
 |type|//input[@name="company_email[0][value]"]|jkljkljkl@rrezrez.com|
+|focus|coordonees_specifiques[0][value]||
 |type|coordonees_specifiques[0][value]|jklklkl|
 |pause|500||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||
@@ -52,5 +56,10 @@
 |assertTextPresent|test du nom||
 |assertTextPresent|test du prénom||
 |assertElementPresent|//a[@href="mailto:hjkhkj@redfds.com"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data" and count(tr)=2]||
+|clickAndWait|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data"]/tr[1]//img[@record_id=206  and @alt="View"]||
+|pause|1500||
+|assertElementPresent|//div[@id="e_7_from_child_to_parent_linked_list"]//tbody[@class="yui-dt-data" and count(tr)=1]||
+|assertElementPresent|//div[@id="e_7_from_child_to_parent_linked_list"]//tbody[@class="yui-dt-data"]/tr[@record_id=71]||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||

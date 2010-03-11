@@ -345,6 +345,7 @@ class EntitiesController < ApplicationController
   # This function lists all the available entities which can be linked to 
   # the given entity.
   def list_available_for_link
+    setup_sort_and_dir
   	@relation = Relation.find params["relation_id"]
     if params["parent_id"]
       @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
@@ -393,10 +394,11 @@ class EntitiesController < ApplicationController
 
     @links = [ { "header" => t("madb_use_it") , "text" => t("madb_use_it"), "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
 				   ]
-    params[:format]="html" unless params[:format]=='js'
+    params[:format]="html" unless params[:format]=='js' or params[:format]=="csv"
     respond_to do |format|
       format.html
       format.js { render :action => 'entities_list' }
+      format.csv { render :action => 'entities_list' }
     end
   end
 
@@ -407,13 +409,13 @@ class EntitiesController < ApplicationController
   	@relation = Relation.find params["relation_id"]
     if params["parent_id"]
       @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
-      @yui_list_id = "#{@relation.from_parent_to_child_name}_from_parent_to_child_linkable_list"
+      @yui_list_id = "e_#{@relation.id}_from_parent_to_child_linkable_list"
       @related_id = "child_id"
       @self_id = "parent_id"
       @entity = @relation.child
     else
       @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
-      @yui_list_id = "#{@relation.from_child_to_parent_name}_from_child_to_parent_linkable_list"
+      @yui_list_id = "e_#{@relation.id}_from_child_to_parent_linkable_list"
       @related_id = "parent_id"
       @self_id = "child_id"
       @entity = @relation.parent
@@ -426,10 +428,10 @@ class EntitiesController < ApplicationController
     	@relation = Relation.find params['relation_id']
 	if params["parent_id"] 
 		linked_id = "parent_"+params["parent_id"]
-                @yui_form_id = "#{@relation.from_parent_to_child_name}_from_parent_to_child_form"
+                @yui_form_id = "e_#{@relation.id}_from_parent_to_child_form"
 	elsif params["child_id"] 
 		linked_id = "child_"+params["child_id"]
-                @yui_form_id = "#{@relation.from_child_to_parent_name}_from_child_to_parent_form"
+                @yui_form_id = "e_#{@relation.id}_from_child_to_parent_form"
 	end
 	@form_id = @relation.id.to_s+"_"+@entity.id.to_s+"_"+linked_id
   end
@@ -658,6 +660,7 @@ class EntitiesController < ApplicationController
     respond_to do |format|
       format.html {  }
       format.js { render :action => 'entities_list' }
+      format.csv { render :action => 'entities_list' }
     end
 
 
