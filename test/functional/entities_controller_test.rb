@@ -1409,7 +1409,6 @@ class EntitiesControllerTest < ActionController::TestCase
     expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
 
     expected.each_index do |i|
-      puts expected[i]["id"]
       expected[i].each do |k,v|
         assert_equal v, records[i][k]
       end
@@ -1434,7 +1433,6 @@ class EntitiesControllerTest < ActionController::TestCase
                  {"Doesn't or does?\" he said with a \\ in his eyes"=>"Another text value#", "will_participate_url?"=>"http://www.nsa.be", "ÖstalTesté"=>{"valueid"=>1218, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1218, "filename"=>"logo-dedomenon.png"}, "些 世 咹 水 晶"=>"मी काच खाऊ शकतो, मला ते दुखत नाही.", "id"=>100000},
                  {"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
     expected.each_index do |i|
-      puts expected[i]["id"]
       expected[i].each do |k,v|
         assert_equal v, records[i][k]
       end
