@@ -482,7 +482,7 @@ class EntitiesController < ApplicationController
 	begin
             if relation.parent_side_type.name=="one"
               #parent side is one, so if child is already linked to one, cannot be linked again.....
-              if Link.count(:conditions => "child_id=#{parent.id} and relation_id=#{relation.id}")>0
+              if Link.count(:conditions => "child_id=#{child.id} and relation_id=#{relation.id}")>0
                 raise "madb_not_respecting_to_one_relation"
               end
             end

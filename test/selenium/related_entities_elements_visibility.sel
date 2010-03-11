@@ -58,7 +58,7 @@
 |assertNotVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
 |assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=100001]||
 |assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=100001]/td/div[.="Daléo"]||
-|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tr[@record_id="100001"]/td/div[.="Luyckx"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tr[@record_id="70"]/td/div[.="Luyckx"]||
 |assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[count(tr)=1 and @class="yui-dt-data"]||
 |pause|2000||
 |click|//div[@id="e_7_from_parent_to_child_child_div_add_child_links"]/span[@id="e_7_from_parent_to_child_child_div_add_existing_child_link"]/a||

@@ -1018,6 +1018,208 @@ class EntitiesControllerTest < ActionController::TestCase
 
 	end
 
+	def test_link_to_new_multiple_tries_for_to_one_relation_from_child_to_parent
+                ##################
+                # first one is ok
+                #################
+		pre_values_count = DetailValue.count
+		pre_date_values_count = DateDetailValue.count
+		pre_instances_count = Instance.count
+		pre_links_count = Instance.count
+    
+		xhr :post, :apply_link_to_new, 
+                  { 
+                  :form_id => "bYr82i1d", 
+                  :entity => "11", 
+                  :nom => {"0"=>{"id"=>"", "value"=>"Bates"}}, 
+                  :telephone => {"0"=>{"id"=>"", "value"=>"+33 6 985 125 365"}}, 
+                  :memo => {"0"=>{"id"=>"", "value"=>"memo"}}, 
+                  :action => "apply_link_to_new", 
+                  :instance_id => "-1", 
+                  :controller => "entities", 
+                  :relation_id => "9", 
+                  :child_id => "81", 
+                  :_ => "", 
+                  },
+                  {'user' => User.find_by_id(@db1_user_id)} 
+
+
+		post_values_count = DetailValue.count
+		post_date_values_count = DateDetailValue.count
+		post_instances_count = Instance.count
+		post_links_count = Instance.count
+
+
+		assert_response :success
+		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
+		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
+		#we highlight the created entity
+
+		#we inserted 2 entries in detail_values (text,email,long_text)
+		assert_equal 3, post_values_count-pre_values_count
+		#we inserted 1 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_date_values_count-pre_date_values_count
+		#we inserted 1 entries in instances
+		assert_equal 1, post_instances_count-pre_instances_count
+		#we inserted 1 entries in links
+		assert_equal 1, post_links_count-pre_links_count
+		link = Link.find(:first, :order=>"id DESC")
+		#child_id of last link is current instance
+		#assert_equal 74, link.child_id
+		#parent of last link is created instance
+		assert_equal instance_id.to_i, link.parent_id
+		#relation of last link is correct
+		assert_equal 9, link.relation_id
+		
+                ##################
+                # second is not ok
+                ##################
+		pre_values_count = DetailValue.count
+		pre_date_values_count = DateDetailValue.count
+		pre_instances_count = Instance.count
+		pre_links_count = Instance.count
+    
+		xhr :post, :apply_link_to_new, 
+                  { 
+                  :form_id => "bYr82i1d", 
+                  :entity => "11", 
+                  :nom => {"0"=>{"id"=>"", "value"=>"Chris"}}, 
+                  :telephone => {"0"=>{"id"=>"", "value"=>"+44 5493 5493"}}, 
+                  :memo => {"0"=>{"id"=>"", "value"=>"chris memo"}}, 
+                  :action => "apply_link_to_new", 
+                  :instance_id => "-1", 
+                  :controller => "entities", 
+                  :relation_id => "9", 
+                  :child_id => "81", 
+                  :_ => "", 
+                  },
+                  {'user' => User.find_by_id(@db1_user_id)} 
+
+
+		post_values_count = DetailValue.count
+		post_date_values_count = DateDetailValue.count
+		post_instances_count = Instance.count
+		post_links_count = Instance.count
+
+
+		assert_response 400
+                assert_equal({"status"=>"error","message"=>"madb_not_respecting_to_one_relation"}, JSON.parse(@response.body))
+		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
+		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
+		#we highlight the created entity
+
+		#we inserted 2 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_values_count-pre_values_count
+		#we inserted 1 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_date_values_count-pre_date_values_count
+		#we inserted 1 entries in instances
+		assert_equal 0, post_instances_count-pre_instances_count
+		#we inserted 1 entries in links
+		assert_equal 0, post_links_count-pre_links_count
+
+
+	end
+
+	def test_link_to_new_multiple_tries_for_to_one_relation_from_parent_to_child
+                ##################
+                # first one is ok
+                #################
+		pre_values_count = DetailValue.count
+		pre_date_values_count = DateDetailValue.count
+		pre_instances_count = Instance.count
+		pre_links_count = Instance.count
+    
+		xhr :post, :apply_link_to_new, 
+                  { 
+                  :form_id => "bYr82i1d", 
+                  :entity => "12", 
+                  :nom => {"0"=>{"id"=>"", "value"=>"Bean"}}, 
+                  :prenom => {"0"=>{"id"=>"", "value"=>"Mystère"}}, 
+                  :action => "apply_link_to_new", 
+                  :instance_id => "-1", 
+                  :controller => "entities", 
+                  :relation_id => "9", 
+                  :parent_id => "78", 
+                  :_ => "", 
+                  },
+                  {'user' => User.find_by_id(@db1_user_id)} 
+
+
+		post_values_count = DetailValue.count
+		post_date_values_count = DateDetailValue.count
+		post_instances_count = Instance.count
+		post_links_count = Instance.count
+
+
+		assert_response :success
+		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
+		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
+		#we highlight the created entity
+
+		#we inserted 2 entries in detail_values (text,email,long_text)
+		assert_equal 2, post_values_count-pre_values_count
+		#we inserted 1 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_date_values_count-pre_date_values_count
+		#we inserted 1 entries in instances
+		assert_equal 1, post_instances_count-pre_instances_count
+		#we inserted 1 entries in links
+		assert_equal 1, post_links_count-pre_links_count
+		link = Link.find(:first, :order=>"id DESC")
+		#child_id of last link is current instance
+		#assert_equal 74, link.child_id
+		#parent of last link is created instance
+		assert_equal instance_id.to_i, link.child_id
+		#relation of last link is correct
+		assert_equal 9, link.relation_id
+		
+                ##################
+                # second is not ok
+                ##################
+		pre_values_count = DetailValue.count
+		pre_date_values_count = DateDetailValue.count
+		pre_instances_count = Instance.count
+		pre_links_count = Instance.count
+    
+		xhr :post, :apply_link_to_new, 
+                  { 
+                  :form_id => "bYr82i1d", 
+                  :entity => "12", 
+                  :nom => {"0"=>{"id"=>"", "value"=>"Crone"}}, 
+                  :prenom => {"0"=>{"id"=>"", "value"=>"Nixolas"}}, 
+                  :action => "apply_link_to_new", 
+                  :instance_id => "-1", 
+                  :controller => "entities", 
+                  :relation_id => "9", 
+                  :parent_id => "78", 
+                  :_ => "", 
+                  },
+                  {'user' => User.find_by_id(@db1_user_id)} 
+
+		
+		post_values_count = DetailValue.count
+		post_date_values_count = DateDetailValue.count
+		post_instances_count = Instance.count
+		post_links_count = Instance.count
+
+
+		assert_response 400
+                assert_equal({"status"=>"error","message"=>"madb_not_respecting_to_one_relation"}, JSON.parse(@response.body))
+		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
+		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
+		#we highlight the created entity
+
+		#we inserted 2 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_values_count-pre_values_count
+		#we inserted 1 entries in detail_values (text,email,long_text)
+		assert_equal 0, post_date_values_count-pre_date_values_count
+		#we inserted 1 entries in instances
+		assert_equal 0, post_instances_count-pre_instances_count
+		#we inserted 1 entries in links
+		assert_equal 0, post_links_count-pre_links_count
+
+
+	end
+
 	
 
 	def test_redirect_page_after_successful_link_to_new
@@ -1300,14 +1502,14 @@ class EntitiesControllerTest < ActionController::TestCase
 	def test_unsuccess_link_due_to_one_parent_relation
 
 		pre_links_count = Link.count
-		xhr :post, :link, { :relation_id => "9", :parent_id=> "77", :id => "90"},{'user' => User.find_by_id(@db1_user_id)} 
+		xhr :post, :link, { :relation_id => "9", :child_id=> "82", :id => "79"},{'user' => User.find_by_id(@db1_user_id)} 
 		post_links_count = Link.count
 
-    assert_response 400
-    assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
-    assert_equal pre_links_count, post_links_count
+                assert_response 400
+                assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
+                assert_equal pre_links_count, post_links_count
 
-  end
+        end
 
 	def test_unsuccess_link_due_to_one_child_relation
 
@@ -1315,13 +1517,13 @@ class EntitiesControllerTest < ActionController::TestCase
 		xhr :post, :link, { :relation_id => "9", :parent_id=> "77", :id => "72"},{'user' => User.find_by_id(@db1_user_id)} 
 		post_links_count = Link.count
 
-    assert_response 400
-    assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
-    assert_equal pre_links_count, post_links_count
+                assert_response 400
+                assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
+                assert_equal pre_links_count, post_links_count
 
-  end
+        end
 
-	def test_success_link_to_one_parent_relation
+        def test_success_link_to_one_parent_relation
 
 		pre_links_count = Link.count
 		xhr :post, :link, { :relation_id => "9", :parent_id=> "71", :id => "90"},{'user' => User.find_by_id(@db1_user_id)} 
