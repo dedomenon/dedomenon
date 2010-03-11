@@ -48,8 +48,8 @@
 </div>
 
 <script type="text/javascript">
-<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'json-parse']) do %>
-  <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@entity.name.underscorize}_list_div", :source => [] )%>
+<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection' ]) do %>
+  <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@entity.name.underscorize}_list_div", :source => [], :actions => ["view", "edit", "delete"] )%>
 
 
   Y.Global.on('madb:entity_created', function(list, data) {

@@ -118,6 +118,8 @@ class EntitiesController < ApplicationController
   # *Description*
   #   Most of the logic is inclined towards views.
   def entities_list
+    # sets @sort and @dir
+    setup_sort_and_dir
     #FIXME: check we get the params id when editing an instance
     @entity = Entity.find params["id"]
 
@@ -151,7 +153,6 @@ class EntitiesController < ApplicationController
     crosstab_query     = crosstab_result[:query]
     @not_in_list_view  = crosstab_result[:not_in_list_view]
     @ordered_fields   = crosstab_result[:ordered_fields]
-    list_length = params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
     @list, @paginator = @entity.get_paginated_list(:filters =>  [crosstab_filter] , :format => params[:format], :highlight => params[:highlight], :default_page => params[list_id+"_page"] || ((params[:startIndex].to_i/list_length).ceil + 1) , :order_by => order_by, :direction => sort_direction, :list_length => list_length )
     
     response.headers["MYOWNDB_highlight"]=params["highlight"].to_s if params["highlight"]
@@ -339,7 +340,7 @@ class EntitiesController < ApplicationController
       render_id = "child_id"
       type = "parents"
     end
-  	Link.delete_all("parent_id=#{params[parent_id]} AND child_id=#{params[child_id]} AND relation_id=#{params["relation_id"]}")
+  	Link.delete_all( [ "parent_id=? AND child_id=? AND relation_id=?", params[parent_id],params[child_id],params["relation_id"] ] )
     #overwrite_params doesn't work with render_component
       render_component(:controller => "entities", :action => "related_entities_list", :id => params[render_id],:params => { :relation_id => params["relation_id"] , :type => type }) 
   end
@@ -348,6 +349,7 @@ class EntitiesController < ApplicationController
   # This function lists all the available entities which can be linked to 
   # the given entity.
   def list_available_for_link
+    setup_sort_and_dir
   	@relation = Relation.find params["relation_id"]
     if params["parent_id"]
       @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
@@ -360,8 +362,8 @@ class EntitiesController < ApplicationController
       #if parent_side_type is many, we filter out all entities already link to this entity
       if @relation.parent_side_type.name!="one"
         @link_to_many = 't'
-        other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
       end
+        other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     else
       @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
       #links_div contains the links to link a new/existing parent
@@ -373,24 +375,35 @@ class EntitiesController < ApplicationController
       #if child_side_type is many, we filter out only entities already linked to this entity
       if @relation.child_side_type.name!="one"
         @link_to_many = 't'
-        other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
       end
+        other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     end
 
     @details = @entity.details_hash
     filter_clause = crosstab_filter
     link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
 
-    crosstab_result = @entity.crosstab_query(:display => "detail")
-    crosstab_query     = crosstab_result[:query]
-    @not_in_list_view  = crosstab_result[:not_in_list_view]
-    @ordered_fields   = crosstab_result[:ordered_fields]
-    @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"], :order_by => order_by )
-
+    existing_links = Link.count_by_sql("select count(*) from links where relation_id = #{@relation.id} #{other_side_type_filter}")
+    if @link_to_many!='t' and existing_links>0 
+      @list = []
+      @paginator = nil 
+    else
+      crosstab_result = @entity.crosstab_query(:display => "detail")
+      crosstab_query     = crosstab_result[:query]
+      @not_in_list_view  = crosstab_result[:not_in_list_view]
+      @ordered_fields   = crosstab_result[:ordered_fields]
+      @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length )
+    end
 
 
     @links = [ { "header" => t("madb_use_it") , "text" => t("madb_use_it"), "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
 				   ]
+    params[:format]="html" unless params[:format]=='js' or params[:format]=="csv"
+    respond_to do |format|
+      format.html
+      format.js { render :action => 'entities_list' }
+      format.csv { render :action => 'entities_list' }
+    end
   end
 
 
@@ -400,11 +413,13 @@ class EntitiesController < ApplicationController
   	@relation = Relation.find params["relation_id"]
     if params["parent_id"]
       @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
+      @yui_list_id = "e_#{@relation.id}_from_parent_to_child_linkable_list"
       @related_id = "child_id"
       @self_id = "parent_id"
       @entity = @relation.child
     else
       @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
+      @yui_list_id = "e_#{@relation.id}_from_child_to_parent_linkable_list"
       @related_id = "parent_id"
       @self_id = "child_id"
       @entity = @relation.parent
@@ -414,12 +429,14 @@ class EntitiesController < ApplicationController
 
   def link_to_new
   	init_add_form
+    	@relation = Relation.find params['relation_id']
 	if params["parent_id"] 
 		linked_id = "parent_"+params["parent_id"]
+                @yui_form_id = "e_#{@relation.id}_from_parent_to_child_form"
 	elsif params["child_id"] 
 		linked_id = "child_"+params["child_id"]
+                @yui_form_id = "e_#{@relation.id}_from_child_to_parent_form"
 	end
-    	@relation = Relation.find params['relation_id']
 	@form_id = @relation.id.to_s+"_"+@entity.id.to_s+"_"+linked_id
   end
 
@@ -445,8 +462,15 @@ class EntitiesController < ApplicationController
           raise "Missing parameter parent_id (#{params["parent_id"]}) or child_id (#{params["child_id"]})"
       end
       relation = Relation.find params["relation_id"]
-      link_instances(parent,relation,child)
-      headers['Content-Type']='text/plain; charset=UTF-8'
+      result = link_instances(parent,relation,child)
+      if result[:status]==:success
+        yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
+        info= { :status => :success, :record => yui_hash} 
+        render :text => info.to_json  and return
+      else
+        @instance.destroy
+        render :json => result, :status => 400 and return
+      end
     else
             headers['Content-Type']='text/plain; charset=UTF-8'
             render :text => @invalid_list.join('######')
@@ -456,52 +480,42 @@ class EntitiesController < ApplicationController
 
   def link_instances(parent,relation,child)
 	begin
-    if relation.parent_side_type.name=="one"
-      #parent side is one, so if child is already linked to one, cannot be linked again.....
-      if Link.count(:conditions => "child_id=#{parent.id} and relation_id=#{relation.id}")>0
-        raise "madb_not_respecting_to_one_relation"
-      end
-    end
-    if relation.child_side_type.name=="one"
-      if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
-        raise "madb_not_respecting_to_one_relation"
-      end
-    end
-		link = Link.new
-		link.child = child
-		link.parent = parent
-		link.relation = relation
-		link.save
+            if relation.parent_side_type.name=="one"
+              #parent side is one, so if child is already linked to one, cannot be linked again.....
+              if Link.count(:conditions => "child_id=#{parent.id} and relation_id=#{relation.id}")>0
+                raise "madb_not_respecting_to_one_relation"
+              end
+            end
+            if relation.child_side_type.name=="one"
+              if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
+                raise "madb_not_respecting_to_one_relation"
+              end
+            end
 
+            link = Link.new
+            link.child = child
+            link.parent = parent
+            link.relation = relation
+            link.save
+            return { :status => :success }
 
 	rescue ActiveRecord::StatementInvalid=> @e
 		existing_links = Link.find(:all, :conditions => [ "relation_id=? AND parent_id=? AND child_id=?", params["relation_id"],params["parent_id"],params["id"]])
 		if existing_links.length>0
-			flash["error"]  = t("madb_error_record_already_linked")
+			msg  = t("madb_error_record_already_linked")
 		else
-			flash["error"] = t "madb_an_error_occured"
+			msg = t "madb_an_error_occured"
 		end
+                return { :status => :error, :message => msg }
 	rescue RuntimeError => @e
-    if @e.message=="madb_not_respecting_to_one_relation"
-      flash["error"] = t("madb_not_respecting_to_one_relation")
-    end
-
+                if @e.message=="madb_not_respecting_to_one_relation"
+                  msg = t("madb_not_respecting_to_one_relation")
+                end
+                return { :status => :error, :message => msg }
 	rescue Exception => @e
-      flash["error"] = t("madb_an_error_occured")
-  ensure
-      if params["parent_id"]
-        if params["embedded"]
-           redirect_to :controller => "entities", :action => "related_entities_list", :id => params["parent_id"],  :relation_id => relation.id, :type => "children", :highlight => child.id 
-        else
-          redirect_to(:action => "view", :id=>parent.id) 
-        end
-      elsif params["child_id"]
-        if params["embedded"]
-           redirect_to :controller => "entities", :action => "related_entities_list", :id => params["child_id"],  :relation_id => relation.id, :type => "parents", :highlight => parent.id 
-        else
-           redirect_to(:action => "view", :id=>child.id) 
-        end
-    end
+                msg = t("madb_an_error_occured")
+                return { :status => :error, :message => msg }
+        ensure
 	end
   end
 
@@ -525,7 +539,12 @@ class EntitiesController < ApplicationController
 	parent = Instance.find params[parent_id]
 	child = Instance.find params[child_id]
   
-	link_instances(parent,relation,child)
+        result = link_instances(parent,relation,child)
+        if result[:status]==:success
+          render :json => result  and return
+        else
+          render :json => result, :status => 400 and return
+        end
   end
 
 
@@ -537,6 +556,8 @@ class EntitiesController < ApplicationController
   #   type
   #
   def related_entities_list
+    # sets @sort and @dir
+    setup_sort_and_dir
 
     @relation = Relation.find params["relation_id"]
     @type = params["type"]
@@ -613,7 +634,7 @@ class EntitiesController < ApplicationController
         response.headers["MYOWNDB_highlight"]  =  params["highlight"].to_s
       end
 
-      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"], :order_by => order_by )
+      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length)
     else
       @list = []
     end
@@ -638,6 +659,12 @@ class EntitiesController < ApplicationController
         if available_instances.length<1
           @hide_to_existing_link = true;
         end
+    end
+    params[:format]='html' if params[:format].nil?
+    respond_to do |format|
+      format.html {  }
+      format.js { render :action => 'entities_list' }
+      format.csv { render :action => 'entities_list' }
     end
 
 
@@ -754,25 +781,12 @@ class EntitiesController < ApplicationController
 
 # returns a quoted version of the requestion sort direction
   def sort_direction
-    CrosstabObject.connection.quote_string(params[:dir].to_s)
+    CrosstabObject.connection.quote_string(@dir.to_s)
   end
 
 # returns a quoted version of the requestion column sorting
-   def order_by
-    session["list_order"]||={}
-    if params[:sort]
-      # quoting is done later
-      #order=CrosstabObject.connection.quote_column_name(params[:sort].to_s)
-      order = params[:sort]
-    elsif params[order_param] and ! params["highlight"] or params["highlight"]==""
-      order=params[order_param]
-      session["list_order"][list_id]=order
-    elsif session["list_order"].has_key? [list_id]
-      order = session["list_order"][list_id]
-    else
-      order = "id"
-    end
-    return order
+  def order_by
+      order=@sort
   end
   def crosstab_filter
     if detail_filter.nil?
@@ -783,5 +797,13 @@ class EntitiesController < ApplicationController
     end
   end
     
+
+  def setup_sort_and_dir
+    @sort = params[:sort].nil? ? "id" : params[:sort]
+    @dir =  params[:dir].nil? ? "ASC" : params[:dir]
+  end
+  def list_length
+     params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
+  end
 
 end

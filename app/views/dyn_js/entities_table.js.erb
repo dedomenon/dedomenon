@@ -24,11 +24,14 @@ YUI.add('madb-tables', function(Y) {
         FILTER_RESET_TEMPLATE : '<button><%= t("madb_reset") %></button>',
         FILTER_CSV_ICON_TEMPLATE : '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>',
         ATTRS : {
+                  identifier : {
+                    validator: Y.Lang.isString
+                  },
                   column_headers : {
                     validator: Y.Lang.isArray
                   },
                   actions : {
-                    value : null,
+                    value : [],
                     validator: Y.Lang.isArray
                   },
                   source : {
@@ -50,7 +53,11 @@ YUI.add('madb-tables', function(Y) {
                   dynamic_data: {
                     value: true,
                     validator: Y.Lang.isBoolean
-                  }
+                  },
+                  data : {
+                    value: {},
+                    validator: Y.Lang.isObject
+                    }
 
 
 
@@ -102,12 +109,40 @@ YUI.add('madb-tables', function(Y) {
             record_id = record.getData()["['id']"];
           cell.innerHTML=Y.substitute('<%=image_tag("icon/big/delete.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
         },
+        _link_formatter : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/use.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        _unlink_formatter : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/unlink.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        getDataTable: function(){
+          return this._datatable;
+        },
         initializer: function(){
+          Y.publish('madb:table_refreshed', {broadcast: 2});
 
-          var actions = [ {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
-                            { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
-                            { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  }]
+          var available_actions = { "view" : {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
+                                    "edit": { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
+                                    "delete": { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  },
+                                    "link": { "width" :35, "key": "link_action_column",  "label" : "<%=t("madb_use")%>" , "className" : "action_cell", "formatter": this._link_formatter },
+                                    "unlink": { "width" :35, "key": "unlink_action_column",  "label" : "<%=t("madb_unlink")%>" , "className" : "action_cell", "formatter": this._unlink_formatter }};
 
+          var actions = [];
+          Y.each( this.get("actions"), function(val, key, arr) {
+            actions.push(available_actions[val]);
+          });
           // used to reference ourself when in an object definition
           var self = this;
           this._filter_select_label = Y.Node.create(EntitiesTable.FILTER_SELECT_LABEL_TEMPLATE);
@@ -173,13 +208,13 @@ YUI.add('madb-tables', function(Y) {
               },
               // eventually replace this list with the commented one. 
               // Temporarily leaving asis for selenium tests
-              initialRequest: "sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
+              initialRequest: "&sort=id&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
               //initialRequest: "sort=<%# @ordered_fields[0] %>&dir=asc&startIndex=0&results=<%=MadbSettings.list_length%>",
               generateRequest: Y.bind(self._requestBuilder, self)
             }
           }
           else {
-            this._data_source = new YAHOO.util.DataSource(Y.JSON.parse(this.get('source')));
+            this._data_source = new YAHOO.util.DataSource(this.get('source'));
             this._data_source.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
             this._data_source.responseSchema = {
               fields: this.get('fields_definition').concat([ {"key": "id"} ] )
@@ -215,11 +250,36 @@ YUI.add('madb-tables', function(Y) {
           this._renderDataTable();
         },
         _renderFilter: function() {
-          this._filter_container.append(this._filter_select_label).append(this._filter_select).append(this._filter_field_label).append(this._filter_field).append(this._filter_submit).append(this._filter_reset).append(this._filter_csv_icon);
+          this._filter_container.append(this._filter_select_label).append(this._filter_select).append(this._filter_field_label).append(this._filter_field).append(this._filter_submit).append(this._filter_reset);
+          if (this.get("dynamic_data")) {
+            this._filter_container.append(this._filter_csv_icon);
+          }
 
         },
+/*
+  this method is used to define the action listeners in the _renderDatatable function
+  the event listener get a hash as argument
+*/
+
+        _define_action_listener: function(action, f) {
+            self = this;
+            this._datatable.subscribe('cellClickEvent',function (oArgs) {
+              var datatable = this;
+              var target = oArgs.target;
+              var record = datatable.getRecord(target);
+              var column = datatable.getColumn(target);
+              var record_id;
+// datasource utf-8 fix
+              if (record.getData().id)
+                 record_id = record.getData().id;
+              else
+                record_id = record.getData()["['id']"];
+              if (column.key===action+'_action_column') {
+                Y.bind(f, this)({ record_id: record_id , record: record, target:target, column:column, target: target});
+              }
+          });
+        },
         _renderDataTable: function() {
-          var self = this;
           // ATTENTION YUI2
           //this._datatable = new YAHOO.widget.DataTable(Y.Node.getDOMNode(this._datatable_container), this._column_set, this._data_source, this._datatable_config);
           this._datatable = new YAHOO.widget.DataTable(this._datatable_container_id, this._column_set, this._data_source, this._datatable_config);
@@ -227,61 +287,63 @@ YUI.add('madb-tables', function(Y) {
             oPayload.totalRecords = oResponse.meta.totalRecords;
             return oPayload; 
           }
-          this._datatable.subscribe('cellClickEvent',function (oArgs) {
-            var datatable = this;
-            var target = oArgs.target;
-            var record = this.getRecord(target);
-            var column = this.getColumn(target);
-            if (column.key==='delete_action_column') {
-              var first_column = this.getColumnSet().keys[0].key; 
-// datasource utf-8 fix
-              var first_value = record.getData("['"+this.getColumnSet().keys[0].key+"']");
-              if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
-// datasource utf-8 fix
-                var record_id;
-                if (record.getData().id)
-                   record_id = record.getData().id;
-                else
-                  record_id = record.getData()["['id']"];
-                var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+record_id+'.js';
-                var config = { method: 'POST', 
-                               on: { success : function() { this.deleteRow(target); },
-                                     failure : function() { alert("<%= t('madb_an_error_occured')%>");}
-                               },
-                               context: datatable
-                };
-                Y.io(url, config);
-              }
-            }
-            }, this);
+          // Define the delete listener only if that action is displayed
+          datatable = this._datatable;
+          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="delete") {return true; } }) )
+          {
+            this._define_action_listener("delete", function(h) {
+                var first_column = this.getColumnSet().keys[0].key; 
+  // datasource utf-8 fix
+                var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
+                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
+                  var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+h.record_id+'.js';
+                  var datatable = this;
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.io(url, config);
+                }
+            })
+          }
+          // Define the view listener only if that action is displayed
+          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="view") {return true; } }) )
+          {
+            this._define_action_listener("view", function(h) {
+                window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ h.record_id ;
+            })
 
-            this._datatable.subscribe('cellClickEvent',function (oArgs) {
-              var target = oArgs.target;
-              var record = this.getRecord(target);
-              var column = this.getColumn(target);
-// datasource utf-8 fix
-              if (record.getData().id)
-                 record_id = record.getData().id;
-              else
-                record_id = record.getData()["['id']"];
-              if (column.key==='view_action_column') {
-                window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ record_id ;
-              }
-            }, this);
-            this._datatable.subscribe('cellClickEvent',function (oArgs) {
-              var target = oArgs.target;
-              var record = this.getRecord(target);
-              var column = this.getColumn(target);
-// datasource utf-8 fix
-                var record_id;
-                if (record.getData().id)
-                   record_id = record.getData().id;
-                else
-                  record_id = record.getData()["['id']"];
-              if (column.key==='edit_action_column') {
-                window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ record_id ;
-              }
-            }, this);
+          }
+          // Define the edit listener only if that action is displayed
+          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="edit") {return true; } }) )
+          {
+            this._define_action_listener("edit", function(h) {
+                window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ h.record_id ;
+            })
+    
+          };
+          // Define the unlink listener
+          // It only fires the madb:unlink event
+          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="unlink") {return true; } }) )
+          {
+            this.publish('madb:unlink');
+            this._define_action_listener("unlink", function(h) {
+                Y.fire('madb:unlink',h); 
+            })
+    
+          };
+          // Define the use listener
+          // It only fires the madb:use event
+          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="link") {return true; } }) )
+          {
+            this.publish('madb:link');
+            this._define_action_listener("link", function(h) {
+                Y.fire('madb:link',h); 
+            })
+    
+          };
 
         },
         _requestBuilder: function (oState, oSelf) {
@@ -333,13 +395,17 @@ YUI.add('madb-tables', function(Y) {
               this._refresh_table();
         },
         bindUI: function() {
+          var self = this;
           this._filter_submit.on('click', function(evt) {
              this._filter_list();
             }, this);
 
           this._filter_csv_icon.on('click', function(evt) {
             var s = this._requestBuilder(this._datatable.getState(), this._datatable  );
-            window.location = '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s;
+            var url = this.get("source").replace(/\.js\?/,".csv?")+s;
+            Y.log(url);
+            Y.log("old was :" + '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s);
+            //window.location = url;
             }, this);
 
 
@@ -364,6 +430,12 @@ YUI.add('madb-tables', function(Y) {
               this._value_filter = "";
               this._refresh_table();
             }, this );
+            this._datatable.subscribe("dataReturnEvent", function(o) {
+              Y.log(o.request);
+              Y.log(o.response);
+              Y.log('firing madb:table_refreshed from ' + self.get('identifier'));
+              Y.fire('madb:table_refreshed', self.get('identifier'), o);
+            });
         }
 
       });
@@ -375,4 +447,4 @@ YUI.add('madb-tables', function(Y) {
 //}) 
 
 
-}, '1.0', { requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget', 'json-parse'], skinnable: false} );
+}, '1.0', { requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget', 'json-parse','collection'], skinnable: false} );

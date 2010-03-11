@@ -63,6 +63,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
 |clickAndWait|//tbody[@id='6']/tr[14]/td/span[2]/a[3]/img||
 |click|link=madb_add_link_to_child_entity||
+|pause|1000||
 |type|relation_from_parent_to_child_name|accent's person|
 |type|relation_from_child_to_parent_name|person's accent|
 |select|relation[parent_side_type_id]|label=madb_yes_multiple_parent|
@@ -71,3 +72,15 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |click|link=Persons||
 |open|/app/entities/view/202||
 |click|link=madb_link_to_existing_entity||
+|pause|1500||
+|assertElementPresent|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data" and count(tr)=2]||
+|assertTextPresent|遨游||
+|assertTextPresent|मी काच खाऊ शकतो, मला ते दुखत नाही.||
+|click|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data"]/tr[1]//img[@record_id="203"]||
+|pause|1500||
+|assertElementPresent|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data" and count(tr)=1]||
+|assertElementPresent|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data" and count(tr)=1]//div[@class="yui-dt-liner" and .="मी काच खाऊ शकतो, मला ते दुखत नाही."]||
+|click|//div[@id="e_1001_from_child_to_parent_linkable_list_container"]//a[.="madb_done"]||
+|pause|1500||
+|assertElementPresent|//div[@id="e_1001_from_child_to_parent_linked_list"]//tbody[@class="yui-dt-data" and count(tr)=1]/tr[@record_id=203]||
+|assertElementPresent|//div[@id="e_1001_from_child_to_parent_linked_list"]//tbody[@class="yui-dt-data" and count(tr)=1]/tr[@record_id=203]/td[.="遨游"]||

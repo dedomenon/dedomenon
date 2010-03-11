@@ -24,6 +24,7 @@
 |clickAndWait|//tr[9]/td[2]/a||
 |assertTitle|exact:madb_madb::madb_list||
 |pause|1500||
+|assertElementPresent|//img[@class="icon" and @title="madb_export"]||
 |assertElementPresent|//div[@class='yui-dt-liner' and .='valtech']||
 |assertElementPresent|//div[@class='yui-dt-liner' and .='raphinou']||
 |assertElementPresent|//div[@class='yui-dt-liner' and .='O-nuclear']||

@@ -1,52 +1,39 @@
-<div class="tool_in_page">
-
-
-<form id="link_to_new_form_<%= @form_id %>" method="post" action="<%= url_for :action => "apply_link_to_new" %>" method="POST" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
-
-
-<input type="hidden" name="instance_id" value="-1">
-<% if params["parent_id"] %>
-	<input type="hidden" name="parent_id" value="<%=params["parent_id"]%>">
-<% elsif params["child_id"] %>
-	<input type="hidden" name="child_id" value="<%=params["child_id"]%>">
-<% end %>
-<% if params["embedded"] %>
-  <input type="hidden" name="embedded" value="<%=params["embedded"]%>">
-  <input type="hidden" name="update" value="<%=params["update"]%>">
-<% end %>
-<input type="hidden" name="relation_id" value="<%=params["relation_id"]%>">
-<input type="hidden" name="entity" value="<%=@entity.id %>">
-
-<%= render :partial => "entity_form", :object => @instance %>
-
-<%=submit_tag t("madb_submit") %>
-<% if params["embedded"] %>
-  <%= link_to_function t("madb_cancel"), "Element.hide('#{params["embedded"]}');"%>
-<% end %>
-</form>
-
 
 <script type="text/javascript">
-    
-  var success_action = function(data){
-	  d = document.getElementById('<%=params["update"]%>');
-	  d.innerHTML=data;
-	  Element.hide('<%=params["embedded"]%>');
-	  highlighted_row = YAHOO.util.Dom.getElementsByClassName('highlight', 'tr', d);
-	  anim = new YAHOO.util.ColorAnim(highlighted_row, {  backgroundColor: { from: '#FFFF33', to: '#fff' } } );
-	  anim.duration=5;
-	  anim.animate();
-	  var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input','<%=params["embedded"]%>');
-	  YAHOO.util.Dom.batch(invalid_fields, function (e) {YAHOO.util.Dom.removeClass( e,'invalid_form_value');YAHOO.util.Dom.addClass( e,'unchecked_form_value'); });
-  }
-  
-  <%= render :partial => "upload_form_function", :entity => @entity %>
-  new EntityFormSubmitter('link_to_new_form_<%= @form_id %>', success_action);
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom']) do %>
+    // Create a Field Object manually
+    var fields = [ ];
+    fields.push( new Y.HiddenField({
+                  name:"instance_id",
+                  value:"-1"}));
+    <% if params["parent_id"] %>
+      fields.push( new Y.HiddenField({
+                    name:"parent_id",
+                    value:"<%=params["parent_id"]%>"}));
+    <% elsif params["child_id"] %>
+      fields.push( new Y.HiddenField({
+                    name:"child_id",
+                    value:"<%=params["child_id"]%>"}));
+    <% end %>
+    fields.push( new Y.HiddenField({
+                  name:"relation_id",
+                  value:"<%=params["relation_id"]%>"}));
+    fields.push( new Y.HiddenField({
+                  name:"entity",
+                  value:"<%=@entity.id%>"}));
 
+    <%= render :partial => "entity_yui_form_fields", :locals => { :instance => @instance }  %>
+
+            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
+            fields.push ( {type : 'reset', label : 'Reset'});
+    Y.publish('madb:new_entity_linked', {broadcast: 2});
+    Y.publish('madb:refresh_related', {broadcast: 2});
+    <%= default_entity_form( :form_content_box => "#{@yui_form_id}", :success_callback =>%{ function(form,data){ Y.fire('madb:new_entity_linked', '#{@yui_form_id}', data  );    }   }, :failure_callback => %{ function(form, data){ Y.fire('madb:refresh_related', '#{@yui_form_id}'); }} , :form_action =>url_for(:action => "apply_link_to_new") , :upload => @entity.has_file_attachment_detail?) %>
+ 
+    f.render();
+    f.focus();
+<% end %>
 </script>
-
-</div>
-
 
 
 

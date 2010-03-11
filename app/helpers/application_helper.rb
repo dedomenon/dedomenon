@@ -147,12 +147,15 @@ module ApplicationHelper
     end
     js = %{
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
-                  source: "#{h[:source].nil? ? url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?" : h[:source].to_json  }",
+                  source: #{h[:source].nil? ? '"'+(url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?")+'"' : h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
                   fields_definition : [ #{ entity.details_in_list_view.collect{|d| d.yui_field(:controller => h[:controller] )  }.join(',') } ],
                   entity_name: '#{ entity.name}',
                   entity_id : #{ entity.id },
-                  filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ escape_javascript(d.name), d.detail_id]}).gsub(/\n/,'') }', 
+                  filter_options : '#{ options_for_select(entity.ordered_details.collect{|d| [ escape_javascript(d.name), d.detail_id]}).gsub(/\n/,'') }',
+                  actions: #{h[:actions].to_json} , 
+                  data : #{(h[:data]||nil).to_json},
+                  identifier : '#{h[:content_box][1..-1]}',
                   contentBox: '#{h[:content_box]}'});
        #{h[:js_var]}.render();
     }
@@ -162,6 +165,8 @@ module ApplicationHelper
    (h[:form_content_box] ) or raise "need :form_content_box passed"
    h[:upload]=false if h[:upload].nil?
    h[:success_callback] ='function(form,data){}'  if h[:success_callback].nil?
+   h[:failure_callback] ='function(form,data){}'  if h[:failure_callback].nil?
+   h[:form_action] = url_for(:controller => :entities, :action=> "apply_edit") if h[:form_action].nil?
 
    #listen to complete event if this is an upload form
    #listent to success for normal forms
@@ -189,7 +194,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
      f = new Y.Form({
       id:"test",
         contentBox: '##{h[:form_content_box]}',
-        action : '#{url_for :controller => :entities, :action=> "apply_edit"}',
+        action : '#{h[:form_action]}',
         method : 'post',
         upload : #{h[:upload]},
         resetAfterSubmit: false,
@@ -232,7 +237,18 @@ Y.publish('madb:entity_created', { broadcast: 2} );
         }
     });
     f.subscribe('failure', function (args) {
-        alert('Form submission failed');
+	var data = args.response.responseText,
+            message = "",
+            result;
+        try{
+          result = Y.JSON.parse(data);
+          message = result.message;
+        }
+        catch (err) {
+        }
+        alert('#{t('madb_form_submission_failed')}: '+message);
+        var callback =  #{h[:failure_callback]} ;
+        callback(f,result);
     });}
 
     return js

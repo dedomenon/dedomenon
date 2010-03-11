@@ -131,17 +131,14 @@ class EntitiesControllerTest < ActionController::TestCase
      #Check presence of child objects
      #----------------------------------
 
-     #Headers removed
-     assert_no_tag({ :tag => "div" , :attributes => { :class => "section_head"}, :descendant => { :content => "related_children_objects"}, :sibling => { :tag => "div", :attributes => { :class => "relation_head"}, :descendant => { :content => "contact_de_la_societe"}   } })
-     #
      #Check contacts adding link
      assert_tag( :tag => "span",  :child => { :tag=> "a", :content => "madb_link_to_existing_entity"})
      assert_tag( :tag => "span",  :child => {:tag=> "a", :content => "madb_add_new_related_entity"})
 
-		 #presence of div to display list of available for link
-		 assert_tag :tag => "div", :attributes => { :id => "link_existing_child_contact_de_la_societe_div"}  
-		 #presence of div to add new child
-		 assert_tag :tag => "div", :attributes => { :id => "add_new_child_contact_de_la_societe_div"}  
+     #presence of div to display list of available for link
+     assert_tag :tag => "div", :attributes => { :id => "e_7_from_parent_to_child_linkable_list_container"}  
+     #presence of div to add new child
+     assert_tag :tag => "div", :attributes => { :id => "e_7_from_parent_to_child_form_container"}  
   end
 
   def test_view_contact_with_correct_user 
@@ -175,9 +172,9 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_tag( { :tag=> "a", :content => "madb_add_new_related_entity"})
 		 #
 		 #presence of div to display list of available for link
-		 assert_tag :tag => "div", :attributes => { :id => "link_existing_parent_société de_div"}  
+		 assert_tag :tag => "div", :attributes => { :id => "e_7_from_child_to_parent_linkable_list_container"}  
 		 #presence of div to add new parent
-		 assert_tag :tag => "div", :attributes => { :id => "add_new_parent_société de_div"}  
+		 assert_tag :tag => "div", :attributes => { :id => "e_7_from_child_to_parent_form_container"}  
   end
 
 
@@ -206,7 +203,7 @@ class EntitiesControllerTest < ActionController::TestCase
      result = JSON.parse(@response.body)
      assert_equal 10,  result['pageSize']
      assert_equal 11,  result['totalRecords']
-     assert_equal nil, result['dir']
+     assert_equal "ASC", result['dir']
      assert_equal 0,  result['startIndex']
      assert_equal 10, result["records"].size
      assert_equal 11, assigns["entity"].id
@@ -270,7 +267,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_response :success
      result = JSON.parse(@response.body)
      assert_equal 1,  result['pageSize']
-     assert_equal nil, result['dir']
+     assert_equal "ASC", result['dir']
      assert_equal 0,  result['startIndex']
      assert_equal 1, result["records"].size
      assert_equal({"nom"=>"raphinou", "personnes_occuppees"=>"1", "memo"=>"", "id"=>71, "adresse"=>"kasteellaan 17", "company_email"=>"rb@raphinou.com", "code_nace"=>"", "fax"=>"", "telephone"=>"+32 479 989 969", "status"=>"sprl", "TVA"=>"BE 738 832 298"}, result["records"][0])
@@ -330,7 +327,7 @@ class EntitiesControllerTest < ActionController::TestCase
      assert_equal "Mind", result["records"][9]["nom"]
      assert_equal "personnes_occuppees", result["sort"]
      assert_equal 0 , result["startIndex"]
-     assert_equal nil , result["dir"]
+     assert_equal "ASC" , result["dir"]
   end
 
   #Filtered & Ordered list requested by xhr
@@ -556,35 +553,16 @@ class EntitiesControllerTest < ActionController::TestCase
 	#
 	
 	def test_link_to_existing_parent
-		xhr :get, :link_to_existing, { :update => "contact_de_la_societe_parent_div", :embedded=> "link_existing_parent_contact_de_la_societe_div", :relation_id => "7", :child_id=> "72"}, {'user' => User.find_by_id(@db1_user_id)}
+		xhr :get, :link_to_existing, {  :relation_id => "7", :child_id=> "72"}, {'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
     # 10 rows in tbody, 1 in table
-		assert_tag :tag => "tbody", :children => { :only => { :tag => "tr"}, :count => 10 }
-		assert_no_tag :tag => "th", :content => "view"
-		assert_no_tag :tag => "th", :content => "edit"
-		assert_no_tag :tag => "th", :content => "unlink"
-		assert_tag :tag => "th", :content => "madb_use"
-		assert_tag :tag => "a", :attributes => { :onclick => /link/}
-		assert_equal assigns["related_id"], "parent_id"
-		assert_equal assigns["self_id"], "child_id"
-		assert_equal assigns["self_id"], "child_id"
+                assert @response.body.match(/contentBox: '#e_7_from_child_to_parent_linkable_list'/)
 	end
 	
 	def test_link_to_existing_child
-		xhr :get, :link_to_existing, { :update => "contact_de_la_societe_child_div", :embedded=> "link_existing_childcontact_de_la_societe_div", :relation_id => "7", :child_id=> "72"}, {'user' => User.find_by_id(@db1_user_id)}
+		xhr :get, :link_to_existing, {  :relation_id => "7", :parent_id=> "73"}, {'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
-    # 10 rows in tbody, 1 in table
-		assert_tag :tag => "tbody", :children => { :only => { :tag => "tr"}, :count => 10 }
-		assert_no_tag :tag => "th", :content => "view"
-		assert_no_tag :tag => "th", :content => "edit"
-		assert_no_tag :tag => "th", :content => "unlink"
-		assert_tag :tag => "th", :content => "madb_use"
-    assert_tag :tag => "a", :attributes => { :onclick => /link/}
-    #replaced by previous test since we use images now
-    #assert_tag :tag => "a", :content => "madb_use"
-		assert_equal assigns["related_id"], "parent_id"
-		assert_equal assigns["self_id"], "child_id"
-		assert_equal assigns["self_id"], "child_id"
+                assert @response.body.match(/contentBox: '#e_7_from_parent_to_child_linkable_list'/)
 	end
 	#------------------------
 	# list_available_for_link
@@ -618,9 +596,7 @@ class EntitiesControllerTest < ActionController::TestCase
       {
         :parent_id => "69", 
         :relation_id => "7", 
-        :update => "contact_de_la_societe_child_div", 
-        :embedded => "link_existing_child_contact_de_la_societe_div", 
-        :contact_de_la_societe_linkable_list_order => "nom" }, 
+        :sort => "nom" }, 
         {'user' => User.find_by_id(@db1_user_id)}
 
 		assert_response :success
@@ -636,7 +612,6 @@ class EntitiesControllerTest < ActionController::TestCase
     assert_equal [92, 81, 74, 72, 90, 83, 85, 84, 94, 82], ids
     #assert_equal [92, 81, 74, 72, 90, 85, 84, 83, 94, 86], ids
     #no order set
-     assert_equal "nom", session["list_order"][assigns["list_id"]]
 
 	end
 
@@ -653,7 +628,6 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_equal [72,74,81], ids
 
     #not ordered
-     assert_nil  session["list_order"][assigns["list_id"]]
 	end
   
 	def test_ordered_filtered_list_available_for_link_to_child
@@ -663,9 +637,7 @@ class EntitiesControllerTest < ActionController::TestCase
         :value_filter=> "aud", 
         :parent_id => "69", 
         :relation_id => "7", 
-        :update => "contact_de_la_societe_child_div", 
-        :embedded => "link_existing_child_contact_de_la_societe_div", 
-        :contact_de_la_societe_linkable_list_order => "nom" 
+        :sort => "nom" 
       }, 
       {'user' => User.find_by_id(@db1_user_id)}
 
@@ -681,7 +653,6 @@ class EntitiesControllerTest < ActionController::TestCase
     assert_equal [81,74,72], ids
     #assert_equal [81,74,72], ids
     #ordered
-     assert_equal "nom", session["list_order"][assigns["list_id"]]
 
 	end
 
@@ -1014,8 +985,7 @@ class EntitiesControllerTest < ActionController::TestCase
       :relation_id => "8", 
       :child_id => "74", 
       :_ => "", 
-      :update => "contact_de_visite_parent_div", 
-      :embedded => "add_new_parent_contact_de_visite_div"},
+      },
       {'user' => User.find_by_id(@db1_user_id)} 
 		post_values_count = DetailValue.count
 		post_date_values_count = DateDetailValue.count
@@ -1023,11 +993,10 @@ class EntitiesControllerTest < ActionController::TestCase
 		post_links_count = Instance.count
 
 
-		assert_response :redirect
+		assert_response :success
 		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
 		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
 		#we highlight the created entity
-		assert_redirected_to :controller => "entities", :action => "related_entities_list", :id => "74", :relation_id => 8, :type => "parents", :highlight => instance_id.to_i
 
 		#we inserted 2 entries in detail_values (text,email,long_text)
 		assert_equal 2, post_values_count-pre_values_count
@@ -1334,8 +1303,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		xhr :post, :link, { :relation_id => "9", :parent_id=> "77", :id => "90"},{'user' => User.find_by_id(@db1_user_id)} 
 		post_links_count = Link.count
 
-    assert_response :redirect
-    assert_equal flash["error"],"madb_not_respecting_to_one_relation"
+    assert_response 400
+    assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
     assert_equal pre_links_count, post_links_count
 
   end
@@ -1346,8 +1315,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		xhr :post, :link, { :relation_id => "9", :parent_id=> "77", :id => "72"},{'user' => User.find_by_id(@db1_user_id)} 
 		post_links_count = Link.count
 
-    assert_response :redirect
-    assert_equal flash["error"],"madb_not_respecting_to_one_relation"
+    assert_response 400
+    assert_equal({"message"=>"madb_not_respecting_to_one_relation", "status"=>"error"}, JSON.parse(@response.body))
     assert_equal pre_links_count, post_links_count
 
   end
@@ -1358,8 +1327,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		xhr :post, :link, { :relation_id => "9", :parent_id=> "71", :id => "90"},{'user' => User.find_by_id(@db1_user_id)} 
 		post_links_count = Link.count
 
-    assert_response :redirect
-    assert_equal flash['error'],nil
+    assert_response 200
+    assert_equal({"status"=>"success"}, JSON.parse(@response.body))
     assert_equal pre_links_count+1, post_links_count
 
   end

@@ -1,0 +1,99 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app/authentication/login||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|assertTextPresent|demo_forem||
+|assertTextPresent|database_without_details||
+|assertTextPresent|database_with_one_entity_with_all_details||
+|open|/app/entities/view/69||
+|pause|2500||
+|assertElementNotPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="No records found."]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="Luyckx"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//img[@class="icon" and @alt="madb_export"]||
+|echo|check empty list||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="No records found."]||
+|echo|to one buttons visible||
+|assertVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|click|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]/span[1]/a||
+|pause|1500||
+|assertVisible|//div[@id="e_9_from_parent_to_child_linkable_list"]//img[@class="icon" and @title="madb_export"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//tr[@id="yui-rec2"]//img[@record_id="72"]||
+|pause|1500||
+|echo|to one buttons not visible||
+|assertNotVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=72]||
+|click|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=72]//img[@alt="Unlink"]||
+|pause|1500||
+|echo|check empty list||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="No records found."]||
+|echo|to one buttons visible||
+|assertVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|assertVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]/span[1]/a||
+|pause|1000||
+|echo|Check linkable list correctly updated||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Luyckx"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="BAuduin"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Bauduin"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Soizon"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Audux"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Kastagnette"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Biloute"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Danneels"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//div[@class="yui-dt-liner" and .="Brughmans"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list_container"]//span[@class="button_style" and .="madb_done"]/a||
+|click|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]/span[@id="e_9_from_parent_to_child_child_div_add_new_child_link"]/a||
+|pause|1500||
+|type|nom[0][value]|Daléo|
+|type|prenom[0][value]|Francesco|
+|type|fonction[0][value]|IT|
+|type|service[0][value]|Informatique|
+|type|company_email[0][value]|francesco@it-com.com|
+|click|commit||
+|click|//div[@id="e_9_from_parent_to_child_form"]//button[@id="commit"]||
+|pause|2000||
+|assertNotVisible|//div[@id="e_9_from_parent_to_child_form_container"]||
+|assertNotVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=100001]||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=100001]/td/div[.="Daléo"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tr[@record_id="100001"]/td/div[.="Luyckx"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[count(tr)=1 and @class="yui-dt-data"]||
+|pause|2000||
+|click|//div[@id="e_7_from_parent_to_child_child_div_add_child_links"]/span[@id="e_7_from_parent_to_child_child_div_add_existing_child_link"]/a||
+|pause|2000||
+|assertVisible|//div[@id="e_7_from_parent_to_child_linkable_list_container"]||
+|echo|10 row displayed||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//tbody[count(tr)=10 and @class="yui-dt-data"]||
+|type|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//input[@name="value_filter"]|duin|
+|click|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//button[.="madb_submit"]||
+|pause|1000||
+|click|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//tbody[count(tr)=2 and @class="yui-dt-data"]/tr//img[@record_id="72"]||
+|pause|2000||
+|echo|1 row displayed in linkable||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//tbody[count(tr)=1 and @class="yui-dt-data"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//tbody[@class="yui-dt-data"]/tr/td[2]/div[.="Carol"]||
+|echo|2 row displayed in linked||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[count(tr)=2 and @class="yui-dt-data"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data"]/tr[1]/td/div[.="BAuduin"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data"]/tr[2]/td/div[.="Luyckx"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//a[.="madb_done"]||
+|click|//div[@id="e_7_from_parent_to_child_linkable_list_container"]//a[.="madb_done"]||
+|pause|1500||
+|echo|adding a new instance to a to many relation||
+|click|//div[@id="e_7_from_parent_to_child_child_div_add_child_links"]/span[@id="e_7_from_parent_to_child_child_div_add_new_child_link"]/a||
+|pause|1500||
+|assertVisible|//div[@id="e_7_from_parent_to_child_form_container"]||
+|type|nom[0][value]|Maccione|
+|type|prenom[0][value]|Aldo|
+|type|fonction[0][value]|Actor|
+|type|service[0][value]|Humour|
+|type|company_email[0][value]|aldo@laugh.com|
+|click|//div[@id="e_7_from_parent_to_child_form"]//button[@id="commit"]||
+|pause|1500||
+|echo|3 row displayed in linked||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[count(tr)=3 and @class="yui-dt-data"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data"]/tr[1]/td/div[.="Maccione"]||
+|echo|and form still visible||
+|assertVisible|//div[@id="e_7_from_parent_to_child_form_container"]||
