@@ -403,9 +403,9 @@ YUI.add('madb-tables', function(Y) {
           this._filter_csv_icon.on('click', function(evt) {
             var s = this._requestBuilder(this._datatable.getState(), this._datatable  );
             var url = this.get("source").replace(/\.js\?/,".csv?")+s;
-            Y.log(url);
-            Y.log("old was :" + '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s);
-            //window.location = url;
+            //Y.log(url);
+            //Y.log("old was :" + '<%= url_for :controller=> 'entities', :action => 'entities_list'%>/'+this.get('entity_id')+'.csv?'+s);
+            window.location = url;
             }, this);
 
 
