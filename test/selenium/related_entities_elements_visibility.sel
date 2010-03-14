@@ -51,7 +51,6 @@
 |type|fonction[0][value]|IT|
 |type|service[0][value]|Informatique|
 |type|company_email[0][value]|francesco@it-com.com|
-|click|commit||
 |click|//div[@id="e_9_from_parent_to_child_form"]//button[@id="commit"]||
 |pause|2000||
 |assertNotVisible|//div[@id="e_9_from_parent_to_child_form_container"]||
