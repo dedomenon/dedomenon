@@ -218,11 +218,6 @@ YAHOO_config = {
           <div id="add_new_<%=type[:to]%>_<%=prefix%>_div" style="display:none; "></div>
           <div id="link_existing_<%=type[:to]%>_<%=prefix%>_div" style="display:none; "></div>
 
-          <!--
-          <div class="related_<%=type[:to]%>_entities_div" id="<%= list_id %>">
-        <%= render_component :controller => "entities", :action => "related_entities_list", :id => @instance.id,:params => { :relation_id => relation.id, :type => type[:to].pluralize, :popup => params["popup"]} %>
-      </div>
-          -->
       <hr>
 
       <% end %>

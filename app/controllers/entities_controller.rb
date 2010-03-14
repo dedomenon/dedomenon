@@ -342,7 +342,7 @@ class EntitiesController < ApplicationController
     end
   	Link.delete_all( [ "parent_id=? AND child_id=? AND relation_id=?", params[parent_id],params[child_id],params["relation_id"] ] )
     #overwrite_params doesn't work with render_component
-      render_component(:controller => "entities", :action => "related_entities_list", :id => params[render_id],:params => { :relation_id => params["relation_id"] , :type => type }) 
+      render :json => { :status => :success}
   end
 
   # *Description*
@@ -350,11 +350,8 @@ class EntitiesController < ApplicationController
   # the given entity.
   def list_available_for_link
     setup_sort_and_dir
-  	@relation = Relation.find params["relation_id"]
+    @relation = Relation.find params["relation_id"]
     if params["parent_id"]
-      @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
-      #links_div contains the links to link a new/existing child
-      @links_div = "#{@relation.from_parent_to_child_name}_child_div_add_child_links"
       related_id = "child_id"
       self_id = "parent_id"
       @entity = @relation.child
@@ -363,11 +360,8 @@ class EntitiesController < ApplicationController
       if @relation.parent_side_type.name!="one"
         @link_to_many = 't'
       end
-        other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
+      other_side_type_filter= " and #{CrosstabObject.connection.quote_string(self_id)}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     else
-      @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
-      #links_div contains the links to link a new/existing parent
-      @links_div ="#{@relation.from_child_to_parent_name}_parent_div_add_parent_links"
       related_id = "parent_id"
       self_id = "child_id"
       @entity = @relation.parent
@@ -376,7 +370,7 @@ class EntitiesController < ApplicationController
       if @relation.child_side_type.name!="one"
         @link_to_many = 't'
       end
-        other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
+      other_side_type_filter= " and #{self_id}=#{CrosstabObject.connection.quote_string(params[self_id].to_s)}"
     end
 
     @details = @entity.details_hash
@@ -390,17 +384,12 @@ class EntitiesController < ApplicationController
     else
       crosstab_result = @entity.crosstab_query(:display => "detail")
       crosstab_query     = crosstab_result[:query]
-      @not_in_list_view  = crosstab_result[:not_in_list_view]
+      #@ordered_fields is used in the csv view
       @ordered_fields   = crosstab_result[:ordered_fields]
       @list, @paginator = @entity.get_paginated_list(:filters => [ filter_clause , link_filter ], :highlight => params[:highlight], :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length )
     end
 
-
-    @links = [ { "header" => t("madb_use_it") , "text" => t("madb_use_it"), "options" => {:action => "link", self_id.to_sym => params[self_id], :relation_id => params["relation_id"]}, "evals" => ["id"]  },
-				   ]
-    params[:format]="html" unless params[:format]=='js' or params[:format]=="csv"
     respond_to do |format|
-      format.html
       format.js { render :action => 'entities_list' }
       format.csv { render :action => 'entities_list' }
     end
@@ -410,15 +399,13 @@ class EntitiesController < ApplicationController
 
 
   def link_to_existing
-  	@relation = Relation.find params["relation_id"]
+    @relation = Relation.find params["relation_id"]
     if params["parent_id"]
-      @list_id = "#{@relation.from_parent_to_child_name}_linkable_list"
       @yui_list_id = "e_#{@relation.id}_from_parent_to_child_linkable_list"
       @related_id = "child_id"
       @self_id = "parent_id"
       @entity = @relation.child
     else
-      @list_id = "#{@relation.from_child_to_parent_name}_linkable_list"
       @yui_list_id = "e_#{@relation.id}_from_child_to_parent_linkable_list"
       @related_id = "parent_id"
       @self_id = "child_id"
@@ -428,16 +415,16 @@ class EntitiesController < ApplicationController
   end
 
   def link_to_new
-  	init_add_form
-    	@relation = Relation.find params['relation_id']
-	if params["parent_id"] 
-		linked_id = "parent_"+params["parent_id"]
-                @yui_form_id = "e_#{@relation.id}_from_parent_to_child_form"
-	elsif params["child_id"] 
-		linked_id = "child_"+params["child_id"]
-                @yui_form_id = "e_#{@relation.id}_from_child_to_parent_form"
-	end
-	@form_id = @relation.id.to_s+"_"+@entity.id.to_s+"_"+linked_id
+    init_add_form
+    @relation = Relation.find params['relation_id']
+    if params["parent_id"] 
+      linked_id = "parent_"+params["parent_id"]
+      @yui_form_id = "e_#{@relation.id}_from_parent_to_child_form"
+    elsif params["child_id"] 
+      linked_id = "child_"+params["child_id"]
+      @yui_form_id = "e_#{@relation.id}_from_child_to_parent_form"
+    end
+    @form_id = @relation.id.to_s+"_"+@entity.id.to_s+"_"+linked_id
   end
 
   def apply_link_to_new
@@ -452,6 +439,7 @@ class EntitiesController < ApplicationController
       end
     end
     if entity_saved
+      # fetch instance to to be linked
       if params["parent_id"]
               child = @instance
               parent = Instance.find params["parent_id"]
@@ -462,6 +450,7 @@ class EntitiesController < ApplicationController
           raise "Missing parameter parent_id (#{params["parent_id"]}) or child_id (#{params["child_id"]})"
       end
       relation = Relation.find params["relation_id"]
+      # link instances
       result = link_instances(parent,relation,child)
       if result[:status]==:success
         yui_hash = JSON.parse(@instance.to_hash.to_json).inject({}){ |a,v| k="['"+v[0]+"']" ;  a.merge({k => v[1]}) }
@@ -472,79 +461,80 @@ class EntitiesController < ApplicationController
         render :json => result, :status => 400 and return
       end
     else
-            headers['Content-Type']='text/plain; charset=UTF-8'
-            render :text => @invalid_list.join('######')
-            return
+      headers['Content-Type']='text/plain; charset=UTF-8'
+      render :text => @invalid_list.join('######')
+      return
     end
   end
 
   def link_instances(parent,relation,child)
 	begin
-            if relation.parent_side_type.name=="one"
-              #parent side is one, so if child is already linked to one, cannot be linked again.....
-              if Link.count(:conditions => "child_id=#{child.id} and relation_id=#{relation.id}")>0
-                raise "madb_not_respecting_to_one_relation"
-              end
+          if relation.parent_side_type.name=="one"
+            #parent side is one, so if child is already linked to one, cannot be linked again.....
+            if Link.count(:conditions => "child_id=#{child.id} and relation_id=#{relation.id}")>0
+              raise "madb_not_respecting_to_one_relation"
             end
-            if relation.child_side_type.name=="one"
-              if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
-                raise "madb_not_respecting_to_one_relation"
-              end
+          end
+          if relation.child_side_type.name=="one"
+            if Link.count(:conditions => "parent_id=#{parent.id} and relation_id=#{relation.id}")>0
+              raise "madb_not_respecting_to_one_relation"
             end
+          end
 
-            link = Link.new
-            link.child = child
-            link.parent = parent
-            link.relation = relation
-            link.save
-            return { :status => :success }
+          link = Link.new
+          link.child = child
+          link.parent = parent
+          link.relation = relation
+          link.save
+          return { :status => :success }
 
 	rescue ActiveRecord::StatementInvalid=> @e
-		existing_links = Link.find(:all, :conditions => [ "relation_id=? AND parent_id=? AND child_id=?", params["relation_id"],params["parent_id"],params["id"]])
-		if existing_links.length>0
-			msg  = t("madb_error_record_already_linked")
-		else
-			msg = t "madb_an_error_occured"
-		end
-                return { :status => :error, :message => msg }
+          # sql statement failedn check if record is already linked
+          existing_links = Link.find(:all, :conditions => [ "relation_id=? AND parent_id=? AND child_id=?", params["relation_id"],params["parent_id"],params["id"]])
+          if existing_links.length>0
+            msg  = t("madb_error_record_already_linked")
+          else
+            msg = t "madb_an_error_occured"
+          end
+          return { :status => :error, :message => msg }
 	rescue RuntimeError => @e
-                if @e.message=="madb_not_respecting_to_one_relation"
-                  msg = t("madb_not_respecting_to_one_relation")
-                end
-                return { :status => :error, :message => msg }
+          if @e.message=="madb_not_respecting_to_one_relation"
+            msg = t("madb_not_respecting_to_one_relation")
+          end
+          return { :status => :error, :message => msg }
 	rescue Exception => @e
-                msg = t("madb_an_error_occured")
-                return { :status => :error, :message => msg }
+          msg = t("madb_an_error_occured")
+          return { :status => :error, :message => msg }
         ensure
 	end
   end
 
   # *Description*
-  # Links the two instances
+  # Links two existing instances
   # 
   # *REST_API*
   #   id of the instance is to be provided in params[:id] and
   #   params[:parent_id] | params[:child_id] along with the relation_id
   #
   def link
-  if params["child_id"]
-    child_id = "child_id"
-    parent_id = "id"
-  else
-    parent_id = "parent_id"
-    child_id = "id"
-  end
+    if params["child_id"]
+      child_id = "child_id"
+      parent_id = "id"
+    else
+      parent_id = "parent_id"
+      child_id = "id"
+    end
 
-	relation = Relation.find params["relation_id"]
-	parent = Instance.find params[parent_id]
-	child = Instance.find params[child_id]
-  
-        result = link_instances(parent,relation,child)
-        if result[:status]==:success
-          render :json => result  and return
-        else
-          render :json => result, :status => 400 and return
-        end
+    relation = Relation.find params["relation_id"]
+    parent = Instance.find params[parent_id]
+    child = Instance.find params[child_id]
+
+    result = link_instances(parent,relation,child)
+    if result[:status]==:success
+      render :json => result  and return
+    else
+      render :json => result, :status => 400 and return
+    end
   end
 
 
@@ -573,37 +563,25 @@ class EntitiesController < ApplicationController
       type = {:from => "child", :to => "parent"}
     end
 
-      @link_type = type[:to]
-      @relation_name = @relation.send("from_#{type[:from]}_to_#{type[:to]}_name")
-      @list_id = "#{@relation_name}_#{type[:to]}"
-      @links_div ="#{@relation_name}_#{type[:to]}_div_add_#{type[:to]}_links"
-      @add_new_link ="#{@relation_name}_#{type[:to]}_div_add_new_#{type[:to]}_link"
-      @add_existing_link ="#{@relation_name}_#{type[:to]}_div_add_existing_#{type[:to]}_link"
-      @source_id = "#{type[:from]}_id"
-      linked_entity = @relation.send(type[:to]).name
-      linked_entity_object = @relation.send(type[:to])
-      @instance = Instance.find params["id"]
-      if @relation.send("#{type[:to]}_side_type").name!="one"
-        @link_to_many = 't'
-      end
+    @link_type = type[:to]
+    @relation_name = @relation.send("from_#{type[:from]}_to_#{type[:to]}_name")
+    @source_id = "#{type[:from]}_id"
+    linked_entity_object = @relation.send(type[:to])
+    @instance = Instance.find params["id"]
+#    if @relation.send("#{type[:to]}_side_type").name!="one"
+#      @link_to_many = 't'
+#    end
 
     @details = linked_entity_object.details_hash
 
     order = order_by
 
-    if !params["detail_filter"].nil?
-      @div_class = "filtered"
-    else
-      @div_class = "unfiltered"
-    end
     clause = crosstab_filter
 
     # THIS GENERATES LOTS OF QUERIES LIKE  SELECT * FROM instances WHERE instances.id = 139 LIMIT 1
     if @type=="children"
-    #  @list= @instance.links_to_children.delete_if(&filter).collect{|e| e.child}
       ids_to_keep = @instance.links_to_children.reject{ |l| l.relation!=@relation }.collect { |l| l.send("#{@link_type}_id")  }.uniq.join(",")
     elsif @type=="parents"
-    #  @list= @instance.links_to_parents.delete_if(&filter).collect{|e| e.parent}
       ids_to_keep = @instance.links_to_parents.reject{ |l| l.relation!=@relation }.collect { |l| l.send("#{@link_type}_id")  }.uniq.join(",")
     end
 
@@ -613,6 +591,7 @@ class EntitiesController < ApplicationController
     if crosstab_result
       crosstab_query     = crosstab_result[:query]
       @not_in_list_view  = crosstab_result[:not_in_list_view]
+      # ordered_fields is used by the csv view
       @ordered_fields   = crosstab_result[:ordered_fields]
     else
       crosstab_count = 0
@@ -634,32 +613,22 @@ class EntitiesController < ApplicationController
         response.headers["MYOWNDB_highlight"]  =  params["highlight"].to_s
       end
 
-      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format], :highlight => params[:highlight]  , :default_page => params[list_id+"_page"]|| ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length)
+      @list, @paginator = linked_entity_object.get_paginated_list(:filters =>  filters , :format => params[:format],   :default_page => ((params[:startIndex].to_i/list_length).ceil + 1), :order_by => @sort , :direction => @dir, :list_length => list_length)
     else
       @list = []
     end
 
-    @hide_to_new_link = false;
-    @hide_to_existing_link = false;
-    #to one relation with linked instance
-    if @link_to_many!='t' and linked_count.to_i > 0
-      @hide_to_new_link = true;
-      @hide_to_existing_link = true;
-    end
     #to many relation
-    if @link_to_many=='t'
-      #check if instances available for linking
-        link_to_many = @relation.send("#{type[:to]}_side_type").name=='many'
-        link_from_many = @relation.send("#{type[:from]}_side_type").name=='many'
-        if link_from_many
-          available_instances = Instance.find(:all, :conditions => "entity_id=#{@relation.send(type[:to]).id} and id not in (select #{type[:to]}_id from links where relation_id = #{@relation.id} and #{type[:from]}_id=#{@instance.id})")
-        else
-          available_instances = Instance.find(:all, :conditions => "entity_id=#{@relation.send(type[:to]).id} and id not in (select #{type[:to]}_id from links where relation_id = #{@relation.id})")
-        end
-        if available_instances.length<1
-          @hide_to_existing_link = true;
-        end
-    end
+#    if @link_to_many=='t'
+#      #check if instances available for linking
+#        link_to_many = @relation.send("#{type[:to]}_side_type").name=='many'
+#        link_from_many = @relation.send("#{type[:from]}_side_type").name=='many'
+#        if link_from_many
+#          available_instances = Instance.find(:all, :conditions => "entity_id=#{@relation.send(type[:to]).id} and id not in (select #{type[:to]}_id from links where relation_id = #{@relation.id} and #{type[:from]}_id=#{@instance.id})")
+#        else
+#          available_instances = Instance.find(:all, :conditions => "entity_id=#{@relation.send(type[:to]).id} and id not in (select #{type[:to]}_id from links where relation_id = #{@relation.id})")
+#        end
+#    end
     params[:format]='html' if params[:format].nil?
     respond_to do |format|
       format.html {  }
@@ -730,24 +699,24 @@ class EntitiesController < ApplicationController
   end
   
   def check_detail_value_validity
-                if request.env["REQUEST_METHOD"]=="OPTIONS"
-                  headers["Access-Control-Allow-Origin"]="*"
-                  headers["Access-Control-Allow-Methods"] = "*"
-                  headers["Access-Control-Allow-Headers"] = "x-requested-with"
-                  render :nothing => true
-                  return
-                end
-		#called by javascript form observer
-		detail = Detail.find params["detail_id"]
-		value = params["detail_value"]
-		detail_value_class = class_from_name(detail.data_type.class_name)
-                headers["Access-Control-Allow-Origin"]="*"
-		if detail_value_class.valid?(value, :session => session)
-			render :text => '1'
-		else
-			render :text => '0'
-		end
-	end
+    if request.env["REQUEST_METHOD"]=="OPTIONS"
+      headers["Access-Control-Allow-Origin"]="*"
+      headers["Access-Control-Allow-Methods"] = "*"
+      headers["Access-Control-Allow-Headers"] = "x-requested-with"
+      render :nothing => true
+      return
+    end
+    #called by javascript form observer
+    detail = Detail.find params["detail_id"]
+    value = params["detail_value"]
+    detail_value_class = class_from_name(detail.data_type.class_name)
+    headers["Access-Control-Allow-Origin"]="*"
+    if detail_value_class.valid?(value, :session => session)
+      render :text => '1'
+    else
+      render :text => '0'
+    end
+  end
 
 
   def public_form

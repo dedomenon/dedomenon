@@ -1,10 +1,3 @@
-<!-- 
-<div id="<%=@list_id %>_div">
-  <%= render_component :controller => "entities", :action => "list_available_for_link", :format => "html", :params => { @self_id.to_sym => params[@self_id], :relation_id => params["relation_id"] , :update => params["update"], :embedded => params["embedded"], :link_to_many => params['link_to_many']   } %>
-
-<div id="<%=@yui_list_id %>_yui_div">
--->
-
 <script type="text/javascript">
 //YAHOO_config = {
 //                filter: 'debug'
@@ -23,53 +16,53 @@
           
           %>
   Y.on('madb:link', function(h) { 
-                                  var url = '<%= url_for(:controller => 'entities', :action => 'link')%>/'+h.record_id+'?<%=@self_id%>=<%=params[@self_id]%>&relation_id=<%=params["relation_id"]%>&link_to_many=<%= params['link_to_many']%>';
-                                  var config = { method: 'POST', 
-                                                 on: { success : function(i, resp) { 
-                                                                              Y.fire('madb:entity_linked', '<%= @yui_list_id %>', h );
-                                                                              //  if to many, allow multiple additions
-                                                                              if ('<%= params['link_to_many']%>'=='t') {
-                                                                                try{
-                                                                                  this.deleteRow(h.target);
-                                                                                }
-                                                                                catch(err)
-                                                                                {
-                                                                                  // if the last row of the page was deleted, refresh the table.
-                                                                                  if (err=="TypeError: Cannot call method 'getId' of undefined")
-                                                                                  {
-                                                                                    dt._refresh_table();
-                                                                                  }
+        var url = '<%= url_for(:controller => 'entities', :action => 'link')%>/'+h.record_id+'?<%=@self_id%>=<%=params[@self_id]%>&relation_id=<%=params["relation_id"]%>&link_to_many=<%= params['link_to_many']%>';
+        var config = { method: 'POST', 
+                       on: { success : function(i, resp) { 
+                                Y.fire('madb:entity_linked', '<%= @yui_list_id %>', h );
+                                //  if to many, allow multiple additions
+                                if ('<%= params['link_to_many']%>'=='t') {
+                                  try{
+                                    this.deleteRow(h.target);
+                                  }
+                                  catch(err)
+                                  {
+                                    // if the last row of the page was deleted, refresh the table.
+                                    if (err=="TypeError: Cannot call method 'getId' of undefined")
+                                    {
+                                      dt._refresh_table();
+                                    }
 
-                                                                                }
-                                                                              }
-                                                                              //  if to one, only allow one addition, so clear the table after this addition
-                                                                              else
-                                                                              {
-                                                                                    var recs = dt.getDataTable().getRecordSet().getRecords();
-                                                                                    dt.getDataTable().deleteRows(0, recs.length);
+                                  }
+                                }
+                                //  if to one, only allow one addition, so clear the table after this addition
+                                else
+                                {
+                                      var recs = dt.getDataTable().getRecordSet().getRecords();
+                                      dt.getDataTable().deleteRows(0, recs.length);
 
-                                                                              }
-                                                                            },
-                                                       failure : function(i, resp) { 
-                                                         
-                                                          var data = resp.responseText,
-                                                              message = "",
-                                                              result;
-                                                          try{
-                                                            result = Y.JSON.parse(data);
-                                                            message = result.message;
-                                                          }
-                                                          catch (err) {
-                                                          }
-                                                          Y.fire('madb:refresh_related','<%= @yui_list_id %>');
-                                                          dt._refresh_table();
-                                                         alert("<%= t('madb_an_error_occured')%>:" +message);}
-                                                 },
-                                                 context: dt.getDataTable()
-                                  };
-                                  Y.io(url, config);
+                                }
+                              },
+                             failure : function(i, resp) { 
+                               
+                                var data = resp.responseText,
+                                    message = "",
+                                    result;
+                                try{
+                                  result = Y.JSON.parse(data);
+                                  message = result.message;
+                                }
+                                catch (err) {
+                                }
+                                Y.fire('madb:refresh_related','<%= @yui_list_id %>');
+                                dt._refresh_table();
+                               alert("<%= t('madb_an_error_occured')%>:" +message);}
+                       },
+                       context: dt.getDataTable()
+        };
+        Y.io(url, config);
 
-                                });
+      });
     Y.Global.on('madb:entity_unlinked', function(source, h) { 
               if (source.replace(/linked/,'linkable') == '<%= @yui_list_id %>')
               {

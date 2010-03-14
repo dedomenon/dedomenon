@@ -445,19 +445,11 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_response :redirect
 	end
 	def test_parent_related_entities_list_correct_user
-		get :related_entities_list, {:id => '70', :relation_id => '7', :type=> 'parents'}, { 'user' => User.find_by_id(@db1_user_id)}
+		get :related_entities_list, {:id => '70', :relation_id => '7', :type=> 'parents', :format => "js"}, { 'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
-		assert_tag :tag => "a", :content => "madb_reset", :attributes => { :onclick => Regexp.new("type=parents")}
-		assert_tag :tag => "a", :child => { :tag => "img", :attributes => { :alt => "madb_open_in_new_window"}}, :attributes => { :title => "madb_open_in_new_window", :href => Regexp.new("type=parents")}
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "type", :value => "parents"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "relation_id", :value => "7"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "id", :value => "70"} }
-
-		assert_tag :tag => "td", :attributes => {:class => "data_cell"}, :content => "valtech" 
-                #we display the to many  side, so NO need to hide the links
-                assert !assigns["hide_to_new_link"]
-                assert !assigns["hide_to_existing_link"]
-
+                json = JSON.parse(@response.body)
+                expected= {"pageSize"=>1, "dir"=>"ASC", "startIndex"=>0, "records"=>[{"nom"=>"valtech", "personnes_occuppees"=>"2", "memo"=>"", "id"=>69, "adresse"=>"rue de perck", "company_email"=>"", "code_nace"=>"hjhjhjk", "fax"=>"", "telephone"=>"", "TVA"=>"", "status"=>"sprl"}], "sort"=>"id", "recordsReturned"=>1, "totalRecords"=>1}
+                validate_json_list(expected["records"], json)
                 assert_equal 1, assigns["list"].length
                 assert_equal "valtech", assigns["list"][0].nom
 	end
@@ -466,13 +458,14 @@ class EntitiesControllerTest < ActionController::TestCase
 
 
 	def test_children_related_entities_list_correct_user
-		get :related_entities_list, {:id => '77', :relation_id => '7', :type=> 'children'}, { 'user' => User.find_by_id(@db1_user_id)}
+		get :related_entities_list, {:id => '77', :relation_id => '7', :type=> 'children', :format => "js"}, { 'user' => User.find_by_id(@db1_user_id)}
 		assert_response :success
-		assert_tag :tag => "a", :content => "madb_reset", :attributes => { :onclick => Regexp.new("type=children")}
-		assert_tag :tag => "a", :child => { :tag => "img", :attributes => { :alt => "madb_open_in_new_window"}}, :attributes => { :title => "madb_open_in_new_window", :href => Regexp.new("type=children")}
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "type", :value => "children"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "relation_id", :value => "7"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "id", :value => "77"} }
+                json = JSON.parse(@response.body)
+                expected = {"pageSize"=>4, "dir"=>"ASC", "startIndex"=>0, "records"=>[{"fonction"=>"Consultante", "prenom"=>"Florence", "nom"=>"Audux", "service"=>"", "coordonees_specifiques"=>"", "id"=>81, "company_email"=>"florence.audux@consultaix.com"}, {"fonction"=>"Consultante", "prenom"=>"Nicole", "nom"=>"Kastagnette", "service"=>"", "coordonees_specifiques"=>"", "id"=>82, "company_email"=>"nicole.kitsopulos@consultaix.com"}, {"fonction"=>"Consultante", "prenom"=>"Stéphanie", "nom"=>"Biloute", "service"=>"", "coordonees_specifiques"=>"", "id"=>83, "company_email"=>"stephanie.biloute@consultaix.com"}, {"fonction"=>"Secrétaire", "prenom"=>"Christiane", "nom"=>"Danneels", "service"=>"Secrétatiat", "coordonees_specifiques"=>"", "id"=>84, "company_email"=>"christiane.danneels@consultaix.com"}], "sort"=>"id", "recordsReturned"=>4, "totalRecords"=>4}
+
+                validate_json_list(expected["records"], json)
+
+                # this was part of the old tests, but is kept as still should pass
                 #check details order is used in the list
                 assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
                 assert_equal 4, assigns["list"].length
@@ -532,19 +525,6 @@ class EntitiesControllerTest < ActionController::TestCase
                 expected_result =  "\"nom\";\"prenom\";\"fonction\";\"service\";\"coordonees_specifiques\";\"company_email\";\n\"Audux\";\"Florence\";\"Consultante\";\"\";\"\";\"florence.audux@consultaix.com\";\n\"Kastagnette\";\"Nicole\";\"Consultante\";\"\";\"\";\"nicole.kitsopulos@consultaix.com\";\n\"Biloute\";\"Stéphanie\";\"Consultante\";\"\";\"\";\"stephanie.biloute@consultaix.com\";\n\"Danneels\";\"Christiane\";\"Secrétaire\";\"Secrétatiat\";\"\";\"christiane.danneels@consultaix.com\";\n"
                 assert_equal expected_result, @response.body
 	end
-	def test_popup_children_related_entities_list_correct_user
-		get :related_entities_list, {:id => '77', :relation_id => '7', :type=> 'children', :popup => 't'}, { 'user' => User.find_by_id(@db1_user_id)}
-		assert_response :success
-		assert_tag :tag => "a", :content => "madb_reset", :attributes => { :onclick => Regexp.new("type=children")}
-		assert_no_tag :tag => "a", :content => "open_in_new_window", :attributes => { :href => Regexp.new("type=children")}
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "type", :value => "children"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "relation_id", :value => "7"} }
-		assert_tag :tag => "form", :child => { :tag => "input", :attributes => {:type => "hidden", :name => "id", :value => "77"} }
-    #limited test only possible since we use images.
-		assert_tag :tag => "a", :child =>{ :tag => "img", :attributes => { :src => /view/} },:attributes => { :href => Regexp.new("popup=t") } 
-    #limited version since we use images
-		assert_tag :tag => "a", :child =>{ :tag => "img", :attributes => { :src => /edit/} }, :attributes => { :href => Regexp.new("popup=t") } 
-	end
 
 
 	#-----------------
@@ -580,12 +560,6 @@ class EntitiesControllerTest < ActionController::TestCase
           assert_equal [72,74,75,76,81,82,83,84,85,86], ids
           #check list order by looking at the noms order
           assert_equal ["BAuduin", "Bauduin", "Soizon", "Soizon", "Audux", "Kastagnette","Biloute", "Danneels", "Brughmans", "Kastagnette"], noms
-          #no open_in_new_window link
-          assert_no_tag :tag=> "a", :content => "open_in_new_window"
-          #refresh link
-          assert_tag :tag=> "a", :content => "madb_reset"
-          #refresh link
-          assert_tag :tag=> "a", :content => "madb_cancel"
           #check details order is used in the list
           assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
 
@@ -738,7 +712,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get a kson representation of the added instance
-                assert_equal({"['nom']"=>"nom", "['id']"=>100003, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100007, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>"20 456 56 57", "['personnes_occuppees']"=>"7", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"} , JSON.parse(@response.body))
 
 		instance_row = Instance.connection.execute("select last_value from instances_id_seq")[0]
 		instance_id = instance_row[0] ? instance_row[0] : instance_row['last_value']
@@ -767,7 +741,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
 		#we get html back because insertion was successful 
-                assert_equal({"['nom']"=>"nom", "['id']"=>100005, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100009, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>"info@company.com", "['status']"=>"sa", "['fax']"=>nil, "['personnes_occuppees']"=>nil, "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 
 	def test_success_full_insertion_with_email_field_empty
@@ -791,7 +765,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we insert 1 Instance
 		assert_equal 1, post_instances_count-pre_instances_count
                 #we get the added record in json form
-                assert_equal({"['nom']"=>"nom", "['id']"=>100004, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
+                assert_equal({"['nom']"=>"nom", "['id']"=>100008, "['TVA']"=>"BE-345.432.434", "['adresse']"=>"Rue Béliard", "['telephone']"=>"02 456 56 56", "['company_email']"=>nil, "['status']"=>"sa", "['fax']"=>"543 54 54", "['personnes_occuppees']"=>"56", "['memo']"=>"mémo société", "['code_nace']"=>"nace inconnu"}, JSON.parse(@response.body))
 	end
 	
 	###############
@@ -1225,16 +1199,16 @@ class EntitiesControllerTest < ActionController::TestCase
 	def test_redirect_page_after_successful_link_to_new
 
 		#this is an page we are redirected to when we just added the instance with id 95 with link_to new for entity 81
-		xhr :get,:related_entities_list, {:id => "81", :relation_id => 8, :type => "parents", :highlight => 95},{'user' => User.find_by_id(@db1_user_id)}
+		xhr :get,:related_entities_list, {:id => "81", :relation_id => 8, :type => "parents", :highlight => 95, :format => "js"},{'user' => User.find_by_id(@db1_user_id)}
 
 		#
 		#response successfull
 		assert_response :success
 		# the row to be highlighted is present
-		assert_tag :tag => "tr", :attributes => {:id => "tr_contact_de_visite_parent_div_95"} 
-    #we display the to one side, so we need to hide the links
-    assert assigns["hide_to_new_link"]
-    assert assigns["hide_to_existing_link"]
+                json = JSON.parse(@response.body)
+                expected = {"pageSize"=>1, "dir"=>"ASC", "startIndex"=>0, "records"=>[{"memo"=>"aucun mémo n'est à noter pour le moment", "date"=>"2005-09-10 00:00:00", "id"=>95, "titre"=>"visite de test"}], "sort"=>"id", "recordsReturned"=>1, "totalRecords"=>1}
+                validate_json_list(expected["records"], json)
+
 
 		
 	end
@@ -1288,7 +1262,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		assert_response :success
 		#we delete on link
 		assert_equal -1, post_links_count-pre_links_count
-		assert_tag :tag => "tbody", :children => { :only => { :tag => "tr", :child => { :tag => "td"}}, :count => 3}
+                assert_equal({ "status" => "success" }, JSON.parse(@response.body))
 	end
 	
 	##################
@@ -1525,15 +1499,15 @@ class EntitiesControllerTest < ActionController::TestCase
 
         def test_success_link_to_one_parent_relation
 
-		pre_links_count = Link.count
-		xhr :post, :link, { :relation_id => "9", :parent_id=> "71", :id => "90"},{'user' => User.find_by_id(@db1_user_id)} 
-		post_links_count = Link.count
+          pre_links_count = Link.count
+          xhr :post, :link, { :relation_id => "9", :parent_id=> "71", :id => "70"},{'user' => User.find_by_id(@db1_user_id)} 
+          post_links_count = Link.count
 
-    assert_response 200
-    assert_equal({"status"=>"success"}, JSON.parse(@response.body))
-    assert_equal pre_links_count+1, post_links_count
+          assert_response 200
+          assert_equal({"status"=>"success"}, JSON.parse(@response.body))
+          assert_equal pre_links_count+1, post_links_count
 
-  end
+        end
 
   def test_accented_details_names
      get :entities_list, {'id'=> 100000, :value_filter => nil, 'format' => 'js'}, { 'user' => User.find_by_id(@db1_user_id)}
@@ -1541,13 +1515,7 @@ class EntitiesControllerTest < ActionController::TestCase
      json = JSON.parse(@response.body)
      expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203},
                  {"Doesn't or does?\" he said with a \\ in his eyes"=>"Another text value#", "will_participate_url?"=>"http://www.nsa.be", "ÖstalTesté"=>{"valueid"=>1218, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1218, "filename"=>"logo-dedomenon.png"}, "些 世 咹 水 晶"=>"मी काच खाऊ शकतो, मला ते दुखत नाही.", "id"=>100000}]
-     assert_equal expected.length , json["records"].length
-     expected.each_index do |i|
-       expected[i].each do |k,v|
-        assert_equal v, json["records"][i][k]
-       end
-     end
-     assert_equal expected, json["records"]
+     validate_json_list(expected, json)
      
   end
 
@@ -1561,13 +1529,7 @@ class EntitiesControllerTest < ActionController::TestCase
     assert_equal 1, records.length
     expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
 
-    expected.each_index do |i|
-      expected[i].each do |k,v|
-        assert_equal v, records[i][k]
-      end
-    end
-    assert_equal expected, records
-
+    validate_json_list(expected, json)
 
 
     # Filter on a special alphabet
@@ -1579,13 +1541,7 @@ class EntitiesControllerTest < ActionController::TestCase
     assert_equal 1, records.length
     expected = [{"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
 
-    expected.each_index do |i|
-      expected[i].each do |k,v|
-        assert_equal v, records[i][k]
-      end
-    end
-    assert_equal expected, records
-
+    validate_json_list(expected, json)
 
   end
 
@@ -1598,17 +1554,10 @@ class EntitiesControllerTest < ActionController::TestCase
     records = json["records"]
     
     assert_equal 2, records.length
-
-
      expected = [
                  {"Doesn't or does?\" he said with a \\ in his eyes"=>"Another text value#", "will_participate_url?"=>"http://www.nsa.be", "ÖstalTesté"=>{"valueid"=>1218, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1218, "filename"=>"logo-dedomenon.png"}, "些 世 咹 水 晶"=>"मी काच खाऊ शकतो, मला ते दुखत नाही.", "id"=>100000},
                  {"Doesn't or does?\" he said with a \\ in his eyes"=>"Here is also \"a value\" with double and single ' quote", "will_participate_url?"=>"http://www.raphinou.com", "ÖstalTesté"=>{"valueid"=>1216, "filetype"=>"image/png\r", "uploaded"=>true, "detail_value_id"=>1216, "filename"=>"logo-Ubuntu.png"}, "些 世 咹 水 晶"=>"遨游", "id"=>203}]
-    expected.each_index do |i|
-      expected[i].each do |k,v|
-        assert_equal v, records[i][k]
-      end
-    end
-    assert_equal expected, records
+     validate_json_list(expected, json)
   end
 
   def test_detail_with_colon
@@ -1616,6 +1565,17 @@ class EntitiesControllerTest < ActionController::TestCase
     
     assert_response :success
 
+  end
+
+
+  def validate_json_list(expected, json)
+     assert_equal expected.length , json["records"].length
+     expected.each_index do |i|
+       expected[i].each do |k,v|
+        assert_equal v, json["records"][i][k]
+       end
+     end
+     assert_equal expected, json["records"]
   end
   
 	#FIXME: check that the list for link_to_existing doesn't show instances already linked
