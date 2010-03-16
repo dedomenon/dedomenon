@@ -18,7 +18,9 @@
 ################################################################################
 
 # The methods added to this helper will be available to all templates in the application.
+require 'action_view/helpers/javascript_helper'
 module ApplicationHelper
+  include ActionView::Helpers::JavaScriptHelper
 	def show_list(options = {})
 		data = { "list_id" =>  "list", "refresh_params" => nil}
     options.each do |k,v|
@@ -246,7 +248,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
         }
         catch (err) {
         }
-        alert('#{t('madb_form_submission_failed')}: '+message);
+        alert('#{escape_javascript(t('madb_form_submission_failed')) }:' +message);
         var callback =  #{h[:failure_callback]} ;
         callback(f,result);
     });}
