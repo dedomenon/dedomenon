@@ -262,7 +262,7 @@ YUI.add('madb-tables', function(Y) {
 */
 
         _define_action_listener: function(action, f) {
-            self = this;
+            var self = this;
             this._datatable.subscribe('cellClickEvent',function (oArgs) {
               var datatable = this;
               var target = oArgs.target;
@@ -288,14 +288,29 @@ YUI.add('madb-tables', function(Y) {
             return oPayload; 
           }
           // Define the delete listener only if that action is displayed
-          datatable = this._datatable;
+          var datatable = this._datatable;
+          var self = this;
           if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="delete") {return true; } }) )
           {
+            Y.log('will define delete listener');
             this._define_action_listener("delete", function(h) {
+                Y.log('start define delete listener');
                 var first_column = this.getColumnSet().keys[0].key; 
   // datasource utf-8 fix
                 var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
-                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
+                // FIX for IE8: Y.madb not available
+                Y.log('will display confirmation request');
+                var msg;
+                if (Y.madb){
+                  msg = Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  );
+                  Y.log('Y.madb is available!')
+                  Y.log(Y.madb);
+                }
+                else {
+                  Y.log('Y.madb is NOT available!')
+                  msg = "confirm?";
+                }
+                if (confirm(msg)) {
                   var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+h.record_id+'.js';
                   var datatable = this;
                   var config = { method: 'POST', 
@@ -304,6 +319,7 @@ YUI.add('madb-tables', function(Y) {
                                  },
                                  context: datatable
                   };
+                  Y.log('will send delete request');
                   Y.io(url, config);
                 }
             })
