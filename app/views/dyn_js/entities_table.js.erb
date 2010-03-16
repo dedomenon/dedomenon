@@ -298,19 +298,7 @@ YUI.add('madb-tables', function(Y) {
                 var first_column = this.getColumnSet().keys[0].key; 
   // datasource utf-8 fix
                 var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
-                // FIX for IE8: Y.madb not available
-                Y.log('will display confirmation request');
-                var msg;
-                if (Y.madb){
-                  msg = Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  );
-                  Y.log('Y.madb is available!')
-                  Y.log(Y.madb);
-                }
-                else {
-                  Y.log('Y.madb is NOT available!')
-                  msg = "confirm?";
-                }
-                if (confirm(msg)) {
+                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
                   var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+h.record_id+'.js';
                   var datatable = this;
                   var config = { method: 'POST', 
