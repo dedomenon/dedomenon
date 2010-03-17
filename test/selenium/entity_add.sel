@@ -5,7 +5,6 @@
 |type|user_password|linuxxxx|
 |clickAndWait|commit||
 |assertTitle|exact:madb_madb::madb_list_of_databases||
-|click|//a[contains(@href, "javascript:change('6')")]||
 |clickAndWait|//a[contains(@href, '/app/entities/add/12')]||
 |assertTitle|exact:madb_madb::madb_add_and_instance||
 |pause|1000||
@@ -34,5 +33,24 @@
 |assertValue|//input[@name="fonction[0][value]"]|hjkhkj|
 |assertValue|//input[@name="service[0][value]"]|hjkhkj|
 |assertValue|//textarea[@name="coordonees_specifiques[0][value]"]|fsdgfgd|
+|open|app/entities/list/12||
+|pause|2000||
+|click|link=2||
+|pause|500||
+|click|//div[@id="contacts_list_div"]//img[@alt="Edit" and @record_id="100001"]||
+|pause|2000||
+|type|//input[@name="nom[0][value]"]|AAAAAAlesi EDITED|
+|type|prenom[0][value]|Jean EDITED|
+|type|fonction[0][value]|retired|
+|type|service[0][value]|SERVICE EDITED|
+|type|coordonees_specifiques[0][value]|CS EDITED|
+|click|commit||
+|pause|2000||
+|click|link=2||
+|pause|1000||
+|assertTextPresent|AAAAAAlesi EDITED||
+|assertTextPresent|Jean EDITED||
+|assertTextPresent|retired||
+|assertTextPresent|SERVICE EDITED||
 |clickAndWait|link=madb_logout||
 |assertTitle|exact:madb_madb::||
