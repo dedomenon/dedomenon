@@ -18,6 +18,9 @@
 ################################################################################
 require_dependency 'translations'
 
+require 'action_view/helpers/javascript_helper'
+include ActionView::Helpers::JavaScriptHelper
+
 require "erb"
 require 'entities2detail.rb'
 

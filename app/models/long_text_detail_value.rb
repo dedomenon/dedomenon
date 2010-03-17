@@ -17,6 +17,9 @@
 #Copyright 2008 Raphaël Bauduin
 ################################################################################
 
+
+
+
 require "erb"
 include ERB::Util
 # *Description*
@@ -43,8 +46,8 @@ class LongTextDetailValue < DetailValue
     fields.push( new Y.TextareaField({
                   id: "#{form_field_id(i,o)}_value",
                   name:"#{form_field_name(i,o)}[value]",
-                  value:"#{html_escape(value)}",
-                  label:"#{form_field_label}"}));
+                  value:'#{escape_javascript(value)}',
+                  label:'#{escape_javascript(form_field_label)}'}));
     }
 	end
 	def self.format_detail(options)

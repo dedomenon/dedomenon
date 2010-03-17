@@ -1,0 +1,28 @@
+|open|/selenium/setup?fixtures=account_types,account_type_values,accounts,databases,data_types,detail_status,details,detail_value_propositions,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/add/12||
+|pause|1000||
+|echo|"test text starting with empty line"||
+|type|//textarea[@name="coordonees_specifiques[0][value]"]|
+hello one empty line|
+|type|//input[@name="nom[0][value]"]|empty line|
+|click|commit||
+|pause|1000||
+|open|/app/entities/edit/100001||
+|pause|1500||
+|assertElementPresent|//textarea[@name="coordonees_specifiques[0][value]"]||
+|type|//textarea[@name="coordonees_specifiques[0][value]"]|
+hello one empty line
+second line and an empty last line
+
+|
+|click|commit||
+|pause|1500||
+|open|/app/entities/edit/100001||
+|pause|2000||
+|assertElementPresent|//textarea[@name="coordonees_specifiques[0][value]"]||

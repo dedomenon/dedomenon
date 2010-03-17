@@ -48,8 +48,8 @@ class SimpleDetailValue <  DetailValue
     fields.push( new Y.TextField({
                   id: "#{form_field_id(i,o)}_value",
                   name:"#{form_field_name(i,o)}[value]",
-                  value:"#{value}",
-                  label:"#{form_field_label}"}));
+                  value:'#{escape_javascript(value)}',
+                  label:"#{escape_javascript(form_field_label)}"}));
 
      }
 	end

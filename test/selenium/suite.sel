@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="account_creation.sel">account_creation</a></td></tr>
+<tr><td><a href="authentication_login_change_password_and_help_info_display.sel">authentication_login_change_password_and_help_info_display</a></td></tr>
+<tr><td><a href="authentication_login_inexisting_user.sel">authentication_login_inexisting_user</a></td></tr>
+<tr><td><a href="create_and_delete_users.sel">create_and_delete_users</a></td></tr>
+<tr><td><a href="create_links.sel">create_links</a></td></tr>
+<tr><td><a href="database_creation_and_entity_definition_and_entry.sel">database_creation_and_entity_definition_and_entry</a></td></tr>
+<tr><td><a href="database_entity_detail_creation_removal.sel">database_entity_detail_creation_removal</a></td></tr>
+<tr><td><a href="database_entity_detail_searches.sel">database_entity_detail_searches</a></td></tr>
+<tr><td><a href="detail_creation_ddl_type.sel">detail_creation_ddl_type</a></td></tr>
+<tr><td><a href="details_creation_all_types.sel">details_creation_all_types</a></td></tr>
+<tr><td><a href="details_long_text_values.sel">details_long_text_values</a></td></tr>
+<tr><td><a href="email_validation_add_and_link_new.sel">email_validation_add_and_link_new</a></td></tr>
+<tr><td><a href="entities_list_order_and_filter.sel">entities_list_order_and_filter</a></td></tr>
+<tr><td><a href="entity_add.sel">entity_add</a></td></tr>
+<tr><td><a href="insert_into_books.sel">insert_into_books</a></td></tr>
+<tr><td><a href="insert_into_persons.sel">insert_into_persons</a></td></tr>
+<tr><td><a href="international_names.sel">international_names</a></td></tr>
+<tr><td><a href="linked_entity_creation_and_filtering.sel">linked_entity_creation_and_filtering</a></td></tr>
+<tr><td><a href="public_form_ie.sel">public_form_ie</a></td></tr>
+<tr><td><a href="public_form.sel">public_form</a></td></tr>
+<tr><td><a href="related_entities_elements_visibility.sel">related_entities_elements_visibility</a></td></tr>
+<tr><td><a href="s3_and_file_attachments.sel">s3_and_file_attachments</a></td></tr>
+<tr><td><a href="zz_csv_export.sel">zz_csv_export</a></td></tr>
+</tbody></table>
+</body>
+</html>
