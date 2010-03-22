@@ -483,3 +483,18 @@ fr:
   madb_use_it: Sélectionner
   madb_import_csv: Importer un fichier CSV
   madb_form_submission_failed: Le formulaire n'a pas pu être traité correctement
+  import_wizard:
+    madb_imported_and_rejected_items: "{{imported_items}} éléments ont été importés, {{empty_items}} entrées étaient vides, et {{rejected_items}} ont été rejetés"
+    madb_undo_import: Vous pouvez annuler l'importation en cliquant sur ce lien
+    madb_deleted_x_imported_items: L'effacement de {{deleted_items}} éléments importé a été effectué
+    main_title: Import de {{entity}}
+    upload_csv: Envoi du fichier CSV
+    madb_step1_title: "Étape 1: Envoi du fichier CSV"
+    madb_step2_title: "Étape 2: Lier les champs csv avec les champs de la table"
+    madb_step3_title: "Étape 2: Résultat"
+    madb_invalid_entries: Entrées invalides
+    goes_into: va dans
+    go_to_entities_list: Retour à la liste de {{entity}}
+    csv_format_invalid: L'analyse du fichier CSV a échoué
+    csv_file: Fichier CSV
+    field_separator: Séparateur de champs

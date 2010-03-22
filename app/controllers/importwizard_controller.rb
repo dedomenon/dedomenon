@@ -1,4 +1,5 @@
 require 'csv'
+require 'fastercsv'
 require 'tempfile'
 class ImportwizardController < ApplicationController
   before_filter :login_required
@@ -13,19 +14,27 @@ class ImportwizardController < ApplicationController
   
   #step 2
   def link_fields
-    redirect_to :action => "index", :id => params[:id]  and return if params["file_to_import"]==""
+    redirect_to :action => "index", :id => params[:id]  and return if params["file_to_import"].blank?
+    if params[:separator].blank?
+      separator = ","
+    else
+      separator = params[:separator]
+    end
     #save file in user's tmp zone
     f=Tempfile.new(%{#{@entity.name}}, import_temp_dir ) 
     f.print(params["file_to_import"].read) 
     f.close
     csv = nil
     begin
-      csv = CSV::parse(File.read(f.path))
-    rescue CSV::IllegalFormatError => e
+      #csv = FasterCSV::open(f.path, "r", separator)
+      csv=FasterCSV.open f.path, :col_sep => separator, :headers => true, :return_headers => true
+      # validate file
+      FasterCSV.foreach(f.path, :col_sep => separator, :headers => true, :return_headers => true) {} 
+      @csv_fields = csv.shift.headers
+    rescue FasterCSV::MalformedCSVError => e
       flash["error"]=I18n.t('import_wizard.csv_format_invalid')
       redirect_to :action => "index", :id => params[:id]  and return
     end
-    @csv_fields = csv.shift
     @csv_fields.insert(0, "----")
     @entity_fields = @entity.details_hash.keys
     FileUtils.cp(f.path, f.path+".perm")
@@ -36,24 +45,40 @@ class ImportwizardController < ApplicationController
     @entity = Entity.find params[:id]
     @imported_instances=[]
     @invalid_entries=[]
-    csv=CSV::parse(File.read(session[:file_to_import]))
-    @csv_fields = csv.shift
+    @empty_entries = 0
+    #default separator is ,
+    if params[:separator].blank?
+      separator = ","
+    else
+      separator = params[:separator]
+    end
+    csv=FasterCSV.open session[:file_to_import], :col_sep => separator , :headers => true, :return_headers => true
+    @csv_fields = csv.shift.headers
     @bindings=params[:bindings].inject({}){|acc,i| 
       acc.merge!({ i[0] => @csv_fields.index(i[1]) }) if i[1]!='----' 
       acc
     }
 
     csv.each do |row| 
+    #csv.each do |row| 
       # b[0] is detail
       # b[1] is csv column number
       h = @bindings.inject({}) do |acc,b| 
         acc.merge({b[0] => row[b[1]]}) 
       end
-      i, invalid_fields = Entity.instanciate(params[:id], h)
+        begin
+          i, invalid_fields = Entity.instanciate(params[:id], h)
+        rescue Exception => e
+          if e.message == "no detail saved"
+            @empty_entries+=1
+            next
+            #ignore, it is an empty row we should not save, but not block on it either
+          end
+        end
       if i
         @imported_instances.push i.id
       else
-        @invalid_entries.push row
+        @invalid_entries.push row.to_a.collect{|e| e[1]}
       end
       session[:imported_instances]= @imported_instances unless ActionController::Base.session_store==ActionController::Session::CookieStore
     end

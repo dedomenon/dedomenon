@@ -2,6 +2,7 @@
 <h2><%= I18n.t('import_wizard.madb_step1_title' )%></h2>
 <%= I18n.t('import_wizard.upload_csv')%>:
 <form action="<%= url_for :action => :link_fields , :id => params[:id] %>" method="post" enctype="multipart/form-data">
-  <input type="file" name="file_to_import"/>
+  <label for="file_to_import"><%= I18n.t 'import_wizard.csv_file'%></label><input type="file" name="file_to_import"/><br/>
+  <label for="separator"><%= I18n.t 'import_wizard.csv_file'%></label><input type="text" name="separator" value=","/>
   <input type="submit"/>
 </form>

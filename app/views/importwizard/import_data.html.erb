@@ -1,6 +1,6 @@
 <h1><%= I18n.t('import_wizard.main_title', :entity => @entity.name.capitalize )%></h1>
 <h2><%= I18n.t('import_wizard.madb_step3_title' )%></h2>
-<%= I18n.t 'import_wizard.madb_imported_and_rejected_items', :imported_items => @imported_instances.size, :rejected_items => @invalid_entries.size %>
+<%= I18n.t 'import_wizard.madb_imported_and_rejected_items', :imported_items => @imported_instances.size, :rejected_items => @invalid_entries.size, :empty_items => @empty_entries  %>
 
 <% if session[:imported_instances] and session[:imported_instances].size>0 %>
   <%= I18n.t 'import_wizard.madb_undo_import'%><%= link_to I18n.t('undo')  , :action => :delete_imported %>

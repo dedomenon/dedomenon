@@ -565,7 +565,7 @@ en:
   madb_import_csv: Import from CSV
   madb_use_it: Use it
   import_wizard:
-    madb_imported_and_rejected_items: Imported {{imported_items}} items and rejected {{rejected_items}} items.
+    madb_imported_and_rejected_items: Imported {{imported_items}} items, {{empty_items}} were empty and {{rejected_items}} items were invalid.
     madb_undo_import: "You can undo this import by clicking the following link: "
     madb_deleted_x_imported_items: "Deleted {{deleted_items}} items that had been imported"
     main_title: "{{entity}} import"
@@ -577,4 +577,6 @@ en:
     goes_into: "goes into"
     go_to_entities_list: "Go back to {{entity}} list"
     csv_format_invalid: "Parsing of CSV file failed"
+    csv_file: CSV File
+    field_separator: Field separator
   madb_form_submission_failed: The form submission was not successful 

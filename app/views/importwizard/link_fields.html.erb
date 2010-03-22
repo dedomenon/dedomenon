@@ -1,6 +1,7 @@
 <h1><%= I18n.t('import_wizard.main_title', :entity => @entity.name.capitalize )%></h1>
 <h2><%= I18n.t('import_wizard.madb_step2_title' )%></h2>
 <form action="<%= url_for :action => :import_data , :id => params[:id] %>">
+  <input type="hidden" name="separator" value="<%= params[:separator] %>" />
 <table>
   <tr><th>CSV field</th><th></th><th>Entity field</th></tr>
 <% @entity_fields.each do |f|%>
