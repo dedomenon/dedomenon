@@ -99,7 +99,8 @@ YAHOO_config = {
                 };
 
 
-<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+  var YAHOO = Y.YUI2;
   <%= entities_table( :js_var => "dt",:entity => relation.send(type[:to]) , :controller => self, :content_box => "##{yui_linked_list}", 
           :source => url_for(
                   :controller => "entities", :action => "related_entities_list", :id => @instance.id, :format => 'js', :params => { :relation_id => relation.id, :type => type[:to].pluralize}),

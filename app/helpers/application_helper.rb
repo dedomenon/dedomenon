@@ -97,10 +97,9 @@ module ApplicationHelper
       #used for development
       #@modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
       # this uses the gallery-form in myowndb's repository
-      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/gallery-form/gallery-form#{RAILS_ENV=="development" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
-                   "gallery-yui2" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2#{RAILS_ENV=="development" ? "-debug" : "-min"}.js", :requires => ['node-base','get','async-queue'], :optional => [], :supersedes => []},
+      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/ghinch/yui3-gallery/build/gallery-form/gallery-form#{RAILS_ENV=="test" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
                     "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  },
-                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget']  } } 
+                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'yui2-datatable', 'madb', 'io-base', 'event-key', 'widget']  } } 
       #build string passed to YUI
       inits = []
       options[:modules].each do |m| 
@@ -198,14 +197,14 @@ Y.publish('madb:entity_created', { broadcast: 2} );
         contentBox: '##{h[:form_content_box]}',
         action : '#{h[:form_action]}',
         method : 'post',
-        upload : #{h[:upload]},
+        #{ h[:upload] ? " encodingType: Y.Form.MULTIPART_ENCODED," : ""}
         resetAfterSubmit: false,
         skipValidationBeforeSubmit: true,
         fields : fields
     });
  
-    f.subscribe('#{event_to_watch}', function (args) {
-	var data = args.response.responseText;
+    f.subscribe('#{event_to_watch}', function (e) {
+	var data = e.args.responseText;
 	if (data.match(/(.{8}_([\\w\\s]+_[\\w\\s]*)\\[\\d\](_\\w+)*(######)?)+/))
 	{
 	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input',this.form); 
@@ -220,7 +219,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
 	  //%>
 	  for(var i=0;i</*>*/ids.length; i++)
 	  {
-	      value = ids[i];
+	      var value = ids[i]+'_field';
 
               YAHOO.util.Dom.removeClass( value,'valid_form_value');
               YAHOO.util.Dom.removeClass( value,'unchecked_form_value');
@@ -229,7 +228,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
 	}
 	else if (data.match(/__ERROR__.*/))
 	{
-	  message = data.replace('__ERROR__','');
+	  var message = data.replace('__ERROR__','');
 	  alert(message);
 	}
 	else
@@ -238,8 +237,8 @@ Y.publish('madb:entity_created', { broadcast: 2} );
          callback(f,data);
         }
     });
-    f.subscribe('failure', function (args) {
-	var data = args.response.responseText,
+    f.subscribe('failure', function (e) {
+	var data = e.args.responseText,
             message = "",
             result;
         try{

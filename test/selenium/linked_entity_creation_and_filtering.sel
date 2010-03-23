@@ -19,7 +19,7 @@
 |type|fonction[0][value]|fonction inconnue|
 |type|service[0][value]|PR|
 |type|coordonees_specifiques[0][value]|je n'en sais rien du tout|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1000||
 |click|//div[@id="e_7_from_parent_to_child_form_container"]//a[.="madb_done"]||
 |assertTextPresent|nom test||

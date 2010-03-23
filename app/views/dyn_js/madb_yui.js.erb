@@ -109,7 +109,7 @@ Y.extend(MadbFileField, Y.FileField, {
         return MadbFileField.REPLACE_ICON_TRANSFER_REFUSED; }
     },
     _initializeContainer: function() {
-                this._fieldContainer.set('innerHTML',this.init_value);
+                this._fieldContainer.set('innerHTML',this._initialValue);
                 this._fieldContainer.appendChild(this._deleteIconNode);
                 this._fieldContainer.appendChild(this._replaceIconNode);
     },

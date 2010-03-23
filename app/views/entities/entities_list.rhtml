@@ -22,13 +22,14 @@ YUI({
         },
         'madb-tables': {
             fullpath: 'http://<%= AppConfig.app_host %>/app/dyn_js/entities_table.js',
-            requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget'],
+            requires: ['substitute', 'yui2-datatable', 'madb', 'io-base', 'event-key', 'widget'],
             optional: [],
             supersedes: []
         }
     }
-}).use('substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', function(Y) {
+}).use('substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', function(Y) {
 
+  var YAHOO = Y.YUI2;
 <%= entities_table(:entity => @entity, :controller => self, :content_box => '#table-widget' )%>
 
 

@@ -54,23 +54,23 @@ body {
 }
 
 
-.yui-form-field label {
+.yui3-form-field label {
   float:left;
   width:30%;
 }
 
-.yui-form-field {
+.yui3-form-field {
   padding-top: 4px;
   padding-bottom: 4px;
   border-width: 1px 0 0 0 ;
 	border-style: dotted;
   
 }
-.yui-hidden-field {
+.yui3-hidden-field {
   display:none;
   border-style: none;
 }
-.yui-button{
+.yui3-button{
   display: inline-block;
 }
 
