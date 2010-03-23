@@ -76,7 +76,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
@@ -112,7 +112,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|

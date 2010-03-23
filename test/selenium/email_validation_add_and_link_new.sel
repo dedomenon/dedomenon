@@ -49,7 +49,7 @@
 |pause|500||
 |assertElementPresent|//input[@name="company_email[0][value]" and @class="valid_form_value"]||
 |type|//input[@name="company_email[0][value]"]|hjkhkj|
-|click|commit||
+|click|//button[@id="commit"]||
 |type|//input[@name="company_email[0][value]"]|hjkhkj@redfds.com|
 |click|//button[@id="commit"]||
 |pause|1000||
