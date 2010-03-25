@@ -1,4 +1,4 @@
-<% form_id = String.random %>
+<% form_id = "form_"+String.random %>
 fields.push( new Y.HiddenField({
               name:"form_id",
               value:"<%= form_id%>"}));
@@ -19,6 +19,6 @@ fields.push( new Y.HiddenField({
         <% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] unless values.size>0%>
 	<%values.each do |value| %>
   <!-- <input type="hidden" id="<%=@entity.name+'_'+detail.name+"["+i.to_s+"]"%>_id" name="<%=detail.name+"["+i.to_s+"]"%>[id]" value="<%=value.id%>"> -->
-    <%= value.to_yui_form_row(i, :form_id => form_id, :entity => @entity, :controller => self.controller ) %>
+  <%= value.to_yui_form_row(i, :form_id => form_id, :entity => @entity, :detail => detail, :controller => self.controller ) %>
 	<%end%>
 <% end %>

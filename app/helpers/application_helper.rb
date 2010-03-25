@@ -99,7 +99,7 @@ module ApplicationHelper
       # this uses the gallery-form in myowndb's repository
       @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/ghinch/yui3-gallery/build/gallery-form/gallery-form#{RAILS_ENV=="test" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
                     "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  },
-                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'yui2-datatable', 'madb', 'io-base', 'event-key', 'widget']  } } 
+                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'yui2-datatable', 'yui2-paginator', 'yui2-datasource', 'yui2-connection','madb', 'io-base', 'event-key', 'widget']  } } 
       #build string passed to YUI
       inits = []
       options[:modules].each do |m| 
@@ -205,25 +205,25 @@ Y.publish('madb:entity_created', { broadcast: 2} );
  
     f.subscribe('#{event_to_watch}', function (e) {
 	var data = e.args.responseText;
-	if (data.match(/(.{8}_([\\w\\s]+_[\\w\\s]*)\\[\\d\](_\\w+)*(######)?)+/))
+        Y.log("data is :");
+        Y.log(data);
+	if (data.match(/(form_.{8}_([\\w\\s]+_[\\w\\s]*)(_\\w+)*(######)?)+/))
 	{
-	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input',this.form); 
-	    try {
-	    YAHOO.util.Dom.batch(invalid_fields, function (e) {Element.removeClassName( e,'invalid_form_value');Element.addClassName( e,'unchecked_form_value'); });
-	    }
-	    catch(e)
-	    {
-	    }
+	    var invalid_fields = Y.all("input.invalid_form_value").removeClass('invalid_form_value').addClass('unchecked_form_value');
 	  ids = data.split('######');
 	  //<%# comment needed for test code
 	  //%>
 	  for(var i=0;i</*>*/ids.length; i++)
 	  {
+            //FIXME need to give id that is hte hash of the name to make it work with Y.one
 	      var value = ids[i]+'_field';
+              Y.log(value);
+              var f = Y.one('#'+value);
+              Y.log(f);
 
-              YAHOO.util.Dom.removeClass( value,'valid_form_value');
-              YAHOO.util.Dom.removeClass( value,'unchecked_form_value');
-              YAHOO.util.Dom.addClass( value,'invalid_form_value');
+              f.removeClass('valid_form_value');
+              f.removeClass('unchecked_form_value');
+              f.addClass('invalid_form_value');
 	  }
 	}
 	else if (data.match(/__ERROR__.*/))

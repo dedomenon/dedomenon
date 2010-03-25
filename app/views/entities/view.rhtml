@@ -58,7 +58,6 @@
               new Ajax.Updater('link_existing_#{type[:to]}_#{prefix}_div',  '#{url_for :controller => "entities", :action => "link_to_existing" , :format => "html",  "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "link_existing_#{type[:to]}_#{prefix}_div", :link_to_many => (link_to_many ? 't':'f'), :update => list_id }  ', {asynchronous:true, evalScripts:true} );
             #{yui_linkable_list}_counter++;
             $('link_existing_#{type[:to]}_#{prefix}_div').innerHTML='';
-            //Element.show('link_existing_#{type[:to]}_#{prefix}_div');
             Element.toggleClassName('#{yui_linkable_list}_container', 'hidden');
 
               " %>
