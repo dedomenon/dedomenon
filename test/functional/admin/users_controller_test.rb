@@ -216,7 +216,7 @@ class Admin::UsersControllerTest < ActionController::TestCase
   def test_create
     ActionMailer::Base.deliveries = []
     pre_users_count = User.count
-  post :create,  {"user"=>{"user_type_id"=>"2", "lastname"=>"raph", "firstname"=>"baud", "login"=>"login@yahoo.com", "login_confirmation"=>"login@yahoo.com"}, "commit"=>"Signup"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
+  post :create,  {"user"=>{"user_type_id"=>"2", "lastname"=>"raph", "firstname"=>"baud", "login"=>"login@yahoo.com"}, "commit"=>"Signup"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
     post_users_count = User.count
 
     
@@ -240,25 +240,11 @@ class Admin::UsersControllerTest < ActionController::TestCase
 
 
 
-  def test_create_no_login_confirmation
-    ActionMailer::Base.deliveries = []
-    pre_users_count = User.count
-    post :create,  {"user"=>{"user_type_id"=>"2", "lastname"=>"raph", "firstname"=>"baud", "login"=>"login@yahoo.com"}, "commit"=>"Signup"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
-    post_users_count = User.count
-
-    
-    #correct page displayed
-    assert_response :success
-    assert_template "new"
-    #user created and mail delivered?
-    assert_equal 0, post_users_count-pre_users_count
-    assert_equal 0, ActionMailer::Base.deliveries.size
-  end
 
   def test_create_login_not_email
     ActionMailer::Base.deliveries = []
     pre_users_count = User.count
-  post :create,  {"user"=>{"user_type_id"=>"2", "lastname"=>"raph", "firstname"=>"baud", "login"=>"login", "login_confirmation" => "login"}, "commit"=>"Signup"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
+  post :create,  {"user"=>{"user_type_id"=>"2", "lastname"=>"raph", "firstname"=>"baud", "login"=>"login"}, "commit"=>"Signup"}, { 'user' => User.find_by_id(@db1_admin_user_id)}
     post_users_count = User.count
 
     

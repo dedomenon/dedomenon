@@ -58,8 +58,8 @@ class Account < ActiveRecord::Base
   has_many :users
   belongs_to :account_type
   belongs_to :upgrade_to, :class_name => "AccountType", :foreign_key => "upgrade_id"
-  validates_presence_of :name, :message => "madb_enter_account_name"
-  validates_size_of :country, :minimum => 2, :message => "madb_choose_country"
+#  validates_presence_of :name, :message => "madb_enter_account_name"
+#  validates_size_of :country, :minimum => 2, :message => "madb_choose_country"
   
   attr_readonly   :id
   attr_protected  :active, 

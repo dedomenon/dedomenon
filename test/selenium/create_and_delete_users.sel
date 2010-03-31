@@ -12,10 +12,6 @@
 |type|user_lastname|Normal|
 |type|user_firstname|User|
 |type|user_login|normal@normal.biz|
-|type|user_login_confirmation|normal@normal.org|
-|clickAndWait|commit||
-|assertText|//div[@id='errorExplanation']/ul/li[1]|Login madb_login_not_confirmed|
-|type|user_login_confirmation|normal@normal.biz|
 |clickAndWait|commit||
 |assertText|//div[@id='bd']//h1|madb_users_list|
 |assertText|//div[@id='bd']//table/tbody[5]/tr/td[1]|normal@normal.biz|
@@ -27,7 +23,6 @@
 |type|user_lastname|Primary|
 |type|user_firstname|User|
 |type|user_login|primary@primary.org|
-|type|user_login_confirmation|primary@primary.org|
 |select|user[user_type_id]|label=primary_user|
 |clickAndWait|commit||
 |assertText|//div[@id='bd']//h1|madb_users_list|

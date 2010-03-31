@@ -17,8 +17,6 @@
 <%= text_field 'user', 'firstname'  %></p>
 <label for="user_login"><%=t("madb_email")%>:</label><br/>
     <%= text_field "user", "login", :size => 30 %><br/>
-    <label for="user_login_confirmation"><%= t("madb_email_confirmation")%>:</label><br/>
-    <%= text_field "user", "login_confirmation", :size => 30 %><br/>
 
     <label for="user_type"><%= t("madb_user_type")%>:</label>
     <select name="user[user_type_id]"><%= options_for_select(@user_types_for_select, 2)  %> </select><br/>

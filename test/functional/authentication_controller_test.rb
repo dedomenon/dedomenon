@@ -106,23 +106,15 @@ class AuthenticationControllerTest < ActionController::TestCase
     assert_response :success
   end
   
-	#incorrect
-	#---------
+  # this passes with simplified signup
   def test_signup_with_no_company
     pre_accounts_count = Account.count
     pre_users_count = User.count
     post :signup ,{"user"=>{  "login"=>"raphinou2new@yahoo.com", 
-                              "login_confirmation"=>"raphinou2new@yahoo.com",
                               "password"=>"raphinou", 
                               "password_confirmation"=>"raphinou"
                             }, 
                             "commit"=>"Signup", 
-                            "account"=>{
-                              "city"=>"", 
-                              "name"=>"", 
-                              "country"=>"0", 
-                              "zip_code"=>"", 
-                              "street"=>""}, 
                             "action"=>"signup", 
                             "controller"=>"authentication", 
                             "account_type_id" => "1",
@@ -133,25 +125,21 @@ class AuthenticationControllerTest < ActionController::TestCase
     post_users_count = User.count
 
 
-    #no user in session
-    assert(!@response.has_session_object?( "user"))
+    #user in session
+    #assert(@response.has_session_object?( "user"))
     #we can't find the user created
     user = User.find_by_login("raphinou2new")
     assert_nil user
     #no account created
-    assert_equal post_accounts_count, pre_accounts_count
+    assert_equal 1, post_accounts_count - pre_accounts_count
     #no user created
-    assert_equal post_users_count, post_users_count
-    #we render the signup form
-    assert_template "signup"
+    assert_equal 1, post_users_count - pre_users_count
     #2 errors on account: name and country
-    assert_equal 2, assigns["account"].errors.count
-    assert_not_nil(assigns["account"].errors.on( "name"))
-    assert_not_nil(assigns["account"].errors.on( "country"))
+    assert_equal 0, assigns["account"].errors.count
      #1 error on user: the account is invalid	
      # NOTE: Again this tests fails because there are duplicate errors
-    assert_equal 2, assigns["user"].errors.count
-    assert_not_nil(assigns["user"].errors.on("account"))
+    assert_equal 0, assigns["user"].errors.count
+    assert_nil(assigns["user"].errors.on("account"))
   end
 
 
@@ -196,10 +184,9 @@ class AuthenticationControllerTest < ActionController::TestCase
     assert_equal 0, assigns["account"].errors.count
      #5 error on user: the login exists
      # NOTE: Same problem here, duplicate error objects
-    assert_equal 10, assigns["user"].errors.count
+    assert_equal 8, assigns["user"].errors.count
     #login invalid and already taken
     assert_not_nil(assigns["user"].errors.on( "login"))
-    assert_not_nil(assigns["user"].errors.on( "login_confirmation"))
     assert_not_nil(assigns["user"].errors.on( "password"))
   end
 
@@ -215,7 +202,6 @@ class AuthenticationControllerTest < ActionController::TestCase
                             {
                               "password_confirmation" =>  "t", 
                               "login"=>"test@test.com", 
-                              "login_confirmation"=>"test@test.com", 
                               "password"=>"t"
                             }, 
                   "commit"=>"Signup", 
@@ -266,7 +252,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     @request.session['return-to'] = "/bogus/location"
 
     #post :signup, "user" => { "login" => "newbob", "password" => "newpassword", "password_confirmation" => "newpassword", "email" => "newbob@test.com" }
-		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com", "login_confirmation"=>"rb-signup@raphinou.com", "password"=>"taphinou", "password_confirmation" => "taphinou", "firstname" => "raphaël", "lastname" => "bauduin"}, "commit"=>"Signup", "account"=>{"city"=>"", "name"=>"test company", "country"=>"Belgium", "zip_code"=>"", "street"=>""}, "action"=>"signup", "controller"=>"authentication", :account_type_id => "1", "tos_accepted" => "on"}
+		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com", "password"=>"taphinou", "password_confirmation" => "taphinou"}, "commit"=>"Signup", "action"=>"signup", "controller"=>"authentication", :account_type_id => "1", "tos_accepted" => "on"}
     assert(!@response.has_session_object?( "user"))
     
 		assert_response :redirect
@@ -286,8 +272,6 @@ class AuthenticationControllerTest < ActionController::TestCase
     assert_redirected_to(@controller.url_for(:action => "login"))
     #user created at signup is primary user
     assert_equal 1, user.user_type_id
-    assert_equal "raphaël", user.firstname
-    assert_equal "bauduin", user.lastname
   end
 
 
@@ -299,7 +283,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     @request.session['return-to'] = "/bogus/location"
 
     #post :signup, "user" => { "login" => "newbob", "password" => "newpassword", "password_confirmation" => "newpassword", "email" => "newbob@test.com" }
-		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com", "login_confirmation"=>"rb-signup@raphinou.com", "password"=>"taphinou", "password_confirmation" => "taphinou", "firstname" => "raphaël", "lastname" => "bauduin"}, "commit"=>"Signup", "account"=>{"city"=>"", "name"=>"test company", "country"=>"Belgium", "zip_code"=>"", "street"=>""}, "action"=>"signup", "controller"=>"authentication", :account_type_id => "2", "tos_accepted" => "on"}
+		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com",  "password"=>"taphinou", "password_confirmation" => "taphinou", "firstname" => "raphaël", "lastname" => "bauduin"}, "commit"=>"Signup", "account"=>{"city"=>"", "name"=>"test company", "country"=>"Belgium", "zip_code"=>"", "street"=>""}, "action"=>"signup", "controller"=>"authentication", :account_type_id => "2", "tos_accepted" => "on"}
 
     #user is in session, but account still inactive
     assert_not_nil  session["user"]
@@ -340,7 +324,7 @@ class AuthenticationControllerTest < ActionController::TestCase
     ActionMailer::Base.deliveries = []
     @request.session['return-to'] = "/bogus/location"
 
-		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com", "login_confirmation"=>"rb-signup@raphinou.com", "password"=>"taphinou", "password_confirmation" => "taphinou", "firstname" => "raphaël", "lastname" => "bauduin"}, "commit"=>"Signup", "account"=>{"city"=>"", "name"=>"test company", "country"=>"Belgium", "zip_code"=>"", "street"=>""}, "action"=>"signup", "controller"=>"authentication", :account_type_id => "1"}
+		post :signup, {"user"=>{ "login"=>"rb-signup@raphinou.com",  "password"=>"taphinou", "password_confirmation" => "taphinou", "firstname" => "raphaël", "lastname" => "bauduin"}, "commit"=>"Signup", "account"=>{"city"=>"", "name"=>"test company", "country"=>"Belgium", "zip_code"=>"", "street"=>""}, "action"=>"signup", "controller"=>"authentication", :account_type_id => "1"}
     assert(!@response.has_session_object?( "user"))
     
 		assert_response :success

@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
   end
 #  validates_format_of :login, :with =>/^[_\w-]+(\.[_\w-]+)*@[\w-]+(\.\w+)*(\.[a-z]{2,3})$/ 
   #validates_uniqueness_of :login
-  validates_confirmation_of :login, :on => :create, :message => "madb_login_not_confirmed"
+#  validates_confirmation_of :login, :on => :create, :message => "madb_login_not_confirmed"
 
   #validates_length_of :password, :within => 6..40, :message => "madb_password_too_short"
   validates_each :password do |record, attr, value|
@@ -185,7 +185,7 @@ class User < ActiveRecord::Base
   end
 #  validates_presence_of :login
   validates_presence_of :password, :password_confirmation, :on => :create, :message => "madb_password_and_confirmation_needed"
-  validates_presence_of :login_confirmation, :on => :create, :message => " madb_login_not_confirmed"
+#  validates_presence_of :login_confirmation, :on => :create, :message => " madb_login_not_confirmed"
   validates_confirmation_of :password, :message => "madb_password_not_confirmed"
   validates_associated :account, :message => "madb_error_in_account"
   
