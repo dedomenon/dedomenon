@@ -498,3 +498,4 @@ fr:
     csv_format_invalid: L'analyse du fichier CSV a échoué
     csv_file: Fichier CSV
     field_separator: Séparateur de champs
+    file_requirements: La première rangée du fichier CSV doit contenir le titre de la colonne, et ne peut contenir une donnée! Il est actuellement impossible d'importer un fichier CSV sans entête de colonne.
