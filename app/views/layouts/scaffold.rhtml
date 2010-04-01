@@ -1,6 +1,7 @@
 <html>
 <head>
   <title><%=t("madb_madb")%>::<%= @title %></title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.0.0/build/cssfonts/fonts-min.css&3.0.0/build/cssreset/reset-min.css&3.0.0/build/cssgrids/grids-min.css&3.0.0/build/cssbase/base-min.css">
 <%= stylesheet_link_tag 'main' %>
 <% if request.env["HTTP_USER_AGENT"].nil? or (RAILS_ENV=="test" and request.env["HTTP_USER_AGENT"].nil?) or   request.env["HTTP_USER_AGENT"].include?("MSIE")%>
 <%= stylesheet_link_tag 'ie' %>
@@ -15,6 +16,7 @@
 <%= javascript_include_tag "yui-event" %>
 <%= javascript_include_tag "yui-dom" %>
 <%= javascript_include_tag "yui-container" %>
+<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script> 
 </head>
 <body>
 <table>

@@ -1,3 +1,18 @@
+<script language="JavaScript" src="http://www.geoplugin.net/javascript.gprout" type="text/javascript"></script>
+<script type="text/javascript">
+  YUI().use("event","node", function(Y) {
+      Y.on("domready", function() {
+          try{
+            var country = geoplugin_countryName();
+            var country_select = Y.one("#account_country");
+            country_select.set("value", country);
+          }
+          catch(e)
+          {
+          }
+        });
+      })
+</script>
 <% form_tag :action=> "signup" do -%>
 <div  class="form">
 <!-- 
@@ -46,7 +61,9 @@
       <label for="account_vat_number"><%=t "madb_company_vat"%>:</label><br/>
       <%= text_field "account", "vat_number", :size => 30  %><br/>
     </span>
+    <label for="account_country"><%=t "madb_company_country"%>:</label><br/>
     -->
+    <span class="hidden"><%= country_select "account", "country", { t("madb_choose") => 0}%><br/></span>
   </div>
   <br/>
   <hr>
