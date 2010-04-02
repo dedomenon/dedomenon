@@ -32,7 +32,6 @@
 #   has_many :entities
 #   has_many :details
 #
-require 'json'
 class Database < ActiveRecord::Base
   
   belongs_to :account
@@ -63,64 +62,4 @@ class Database < ActiveRecord::Base
     end
   end
   
-  #FIXME: Add the options behaviour as a standard behaviour
-  #FIXME: When the initial string is null, should proceed next.
-#  def to_json(options={})
-#    
-#    json = JSON.parse(super(options))
-#    
-#    replace_with_url(json, 'id', :Database, options)
-#    replace_with_url(json, 'account_id', :Account, options)
-#    
-#    format = ''
-#    format = '.' + options[:format] if options[:format]
-#    
-#    json[:entities_url] = @@lookup[:Database] % [@@base_url, self.id]
-#    json[:entities_url] += (@@lookup[:Entity] % ['', '']).chop + format
-#    
-#    json[:details_url] = @@lookup[:Database] % [@@base_url, self.id]
-#    json[:details_url] += (@@lookup[:Detail] % ['', '']).chop + format
-#    
-#    return json.to_json
-#    
-#    #json = old_to_json(opts)
-#    
-##    # remove any whitespace
-##    json.strip!
-##    
-##    # Subtitute the escape sequence chracters
-##    json.gsub!(/\\/, '')
-##    
-##    # Delete the bracket
-##    json.delete!('}')
-##    
-##    # remove the enclosing quote symbols
-##    if json.length > 2
-##      json = json[1, json.length]
-##    end
-##    
-##    json.chop!
-##    
-##    
-##    base_url = 'http://localhost:3000/'
-##    str = '"details": '          + '"' + base_url + "databases/#{id}/details.json"   + '"' + ', ' +
-##          '"entities": '       + '"' + base_url + "databases/#{id}/entities.json" + '"' 
-##        
-##          
-##          
-##    
-##    
-##    
-##    json = json + ', ' + str + '}'
-##    
-##    # Subtitute the account URL
-##    account_url = base_url + "accounts/#{account_id}"
-##    json.gsub!(/("account_id":)\s+\d+/, "\"account_url\": \"#{account_url}\"")
-##    json.gsub!(/("id":)\s+\d+/, '"url": ' + base_url + "databases/#{id}")
-##    
-##    
-##    return json;
-#    
-#       
-#  end
 end

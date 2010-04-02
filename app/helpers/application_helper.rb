@@ -162,6 +162,24 @@ module ApplicationHelper
        #{h[:js_var]}.render();
     }
   end
+
+  def datatable(h={})
+    raise "Missing options" if h[:controller].nil? or h[:content_box].nil? or h[:js_var].nil? or h[:ar_class].nil?
+    js = %{
+       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:  #{ h[:ar_class].columns.reject {|c| ["id", "lock_version"].include?(c.name)  or c.name.match(/_id/) }.collect { |c| { "key" => c.name} }.push({"key" => "id", "hidden" => true}).to_json }   ,
+                  source: #{ h[:source].to_json  },
+                  dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
+                  fields_definition : #{ h[:ar_class].columns.collect { |c| c.name}.to_json },
+                  entity_name: #{ h[:ar_class].to_s.to_json },
+                  entity_id : 0,
+                  filter_options : '#{ options_for_select(  h[:ar_class].columns.collect { |c| c.name} ).gsub(/\n/,'') }',
+                  actions: #{h[:actions].to_json} , 
+                  data : #{(h[:data]||nil).to_json},
+                  identifier : '#{h[:content_box][1..-1]}',
+                  contentBox: '#{h[:content_box]}'});
+       #{h[:js_var]}.render();
+    }
+  end
   #default entity form
   def default_entity_form(h)
    (h[:form_content_box] ) or raise "need :form_content_box passed"

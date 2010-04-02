@@ -110,11 +110,22 @@ class Admin::DatabasesController < ApplicationController
         :offset => params['start-index'], 
         :limit => params['max-results'], 
         :conditions => ["account_id = ?", params[:account_id]])
+      @databases_count = Database.count( :conditions => ["account_id = ?", params[:account_id]])
     else
       @databases = Database.find(:all, 
         :offset => params['start-index'], 
         :limit => params['max-results'], 
         :conditions => ["account_id = ?", session["user"].account.id])
+      @databases_count = Database.count( :conditions => ["account_id = ?", session["user"].account.id])
+    end
+    @list = @databases
+    @sort = params[:sort]
+    @dir = params[:dir]
+    @paginator = ApplicationController::Paginator.new self, @databases_count , @list.length, (@databases_count/@list.length)+1
+
+    respond_to do |format|
+      format.js { render :template => "entities/entities_list"  }
+      format.html {}
     end
   end
 

@@ -34,4 +34,11 @@
 
 <br />
 
+<div id="databases_list"></div>
 
+<script type="text/javascript">
+  <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+    <%= datatable( :js_var => "dt", :ar_class => Database, :controller => self, :content_box => "#databases_list", :source => url_for(:controller => "Admin/Databases",:action => "list", :format => "js")+"?", :actions => ["view", "edit", "delete"] )%>
+    
+  <% end %>
+</script>
