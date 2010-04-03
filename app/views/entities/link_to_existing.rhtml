@@ -64,21 +64,24 @@
 
       });
     Y.Global.on('madb:entity_unlinked', function(source, h) { 
+              Y.log("received madb:entity_unlinked in link_to_Existing");
               if (source.replace(/linked/,'linkable') == '<%= @yui_list_id %>')
               {
                 if ('<%=params['link_to_many']%>'=='t') {
-                  dt.getDataTable().addRow(h.record.getData(), 0); }
+                  dt.getDataTable().addRow(h.record.getData(), 0); 
+                }
                 else {
                   dt._refresh_table();
                 }
               }
     });
   Y.Global.on('madb:refresh_related', function(source, data) {
-      Y.log('got madb:refresh_related from source but only respond to <%= @yui_list_id %>');
+      Y.log('got madb:refresh_related from '+source+' but only respond to <%= @yui_list_id %>');
       if (source.replace(/linked/,'linkable') == '<%= @yui_list_id %>')
       {
         dt._refresh_table();
       }
   });
 <%end%>
+
 </script>

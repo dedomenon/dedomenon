@@ -97,7 +97,7 @@ module ApplicationHelper
       #used for development
       #@modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
       # this uses the gallery-form in myowndb's repository
-      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/ghinch/yui3-gallery/build/gallery-form/gallery-form#{RAILS_ENV=="test" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
+      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
                     "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  },
                     "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'yui2-datatable', 'yui2-paginator', 'yui2-datasource', 'yui2-connection','madb', 'io-base', 'event-key', 'widget']  } } 
       #build string passed to YUI
@@ -147,6 +147,7 @@ module ApplicationHelper
       return "alert('#{t("madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty")}');"
     end
     js = %{
+       window.YAHOO = window.YAHOO || Y.YUI2; 
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
                   source: #{h[:source].nil? ? '"'+(url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?")+'"' : h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
@@ -217,13 +218,11 @@ Y.publish('madb:entity_created', { broadcast: 2} );
 	  {
             //FIXME need to give id that is hte hash of the name to make it work with Y.one
 	      var value = ids[i]+'_field';
-              Y.log(value);
-              var f = Y.one('#'+value);
-              Y.log(f);
+              var field = Y.one('#'+value);
 
-              f.removeClass('valid_form_value');
-              f.removeClass('unchecked_form_value');
-              f.addClass('invalid_form_value');
+              field.removeClass('valid_form_value');
+              field.removeClass('unchecked_form_value');
+              field.addClass('invalid_form_value');
 	  }
 	}
 	else if (data.match(/__ERROR__.*/))

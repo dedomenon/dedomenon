@@ -51,8 +51,6 @@ YAHOO_config = {
 
 <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
 
-  var YAHOO = Y.YUI2;
-
   <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@list_id}_div", :actions => [ "view", "edit", "delete" ] )%>
 
 

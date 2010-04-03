@@ -29,7 +29,6 @@ YUI({
     }
 }).use('substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', function(Y) {
 
-  var YAHOO = Y.YUI2;
 <%= entities_table(:entity => @entity, :controller => self, :content_box => '#table-widget' )%>
 
 

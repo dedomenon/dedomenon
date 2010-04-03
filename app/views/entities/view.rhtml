@@ -34,6 +34,7 @@
     <%# Used by entity_linked event to identify the linkable list who fired the event %>
     <% self_id = type[:from]+"_id" %>
     <% prefix = "e_#{relation.id}_from_#{type[:from]}_to_#{type[:to]}" %>
+    <% linked_entity = relation.send(type[:to]) %>
     <% yui_linked_list = "#{prefix}_linked_list" %>
     <% yui_linkable_list ="#{prefix}_linkable_list" %> 
     <% yui_form ="#{prefix}_form" %> 
@@ -53,15 +54,114 @@
 
           <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style <%= addition_element %> <%= addition_button %>">
             <span id="<%=list_id%>_add_existing_<%=type[:to]%>_link">
-              <%=link_to_function t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}), "
-            if (#{yui_linkable_list}_counter==0)
-              new Ajax.Updater('link_existing_#{type[:to]}_#{prefix}_div',  '#{url_for :controller => "entities", :action => "link_to_existing" , :format => "html",  "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "link_existing_#{type[:to]}_#{prefix}_div", :link_to_many => (link_to_many ? 't':'f'), :update => list_id }  ', {asynchronous:true, evalScripts:true} );
-            #{yui_linkable_list}_counter++;
-            $('link_existing_#{type[:to]}_#{prefix}_div').innerHTML='';
-            Element.toggleClassName('#{yui_linkable_list}_container', 'hidden');
-
-              " %>
+              <a href="#"><%= t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}) %></a>
             </span>
+
+
+<script type="text/javascript">
+<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => ['substitute', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+  Y.publish('madb:entity_linked', { broadcast: 2} )
+  Y.publish('madb:refresh_related', { broadcast: 2} )
+  var create_datatable = function() {
+
+    <%= entities_table( :js_var => "dt",:entity => linked_entity , :controller => self, :content_box => "##{yui_linkable_list}", 
+            :source => url_for(
+                   :controller => "entities", :action => "list_available_for_link", :format => 'js', :params => { self_id.to_sym => params[:id] , :relation_id => relation.id    }),
+            :actions => ["link"],
+            :data => { :relation_id => relation.id, self_id.to_sym => params[:id], :link_to_many => params['link_to_many']  } 
+            )
+            
+            %>
+    Y.on('madb:link', function(h) { 
+          var url = '<%= url_for(:controller => 'entities', :action => 'link')%>/'+h.record_id+'?<%=self_id%>=<%=params[:id]%>&relation_id=<%=relation.id%>&link_to_many=<%= link_to_many ? 't':'f' %>';
+          var config = { method: 'POST', 
+                         on: { success : function(i, resp) { 
+                                  Y.fire('madb:entity_linked', '<%= yui_linkable_list %>', h );
+                                  //  if to many, allow multiple additions
+                                  <% if link_to_many %>
+                                    try{
+                                      this.deleteRow(h.target);
+                                    }
+                                    catch(err)
+                                    {
+                                      // if the last row of the page was deleted, refresh the table.
+                                      if (err=="TypeError: Cannot call method 'getId' of undefined")
+                                      {
+                                        dt._refresh_table();
+                                      }
+
+                                    }
+                                  //  if to one, only allow one addition, so clear the table after this addition
+                                <% else %>
+                                        var recs = dt.getDataTable().getRecordSet().getRecords();
+                                        dt.getDataTable().deleteRows(0, recs.length);
+                                <% end %>
+                                },
+                               failure : function(i, resp) { 
+                                 
+                                  var data = resp.responseText,
+                                      message = "",
+                                      result;
+                                  try{
+                                    result = Y.JSON.parse(data);
+                                    message = result.message;
+                                  }
+                                  catch (err) {
+                                  }
+                                  Y.fire('madb:refresh_related','<%= yui_linkable_list %>');
+                                  dt._refresh_table();
+                                 alert("<%= t('madb_an_error_occured')%>:" +message);}
+                         },
+                         context: dt.getDataTable()
+          };
+          Y.io(url, config);
+
+        });
+      Y.Global.on('madb:entity_unlinked', function(source, h) { 
+                Y.log("received madb:entity_unlinked in link_to_Existing");
+                if (source.replace(/linked/,'linkable') == '<%= yui_linkable_list %>')
+                {
+                <% if link_to_many %>
+                    dt.getDataTable().addRow(h.record.getData(), 0); 
+                <% else %>
+                    dt._refresh_table();
+                <%end %>
+                }
+      });
+    Y.Global.on('madb:refresh_related', function(source, data) {
+        Y.log('got madb:refresh_related from '+source+' but only respond to <%= yui_linkable_list %>');
+        if (source.replace(/linked/,'linkable') == '<%= yui_linkable_list %>')
+        {
+          dt._refresh_table();
+        }
+    });
+
+  }
+  var count = 0;
+  var display_list = function(e){
+    e.preventDefault();
+    if (count == 0) {
+      create_datatable(); }
+    count++;
+    Y.one('#<%=yui_linkable_list%>_container').toggleClass('hidden');
+  }
+  Y.on("click", display_list, "#<%=list_id%>_add_<%=type[:to]%>_links");
+<%end%>
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             <span class="" id="<%=list_id%>_add_new_<%=type[:to]%>_link">
@@ -77,11 +177,14 @@
                 "  %>
               </span>
           </div>
+          
 <!-- Adding new linked instances -->
 <div id="<%= yui_linkable_list %>_container" class="tool_in_page hidden <%= addition_element %>">
-  <div id="<%= yui_linkable_list %>" /></div>
+  <div id="<%= yui_linkable_list %>" ></div>
   <span class="button_style"><a href="#" onclick="Element.toggleClassName('<%= yui_linkable_list%>_container', 'hidden');return false;"><%= t('madb_done')%></a></span>
 </div>
+
+
 <div id="<%= yui_form %>_container" class="tool_in_page hidden  <%= addition_element %>">
   <div id="<%= yui_form %>"></div>
   <span class="button_style"><a href="#" onclick="Element.toggleClassName('<%= yui_form%>_container', 'hidden');return false;"><%= t('madb_done')%></a></span>
@@ -93,13 +196,13 @@
 
 
 <script type="text/javascript">
-YAHOO_config = {
-                filter: 'debug'
-                };
+//YAHOO_config = {
+//                filter: 'debug'
+//                };
+//
 
-
-<% yui_block( :modules => [ "madb-tables" ], :use => ['substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
-  var YAHOO = Y.YUI2;
+<% yui_block( :modules => [ "madb", "madb-tables", "gallery-form" ], :use => ['substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+  window.YAHOO = window.YAHOO || Y.YUI2; 
   <%= entities_table( :js_var => "dt",:entity => relation.send(type[:to]) , :controller => self, :content_box => "##{yui_linked_list}", 
           :source => url_for(
                   :controller => "entities", :action => "related_entities_list", :id => @instance.id, :format => 'js', :params => { :relation_id => relation.id, :type => type[:to].pluralize}),
@@ -137,13 +240,14 @@ YAHOO_config = {
   });
 
   Y.Global.on('madb:entity_linked', function(source,h){ 
-    
-                                        if (source=="<%= yui_linkable_list %>")
-                                        {
-                                          dt.getDataTable().addRow(h.record.getData(), 0);  
-                                        }
-                                    });
+    Y.log("received madb:entity_linked in view");
+    if (source=="<%= yui_linkable_list %>")
+    {
+      dt.getDataTable().addRow(h.record.getData(), 0);  
+    }
+  });
   Y.Global.on('madb:new_entity_linked', function(source, data) {
+    Y.log("received madb:new_entity_linked in view");
       if (source == "<%= yui_form %>")
       {
         var result = Y.JSON.parse(data);
@@ -156,6 +260,7 @@ YAHOO_config = {
   });
 
   Y.Global.on('madb:refresh_related', function(source, data) {
+    Y.log("received madb:refresh_related in view");
       if (source == "<%= yui_form %>" || source == '<%= yui_linkable_list %>')
       {
         dt._refresh_table();
@@ -166,7 +271,7 @@ YAHOO_config = {
   <% unless link_to_many %>
   <%# if link to one relation, hide elements to add new linked instances %>
   Y.Global.on('madb:table_refreshed', function(source, data) {
-    Y.log('got event madb:table_refreshed from '+ source);
+    Y.log('got event madb:table_refreshed from '+ source );
     Y.log('react only for <%= prefix %>_linked_list');
       if (source == "<%= prefix %>_linked_list")
       {

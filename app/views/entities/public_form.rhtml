@@ -48,7 +48,7 @@
 
             fields.push ( { type : 'submit', label : '<%= t('madb_submit')%>', id: 'commit'});
             fields.push ( {type : 'reset', label : '<%= t('madb_reset')%>'});
-    <%= default_entity_form( :form_content_box => "public-form", :success_callback => "function(f,data) { f.get('contentBox').addClass('hidden'); Y.one('#insertion_successful').removeClass('hidden');}", :upload => @entity.has_file_attachment_detail?) %>
+    <%= default_entity_form( :form_content_box => "public-form", :success_callback => "function(form,data) { Y.log(form); form.get('contentBox').addClass('hidden'); Y.one('#insertion_successful').removeClass('hidden');}", :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();
     f.focus();
