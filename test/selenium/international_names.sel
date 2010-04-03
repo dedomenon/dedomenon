@@ -71,6 +71,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |click|commit||
 |click|link=Persons||
 |open|/app/entities/view/202||
+|pause|1500||
 |click|link=madb_link_to_existing_entity||
 |pause|1500||
 |assertElementPresent|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data" and count(tr)=2]||
