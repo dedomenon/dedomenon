@@ -7,7 +7,7 @@
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=societe||
 |assertTitle|exact:madb_madb::madb_list||
-|pause|1000||
+|pause|2000||
 |clickAndWait|//td[contains(@class, 'yui-dt0-col-view')]/div/img[@record_id='73']||
 |assertTitle|exact:madb_madb::madb_entity_details||
 |assertNotVisible|//div[@id="e_7_from_parent_to_child_linkable_list_container"]||
@@ -19,7 +19,7 @@
 |type|fonction[0][value]|fonction inconnue|
 |type|service[0][value]|PR|
 |type|coordonees_specifiques[0][value]|je n'en sais rien du tout|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1000||
 |click|//div[@id="e_7_from_parent_to_child_form_container"]//a[.="madb_done"]||
 |assertTextPresent|nom test||

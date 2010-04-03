@@ -76,12 +76,12 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertNotVisible|//div[@id="public-form"]||
@@ -112,12 +112,12 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]|rb@raphinou.com|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertNotVisible|//div[@id="public-form"]||
@@ -145,7 +145,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|3000||
 |assertElementPresent|//input[@type="text"  and @name="integer[0][value]" and @class="invalid_form_value"]||
 |assertElementPresent|//input[@type="text" and @name="08d42057ace680be67bf569c97783ff93d8375ad[0][value]" and @class="invalid_form_value"]||
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |type|//input[@type="text"  and @name="integer[0][value]"]|3|
 |focus|//input[@type="text"  and @name="integer[0][value]"]||
@@ -154,7 +154,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |focus|web_url[0][value]||
 |type|web_url[0][value]|http://www.raphinou.com|
 |type|short_text[0][value]|embedded_public_form_addition|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertVisible|//div[@id="insertion_successful"]||
 |assertElementNotPresent|//div[@class="yui-form"]||

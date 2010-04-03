@@ -14,7 +14,8 @@ Ajax.Responders.register({
 });
 
 
-
-  YAHOO.namespace("madb");
-  YAHOO.madb.container = {};
-  YAHOO.madb.translations = {};
+//YAHOO={};
+//YAHOO.madb={}
+////  YAHOO.namespace("madb");
+//  YAHOO.madb.container = {};
+//  YAHOO.madb.translations = {};

@@ -97,10 +97,9 @@ module ApplicationHelper
       #used for development
       #@modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/yui3-gallery/build/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []}, "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  }} 
       # this uses the gallery-form in myowndb's repository
-      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/gallery-form/gallery-form#{RAILS_ENV=="development" ? "-debug" : "-min"}.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
-                   "gallery-yui2" => { :fullpath => "http://yui.yahooapis.com/gallery-2009.11.19-20/build/gallery-yui2/gallery-yui2#{RAILS_ENV=="development" ? "-debug" : "-min"}.js", :requires => ['node-base','get','async-queue'], :optional => [], :supersedes => []},
+      @modules = { "gallery-form" => { :fullpath => "http://#{AppConfig.app_host}/javascripts/gallery-form/gallery-form-debug.js", :requires => ['node', 'attribute', 'widget', 'io-form', 'substitute', 'io-upload-iframe'], :optional => [], :supersedes => []},
                     "madb" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/madb_yui.js", :requires => ['io-base', 'io-xdr','gallery-form']  },
-                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget']  } } 
+                    "madb-tables" => { :fullpath => "http://#{AppConfig.app_host}/app/dyn_js/entities_table.js", :requires => ['substitute', 'yui2-datatable', 'yui2-paginator', 'yui2-datasource', 'yui2-connection','madb', 'io-base', 'event-key', 'widget']  } } 
       #build string passed to YUI
       inits = []
       options[:modules].each do |m| 
@@ -148,6 +147,7 @@ module ApplicationHelper
       return "alert('#{t("madb_this_entity_has_no_detail_displayed_in_list_view_and_this_will_show_theses_lists_as_empty")}');"
     end
     js = %{
+       window.YAHOO = window.YAHOO || Y.YUI2; 
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers: [ #{ entity.details_in_list_view.collect{|d| d.yui_column(:controller => h[:controller])  }.join(',') } , {"key": "id", "hidden": true}  ] ,
                   source: #{h[:source].nil? ? '"'+(url_for(:controller => "entities", :action => "entities_list", :format => "js", :id => entity)+"?")+'"' : h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
@@ -198,38 +198,36 @@ Y.publish('madb:entity_created', { broadcast: 2} );
         contentBox: '##{h[:form_content_box]}',
         action : '#{h[:form_action]}',
         method : 'post',
-        upload : #{h[:upload]},
+        #{ h[:upload] ? " encodingType: Y.Form.MULTIPART_ENCODED," : ""}
         resetAfterSubmit: false,
         skipValidationBeforeSubmit: true,
         fields : fields
     });
  
-    f.subscribe('#{event_to_watch}', function (args) {
-	var data = args.response.responseText;
-	if (data.match(/(.{8}_([\\w\\s]+_[\\w\\s]*)\\[\\d\](_\\w+)*(######)?)+/))
+    f.subscribe('#{event_to_watch}', function (e) {
+	var data = e.args.responseText;
+        Y.log("data is :");
+        Y.log(data);
+	if (data.match(/(form_.{8}_([\\w\\s]+_[\\w\\s]*)(_\\w+)*(######)?)+/))
 	{
-	    var invalid_fields = YAHOO.util.Dom.getElementsByClassName('invalid_form_value', 'input',this.form); 
-	    try {
-	    YAHOO.util.Dom.batch(invalid_fields, function (e) {Element.removeClassName( e,'invalid_form_value');Element.addClassName( e,'unchecked_form_value'); });
-	    }
-	    catch(e)
-	    {
-	    }
+	    var invalid_fields = Y.all("input.invalid_form_value").removeClass('invalid_form_value').addClass('unchecked_form_value');
 	  ids = data.split('######');
 	  //<%# comment needed for test code
 	  //%>
 	  for(var i=0;i</*>*/ids.length; i++)
 	  {
-	      value = ids[i];
+            //FIXME need to give id that is hte hash of the name to make it work with Y.one
+	      var value = ids[i]+'_field';
+              var field = Y.one('#'+value);
 
-              YAHOO.util.Dom.removeClass( value,'valid_form_value');
-              YAHOO.util.Dom.removeClass( value,'unchecked_form_value');
-              YAHOO.util.Dom.addClass( value,'invalid_form_value');
+              field.removeClass('valid_form_value');
+              field.removeClass('unchecked_form_value');
+              field.addClass('invalid_form_value');
 	  }
 	}
 	else if (data.match(/__ERROR__.*/))
 	{
-	  message = data.replace('__ERROR__','');
+	  var message = data.replace('__ERROR__','');
 	  alert(message);
 	}
 	else
@@ -238,8 +236,8 @@ Y.publish('madb:entity_created', { broadcast: 2} );
          callback(f,data);
         }
     });
-    f.subscribe('failure', function (args) {
-	var data = args.response.responseText,
+    f.subscribe('failure', function (e) {
+	var data = e.args.responseText,
             message = "",
             result;
         try{

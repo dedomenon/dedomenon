@@ -5,61 +5,16 @@
     <title><%=t("madb_madb")%>::<%= @title%></title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
     <!-- YUI 3 CSS -->
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.0.0/build/cssfonts/fonts-min.css&3.0.0/build/cssreset/reset-min.css&3.0.0/build/cssgrids/grids-min.css&3.0.0/build/cssbase/base-min.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.1.0/build/cssfonts/fonts-min.css&3.1.0/build/cssreset/reset-min.css&3.1.0/build/cssgrids/grids-min.css&3.1.0/build/cssbase/base-min.css">
     <%= stylesheet_link_tag 'main' %>
 <% if (RAILS_ENV=="test" and request.env["HTTP_USER_AGENT"].nil?) or request.env["HTTP_USER_AGENT"].include?("MSIE")%>
 <%= stylesheet_link_tag 'ie' %>
 <% else %>
 <%= stylesheet_link_tag 'mozilla' %>
 <% end%>
-    <!-- Combo-handled YUI CSS files: --> 
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/container/assets/skins/sam/container.css"> 
-    <!-- Combo-handled YUI JS files: --> 
-    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/animation/animation-min.js&2.8.0r4/build/connection/connection-min.js&2.8.0r4/build/container/container-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/selector/selector-min.js"></script> 
-<!-- YUI2 Datatable START  -->
-    <!--CSS file (default YUI Sam Skin) -->
-    <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-
-    <!-- Dependencies -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
-
-    <!-- OPTIONAL: JSON Utility (for DataSource) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
-
-    <!-- OPTIONAL: Connection Manager (enables XHR for DataSource) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
-
-    <!-- OPTIONAL: Get Utility (enables dynamic script nodes for DataSource) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/get/get-min.js"></script>
-
-    <!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
-
-    <!-- OPTIONAL: Calendar (enables calendar editors) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js"></script>
-
-    <!-- Source files -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script>
-
-    <!-- YUI2 Paginator START -->
-        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/paginator/assets/skins/sam/paginator.css">
-
-        <!-- Dependencies -->
-        <script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-        <script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
-
-        <!-- Source File -->
-        <script src="http://yui.yahooapis.com/2.8.0r4/build/paginator/paginator-min.js"></script>
-    <!-- YUI2 Paginator END -->
-
-
-<!-- YUI2 Datatable STOP  -->
-
 
     <!-- YUI3 seed file --> 
-    <script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script> 
+    <script src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script> 
 
     <%= javascript_include_tag :defaults %>
 

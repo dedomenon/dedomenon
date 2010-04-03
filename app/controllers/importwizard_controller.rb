@@ -1,5 +1,4 @@
 require 'csv'
-require 'fastercsv'
 require 'tempfile'
 class ImportwizardController < ApplicationController
   before_filter :login_required

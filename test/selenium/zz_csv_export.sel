@@ -6,7 +6,7 @@
 |clickAndWait|commit||
 |clickAndWait|link=demo_forem||
 |clickAndWait|link=Books||
-|pause|1000||
+|pause|1500||
 |assertElementPresent|//img[@alt='madb_export']||
 |click|//img[@alt='madb_export']||
 |pause|5000||

@@ -28,7 +28,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |pause|1000||
 |type|SimpleFile[0][value]|~/files/64K|
 |type|S3File[0][value]|~/files/32K|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-SimpleFile")]/div[@class="yui-dt-liner"]/a[.="64K"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-S3File")]/div[@class="yui-dt-liner"]/a[.="32K"]||
@@ -52,7 +52,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertVisible|//div[text() = '32K']/img[@alt='delete_file']||
 |click|//div[text() = '32K']/img[@alt='replace_file']||
 |type|//label[text() = 'S3File']/following-sibling::div/input[@type="file"]|~/files/128K|
-|clickAndWait|commit||
+|clickAndWait|//button[@id="commit"]||
 |pause|500||
 |click|//tbody[@id='1']/tr/td/span/a||
 |pause|2500||

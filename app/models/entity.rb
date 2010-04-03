@@ -37,8 +37,8 @@
 #       * has_many :instances, :dependent => :destroy
 #       * belongs_to :database
 #
+include FormHelpers 
 class Entity < ActiveRecord::Base
-  
   has_and_belongs_to_many :details, :join_table => "entities2details"
   #has_and_belongs_to_many :entities, :join_table => "relations", :foreign_key => "parent_id", :association_foreign_key => "child_id"
   has_many :relations_to_children, :class_name => "Relation",  :foreign_key => "parent_id"
@@ -209,7 +209,7 @@ class Entity < ActiveRecord::Base
               # be false and we push the detail in the invalid_list
               if ! detail_value_class.valid?(value["value"], :detail => detail)
                 ret = false
-                invalid_list.push "#{form_id}_#{entity.name.gsub(/ /,"_")}_#{detail.field_name}[#{i}]_value"
+                invalid_list.push(form_field_id(i, {:form_id => form_id, :entity => entity, :detail => detail})+"_value") 
               end
             rescue Exception => e
               #this rescue is for detail_values classes not implementing self.valid?

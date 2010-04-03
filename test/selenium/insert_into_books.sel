@@ -18,7 +18,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |type|Email[0][value]|nobook@books.biz|
 |type|Website[0][value]|http://www.linux.org|
 |type|Picture[0][value]|~/files/64K|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="A new philosophy to testing"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Description")]/div[@class="yui-dt-liner" and .="This book does nothing so do not read"]||
@@ -37,7 +37,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |click|Website[0][value]||
 |type|Website[0][value]|http://mohsin.com|
 |type|Picture[0][value]|~/files/32K|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1500||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Name")]/div[@class="yui-dt-liner" and .="Another philosophy"]||
 |assertElementPresent|//td[contains(@class,"yui-dt0-col-Description")]/div[@class="yui-dt-liner" and .="This again nothing"]||
@@ -51,7 +51,7 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|link=madb_edit||
 |pause|1000||
 |type|Description[0][value]|This book does nothing so do not read and nothing to be edited|
-|clickAndWait|commit||
+|clickAndWait|//button[@id="commit"]||
 |assertElementPresent|//td[@class="data_cell" and contains(.,"This book does nothing so do not read and nothing to be edited")]||
 |clickAndWait|link=Books||
 |pause|1500||

@@ -42,7 +42,7 @@
 |pause|1000||
 |type|be9f6e388d97176b89cf3005772bbc0a0f97979d[0][value]|http://www.raphinou.com|
 |type|48903c196b37135bc68d87344a542b291e35d584[0][value]|test long text we'll see what happens pal|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1000||
 |assertTextPresent|http://www.raphinou.com||
 |open|/app/database||
@@ -53,7 +53,7 @@
 |pause|1000||
 |type|be9f6e388d97176b89cf3005772bbc0a0f97979d[0][value]|http://www.kastagnette.net|
 |type|48903c196b37135bc68d87344a542b291e35d584[0][value]|ceci est à nouveau un mémo qui est stocké dans un long texte qui n'apparaitra pas dans la liste car ca rallongerait vraiment trop la liste|
-|click|commit||
+|click|//button[@id="commit"]||
 |pause|1000||
 |assertTextPresent|http://www.kastagnette.net||
 |clickAndWait|link=madb_logout||

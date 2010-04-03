@@ -5,6 +5,8 @@
 
 
 YUI.add('madb-tables', function(Y) {
+  
+  window.YAHOO = window.YAHOO || Y.YUI2; 
   Y.namespace('madb_tables');
 
 //    Y.yui2().use('datatable', 'paginator', function() {
@@ -451,4 +453,4 @@ YUI.add('madb-tables', function(Y) {
 //}) 
 
 
-}, '1.0', { requires: ['substitute', 'gallery-yui2', 'madb', 'io-base', 'event-key', 'widget', 'json-parse','collection'], skinnable: false} );
+}, '1.0', { requires: ['substitute', 'yui2-datatable', 'yui2-paginator', 'yui2-datasource', 'yui2-connection', "yui2-json","yui2-event",  'madb', 'io-base', 'event-key', 'widget', 'json-parse','collection'], skinnable: false} );

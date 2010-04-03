@@ -255,6 +255,7 @@ Y.extend(Form, Y.Widget, {
 				fields[i] = new fieldType(f);
                                 if (f.type!='hidden' && this._firstField===null){
                                   this._firstField = fields[i]; 
+                                  Y.log('setting firstfield from spec: ' + fields[i] );
                                 }
 			} else {
 
@@ -456,6 +457,7 @@ Y.extend(Form, Y.Widget, {
 	 * @description Handles the success event of IO transactions instantiated by this instance
 	 */
 	_handleIOSuccess : function (ioId, ioResponse) {
+                Y.log("Handling IO success for transaction id "+ioId);
 		if (typeof this._ioIds[ioId] != 'undefined') {
 			delete this._ioIds[ioId];
 			this.fire('success', {response : ioResponse});
@@ -470,6 +472,7 @@ Y.extend(Form, Y.Widget, {
 	 * @description Handles the complete event of IO transactions instantiated by this instance
 	 */
 	_handleIOComplete : function (ioId, ioResponse) {
+                Y.log("Handling IO complete for transaction id "+ioId);
 		if (typeof this._ioIds[ioId] != 'undefined') {
                         // only delete if id if this form is multipart, so the success event will still be handled
 			if (this.get('upload')) {
@@ -486,6 +489,7 @@ Y.extend(Form, Y.Widget, {
 	 * @description Handles the failure event of the IO transactions instantiated by this instance
 	 */
 	_handleIOFailure : function (ioId, ioResponse) {
+                Y.log("Handling IO failure for transaction id "+ioId);
 		if (typeof this._ioIds[ioId] != 'undefined') {
 			this.fire('failure', {response : ioResponse});
 			delete this._ioIds[ioId];
@@ -523,6 +527,7 @@ Y.extend(Form, Y.Widget, {
                                   };
 
 			transaction = Y.io(formAction, cfg);
+                        Y.log('Created IO transaction id ' + transaction.id);
 
 			this._ioIds[transaction.id] = transaction;
 
@@ -1021,6 +1026,7 @@ Y.extend(FormField, Y.Widget, {
 	 * @return {Function}
 	 */
 	 _setValidator : function (val) {
+		Y.log('Set: ' + val);
 		if (val == "email") {
 			return FormField.VALIDATE_EMAIL_ADDRESS;
 		} else if (val == "phone") {
@@ -1094,6 +1100,7 @@ Y.extend(FormField, Y.Widget, {
 	 * @description Syncs the fieldNode and this instances attributes
 	 */
 	_syncFieldNode : function () {
+                Y.log('sync field node for' + this.get('name'));
 		this._fieldNode.setAttrs({
 			name : this.get('name'), 
 			type : this._nodeType,
@@ -1519,6 +1526,7 @@ Y.extend(ChoiceField, Y.FormField, {
      */
     _validateChoices : function (val) {
         if (!Y.Lang.isArray(val)) {
+            Y.log("Rejecting choices as choices passed are not in an array");
             return false;
         }
 		
@@ -1526,6 +1534,7 @@ Y.extend(ChoiceField, Y.FormField, {
 
 		Y.Array.each(val, function(c, i, a) {
             if (!Y.Lang.isObject(c)) {
+                Y.log("Rejecting choices as not all items are objects");
                 valid = false;
 				return;
             }
@@ -1533,6 +1542,7 @@ Y.extend(ChoiceField, Y.FormField, {
                 !Y.Lang.isString(c.label) ||
                 !c.value ||
                 !Y.Lang.isString(c.value)) {
+                                        Y.log("Rejecting choices as not all items sting labels and values");
 					valid = false;
 					return;
             }
@@ -1541,6 +1551,7 @@ Y.extend(ChoiceField, Y.FormField, {
         return valid;
     },
 
+    
     _renderFieldNode : function () {
         var contentBox = this.get('contentBox'),
             choices = this.get('choices'),
@@ -1666,8 +1677,10 @@ Y.extend(SelectField, Y.ChoiceField, {
 		// Create the "Choose one" option
 		elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
 		this._fieldNode.appendChild(elOption);
+                Y.log("Adding Choose One option node ");
 
 		Y.Array.each(choices, function (c, i, a) {
+                        Y.log("Adding option node " + i);
 			elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
             this._fieldNode.appendChild(elOption);
         }, this);
@@ -1699,6 +1712,7 @@ Y.extend(SelectField, Y.ChoiceField, {
 		options.each(function(node, index, nodeList) {
 			var label = (index === 0 ? 'Choose one' : choices[index - 1].label),
 				val = (index === 0 ? '' : choices[index - 1].value);
+                        Y.log("Setting option "+ index +" attributes label "+label+" and value "+ val);
 
 			node.setAttrs({
 				innerHTML : label,
@@ -1833,153 +1847,10 @@ Y.extend(FileField, Y.FormField, {
 
 		this._fieldNode = field;
 	}
+
 });
 
 Y.FileField = FileField;
-/**
- * @class MadbFileField
- * @extends FormField
- * @param config {Object} Configuration object
- * @constructor
- * @description A password field node
- */
-function MadbFileField () {
-    MadbFileField.superclass.constructor.apply(this,arguments);
-}
-
-Y.mix(MadbFileField, {
-    NAME : 'madb-file-field',
-    DELETE_ICON_TEMPLATE : '<img class="action_cell" src="/images/icon/big/delete.png" alt="delete_file"/>',
-    REPLACE_ICON_TRANSFER_ALLOWED: '<img class="action_cell" src="/images/icon/big/edit.png" alt="replace_file"/>',
-    REPLACE_ICON_TRANSFER_REFUSED: '<img src="/images/icon/big/error.png" alt="quota_reached"></img>',
-    UNDO_REPLACE_ICON:'<img src="/images/icon/big/undo.png" alt="undo_replace_file" />',
-    FILE_FIELD_TEMPLATE: '<input type="file"></input>',
-    HIDDEN_FIELD_TEMPLATE: '<input type="hidden"></input>',
-    ATTRS : {
-		transferAllowed : {
-			value : true,
-			validator : Y.Lang.isBoolean
-		},
-                deleteURL : {
-                        value: "",
-                        validator: Y.Lang.isString
-                },
-                detailValueId : {
-                        value: "",
-                        validator: Y.Lang.isString
-                },
-                localizedStrings : {
-                        value: {},
-                        validator: Y.Lang.isObject
-                }
-    }
-});
-
-Y.extend(MadbFileField, Y.FormField, {
-    _nodeType : 'file',
-    _replaceIconNode: null,
-    _deleteIconNode: null,
-    _fileField: null,
-    _fieldContainer: null,
-    _replaceIconTemplate: function() {
-      if (this.get('transferAllowed')){
-        return MadbFileField.REPLACE_ICON_TRANSFER_ALLOWED;}
-      else {
-        return MadbFileField.REPLACE_ICON_TRANSFER_REFUSED; }
-    },
-    _initializeContainer: function() {
-                this._fieldContainer.set('innerHTML',this.init_value);
-                this._fieldContainer.appendChild(this._deleteIconNode);
-                this._fieldContainer.appendChild(this._replaceIconNode);
-    },
-    _renderFieldNode : function() {
-      var contentBox = this.get('contentBox'),
-              field = contentBox.query('#' + this.get('id'));
-
-      if (this.get("value")===""){
-        MadbFileField.superclass._renderFieldNode.apply(this, arguments);
-        this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
-        contentBox.appendChild(this._hiddenFieldNode);
-      }
-      else
-      {
-        if (!field) {
-                this._hiddenFieldNode = Y.Node.create(MadbFileField.HIDDEN_FIELD_TEMPLATE);
-                this._fieldContainer = Y.Node.create("<div></div>");
-                this._deleteIconNode = Y.Node.create(MadbFileField.DELETE_ICON_TEMPLATE);
-                this._undoReplaceIconNode = Y.Node.create(MadbFileField.UNDO_REPLACE_ICON);
-                this._replaceIconNode = Y.Node.create(this._replaceIconTemplate());
-                this._initializeContainer();
-                contentBox.appendChild(this._fieldContainer);
-                this._fieldNode=Y.Node.create(MadbFileField.FILE_FIELD_TEMPLATE);
-        }
-      }
-    },
-
-    _displayFileField : function() {
-      this._fieldContainer.set('innerHTML','');
-      this._fieldContainer.appendChild(this._fieldNode);
-      this._fieldContainer.appendChild(this._hiddenFieldNode);
-      if (this._hiddenFieldNode.getAttribute('value')!=='') {
-        this._fieldContainer.appendChild(this._undoReplaceIconNode);
-      }
-    }
-    ,
-    _handleDeleteClick: function() {
-      if (confirm(this.get('localizedStrings').delete_file_confirmation)){
-
-        var callback ={ success: function(o) {
-                        this._hiddenFieldNode.setAttribute('value','');
-                        this._displayFileField();
-                        },
-                        failure: function(o){ alert(o.responseText); }
-        };
-                            
-
-        var cfg= { method: 'POST',
-                   context: this,
-                   on : callback};
-
-        var url = this.get('deleteURL');
-        Y.io( url, cfg);
-      }
-
-    }, 
-    _handleReplaceClick: function() {
-      this._displayFileField();
-    }, 
-    _handleUndoReplaceClick: function() {
-      this._initializeContainer();
-    }, 
-
-    bindUI: function(){
-        MadbFileField.superclass.bindUI.apply(this, arguments);
-        if (this.get('value')!=="")
-        {
-          this._deleteIconNode.on('click', Y.bind(function(e) { this._handleDeleteClick();}, this));
-          this._replaceIconNode.on('click', Y.bind(function(e) { this._handleReplaceClick();}, this));
-          this._undoReplaceIconNode.on('click', Y.bind(function(e) { this._handleUndoReplaceClick();}, this));
-        }
-    },
-    _syncFieldNode: function() {
-                // we override this as we can't set value of file field
-		this._fieldNode.setAttrs({
-			name : this.get('name')+'[value]', 
-			type : this._nodeType,
-			id : this.get('id')+'_value'
-		});
-		this._hiddenFieldNode.setAttrs({
-			name : this.get('name')+'[id]', 
-			id : this.get('id')+'_id',
-                        value : this.get('detailValueId')
-		});
-                this._fieldNode.setAttribute('tabindex', FormField.tabIndex);
-                FormField.tabIndex++;
-      }
-
-});
-
-Y.MadbFileField = MadbFileField;
 
 
 

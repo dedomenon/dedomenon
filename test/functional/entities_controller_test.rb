@@ -549,22 +549,56 @@ class EntitiesControllerTest < ActionController::TestCase
 	#------------------------
 
 	def test_list_available_for_link_to_child
-          xhr :get, :list_available_for_link, {:parent_id => "69", :relation_id => "7", :update => "contact_de_la_societe_child_div", :embedded => "link_existing_child_contact_de_la_societe_div" }, {'user' => User.find_by_id(@db1_user_id)}
+          # contact de la société (to many)
+          xhr :get, :list_available_for_link, {:parent_id => "69", :relation_id => "7", :results => 20}, {'user' => User.find_by_id(@db1_user_id)}
           assert_response :success
           list = assigns["list"]
           ids = list.collect {|e| e.id}
-          noms = list.collect {|e| e.nom}
+          noms = list.collect {|e| e.nom+ ' ' + e.prenom}
           #check list length
-          assert_equal 10, list.length
+          assert_equal 14, list.length
           #check list order by looking at the ids order
-          assert_equal [72,74,75,76,81,82,83,84,85,86], ids
+          assert_equal [72, 74, 75, 76, 81, 82, 83, 84, 85, 86, 87, 90, 92, 94], ids
           #check list order by looking at the noms order
-          assert_equal ["BAuduin", "Bauduin", "Soizon", "Soizon", "Audux", "Kastagnette","Biloute", "Danneels", "Brughmans", "Kastagnette"], noms
+          assert_equal ["BAuduin Raphaël", "Bauduin Carol", "Soizon Ermioni", "Soizon Elisabeth", "Audux Florence", "Kastagnette Nicole", "Biloute Stéphanie", "Danneels Christiane", "Brughmans Raphaël", "Kastagnette Dimitri", "Kastagnette Hélène", "Becker Robert", " Peter", "Garcia Joelle"], noms
           #check details order is used in the list
           assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
 
 	end
 	
+	def test_list_available_for_link_to_child_to_one
+          # contact de la société (to many)
+          xhr :get, :list_available_for_link, {:parent_id => "69", :relation_id => "9", :results => 20 }, {'user' => User.find_by_id(@db1_user_id)}
+          assert_response :success
+          list = assigns["list"]
+          ids = list.collect {|e| e.id}
+          prenoms = list.collect {|e| e.prenom}
+          #check list length
+          assert_equal 13, list.length
+          #check list order by looking at the ids order
+          assert_equal  [70, 72, 74, 75, 76, 81, 83, 84, 85, 86, 87, 92, 94], ids
+          #check list order by looking at the noms order
+          assert_equal ["Vincent", "Raphaël", "Carol", "Ermioni", "Elisabeth", "Florence", "Stéphanie", "Christiane", "Raphaël", "Dimitri", "Hélène", "Peter", "Joelle"], prenoms
+          #check details order is used in the list
+          assert_equal %w(nom prenom fonction service coordonees_specifiques company_email), assigns["ordered_fields"]
+
+	end
+
+	def test_list_available_for_link_to_parent_to_one
+          # contact de la société (to many)
+          xhr :get, :list_available_for_link, {:child_id => "75", :relation_id => "9", :results => 20 }, {'user' => User.find_by_id(@db1_user_id)}
+          assert_response :success
+          list = assigns["list"]
+          ids = list.collect {|e| e.id}
+          noms = list.collect {|e| e.nom}
+          #check list length
+          assert_equal 9, list.length
+          #check list order by looking at the ids order
+          assert_equal  [69, 71, 73, 78, 79, 80, 88, 91, 93], ids
+          #check list order by looking at the noms order
+          assert_equal ["valtech", "raphinou", "O-nuclear", "BARDAF", "Banque Degroof", "Commission  européenne", "Easynet Belgium", "Mind", "O'Conolly & Associates"], noms
+
+	end
 	def test_ordered_list_available_for_link_to_child
 		xhr :get, :list_available_for_link, 
       {
@@ -800,7 +834,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we have only one invalid field
 		assert_equal 1, invalid_fields.length
 		#we get back the correct field name
-		assert_equal "wCH1GxNJ_societe_company_email[0]_value", invalid_fields[0]
+		assert_equal "wCH1GxNJ_societe_company_email0_value", invalid_fields[0]
 
 		
 	end
@@ -835,8 +869,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we have only one invalid field
 		assert_equal 2, invalid_fields.length
 		#we get back the correct field name
-		assert(invalid_fields.include?("wCH1GxNJ_societe_company_email[0]_value"))
-		assert(invalid_fields.include?("wCH1GxNJ_societe_personnes_occuppees[0]_value"))
+		assert(invalid_fields.include?("wCH1GxNJ_societe_company_email0_value"))
+		assert(invalid_fields.include?("wCH1GxNJ_societe_personnes_occuppees0_value"))
 
 		
 	end
@@ -931,8 +965,8 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we have only 2 invalid field
 		assert_equal 2, invalid_fields.length
 		#we get back the correct field name
-		assert(invalid_fields.include?("Ih0bD5ph_societe_company_email[0]_value"))
-		assert(invalid_fields.include?("Ih0bD5ph_societe_personnes_occuppees[0]_value"))
+		assert(invalid_fields.include?("Ih0bD5ph_societe_company_email0_value"))
+		assert(invalid_fields.include?("Ih0bD5ph_societe_personnes_occuppees0_value"))
 
 	end
 
@@ -1226,7 +1260,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we have only one invalid field
 		assert_equal 1, invalid_fields.length
 		#we get back the correct field name
-		assert_equal "bYr82i1d_visite_date[0]_value", invalid_fields[0]
+		assert_equal "bYr82i1d_visite_date0_value", invalid_fields[0]
 
 
 	end
@@ -1466,7 +1500,7 @@ class EntitiesControllerTest < ActionController::TestCase
 		#we have only one invalid field
 		assert_equal 1, invalid_fields.length
 		#we get back the correct field name
-		assert_equal "wCH1GxNJ_societe_company_email[0]_value", invalid_fields[0]
+		assert_equal "wCH1GxNJ_societe_company_email0_value", invalid_fields[0]
 
 		
 	end
