@@ -1,0 +1,39 @@
+|open|/selenium/setup?fixtures=accounts,databases,data_types,detail_status,detail_value_propositions,details,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app/authentication/login||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|assertTextPresent|demo_forem||
+|assertTextPresent|database_without_details||
+|assertTextPresent|database_with_one_entity_with_all_details||
+|open|/app/entities/view/69||
+|pause|2500||
+|assertElementNotPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="No records found."]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="Luyckx"]||
+|assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//img[@class="icon" and @alt="madb_export"]||
+|echo|check empty list||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//div[@class="yui-dt-liner" and .="No records found."]||
+|echo|to one buttons visible||
+|assertVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|click|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]/span[1]/a||
+|pause|1500||
+|assertVisible|//div[@id="e_9_from_parent_to_child_linkable_list"]//img[@class="icon" and @title="madb_export"]||
+|click|//div[@id="e_9_from_parent_to_child_linkable_list"]//tr[@id="yui-rec2"]//img[@record_id="72"]||
+|pause|1500||
+|echo|to one buttons not visible||
+|assertNotVisible|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]||
+|assertElementPresent|//div[@id="e_9_from_parent_to_child_linked_list"]//tr[@record_id=72]||
+|echo|Raphael bauduin should not be available for the link to one relation||
+|open|/app/entities/view/73||
+|pause|2000||
+|click|//div[@id="e_9_from_parent_to_child_child_div_add_child_links"]/span[1]/a||
+|pause|2000||
+|assertElementNotPresent|//div[@id="e_9_from_parent_to_child_linkable_list"]//tr[@record_id="72"]||
+|echo|Valtech should not be available anymore for the to one relation||
+|open|/app/entities/view/85||
+|pause|2000||
+|click|//span[@id="e_9_from_child_to_parent_parent_div_add_existing_parent_link"]||
+|pause|2000||
+|assertElementNotPresent|//div[@id="e_9_from_child_to_parent_linkable_list"]//tr[@record_id="69"]||

@@ -375,7 +375,11 @@ class EntitiesController < ApplicationController
 
     @details = @entity.details_hash
     filter_clause = crosstab_filter
-    link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
+    if @link_to_many!='t'
+      link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id})"
+    else
+      link_filter = "id not in (select #{related_id} from links where relation_id = #{@relation.id} #{other_side_type_filter})"
+    end
 
     existing_links = Link.count_by_sql("select count(*) from links where relation_id = #{@relation.id} #{other_side_type_filter}")
     if @link_to_many!='t' and existing_links>0 
