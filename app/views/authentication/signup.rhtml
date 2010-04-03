@@ -1,11 +1,17 @@
-<script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
+<script language="JavaScript" src="" type="text/javascript"></script>
 <script type="text/javascript">
   YUI().use("event","node", function(Y) {
       Y.on("domready", function() {
           try{
-            var country = geoplugin_countryName();
-            var country_select = Y.one("#account_country");
-            country_select.set("value", country);
+            Y.Get.script("http://www.geoplugin.net/javascript.gp", {
+              timeout: 2000,
+              onSuccess: function() {
+                          var country = geoplugin_countryName();
+                          var country_select = Y.one("#account_country");
+                          country_select.set("value", country);
+                         }
+
+            });
           }
           catch(e)
           {
