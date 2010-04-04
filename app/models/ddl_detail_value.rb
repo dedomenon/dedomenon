@@ -116,6 +116,7 @@ class DdlDetailValue < DetailValue
     fields.push( new Y.SelectField({
                   id: "#{form_field_id(i,o)}_value",
                   name:"#{form_field_name(i,o)}[value]",
+                  value: '#{detail_value_proposition ? detail_value_proposition.id: ''}',
                   choices: #{choices},
                   label:"#{form_field_label}"}));
 

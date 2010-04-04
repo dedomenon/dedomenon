@@ -1,0 +1,19 @@
+|open|/selenium/setup?fixtures=account_types,account_type_values,accounts,databases,data_types,detail_status,details,detail_value_propositions,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/add/11||
+|pause|2000||
+|select|//div[contains(@class,"yui3-select-field")]/select|label=sa|
+|type|//div[contains(@id,"societe_nom0_value")]//input|Test SA|
+|click|//button[@id='commit']||
+|pause|2000||
+|open|/app/entities/edit/100001||
+|pause|2000||
+|assertSelectedLabel|//div[contains(@class,"yui3-select-field")]/select|sa|
+hello
+
+end|

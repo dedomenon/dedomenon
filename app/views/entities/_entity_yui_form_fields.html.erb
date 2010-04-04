@@ -18,7 +18,6 @@ fields.push( new Y.HiddenField({
         <% values = class_from_name(detail.data_type.class_name).find(:all, :conditions => ("instance_id=#{@instance.id} and detail_id=#{detail.id}")) if @instance %>
         <% values = [ class_from_name(detail.data_type.class_name).new(:detail_id => detail.id) ] unless values.size>0%>
 	<%values.each do |value| %>
-  <!-- <input type="hidden" id="<%=@entity.name+'_'+detail.name+"["+i.to_s+"]"%>_id" name="<%=detail.name+"["+i.to_s+"]"%>[id]" value="<%=value.id%>"> -->
   <%= value.to_yui_form_row(i, :form_id => form_id, :entity => @entity, :detail => detail, :controller => self.controller ) %>
 	<%end%>
 <% end %>

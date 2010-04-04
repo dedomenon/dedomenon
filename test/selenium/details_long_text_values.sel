@@ -8,16 +8,23 @@
 |open|/app/entities/add/12||
 |pause|1000||
 |echo|"test text starting with empty line"||
-|type|//textarea[@name="coordonees_specifiques[0][value]"]||
+|type|//textarea[@name="coordonees_specifiques[0][value]"]|
+hello
+
+end|
 |type|//input[@name="nom[0][value]"]|empty line|
 |click|//button[@id="commit"]||
 |pause|1000||
 |open|/app/entities/edit/100001||
 |pause|1500||
 |assertElementPresent|//textarea[@name="coordonees_specifiques[0][value]"]||
-|type|//textarea[@name="coordonees_specifiques[0][value]"]||
+|type|//textarea[@name="coordonees_specifiques[0][value]"]|
+second line|
 |click|commit||
 |pause|1500||
 |open|/app/entities/edit/100001||
 |pause|2000||
-|assertElementPresent|//textarea[@name="coordonees_specifiques[0][value]"]||
+|assertElementPresent|//textarea[@name="coordonees_specifiques[0][value]"]|
+hello
+
+end|

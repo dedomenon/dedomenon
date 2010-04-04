@@ -1714,11 +1714,15 @@ Y.extend(SelectField, Y.ChoiceField, {
 
 		options.each(function(node, index, nodeList) {
 			var label = (index === 0 ? SelectField.DEFAULT_OPTION_TEXT : choices[index - 1].label),
-				val = (index === 0 ? '' : choices[index - 1].value);
+				val = (index === 0 ? '' : choices[index - 1].value),
+                                selected = (this.get('value')===val ? 'selected' : '');
 
+                        Y.log("value of option is " + val);
+                        Y.log("and field value id "+ this.get('value'));
 			node.setAttrs({
 				innerHTML : label,
-				value : val
+				value : val,
+                                selected: selected
 			});
 		}, this);
 	},
