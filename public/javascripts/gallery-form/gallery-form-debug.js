@@ -1710,21 +1710,21 @@ Y.extend(SelectField, Y.ChoiceField, {
 	_syncOptionNodes : function () {
         var choices = this.get('choices'),
 			contentBox = this.get('contentBox'),
-			options = contentBox.all('option');
+			options = contentBox.all('option'),
+                        select  = contentBox.all('select');
 
 		options.each(function(node, index, nodeList) {
 			var label = (index === 0 ? SelectField.DEFAULT_OPTION_TEXT : choices[index - 1].label),
-				val = (index === 0 ? '' : choices[index - 1].value),
-                                selected = (this.get('value')===val ? 'selected' : '');
+				val = (index === 0 ? '' : choices[index - 1].value);
 
-                        Y.log("value of option is " + val);
-                        Y.log("and field value id "+ this.get('value'));
 			node.setAttrs({
 				innerHTML : label,
-				value : val,
-                                selected: selected
-			});
+				value : val
+                                });
 		}, this);
+
+                select.set("value", this.get('value'));
+
 	},
     
 	/**
