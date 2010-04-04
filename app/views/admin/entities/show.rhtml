@@ -89,6 +89,48 @@
 
 
 
+<div id="relations_to_children"></div>
+
+
+
+<script type="text/javascript">
+  <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+
+  var EntitiesTable = Y.madb_tables.EntitiesTable;
+  var actions = [{ "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
+                window.location = '<%= url_for({ :controller => "admin/entities", :action => "edit_link"})%>/'+ h.record_id+'?source_id='+h.record.getData('source_id') ;
+                }  },
+                { "width" :35, "key": "delete_action_column",  "label": "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER, listener: function(h) {
+
+
+                var datatable = h.datatable ;
+                if (confirm("<%= t("madb_really_delete_all_existing_links_question") %>" )) {
+                  var url = '<%= url_for  :controller => "admin/entities", :action => "delete_link"%>/'+h.record_id+'.js';
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.io(url, config);
+                }
+
+
+
+
+                }} 
+
+
+  ] 
+  <%= datatable( :js_var => "dt", :columns => @relations_to_children_columns , :controller => self, :content_box => "#relations_to_children", :source => @relations_to_children_rows  , :actions => "actions", :display_filter => false  )%>
+
+<%end%>
+</script>
+
+
+
+
+
 
 <!--<div class="relation_head"><span><%= t("madb_to_parents")%></span></div>-->
 <h3><span><%= t("madb_to_parents")%></span></h3>
@@ -109,5 +151,42 @@
 <span class="button_style"><%= link_to t("madb_add_link_to_parent_entity"), :action => "define_link" , :child_id => params["id"] %></span>
 
 
+<div id="relations_to_parents"></div>
+
+
+
+<script type="text/javascript">
+  <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+
+  var EntitiesTable = Y.madb_tables.EntitiesTable;
+  var actions = [{ "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
+                window.location = '<%= url_for({ :controller => "admin/entities", :action => "edit_link"})%>/'+ h.record_id+'?source_id='+h.record.getData('source_id') ;
+                }  },
+                { "width" :35, "key": "delete_action_column",  "label": "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER, listener: function(h) {
+
+
+                var datatable = h.datatable ;
+                if (confirm("<%= t("madb_really_delete_all_existing_links_question") %>" )) {
+                  var url = '<%= url_for  :controller => "admin/entities", :action => "delete_link"%>/'+h.record_id+'.js';
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.io(url, config);
+                }
+
+
+
+
+                }} 
+
+
+  ] 
+  <%= datatable( :js_var => "dt", :columns => @relations_to_parents_columns , :controller => self, :content_box => "#relations_to_parents", :source => @relations_to_parents_rows  , :actions => "actions", :display_filter => false  )%>
+
+<%end%>
+</script>
 
 

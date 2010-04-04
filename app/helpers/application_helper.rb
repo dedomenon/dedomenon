@@ -163,19 +163,28 @@ module ApplicationHelper
   end
 
   def datatable(h={})
-    raise "Missing options" if h[:controller].nil? or h[:content_box].nil? or h[:js_var].nil? or h[:ar_class].nil?
-    displayed_columns = h[:ar_class].columns.reject {|c| ["id", "lock_version"].include?(c.name)  or c.name.match(/_id/) }
+    raise "Missing options" if h[:controller].nil? or h[:content_box].nil? or h[:js_var].nil? or (h[:ar_class].nil? and h[:columns].nil?)
+    #buidl columns specs based on an AR object, or on the array passed as argument
+    h[:display_filter]= (h[:display_filter].nil? ?  true : h[:display_filter])
+    if h[:columns]
+      displayed_columns = h[:columns].collect{|c| c[:key]}
+      column_headers = h[:columns]
+    else
+      displayed_columns = h[:ar_class].columns.reject {|c| ["id", "lock_version"].include?(c.name)  or c.name.match(/_id/) }.collect{|c| c.name}
+      column_headers =displayed_columns.collect { |c| { "key" => c} }.push({"key" => "id", "hidden" => true})
+    end
     js = %{
-       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:  #{ displayed_columns.collect { |c| { "key" => c.name} }.push({"key" => "id", "hidden" => true}).to_json }   ,
+       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:  #{ column_headers.to_json }   ,
                   source: #{ h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
-                  fields_definition : #{ h[:ar_class].columns.collect { |c| c.name}.to_json },
-                  entity_name: #{ h[:ar_class].to_s.to_json },
+                  fields_definition : #{ displayed_columns.to_json },
+                  entity_name: Y.guid ,
                   entity_id : 0,
-                  filter_options : '#{ options_for_select(  displayed_columns.collect { |c| c.name} ).gsub(/\n/,'') }',
+                  filter_options : '#{ options_for_select(  displayed_columns ).gsub(/\n/,'') }',
                   actions: #{h[:actions].is_a?(String) ? h[:actions] : h[:actions].to_json} , 
                   identifier : '#{h[:content_box][1..-1]}',
-                  contentBox: '#{h[:content_box]}'});
+                  contentBox: '#{h[:content_box]}',
+                  display_filter: #{h[:display_filter].to_json}});
        #{h[:js_var]}.render();
     }
   end

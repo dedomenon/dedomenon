@@ -118,7 +118,12 @@ YUI.add('madb-tables', function(Y) {
                   dynamic_data: {
                     value: true,
                     validator: Y.Lang.isBoolean
+                  },
+                  display_filter: {
+                    value: true,
+                    validator: Y.Lang.isBoolean
                   }
+
 
 
                 }
@@ -297,7 +302,10 @@ YUI.add('madb-tables', function(Y) {
           }
         },
         renderUI: function() {
-          this._renderFilter();
+          if (this.get('display_filter'))
+          {
+            this._renderFilter();
+          }
           this._renderDataTable();
         },
         _renderFilter: function() {

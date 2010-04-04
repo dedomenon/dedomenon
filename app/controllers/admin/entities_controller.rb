@@ -414,31 +414,24 @@ class Admin::EntitiesController < ApplicationController
   #    in the Relations controller which yet does not exists.
   #   
   def show
-    
-      # If the parent resource is not provided, then dont care pick anything
-      # 
     if params[:database_id]
       @entity = Database.find(params[:database_id]).entities.find(params[:id])
     else
       @entity = Entity.find(params[:id])
     end
       
-#      if @db_id == 0
-#        @entity = Entity.find params[:id]
-#      else
-#        # Otherwise... we are strict!
-#        @entity = Entity.find(:conditions => ["id = ? AND database_id =?", params[:id], @db_id])
-#      end
+    @relations_to_parents = @entity.relations_to_parents
+    @relations_to_parents_rows = @entity.relations_to_parents.collect{|r| { :source_id => params[:id], :madb_relation_name => r.from_child_to_parent_name, :madb_parent => r.parent.name, :madb_multiple_parents_allowed => r.parent_side_type.name=="many", :madb_multiple_children_allowed => r.child_side_type.name=="many", :id => r.id } }
+    @relations_to_parents_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_parent, :label => t('madb_parent')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
 
-    # Only execute this block if its a call for the admin/entities
-    # This is because this code is about the views.
-    if params[:controller] == 'admin/entities'
-      @relations_to_parents = @entity.relations_to_parents
-      @relations_to_children = @entity.relations_to_children
-      details_to_add = @db.details - @entity.entity_details.collect{|ed| ed.detail}
-      @existing_details_available = details_to_add.length>0
-      @title = t("madb_admin_entity", :vars=> { 'entity'=> @entity.name} ) 
-    end
+
+    @relations_to_children = @entity.relations_to_children
+    @relations_to_children_rows = @entity.relations_to_children.collect{|r| { :source_id => params[:id], :madb_relation_name => r.from_parent_to_child_name, :madb_child => r.child.name, :madb_multiple_parents_allowed => r.parent_side_type.name=="many", :madb_multiple_children_allowed => r.child_side_type.name=="many", :id => r.id } }
+    @relations_to_children_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_child, :label => t('madb_child')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
+
+    details_to_add = @db.details - @entity.entity_details.collect{|ed| ed.detail}
+    @existing_details_available = details_to_add.length>0
+    @title = t("madb_admin_entity", :vars=> { 'entity'=> @entity.name} ) 
   end
 
   # *Description*
@@ -842,7 +835,8 @@ class Admin::EntitiesController < ApplicationController
 
     @source = Entity.find( @source_id )
     @relation_types = RelationSideType.find :all
-    @entities = Entity.find(:all, :conditions => "database_id= #{@source.database.id}")
+    @entities = @source.database.entities
+    @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
     @parent_side_edit = true
     @child_side_edit = true
 
@@ -919,39 +913,18 @@ class Admin::EntitiesController < ApplicationController
   # FIXME: The format.html blocks do not execute....
   def delete_link
     #check if the link to delete id asked from a related entity (source_id)
-    params_validity_count = Relation.count(:conditions => "id = #{params["id"]} and (parent_id=#{params["source_id"]} or child_id=#{params["source_id"]})")
-    
-    
-      
-      if params_validity_count.to_i!=1
-        flash["error"]=t("madb_error_incorrect_data")
-        redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'
-        @msg = 'Bad Reqeust (Multiple relation records found.)' 
-        @code = 400
-        return
-      end
-      # The above condition to the params_validity_count is added because its
-      # only applicable when this function is being used from the web interface.
-      # For the REST calls, executing it is not possible neither meaningful.
-      # We need to have other means of validation for it.
-      
-      
-      
+    respond_to do |format|
       begin
         Relation.delete_all "id=#{params["id"]}"
       rescue Exception => e
         logger.warn("Error: #e")
-        render :text => "Could not delete relation #{e.to_s}", :status => 500 and return if params[:controller] == 'admin/entities'
-          @msg =  "Could not delete relation #{e.to_s}" 
-          @code = 500
-          return
+        format.html { render :text => "Could not delete relation #{e.to_s}", :status => 500 and return if params[:controller] == 'admin/entities'} 
+        format.js { render :json => { :status => :failure, data => nil} }
+        return
       end
-      redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'
-      @msg = 'OK' 
-      @code = 200
-      return
-      
-    
+      format.html { redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'}
+      format.js { render :json => {:status => :success, :data => nil } }
+    end
   end
 
   # *Description*
@@ -980,6 +953,7 @@ class Admin::EntitiesController < ApplicationController
     end
     @relation_types = RelationSideType.find :all
     @entities = Entity.find(:all, :conditions => "database_id=#{source_entity.database_id}")
+    @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
     @source_id = params["source_id"]
     if @relation.parent == source_entity
       @this_side = "parent_id"
