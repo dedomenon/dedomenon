@@ -14,6 +14,17 @@
   color: Red;
 }
 
+.errormessage {
+  border: 2px solid Red;
+  padding: 0.3@em;
+  margin-bottom: 1.5em;
+  background-color: #f0f0f0;
+  text-align: center;
+  font-weight: bold;
+  color: Red;
+}
+
+
 #ErrorExplanation h2 {
   text-align: left;
   font-weight: bold;

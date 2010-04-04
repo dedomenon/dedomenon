@@ -66,18 +66,9 @@ class Admin::EntitiesController < ApplicationController
   # *Description*
   #   Checks whether the current user is admin or not?
   def check_user_rights
-    #return true if %w{'rest/relations' rest/entities}.include? params[:controller]
-    
     if !session["user"].admin_user?
-      if params[:controller] == 'admin/entities'
         flash["error"]=t("madb_you_dont_have_sufficient_credentials_for_action")
         redirect_to :controller => "/database" and return false
-      elsif %w{rest/entities rest/relations}.include? params[:controller]
-        if %w{create update destroy}.include? params[:action]
-          msg = {:errors => ['This REST call needs administrative rights']}
-          render :json => msg.to_json, :status => 403 and return false
-        end
-      end
     end
   end
   
@@ -101,16 +92,7 @@ class Admin::EntitiesController < ApplicationController
   #  database.    
   #
   def check_all_ids
-    
-#    if handle_rest_call
-#      return true;
-#    end
 
-    # skip the validations for the REST calls from the Relations
-    #return true if %w{'rest/relations' rest/entities}.include? params[:controller]
-    return true if params[:controller] == 'rest/relations' or 
-                   params[:controller] == 'rest/entities'
-    
     if params[:id]
       # If the entity id or the database id are provided, chances are that its
       # a rest calll

@@ -1,44 +1,102 @@
 <h1><%=t("madb_databases_list")%></h1>
 <%= help_info("madb_help_info_admin_databases_list")%>
 
-<span class="button_style"><%= link_to t('madb_create_database'), :action => 'new' %></span>
-<table>
-  <thead>
-  <tr>
-<% for column in Database.content_columns %>
-  <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
-    <th><%= column.human_name %></th>
-<% end %>
-  <th/>
-  <th/>
-  <th/>
-  <th/>
-  </tr>
-</thead>
-  
-<% for database in @databases %>
-<tbody>
-  <tr>
-  <% for column in Database.content_columns %>
-    <% next if column.name == 'lock_version' and column.sql_type == 'integer' %>
-    <td><%=h database.send(column.name) %></td>
-  <% end %>
-    <td><%= link_to t('madb_entities'), { :controller => "entities", :action => 'index', :db => database} %></td>
-    <td><%= link_to t('madb_details'), { :controller => "details", :action => 'index', :db => database} %></td>
-    <td><%= link_to t('madb_rename'), :action => 'edit', :id => database %></td>
-    <td><%= link_to t('madb_destroy'), {:action => 'destroy', :id => database}, :confirm => t("madb_really_delete_database_question", :vars => { 'database'=> database.name}), :method => :post %></td>
-  </tr>
-</tbody>
-<% end %>
-</table>
+<h2><%=t('madb_create_database')%></h2>
+<div id=="addition_form_container">
+  <div id="addition_form_errors" class="errormessage hidden"></div>
+  <div id="addition_form">
+  </div>
+</div>
 
-<br />
+<script type="text/javascript">
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'json-parse']) do %>
+    Y.publish('madb:database_created', {broadcast: 2});
+    // Create a Field Object manually
+    var fields = [ ];
+    fields.push( new Y.TextField({
+                  label: '<%=escape_javascript(t('madb_name'))%>',
+                  name:"database[name]",
+                  value:""}));
+    fields.push ( { type : 'submit', label : '<%= escape_javascript(t('madb_submit')) %>', id: 'commit'});
+    fields.push ( {type : 'reset', label : '<%= escape_javascript(t('madb_reset'))%>'});
+
+
+    f = new Y.Form({
+       id:"database_addition",
+       contentBox: '#addition_form',
+       action : '<%= url_for(:action => "create", :format => 'js') %>',
+       method : 'post',
+       upload : false,
+       resetAfterSubmit: true,
+       skipValidationBeforeSubmit: true,
+       fields : fields
+       });
+    f.render();
+    f.subscribe("success", function (args) {
+	var data = args.response.responseText;
+        var result = Y.JSON.parse(data);
+        if (result.status=="success")
+        {
+          Y.one('#addition_form_errors').set("innertHTML", '').addClass('hidden');
+          Y.fire('madb:database_created',  result  );    
+          window.location='<%= url_for :controller => "admin/entities", :action => "index"%>?db='+result.data.id;
+        }
+        else
+        {
+          var errors = result.data;
+          var message='';
+          Y.each(errors, function(val, i, arr) {
+              message+='<div class="error_message">'+ val+'</div>';
+            });
+          Y.log(message);
+          Y.one('#addition_form_errors').set("innerHTML", message).removeClass('hidden');
+
+          alert('<%= escape_javascript(t('madb_an_error_occured')) %>');
+        }
+
+        });
+<%end%>
+</script>
+<h2><%=t("madb_databases_list")%></h2>
+
 
 <div id="databases_list"></div>
 
 <script type="text/javascript">
   <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
-    <%= datatable( :js_var => "dt", :ar_class => Database, :controller => self, :content_box => "#databases_list", :source => url_for(:controller => "Admin/Databases",:action => "list", :format => "js")+"?", :actions => ["view", "edit", "delete"] )%>
+
+  var EntitiesTable = Y.madb_tables.EntitiesTable;
+  var actions = [ {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_manage")%>", "className": "action_cell", "formatter": EntitiesTable.VIEW_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "entities", :action => "index"})%>?db='+ h.record_id ;
+            } },
+                   { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_rename")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "admin/databases", :action => "edit"})%>/'+ h.record_id ;
+            }  },
+                   { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER , listener: function(h) {
+                var datatable = h.datatable ;
+                var first_column = datatable.getColumnSet().keys[0].key; 
+  // datasource utf-8 fix
+                var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
+                if (confirm(Y.madb.translate("<%= t("madb_really_delete_database_question") %>", { database: h.record.getData("name") , title: first_column  , value: first_value}  ))) {
+                  var url = '<%= url_for  :controller => "admin/databases", :action => "destroy"%>/'+h.record_id+'.js';
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.io(url, config);
+                }
+            } }];
+
+
+
+
+    <%= datatable( :js_var => "dt", :ar_class => Database, :controller => self, :content_box => "#databases_list", :source => url_for(:controller => "Admin/Databases",:action => "list", :format => "js")+"?", :actions => "actions"  )%>
+    Y.Global.on('madb:database_created', function(result) {
+        record = result.data;
+        dt._datatable.addRow(record,0);
+      });
     
   <% end %>
 </script>
