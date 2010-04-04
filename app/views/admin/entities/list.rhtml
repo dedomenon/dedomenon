@@ -1,30 +1,101 @@
 <h1><%=t("madb_entities_list", :vars => {'db'=> t(@db.name, :scope => "account")})%></h1>
 <%= help_info("madb_help_info_admin_entities_list")%>
+<h2><%=t('madb_create_entity')%></h2>
+<div id=="addition_form_container">
+  <div id="addition_form_errors" class="errormessage hidden"></div>
+  <div id="addition_form">
+  </div>
+</div>
 
-<table class="list_table">
-  <thead>
-  <tr>
-    <th><%= t("madb_name") %></th>
-    <th><%= t("madb_has_public_form") %></th>
-<th class="action_cell"/>
-<th class="action_cell"/>
-<th class="action_cell"/>
-  </tr>
-  </thead>
+<script type="text/javascript">
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'json-parse']) do %>
+    Y.publish('madb:entity_created', {broadcast: 2});
+    // Create a Field Object manually
+    var fields = [ ];
+    fields.push( new Y.TextField({
+                  label: '<%=escape_javascript(t('madb_name'))%>',
+                  name:"entity[name]",
+                  value:""}));
+    fields.push( new Y.HiddenField({
+                  name:"entity[database_id]",
+                  value:'<%= escape_javascript(params[:db]) %>'}));
+    fields.push ( { type : 'submit', label : '<%= escape_javascript(t('madb_submit')) %>', id: 'commit'});
+    fields.push ( {type : 'reset', label : '<%= escape_javascript(t('madb_reset'))%>'});
 
-<% for entity in @entities %>
-  <tbody>
-  <tr>
-    <td><%=h(t(entity.name, :scope => "account")) %></td>
-    <td><%=h entity.has_public_form? ? t("madb_yes") : t("madb_no") %></td>
-    <td><%= link_to t('madb_administrate'), {:action => 'show', :id => entity}, { :title => t('madb_administrate_entity_link_title')} %></td>
-    <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :border =>0, :alt => t('madb_destroy')), {:action => 'destroy', :id => entity}, :confirm => t("madb_really_delete_entity_table_question", :vars => { 'name' => t(entity.name, :scope => "account")}), :method => :post, :title => t('madb_destroy_entity_link_title')  %></td>
-    <td class="action_cell"><%= link_to image_tag("icon/big/floppy.png", :border =>0, :alt => t('madb_export')), {:controller => '/entities', :action => 'entities_list', :id => entity, :format => "csv" }, :title => t('madb_export')  %></td>
-  </tr>
-  </tbody>
-<% end %>
-</table>
+
+    f = new Y.Form({
+       id:"entity_addition",
+       contentBox: '#addition_form',
+       action : '<%= url_for(:action => "create", :format => 'js') %>',
+       method : 'post',
+       upload : false,
+       resetAfterSubmit: true,
+       skipValidationBeforeSubmit: true,
+       fields : fields
+       });
+    f.render();
+    f.subscribe("success", function (args) {
+	var data = args.response.responseText;
+        var result = Y.JSON.parse(data);
+        if (result.status=="success")
+        {
+          Y.one('#addition_form_errors').set("innertHTML", '').addClass('hidden');
+          Y.fire('madb:entity_created',  result  );    
+          window.location='<%= url_for :controller => "admin/entities", :action => "show"%>/'+result.data.id;
+        }
+        else
+        {
+          var errors = result.data;
+          var message='';
+          Y.each(errors, function(val, i, arr) {
+              message+='<div class="error_message">'+ val+'</div>';
+            });
+          Y.one('#addition_form_errors').set("innerHTML", message).removeClass('hidden');
+
+          alert('<%= escape_javascript(t('madb_an_error_occured')) %>');
+        }
+
+        });
+<%end%>
+</script>
 
 <br />
 
-<span class="button_style"><%= link_to t('madb_new_entity'), :action => 'new', :db => params["db"] %></span>
+
+<div id="entities_list"></div>
+
+<script type="text/javascript">
+  <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+
+  var EntitiesTable = Y.madb_tables.EntitiesTable;
+  var actions = [ {  "width": 35, "key": "manage_action_column",  "label": "<%=t("madb_manage")%>", "className": "action_cell", "formatter": EntitiesTable.MANAGE_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "admin/entities", :action => "show"})%>/'+ h.record_id ;
+            } },
+                   { "width" :35, "key": "export_action_column",  "label": "<%=t("madb_export")%>", "className" : "action_cell", "formatter": EntitiesTable.EXPORT_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "/entities", :action => "entities_list"})%>/'+ h.record_id+'.csv' ;
+            }  },
+                   { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER , listener: function(h) {
+                var datatable = h.datatable ;
+                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_table_question") %>", { name: h.record.getData("name") }  ))) {
+                  var url = '<%= url_for  :controller => "admin/entities", :action => "destroy"%>/'+h.record_id+'.js';
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.io(url, config);
+                }
+            } }];
+
+
+
+
+<%= datatable( :js_var => "dt", :ar_class => Entity, :controller => self, :content_box => "#entities_list", :source => url_for(:controller => "admin/entities",:action => "list", :format => "js", :database_id => params[:db] )+"&", :actions => "actions"  )%>
+    Y.Global.on('madb:entity_created', function(result) {
+        record = result.data;
+        dt._datatable.addRow(record,0);
+      });
+    
+  <% end %>
+</script>

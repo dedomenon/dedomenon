@@ -366,10 +366,34 @@ class Admin::EntitiesController < ApplicationController
   def list
     
     params[:database_id] = params[:database_id] || params[:database] || params[:db]
-    if params[:database_id]
-      @entities = Entity.find(:all, :conditions => ["database_id =?",params[:database_id]] , :offset => params['start-index'], :limit => params['max-results'], :order => "id")
+    if params[:detail_filter]
+      case Entity.columns_hash[params[:detail_filter]].type
+      when :boolean
+        comparator = "="
+        searched = params[:value_filter].first
+      else
+        comparator = "like"
+        searched = "%"+params[:value_filter]+"%"
+      end
+      conditions = ["database_id =? and #{Entity.connection.quote_column_name(params[:detail_filter])} #{comparator} ?",params[:database_id], searched]
     else
-      @entities = Entity.find(:all, :offset => params['start-index'], :limit => params['max-results'])
+      conditions = ["database_id =?",params[:database_id]]
+    end
+    @entities = Entity.find(:all, :conditions => conditions  , :offset => params[:startIndex], :limit => params[:results], :order => "name" )
+    @entities_count = Entity.count( :conditions => conditions )
+
+    @list = @entities
+    @sort = params[:sort]
+    @dir = params[:dir]
+    if @list.length>0
+      @paginator = ApplicationController::Paginator.new self, @entities_count , @list.length, (@entities_count/@list.length)+1
+    else
+      @paginator = nil
+    end
+
+    respond_to do |format|
+      format.js { render :template => "entities/entities_list"  }
+      format.html {}
     end
     
   end
@@ -443,43 +467,19 @@ class Admin::EntitiesController < ApplicationController
   #
   def create
     
-      @entity = Entity.new(params[:entity])
-      
-#      if @db_id > 0
-#        db = Database.find @db_id
-#      else
-#        format.html
-#        format.json { render :json => 'Bad Request', :status => 400 }
-#        format.xml { render :xml => 'Bad Request', :status => 400 }
-#      end
+    @entity = Entity.new(params[:entity])
 
-    # If its being called as a nested resource
-    if params[:database_id]
-      db = Database.find(params[:database_id])
-    else
-      # Or if its being called as standalone resource then you are expected 
-      # to provide database id of the entity in the params[:entity] or it 
-      # should be in the hidden input field with the name of db
-      #
-      if params[:entity][:database_id]
-        db = Database.find(params[:entity][:database_id])
+    respond_to do |format|
+      if @entity.save
+          format.html { 
+            flash['notice'] = 'Entity was successfully created.'
+            redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
+          }
+          format.js { render :json => { :status => 'success', :data => @entity} }
       else
-        # Otherwise the call is coming from the views in the hidden 
-        # input field in views/admin/entities/_form.rhtml
-        db = Database.find(params[:db])
+         format.html { render :action => 'new' if params[:controller] == 'admin/entities'}
+         format.js { render :json => { :status => 'failure', :data => @entity.errors.full_messages }}
       end
-    end
-
-    @entity.database = db
-    if @entity.save
-      flash['notice'] = 'Entity was successfully created.'
-      redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
-      @msg = 'OK'
-      @code = 201  
-    else
-      render :action => 'new' if params[:controller] == 'admin/entities'
-      @msg = 'Bad Request (Faild to save the entity)'
-      @code = 400
     end
   end
 
@@ -563,8 +563,10 @@ class Admin::EntitiesController < ApplicationController
     db = entity.database
     entity.destroy
     
-    redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
-    
+    respond_to do |format|
+      format.js { render :json => { :status => 'success' } }
+      format.html { redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'}
+    end
     
   end
 

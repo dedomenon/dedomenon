@@ -61,7 +61,7 @@ YUI.add('madb-tables', function(Y) {
             record_id = record.getData()["['id']"];
           cell.innerHTML=Y.substitute('<%=image_tag("icon/big/use.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
         },
-        _unlink_formatter : function(cell, record, column, data) {
+        UNLINK_FORMATTER : function(cell, record, column, data) {
 // datasource utf-8 fix
           var record_id;
           if (record.getData().id)
@@ -69,6 +69,24 @@ YUI.add('madb-tables', function(Y) {
           else
             record_id = record.getData()["['id']"];
           cell.innerHTML=Y.substitute('<%=image_tag("icon/big/unlink.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        MANAGE_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/edit.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        EXPORT_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/floppy.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
         },
         ATTRS : {
                   identifier : {
