@@ -94,6 +94,7 @@ class DateDetailValue < DetailValue
                   id: "#{form_field_id(i,o)}_value",
                   validator: Y.madb.get_detail_validator(#{detail.id}),
                   name:"#{form_field_name(i,o)}[value]",
+                  value: '#{value ? value.strftime("%Y-%m-%d %H:%M:%S"):""}',
                   label:"#{form_field_label}"})
     date_field.on('clear', function(field) {
                      field._fieldNode.removeClass('valid_form_value');
@@ -107,6 +108,11 @@ class DateDetailValue < DetailValue
 
      }
 	end
+  def self.yui_formatter(h={})
+      %{function(cell, record, column, data) {
+        cell.innerHTML= data;
+        } }
+  end
   # *Description*
   #     Returns whether the date detail value contained is valid or not.
   # *Workflow*
@@ -124,10 +130,11 @@ end
   # *Description*
   #     Format detail value for display. For a date detail we simply html_escape the value stored.
   def self.format_detail(options)
+    v = options[:value]
     if options[:format].to_s == 'csv'
-      return options[:value]
+      return v
     else
-	   return html_escape(options[:value])
+	   return html_escape(v)
     end
   end
   

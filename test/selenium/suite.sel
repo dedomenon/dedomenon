@@ -19,6 +19,8 @@
 <tr><td><a href="detail_creation_ddl_type.sel">detail_creation_ddl_type</a></td></tr>
 <tr><td><a href="details_creation_all_types.sel">details_creation_all_types</a></td></tr>
 <tr><td><a href="details_long_text_values.sel">details_long_text_values</a></td></tr>
+<tr><td><a href="details_ddl_values.sel">details_ddl_values</a></td></tr>
+<tr><td><a href="details_date_values.sel">details_date_values</a></td></tr>
 <tr><td><a href="email_validation_add_and_link_new.sel">email_validation_add_and_link_new</a></td></tr>
 <tr><td><a href="entities_list_order_and_filter.sel">entities_list_order_and_filter</a></td></tr>
 <tr><td><a href="entity_add.sel">entity_add</a></td></tr>
@@ -31,7 +33,6 @@
 <tr><td><a href="related_entities_elements_visibility.sel">related_entities_elements_visibility</a></td></tr>
 <tr><td><a href="s3_and_file_attachments.sel">s3_and_file_attachments</a></td></tr>
 <tr><td><a href="zz_csv_export.sel">zz_csv_export</a></td></tr>
-<tr><td><a href="details_ddl_values.sel">details_ddl_values</a></td></tr>
 </tbody></table>
 </body>
 </html>
