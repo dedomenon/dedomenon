@@ -4,7 +4,7 @@
 //                };
 //
 
-<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => ['substitute', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => MadbSettings.entities_table_modules) do %>
   Y.publish('madb:entity_linked', { broadcast: 2} )
   Y.publish('madb:refresh_related', { broadcast: 2} )
   <%= entities_table( :js_var => "dt",:entity => @entity , :controller => self, :content_box => "##{@yui_list_id}", 

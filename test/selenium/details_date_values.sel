@@ -1,0 +1,26 @@
+|open|/selenium/setup?fixtures=account_types,account_type_values,accounts,databases,data_types,detail_status,details,detail_value_propositions,entities,entities2details,relation_side_types,relations,instances,detail_values,integer_detail_values,date_detail_values,ddl_detail_values,links,user_types,users||
+|open|/app||
+|assertTitle|exact:madb_madb::||
+|type|user_login|raphinou@yahoo.com|
+|type|user_password|linuxxxx|
+|clickAndWait|commit||
+|assertTitle|exact:madb_madb::madb_list_of_databases||
+|open|/app/entities/edit/95||
+|pause|2000||
+|assertValue|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field")]|2005-09-10 00:00:00|
+|focus|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field")]||
+|type|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field")]|invalid data|
+|focus|//input[contains(@id,"visite_titre0_value_field")]||
+|pause|2000||
+|assertElementPresent|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field") and @class="invalid_form_value"]|invalid data|
+|type|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field")]|2010-04-22|
+|click|//button[@id='commit']||
+|pause|2000||
+|open|/app/entities/view/95||
+|assertElementPresent|//td[@class="data_cell" and .="2010-04-22 00:00:00"]||
+|open|/app/entities/edit/95||
+|pause|1000||
+|assertValue|//div[contains(@class,"yui3-text-field")]/input[contains(@id,"visite_date0_value_field")]|2010-04-22 00:00:00|
+hello
+
+end|

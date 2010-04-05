@@ -48,7 +48,7 @@
 </div>
 
 <script type="text/javascript">
-<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => ['substitute', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection' ]) do %>
+<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => MadbSettings.entities_table_modules) do %>
   <%= entities_table( :js_var => "dt",:entity => @entity, :controller => self, :content_box => "##{@entity.name.underscorize}_list_div", :source => [], :actions => ["view", "edit", "delete"] )%>
 
   Y.Global.on('madb:entity_created', function(list, data) {

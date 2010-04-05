@@ -11,9 +11,9 @@
         <% next if o.id=="id" %>
         <% detail = Detail.find(o.id, :include => [:data_type]) %>
         <% detail_class = class_from_name(detail.data_type.class_name) %>
-        <tr><td class="label_cell"><%=t(detail.name, {:scope => "account"})  %>:</td><td class="data_cell">
-            <%=detail_class.format_detail :value => o.value, :controller => self %>
-        </td></tr>
+        <tr><td class="label_cell"><%=t(detail.name, {:scope => "account"})  %>:</td>
+          <td class="data_cell"><%=detail_class.format_detail :value => o.value, :controller => self %></td>
+        </tr>
 <% end %>
 </table>
 <span class="button_style"><%= link_to( t("madb_edit"), :controller => "entities", :action => "edit", :id => params["id"], :popup => params["popup"] ) %></span>
@@ -59,7 +59,7 @@
 
 
 <script type="text/javascript">
-<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => ['substitute', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+<% yui_block( :modules => [ "madb", "madb-tables","gallery-form" ], :use => MadbSettings.entities_table_modules) do %>
   Y.publish('madb:entity_linked', { broadcast: 2} )
   Y.publish('madb:refresh_related', { broadcast: 2} )
   var create_datatable = function() {
@@ -201,7 +201,7 @@
 //                };
 //
 
-<% yui_block( :modules => [ "madb", "madb-tables", "gallery-form" ], :use => ['substitute', 'yui2-datatable', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+<% yui_block( :modules => [ "madb", "madb-tables", "gallery-form" ], :use => MadbSettings.entities_table_modules) do %>
   window.YAHOO = window.YAHOO || Y.YUI2; 
   <%= entities_table( :js_var => "dt",:entity => relation.send(type[:to]) , :controller => self, :content_box => "##{yui_linked_list}", 
           :source => url_for(
