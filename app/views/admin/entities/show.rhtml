@@ -50,12 +50,40 @@
 
 <% end %>
 
+<script type="text/javascript">
+YUI().use('sortable', 'io-base', function(Y) {
+    var sortable = new Y.Sortable({
+        container: '#entity_details',
+        nodes: 'li',
+        opacity: '.1'
+    });
+
+    sortable.delegate.on('drag:drophit', function(e) { 
+      Y.log('event:');
+      Y.log(e);
+      var ids = [], post_data ="";
+      Y.all('#entity_details li').each( 
+          function(n,i,l) {
+           id = n.get('id');
+           if (id.match(/item_\d+/)) {
+            post_data+='entity_details[]='+n.get('id').replace(/item_/,'')+'&'; }
+          }
+      );
+      var url = '<%= url_for  :controller => "admin/entities", :action => "reorder_details", :id => @entity.id, :format => 'js'  %>';
+      var config = { method: 'POST', 
+                     data: post_data,
+                     on: { success : function() {},
+                           failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                     }
+      };
+      Y.io(url, config);
+    })
+         
+})
 
 
-<%= sortable_element 'entity_details',
-      :complete => visual_effect(:highlight, 'entity_details'),
-      :url => { :action => "reorder_details", :id => @entity }
-%>
+</script>
+
 
 
 
