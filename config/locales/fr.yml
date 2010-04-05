@@ -421,6 +421,7 @@ fr:
   madb_question: question
   madb_this_will_erase_the_current_file: "Cette op\xC3\xA9ration effacera d\xC3\xA9finitivement le fichier, \xC3\xAAtes-vous s\xC3\xBBr de vouloir continuer?"
   madb_cancel: Annuler
+  madb_done: Terminé
   madb_can_one_child_entity_have_several_parents_question: "Une entr\xC3\xA9e <span class=\"no_css_child_name\">{{child_entity}}</span> peut-elle \xC3\xAAtre associ\xC3\xA9e \xC3\xA0 plusieurs <span class=\"no_css_parent_name\">{{parent_entity}}</span>"
   madb_add_and_instance: "Ajoutez une nouvelle entr\xC3\xA9e {{entity}}"
   madb_company_country: Pays (liste en anglais)

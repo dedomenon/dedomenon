@@ -118,7 +118,7 @@ class DdlDetailValue < DetailValue
                   name:"#{form_field_name(i,o)}[value]",
                   value: '#{detail_value_proposition ? detail_value_proposition.id: ''}',
                   choices: #{choices},
-                  value: '#{detail_value_proposition.id}',
+                  value: '#{detail_value_proposition.nil? ? '' : detail_value_proposition.id}',
                   label:"#{form_field_label}"}));
 
      }

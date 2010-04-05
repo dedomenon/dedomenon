@@ -421,12 +421,28 @@ class Admin::EntitiesController < ApplicationController
     end
       
     @relations_to_parents = @entity.relations_to_parents
-    @relations_to_parents_rows = @entity.relations_to_parents.collect{|r| { :source_id => params[:id], :madb_relation_name => r.from_child_to_parent_name, :madb_parent => r.parent.name, :madb_multiple_parents_allowed => r.parent_side_type.name=="many", :madb_multiple_children_allowed => r.child_side_type.name=="many", :id => r.id } }
+    @relations_to_parents_rows = @entity.relations_to_parents.collect do |r| 
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        { :source_id => params[:id], 
+          :madb_relation_name => r.from_child_to_parent_name, 
+          :madb_parent => r.parent.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => (r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)), 
+          :id => r.id } 
+    end
     @relations_to_parents_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_parent, :label => t('madb_parent')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
 
 
     @relations_to_children = @entity.relations_to_children
-    @relations_to_children_rows = @entity.relations_to_children.collect{|r| { :source_id => params[:id], :madb_relation_name => r.from_parent_to_child_name, :madb_child => r.child.name, :madb_multiple_parents_allowed => r.parent_side_type.name=="many", :madb_multiple_children_allowed => r.child_side_type.name=="many", :id => r.id } }
+    @relations_to_children_rows = @entity.relations_to_children.collect do |r| 
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        { :source_id => params[:id], 
+          :madb_relation_name => r.from_parent_to_child_name, 
+          :madb_child => r.child.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => ( r.child_side_type.name=="many" ?  t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)),
+          :id => r.id } 
+    end
     @relations_to_children_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_child, :label => t('madb_child')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
 
     details_to_add = @db.details - @entity.entity_details.collect{|ed| ed.detail}
@@ -821,7 +837,7 @@ class Admin::EntitiesController < ApplicationController
       @this_side = "child_id"
       @this_side_name = "child"
       @other_side = "parent_id"
-      @other_side_name = "parent_entity"
+      @other_side_name = "parent"
       @child_entity = Entity.find(params["child_id"]).name
     else
       @parent_id = params["parent_id"]
@@ -829,7 +845,7 @@ class Admin::EntitiesController < ApplicationController
       @this_side = "parent_id"
       @this_side_name = "parent"
       @other_side = "child_id"
-      @other_side_name = "child_entity"
+      @other_side_name = "child"
       @parent_entity = Entity.find(params["parent_id"]).name
     end
 
@@ -900,7 +916,20 @@ class Admin::EntitiesController < ApplicationController
           return
         end
       end
-      redirect_to :action  => "show" , :id => params["source_id"] and return if params[:controller] == 'admin/entities'
+    respond_to do |format|
+      format.html { redirect_to :action  => "show" , :id => params["source_id"] and return if params[:controller] == 'admin/entities' }
+      format.js { 
+        r = @relation
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        data = { 
+          :madb_relation_name => r.from_parent_to_child_name, 
+          :madb_child => r.child.name, 
+          :madb_parent => r.parent.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => ( r.child_side_type.name=="many" ?  t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)),
+          :id => r.id } 
+        render :json => { :status => :success, :data => data }}
+    end
       #@msg = 'OK'
       #@code = 201 
   end
@@ -957,12 +986,14 @@ class Admin::EntitiesController < ApplicationController
     @source_id = params["source_id"]
     if @relation.parent == source_entity
       @this_side = "parent_id"
+      @this_side_name = "parent"
       @other_side = "child_id"
-      @other_side_name= "child_entity"
+      @other_side_name= "child"
     else
       @this_side="child_id"
+      @this_side_name="child"
       @other_side = "parent_id"
-      @other_side_name= "parent_entity"
+      @other_side_name= "parent"
     end
     @parent_side_edit = true if @relation.parent_side_type.name=='one'
     @child_side_edit = true if @relation.child_side_type.name=='one'

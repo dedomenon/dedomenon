@@ -35,7 +35,7 @@ function check_link_form()
 
 <table>
 <tr>
-  <td><%=t("madb_"+@other_side_name)%>  :</td>
+  <td><%=t("madb_"+@other_side_name+"_entity")%>  :</td>
 
   <td><select <%= @relation ? 'disabled="disabled"' : '' %> name="relation[<%=@other_side%>]">
       <% entities_for_select = @entities.collect{|e| [t(e.name,:scope => "account"), e.id]  } %>
@@ -109,6 +109,7 @@ function update_children () {
 
     var fields = [ ];
     var label_translations_hash = { parent_entity: '<%= escape_javascript(@parent_entity) %>', child_entity: '<%= escape_javascript(@child_entity) %>'  };
+    var entities_options_labels = Y.JSON.parse('<%= escape_javascript(@entities_for_yui_select.inject({}){|acc,h| acc.merge( { h[:value].to_s => h[:label] } )    }.to_json)%>');
     fields.push( new Y.HiddenField({
                   id: "source_id",
                   name:"source_id",
@@ -117,12 +118,14 @@ function update_children () {
                   id: "this_side_id",
                   name:'relation[<%= @this_side %>]',
                   value:'<%= @source_id %>' }));
-    fields.push( new Y.SelectField({
+    var entities_list =  new Y.SelectField({
                   id: "related_entity",
                   name:"relation[<%=@other_side %>]",
                   value: '<%= @relation? escape_javascript(@relation.send(@other_side).to_s): '' %>',
                   choices: <%=@entities_for_yui_select.to_json%>,
-                  label:'<%=escape_javascript(t("madb_"+@other_side_name))%>'}));
+                  with_default_option: false,
+                  label:'<%=escape_javascript(t("madb_"+@other_side_name))%>'})
+    fields.push( entities_list );
     fields.push( new Y.TextField({
                   id: "p2c_name",
                   name:"relation[from_parent_to_child_name]",
@@ -142,6 +145,7 @@ function update_children () {
                   id: "multiple_parents",
                   name:"relation[parent_side_type_id]",
                   choices: <%= parent_ddl_options.to_json %>,
+                  with_default_option: false,
                   value: '<%= @relation? escape_javascript(@relation.parent_side_type_id.to_s): '' %>',
                   label: Y.madb.translate('<%=escape_javascript(t("madb_can_one_child_entity_have_several_parents_question"))%>', label_translations_hash  ) }));
     <%#FIXME disable ddl unless  @child_side_edit %>
@@ -150,13 +154,14 @@ function update_children () {
                   id: "multiple_children",
                   name:"relation[child_side_type_id]",
                   choices: <%= child_ddl_options.to_json %>,
+                  with_default_option: false,
                   value: '<%= @relation? escape_javascript(@relation.child_side_type_id.to_s): '' %>',
                   label: Y.madb.translate('<%=escape_javascript(t("madb_can_one_parent_entity_have_several_children_question"))%>', label_translations_hash  ) }));
 
     fields.push ( { type : 'submit', label : '<%= escape_javascript(t('madb_submit')) %>', id: 'commit'});
     fields.push ( {type : 'button', label : '<%= escape_javascript(t('madb_cancel'))%>'});
 
-    f = new Y.Form({
+    var f = new Y.Form({
        id:"link_form",
        contentBox: '#link_form',
        action : '<%= url_for(:action => "add_link", :format => 'js') %>',
@@ -167,6 +172,14 @@ function update_children () {
        fields : fields
        });
     f.render();
+    // Update translated labels when choice of linked entity is changed by the user
+    var update_translations = function(text) {
+      f._formNode.all(".no_css_<%= @other_side_name %>_name").setContent( text);
+    }
+    entities_list.on("change", function(e) { var text = entities_options_labels[e.currentTarget.get('value')];
+                                             update_translations(text);       });
+    // Initialize translations when page first displayed
+    update_translations( entities_options_labels[entities_list.get('value')] );
 <%end%>
 
 </script>

@@ -174,11 +174,12 @@ module ApplicationHelper
       column_headers =displayed_columns.collect { |c| { "key" => c} }.push({"key" => "id", "hidden" => true})
     end
     js = %{
+       window.YAHOO = window.YAHOO || Y.YUI2; 
        var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:  #{ column_headers.to_json }   ,
                   source: #{ h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
                   fields_definition : #{ displayed_columns.to_json },
-                  entity_name: Y.guid ,
+                  entity_name: Y.guid() ,
                   entity_id : 0,
                   filter_options : '#{ options_for_select(  displayed_columns ).gsub(/\n/,'') }',
                   actions: #{h[:actions].is_a?(String) ? h[:actions] : h[:actions].to_json} , 
@@ -298,6 +299,110 @@ Y.publish('madb:entity_created', { broadcast: 2} );
         }
 
         return js
+  end
+
+  def new_relation_form(h)
+    @source = @entity
+    @relation_types = RelationSideType.find :all
+    @entities = @source.database.entities
+    @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
+    @parent_side_edit = true
+    @child_side_edit = true
+    @child_ddl_options = @relation_types.collect{|rt| rt.name=="one" ?  { :label => t("madb_no_only_one_child"), :value => rt.id.to_s  } : { :label => t("madb_yes_multiple_child"), :value => rt.id.to_s }  }
+    @parent_ddl_options = @relation_types.collect{|rt| rt.name=="one" ?  { :label => t("madb_no_only_one_parent"), :value => rt.id.to_s  } : { :label => t("madb_yes_multiple_parent"), :value => rt.id.to_s }  }
+    if h[:parent]
+      @parent = h[:parent]
+      @parent_name = @parent.name
+      @source_id = @parent.id
+      @this_side = "parent"
+      @other_side = "child"
+    else
+      @child = h[:child]
+      @child_name = @child.name
+      @source_id = @child.id
+      @this_side = "child"
+      @other_side = "parent"
+    end
+
+    js = %{
+
+      var fields = [ ];
+      var label_translations_hash = { parent_entity: '#{ escape_javascript(@parent_name) }', child_entity: '#{ escape_javascript(@child_name) }'  };
+      var entities_options_labels = Y.JSON.parse('#{ escape_javascript(@entities_for_yui_select.inject({}){|acc,val| acc.merge( { val[:value].to_s => val[:label] } )    }.to_json)}');
+      fields.push( new Y.HiddenField({
+                    id: "source_id",
+                    name:"source_id",
+                    value:'#{ @source_id }' }));
+      fields.push( new Y.HiddenField({
+                    id: "this_side_id",
+                    name:'relation[#{ @this_side }_id]',
+                    value:'#{ @source_id }' }));
+      var entities_list =  new Y.SelectField({
+                    id: "related_entity",
+                    name:"relation[#{@other_side }_id]",
+                    value: '#{ @relation? escape_javascript(@relation.send(@other_side+"_id").to_s): '' }',
+                    choices: #{@entities_for_yui_select.to_json},
+                    with_default_option: false,
+                    label:'#{escape_javascript(t("madb_"+@other_side))}'})
+      fields.push( entities_list );
+      fields.push( new Y.TextField({
+                    id: "p2c_name",
+                    name:"relation[from_parent_to_child_name]",
+                    value: '#{ @relation? escape_javascript(@relation.from_parent_to_child_name): '' }',
+                    label: Y.madb.translate('#{escape_javascript(t("madb_from_parent_to_child_relation_name"))}', label_translations_hash ) }));
+      fields.push( new Y.TextField({
+                    id: "c2p_name",
+                    name:"relation[from_child_to_parent_name]",
+                    value: '#{ @relation? escape_javascript(@relation.from_child_to_parent_name): '' }',
+                    label: Y.madb.translate('#{escape_javascript(t("madb_from_child_to_parent_relation_name"))}', label_translations_hash  ) }));
+
+
+      //FIXME disable ddl unless  @parent_side_edit
+      fields.push( new Y.SelectField({
+                    id: "multiple_parents",
+                    name:"relation[parent_side_type_id]",
+                    choices: #{ @parent_ddl_options.to_json },
+                    with_default_option: false,
+                    value: '#{ @relation? escape_javascript(@relation.parent_side_type_id.to_s): '' }',
+                    label: Y.madb.translate('#{escape_javascript(t("madb_can_one_child_entity_have_several_parents_question"))}', label_translations_hash  ) }));
+      //FIXME disable ddl unless  @child_side_edit
+      fields.push( new Y.SelectField({
+                    id: "multiple_children",
+                    name:"relation[child_side_type_id]",
+                    choices: #{ @child_ddl_options.to_json },
+                    with_default_option: false,
+                    value: '#{ @relation? escape_javascript(@relation.child_side_type_id.to_s): '' }',
+                    label: Y.madb.translate('#{escape_javascript(t("madb_can_one_parent_entity_have_several_children_question"))}', label_translations_hash  ) }));
+
+      fields.push ( { type : 'submit', label : '#{ escape_javascript(t('madb_submit')) }', id: 'commit'});
+      fields.push ( {type : 'button', label : '#{ escape_javascript(t('madb_done'))}',onclick : { fn : function(e) {#{h[:js_var]}.get("boundingBox").get('parentNode').addClass('hidden'); }} });
+
+      var #{h[:js_var]} = new Y.Form({
+         id: Y.guid(),
+         contentBox: '##{h[:content_box]}',
+         action : '#{ url_for(:action => "add_link", :format => 'js') }',
+         method : 'post',
+         upload : false,
+         resetAfterSubmit: false,
+         skipValidationBeforeSubmit: true,
+         fields : fields
+         });
+      #{h[:js_var]}.render();
+      // Update translated labels when choice of linked entity is changed by the user
+      var update_translations = function(text) {
+        #{h[:js_var]}._formNode.all(".no_css_#{ @other_side }_name").setContent( text);
+      }
+      entities_list.on("change", function(e) { var text = entities_options_labels[e.currentTarget.get('value')];
+                                               update_translations(text);       });
+      // Initialize translations when page first displayed
+      update_translations( entities_options_labels[entities_list.get('value')] );
+
+
+
+    }
+    return  js
+
+
   end
 
 

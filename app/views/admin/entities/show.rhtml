@@ -71,58 +71,92 @@
 <h2><span><%= t("madb_links")%></span></h2>
 <%= help_info("madb_help_info_admin_entities_show_links_to_other_entities")%>
 <h3><span><%= t("madb_to_children ")%></span></h3>
-<table>
-<thead>
-  <tr><th><%= t("madb_relation_name")%></th><th><%= t("madb_child")%></th> <th><%= t("madb_multiple_parents_allowed")%></th> <th><%= t("madb_multiple_children_allowed")%></th><th><%= t("madb_edit")%></th><th><%= t("madb_delete")%></th> </tr>
-</thead>
-<tbody>
-<% @relations_to_children.each do |r| %>
-<% translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name} %>
-<tr><td><%=h(t(r.from_parent_to_child_name, { :scope => "account" })) %></td><td><%= t(r.child.name,{:scope => "account"}) %></td><td><%=r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars )%></td><td><%=r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars )%></td>
-  <td class="action_cell"><%= link_to image_tag("icon/big/edit.png", :alt =>t("madb_edit"), :border => 0), {:action=> "edit_link", :id => r.id, :source_id => params["id"]}  %></td>
-  <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :alt => t("madb_delete"), :border => 0) , {:action=> "delete_link", :id => r.id, :source_id => params["id"]} ,{:confirm => t("madb_confirm_delete_all_links")} %></td></tr>
-<% end %>
-</tbody>
 
-</table>
-<span class="button_style"><%= link_to t("madb_add_link_to_child_entity"), :action => "define_link" , :parent_id => params["id"] %></span>
+
+<% 
+
+      @parent = @entity
+      @parent_name = @parent.name
+      @source_id = params[:id]
+      @this_side = "parent"
+      @other_side = "child"
+
+
+      @source = @entity
+      @relation_types = RelationSideType.find :all
+      @entities = @source.database.entities
+      @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
+      @parent_side_edit = true
+      @child_side_edit = true
+
+
+%>
+
+
+
+<span class="button_style" id="new_child_button"><a href="#"><%= t("madb_add_link_to_child_entity") %></a></span>
+
+<div id="to_child_form_container" class="hidden tool_in_page"><div id="to_child_form"></div></div>
+
+
+<script type="text/javascript">
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'json-parse']) do %>
+  Y.publish('madb:relation_to_child_created', {broadcast: 2 } );
+  var create_child_form = function() { 
+      <%=  new_relation_form( :parent => @entity, :content_box => "to_child_form", :js_var => "to_child_form"  )  %>
+      to_child_form.subscribe('success', function (e) {
+        var resp = Y.JSON.parse(e.args.responseText);
+        Y.fire('madb:relation_to_child_created', resp.data);
+      });
+  }
+  var count=0;
+  Y.one('#new_child_button').on('click', function(e) {
+      e.preventDefault();
+      if (count===0)
+      {
+        create_child_form()
+        count++;
+      }
+      Y.one('#to_child_form_container').toggleClass('hidden');
+      });
+<%end%>
+</script>
+
+
 
 
 
 <div id="relations_to_children"></div>
 
+<h3><span><%= t("madb_to_parents")%></span></h3>
+
+
+<span class="button_style" id="new_parent_button"><a href="#"><%= t("madb_add_link_to_parent_entity")%></a></span>
+
+
+<div id="to_parent_form_container" class="hidden tool_in_page" ><div id="to_parent_form"></div></div>
 
 
 <script type="text/javascript">
-  <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
-
-  var EntitiesTable = Y.madb_tables.EntitiesTable;
-  var actions = [{ "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
-                window.location = '<%= url_for({ :controller => "admin/entities", :action => "edit_link"})%>/'+ h.record_id+'?source_id='+h.record.getData('source_id') ;
-                }  },
-                { "width" :35, "key": "delete_action_column",  "label": "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER, listener: function(h) {
-
-
-                var datatable = h.datatable ;
-                if (confirm("<%= t("madb_really_delete_all_existing_links_question") %>" )) {
-                  var url = '<%= url_for  :controller => "admin/entities", :action => "delete_link"%>/'+h.record_id+'.js';
-                  var config = { method: 'POST', 
-                                 on: { success : function() { this.deleteRow(h.target); },
-                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
-                                 },
-                                 context: datatable
-                  };
-                  Y.io(url, config);
-                }
-
-
-
-
-                }} 
-
-
-  ] 
-  <%= datatable( :js_var => "dt", :columns => @relations_to_children_columns , :controller => self, :content_box => "#relations_to_children", :source => @relations_to_children_rows  , :actions => "actions", :display_filter => false  )%>
+<% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'json-parse']) do %>
+  Y.publish('madb:relation_to_parent_created', { broadcast: 2 });
+  var create_parent_form = function() {
+    <%=  new_relation_form( :child => @entity, :content_box => "to_parent_form", :js_var => "to_parent_form"  )  %>
+    to_parent_form.subscribe('success', function (e) {
+      var resp = Y.JSON.parse(e.args.responseText);
+      Y.fire('madb:relation_to_parent_created', resp.data);
+        });
+  }
+  var count=0;
+  Y.one('#new_parent_button').on('click', function(e) {
+      e.preventDefault();
+      if (count===0)
+      {
+        create_parent_form()
+        count++;
+      }
+      Y.one('#to_parent_form_container').toggleClass('hidden');
+      });
 
 <%end%>
 </script>
@@ -131,32 +165,13 @@
 
 
 
-
-<!--<div class="relation_head"><span><%= t("madb_to_parents")%></span></div>-->
-<h3><span><%= t("madb_to_parents")%></span></h3>
-<table>
-<thead>
-<tr><th><%= t("madb_relation_name")%></th><th><%= t("madb_parent")%></th> <th><%= t("madb_multiple_parents_allowed")%></th> <th><%= t("madb_multiple_children_allowed")%></th><th><%= t("madb_edit")%></th><th><%= t("madb_delete")%></th> </tr>
-</thead>
-<tbody>
-<% @relations_to_parents.each do |r| %>
-<% translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name} %>
-<tr><td><%=h(t(r.from_child_to_parent_name, { :scope => "account" }))%></td><td><%= t(r.parent.name,{:scope => "account"}) %></td><td><%=r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars )%></td><td><%=r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars  )%></td>
-  <td class="action_cell"><%= link_to image_tag( "icon/big/edit.png" , :alt =>t("madb_edit"),:border =>0), {:action=> "edit_link", :id => r.id, :source_id => params["id"]}  %></td>
-  <td class="action_cell"><%= link_to image_tag("icon/big/delete.png", :alt => t("madb_delete"), :border =>0), {:action=> "delete_link", :id => r.id, :source_id => params["id"]} ,{:confirm => t("madb_really_delete_all_existing_links_question")} %></td></tr>
-
-<% end %>
-</tbody>
-</table>
-<span class="button_style"><%= link_to t("madb_add_link_to_parent_entity"), :action => "define_link" , :child_id => params["id"] %></span>
-
-
 <div id="relations_to_parents"></div>
 
 
 
 <script type="text/javascript">
   <% yui_block( :modules => [  "madb","madb-tables","gallery-form" ], :use => ['substitute', 'gallery-yui2', 'madb', 'madb-tables', 'io-base', 'event-key', 'widget', 'event-custom', 'json-parse', 'anim', 'collection']) do %>
+       window.YAHOO = window.YAHOO || Y.YUI2; 
 
   var EntitiesTable = Y.madb_tables.EntitiesTable;
   var actions = [{ "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
@@ -176,15 +191,19 @@
                   };
                   Y.io(url, config);
                 }
-
-
-
-
                 }} 
 
 
   ] 
-  <%= datatable( :js_var => "dt", :columns => @relations_to_parents_columns , :controller => self, :content_box => "#relations_to_parents", :source => @relations_to_parents_rows  , :actions => "actions", :display_filter => false  )%>
+  <%= datatable( :js_var => "to_parents", :columns => @relations_to_parents_columns , :controller => self, :content_box => "#relations_to_parents", :source => @relations_to_parents_rows  , :actions => "actions", :display_filter => false  )%>
+  <%= datatable( :js_var => "to_children", :columns => @relations_to_children_columns , :controller => self, :content_box => "#relations_to_children", :source => @relations_to_children_rows  , :actions => "actions", :display_filter => false  )%>
+
+  Y.Global.on('madb:relation_to_child_created', function(data) {
+      to_children._datatable.addRow( data, 0);
+      });
+  Y.Global.on('madb:relation_to_parent_created', function(data) {
+      to_parents._datatable.addRow( data, 0);
+      });
 
 <%end%>
 </script>
