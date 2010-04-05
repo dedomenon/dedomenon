@@ -1510,6 +1510,10 @@ Y.mix(ChoiceField, {
                 return this._validateChoices(val);
             }
         },  
+        disabled : { 
+            validator : Y.Lang.isBoolean,
+            value: false
+        },  
 
         /** 
          * @attribute multiple
@@ -1589,6 +1593,13 @@ Y.extend(ChoiceField, Y.FormField, {
         }, this);
 
 		this._fieldNode = contentBox.all('input');
+                // disabling field
+                if (this.get('disabled'))
+                {
+                  this._fieldNode.setAttrs({
+			disabled : "disabled"
+                  });
+                }
     },
 
 	_syncFieldNode : function () {},
@@ -1708,6 +1719,13 @@ Y.extend(SelectField, Y.ChoiceField, {
 		this._fieldNode.setAttrs({
 			multiple : (this.get('multiple') === true ? 'multiple' : '')
 		});
+                // disabling field
+                if (this.get('disabled'))
+                {
+                  this._fieldNode.setAttrs({
+			disabled : "disabled"
+                  });
+                }
 	},
 
 	/**
@@ -1740,7 +1758,9 @@ Y.extend(SelectField, Y.ChoiceField, {
                       });
 		}, this);
 
-                if (! this.get("with_default_option") ) {
+                if (Y.Lang.isNull(this.get('value')) && !this.get("with_default_option") ) {
+                  Y.log( this.get("with_default_option") ) ;
+                  Y.log("setting value to " + choices[0].value);
                   this.set('value', choices[0].value);
                 }
                 select.set("value", this.get('value')); 

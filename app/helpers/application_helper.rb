@@ -302,7 +302,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
   end
 
   def new_relation_form(h)
-    @source = @entity
+    @source = @entity || h[:source]
     @relation_types = RelationSideType.find :all
     @entities = @source.database.entities
     @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
@@ -323,12 +323,22 @@ Y.publish('madb:entity_created', { broadcast: 2} );
       @this_side = "child"
       @other_side = "parent"
     end
+    if h[:relation]
+      @relation = h[:relation]
+      relation_hidden_field = %{fields.push( new Y.HiddenField({
+                  id: "relation_id",
+                  name:"relation_id",
+                  value:'#{ @relation.id }' })); }
+      @parent_side_edit = false
+      @child_side_edit = false
+    end
 
     js = %{
 
       var fields = [ ];
       var label_translations_hash = { parent_entity: '#{ escape_javascript(@parent_name) }', child_entity: '#{ escape_javascript(@child_name) }'  };
       var entities_options_labels = Y.JSON.parse('#{ escape_javascript(@entities_for_yui_select.inject({}){|acc,val| acc.merge( { val[:value].to_s => val[:label] } )    }.to_json)}');
+      #{relation_hidden_field}
       fields.push( new Y.HiddenField({
                     id: "source_id",
                     name:"source_id",
@@ -343,6 +353,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
                     value: '#{ @relation? escape_javascript(@relation.send(@other_side+"_id").to_s): '' }',
                     choices: #{@entities_for_yui_select.to_json},
                     with_default_option: false,
+                    disabled: #{@relation ? 'true' : 'false'},
                     label:'#{escape_javascript(t("madb_"+@other_side))}'})
       fields.push( entities_list );
       fields.push( new Y.TextField({
@@ -364,6 +375,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
                     choices: #{ @parent_ddl_options.to_json },
                     with_default_option: false,
                     value: '#{ @relation? escape_javascript(@relation.parent_side_type_id.to_s): '' }',
+                    disabled: #{ @parent_side_edit ? 'false' : 'true' },
                     label: Y.madb.translate('#{escape_javascript(t("madb_can_one_child_entity_have_several_parents_question"))}', label_translations_hash  ) }));
       //FIXME disable ddl unless  @child_side_edit
       fields.push( new Y.SelectField({
@@ -371,11 +383,12 @@ Y.publish('madb:entity_created', { broadcast: 2} );
                     name:"relation[child_side_type_id]",
                     choices: #{ @child_ddl_options.to_json },
                     with_default_option: false,
+                    disabled: #{@child_side_edit ? 'false' : 'true'},
                     value: '#{ @relation? escape_javascript(@relation.child_side_type_id.to_s): '' }',
                     label: Y.madb.translate('#{escape_javascript(t("madb_can_one_parent_entity_have_several_children_question"))}', label_translations_hash  ) }));
 
       fields.push ( { type : 'submit', label : '#{ escape_javascript(t('madb_submit')) }', id: 'commit'});
-      fields.push ( {type : 'button', label : '#{ escape_javascript(t('madb_done'))}',onclick : { fn : function(e) {#{h[:js_var]}.get("boundingBox").get('parentNode').addClass('hidden'); }} });
+      fields.push ( {type : 'button', label : '#{ escape_javascript(t('madb_done'))}',onclick : { fn : function(e) { Y.fire('madb:form_done', #{h[:js_var]});  }} });
 
       var #{h[:js_var]} = new Y.Form({
          id: Y.guid(),

@@ -962,6 +962,7 @@ class Admin::EntitiesController < ApplicationController
   def edit_link
     begin
       source_entity = Entity.find params["source_id"]
+      @source = source_entity
       @relation = Relation.find params["id"]
     rescue
       flash["error"]=t("madb_error_incorrect_data")
