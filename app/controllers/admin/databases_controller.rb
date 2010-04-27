@@ -125,7 +125,11 @@ class Admin::DatabasesController < ApplicationController
     @list = @databases
     @sort = params[:sort]
     @dir = params[:dir]
-    @paginator = ApplicationController::Paginator.new self, @databases_count , @list.length, (@databases_count/@list.length)+1
+    if @list.length > 0 
+      @paginator = ApplicationController::Paginator.new self, @databases_count , @list.length, (@databases_count/@list.length)+1
+    else
+      @paginator = nil
+    end
 
     respond_to do |format|
       format.js { render :template => "entities/entities_list"  }
