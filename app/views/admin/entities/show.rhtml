@@ -59,8 +59,6 @@ YUI().use('sortable', 'io-base', function(Y) {
     });
 
     sortable.delegate.on('drag:drophit', function(e) { 
-      Y.log('event:');
-      Y.log(e);
       var ids = [], post_data ="";
       Y.all('#entity_details li').each( 
           function(n,i,l) {
@@ -203,7 +201,7 @@ YUI().use('sortable', 'io-base', function(Y) {
 
   var EntitiesTable = Y.madb_tables.EntitiesTable;
   var actions = [{ "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
-                window.location = '<%= url_for({ :controller => "admin/entities", :action => "edit_link"})%>/'+ h.record_id+'?source_id='+h.record.getData('source_id') ;
+    window.location = '<%= url_for({ :controller => "admin/entities", :action => "edit_link"})%>/'+ h.record_id+'?source_id=<%= @source_id %>' ;
                 }  },
                 { "width" :35, "key": "delete_action_column",  "label": "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER, listener: function(h) {
 

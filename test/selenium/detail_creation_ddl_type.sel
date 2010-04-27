@@ -7,7 +7,7 @@
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=madb_admin_databases||
 |assertTitle|exact:madb_madb::||
-|clickAndWait|link=madb_details||
+|open|/app/admin/details?db=1||
 |assertTitle|exact:madb_madb::||
 |clickAndWait|link=madb_define_new_detail||
 |assertTitle|exact:madb_madb::||

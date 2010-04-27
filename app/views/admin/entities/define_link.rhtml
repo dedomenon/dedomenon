@@ -208,13 +208,13 @@
   <%=  new_relation_form( this_side.to_sym => @source, :content_box => "link-form", :js_var => "link_form", :relation => @relation, :source => @source  )  %>
   // When user clicks done, the event madb:form_done is fired
   Y.on('madb:form_done', function(f) { if (f===link_form) {
-      history.back(1);
+          history.back(1);
       }});
   // When form is successfully submitted, the form fires the success event
   link_form.subscribe('success', function(e) {
         var resp = Y.JSON.parse(e.args.responseText);
         if (resp.status === "success"){
-          history.back(1);
+          window.location='<%= url_for :controller => "admin/entities", :action => "show", :id => @source_id %>';
         }
         else
         {

@@ -35,13 +35,13 @@
        });
     f.render();
     f.subscribe("success", function (args) {
-	var data = args.response.responseText;
+	var data = args.args.responseText;
         var result = Y.JSON.parse(data);
         if (result.status=="success")
         {
           Y.one('#addition_form_errors').set("innertHTML", '').addClass('hidden');
           Y.fire('madb:entity_created',  result  );    
-          window.location='<%= url_for :controller => "admin/entities", :action => "show"%>/'+result.data.id;
+          //window.location='<%= url_for :controller => "admin/entities", :action => "show"%>/'+result.data.id;
         }
         else
         {
@@ -90,9 +90,10 @@
 
 
 
-
-<%= datatable( :js_var => "dt", :ar_class => Entity, :controller => self, :content_box => "#entities_list", :source => url_for(:controller => "admin/entities",:action => "list", :format => "js", :database_id => params[:db] )+"&", :actions => "actions"  )%>
+<% boolean_formatter = "function(cell, record, column, data) { Y.log('in formatter'); Y.log(data); if (data===true) {cell.innerHTML='#{t("madb_yes")}' } else {cell.innerHTML='#{t("madb_no")}' }}" %>
+<%= datatable( :js_var => "dt", :ar_class => Entity, :controller => self, :content_box => "#entities_list", :source => url_for(:controller => "admin/entities",:action => "list", :format => "js", :database_id => params[:db] )+"&", :actions => "actions", :formatters => { "has_public_form" => boolean_formatter,"has_public_data" => boolean_formatter, "public_to_all" => boolean_formatter }  )%>
     Y.Global.on('madb:entity_created', function(result) {
+        Y.log('entity_created');
         record = result.data;
         dt._datatable.addRow(record,0);
       });

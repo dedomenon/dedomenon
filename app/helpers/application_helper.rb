@@ -166,16 +166,25 @@ module ApplicationHelper
     raise "Missing options" if h[:controller].nil? or h[:content_box].nil? or h[:js_var].nil? or (h[:ar_class].nil? and h[:columns].nil?)
     #buidl columns specs based on an AR object, or on the array passed as argument
     h[:display_filter]= (h[:display_filter].nil? ?  true : h[:display_filter])
+    # extract columns which have a formatter specified
+    formatted_columns = h[:formatters] ? h[:formatters].keys : []
     if h[:columns]
       displayed_columns = h[:columns].collect{|c| c[:key]}
-      column_headers = h[:columns]
+      column_headers = h[:columns].to_json
     else
-      displayed_columns = h[:ar_class].columns.reject {|c| ["id", "lock_version"].include?(c.name)  or c.name.match(/_id/) }.collect{|c| c.name}
-      column_headers =displayed_columns.collect { |c| { "key" => c} }.push({"key" => "id", "hidden" => true})
+      displayed_columns = h[:ar_class].columns.reject {|c| ["id", "lock_version"].include?(c.name)  or c.name.match(/_id/) }.collect { |c| c.name}
+      column_headers =displayed_columns.collect do  |c| 
+        if formatted_columns.include?(c)
+          "{ 'key' : '#{escape_javascript(c)}', formatter : #{ h[:formatters][c] }  }"
+        else
+          "{ 'key' : '#{escape_javascript(c)}' }"
+        end
+      end.push( "{key : 'id', hidden: true}" )
+      column_headers = '[' + column_headers.join(',') + ']'
     end
     js = %{
        window.YAHOO = window.YAHOO || Y.YUI2; 
-       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:  #{ column_headers.to_json }   ,
+       var #{h[:js_var]} = new Y.madb_tables.EntitiesTable({column_headers:   #{ column_headers }   ,
                   source: #{ h[:source].to_json  },
                   dynamic_data: #{ (h[:source].nil? or h[:source].is_a?(String) ) ? "true" : "false"  },
                   fields_definition : #{ displayed_columns.to_json },

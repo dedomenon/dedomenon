@@ -33,7 +33,7 @@
        });
     f.render();
     f.subscribe("success", function (args) {
-	var data = args.response.responseText;
+	var data = args.args.responseText;
         var result = Y.JSON.parse(data);
         if (result.status=="success")
         {

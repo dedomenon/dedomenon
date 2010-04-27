@@ -7,20 +7,15 @@
 |assertTitle|exact:madb_madb::madb_list_of_databases||
 |clickAndWait|link=madb_admin_databases||
 |assertTitle|exact:madb_madb::||
-|clickAndWait|link=madb_create_database||
+|pause|1000||
+|type|//div[@id="addition_form"]//input[@name="database[name]"]|my newly created db|
+|click|//div[@id="addition_form"]//button[@id="commit"]||
 |assertTitle|exact:madb_madb::||
-|type|database_name|my newly created db|
-|clickAndWait|commit||
-|assertTitle|exact:madb_madb::||
-|assertTextPresent|my newly created db||
-|clickAndWait|//tbody[4]/tr/td[2]/a||
-|assertTitle|exact:madb_madb::||
-|clickAndWait|link=madb_new_entity||
-|assertTitle|exact:madb_madb::||
-|type|entity_name|my newly created entity|
-|clickAndWait|commit||
-|assertTitle|exact:madb_madb::||
-|clickAndWait|link=madb_administrate||
+|pause|1000||
+|type|//div[@id="addition_form"]//input[@name="entity[name]"]|my newly created entity|
+|click|//div[@id="addition_form"]//button[@id="commit"]||
+|pause|1000||
+|clickAndWait|//table/tbody[@class="yui-dt-data"]/tr//img[@record_id="100001"  and @alt="Edit"]||
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |clickAndWait|link=madb_add_new_detail||
 |assertTitle|exact:madb_madb::||
@@ -43,7 +38,7 @@
 |type|be9f6e388d97176b89cf3005772bbc0a0f97979d[0][value]|http://www.raphinou.com|
 |type|48903c196b37135bc68d87344a542b291e35d584[0][value]|test long text we'll see what happens pal|
 |click|//button[@id="commit"]||
-|pause|1000||
+|pause|2000||
 |assertTextPresent|http://www.raphinou.com||
 |open|/app/database||
 |assertTitle|exact:madb_madb::madb_list_of_databases||
