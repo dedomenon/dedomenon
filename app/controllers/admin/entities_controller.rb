@@ -66,18 +66,9 @@ class Admin::EntitiesController < ApplicationController
   # *Description*
   #   Checks whether the current user is admin or not?
   def check_user_rights
-    #return true if %w{'rest/relations' rest/entities}.include? params[:controller]
-    
     if !session["user"].admin_user?
-      if params[:controller] == 'admin/entities'
         flash["error"]=t("madb_you_dont_have_sufficient_credentials_for_action")
         redirect_to :controller => "/database" and return false
-      elsif %w{rest/entities rest/relations}.include? params[:controller]
-        if %w{create update destroy}.include? params[:action]
-          msg = {:errors => ['This REST call needs administrative rights']}
-          render :json => msg.to_json, :status => 403 and return false
-        end
-      end
     end
   end
   
@@ -101,16 +92,7 @@ class Admin::EntitiesController < ApplicationController
   #  database.    
   #
   def check_all_ids
-    
-#    if handle_rest_call
-#      return true;
-#    end
 
-    # skip the validations for the REST calls from the Relations
-    #return true if %w{'rest/relations' rest/entities}.include? params[:controller]
-    return true if params[:controller] == 'rest/relations' or 
-                   params[:controller] == 'rest/entities'
-    
     if params[:id]
       # If the entity id or the database id are provided, chances are that its
       # a rest calll
@@ -384,10 +366,34 @@ class Admin::EntitiesController < ApplicationController
   def list
     
     params[:database_id] = params[:database_id] || params[:database] || params[:db]
-    if params[:database_id]
-      @entities = Entity.find(:all, :conditions => ["database_id =?",params[:database_id]] , :offset => params['start-index'], :limit => params['max-results'], :order => "id")
+    if params[:detail_filter]
+      case Entity.columns_hash[params[:detail_filter]].type
+      when :boolean
+        comparator = "="
+        searched = params[:value_filter].first
+      else
+        comparator = "like"
+        searched = "%"+params[:value_filter]+"%"
+      end
+      conditions = ["database_id =? and #{Entity.connection.quote_column_name(params[:detail_filter])} #{comparator} ?",params[:database_id], searched]
     else
-      @entities = Entity.find(:all, :offset => params['start-index'], :limit => params['max-results'])
+      conditions = ["database_id =?",params[:database_id]]
+    end
+    @entities = Entity.find(:all, :conditions => conditions  , :offset => params[:startIndex], :limit => params[:results], :order => "name" )
+    @entities_count = Entity.count( :conditions => conditions )
+
+    @list = @entities
+    @sort = params[:sort]
+    @dir = params[:dir]
+    if @list.length>0
+      @paginator = ApplicationController::Paginator.new self, @entities_count , @list.length, (@entities_count/@list.length)+1
+    else
+      @paginator = nil
+    end
+
+    respond_to do |format|
+      format.js { render :template => "entities/entities_list"  }
+      format.html {}
     end
     
   end
@@ -408,31 +414,40 @@ class Admin::EntitiesController < ApplicationController
   #    in the Relations controller which yet does not exists.
   #   
   def show
-    
-      # If the parent resource is not provided, then dont care pick anything
-      # 
     if params[:database_id]
       @entity = Database.find(params[:database_id]).entities.find(params[:id])
     else
       @entity = Entity.find(params[:id])
     end
       
-#      if @db_id == 0
-#        @entity = Entity.find params[:id]
-#      else
-#        # Otherwise... we are strict!
-#        @entity = Entity.find(:conditions => ["id = ? AND database_id =?", params[:id], @db_id])
-#      end
-
-    # Only execute this block if its a call for the admin/entities
-    # This is because this code is about the views.
-    if params[:controller] == 'admin/entities'
-      @relations_to_parents = @entity.relations_to_parents
-      @relations_to_children = @entity.relations_to_children
-      details_to_add = @db.details - @entity.entity_details.collect{|ed| ed.detail}
-      @existing_details_available = details_to_add.length>0
-      @title = t("madb_admin_entity", :vars=> { 'entity'=> @entity.name} ) 
+    @relations_to_parents = @entity.relations_to_parents
+    @relations_to_parents_rows = @entity.relations_to_parents.collect do |r| 
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        { :source_id => params[:id], 
+          :madb_relation_name => r.from_child_to_parent_name, 
+          :madb_parent => r.parent.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => (r.child_side_type.name=="many" ? t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)), 
+          :id => r.id } 
     end
+    @relations_to_parents_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_parent, :label => t('madb_parent')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
+
+
+    @relations_to_children = @entity.relations_to_children
+    @relations_to_children_rows = @entity.relations_to_children.collect do |r| 
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        { :source_id => params[:id], 
+          :madb_relation_name => r.from_parent_to_child_name, 
+          :madb_child => r.child.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => ( r.child_side_type.name=="many" ?  t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)),
+          :id => r.id } 
+    end
+    @relations_to_children_columns = [ { :key => :madb_relation_name ,  :label => t('madb_relation_name')} , {:key => :madb_child, :label => t('madb_child')}, {:key => :madb_multiple_parents_allowed, :label => t('madb_multiple_parents_allowed') }, { :key => :madb_multiple_children_allowed, :label => t('madb_multiple_children_allowed')}, {:key => :id, :hidden => true}, {:key => :source_id, :hidden => true} ]
+
+    details_to_add = @db.details - @entity.entity_details.collect{|ed| ed.detail}
+    @existing_details_available = details_to_add.length>0
+    @title = t("madb_admin_entity", :vars=> { 'entity'=> @entity.name} ) 
   end
 
   # *Description*
@@ -461,43 +476,19 @@ class Admin::EntitiesController < ApplicationController
   #
   def create
     
-      @entity = Entity.new(params[:entity])
-      
-#      if @db_id > 0
-#        db = Database.find @db_id
-#      else
-#        format.html
-#        format.json { render :json => 'Bad Request', :status => 400 }
-#        format.xml { render :xml => 'Bad Request', :status => 400 }
-#      end
+    @entity = Entity.new(params[:entity])
 
-    # If its being called as a nested resource
-    if params[:database_id]
-      db = Database.find(params[:database_id])
-    else
-      # Or if its being called as standalone resource then you are expected 
-      # to provide database id of the entity in the params[:entity] or it 
-      # should be in the hidden input field with the name of db
-      #
-      if params[:entity][:database_id]
-        db = Database.find(params[:entity][:database_id])
+    respond_to do |format|
+      if @entity.save
+          format.html { 
+            flash['notice'] = 'Entity was successfully created.'
+            redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
+          }
+          format.js { render :json => { :status => 'success', :data => @entity} }
       else
-        # Otherwise the call is coming from the views in the hidden 
-        # input field in views/admin/entities/_form.rhtml
-        db = Database.find(params[:db])
+         format.html { render :action => 'new' if params[:controller] == 'admin/entities'}
+         format.js { render :json => { :status => 'failure', :data => @entity.errors.full_messages }}
       end
-    end
-
-    @entity.database = db
-    if @entity.save
-      flash['notice'] = 'Entity was successfully created.'
-      redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
-      @msg = 'OK'
-      @code = 201  
-    else
-      render :action => 'new' if params[:controller] == 'admin/entities'
-      @msg = 'Bad Request (Faild to save the entity)'
-      @code = 400
     end
   end
 
@@ -581,8 +572,10 @@ class Admin::EntitiesController < ApplicationController
     db = entity.database
     entity.destroy
     
-    redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
-    
+    respond_to do |format|
+      format.js { render :json => { :status => 'success' } }
+      format.html { redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'}
+    end
     
   end
 
@@ -844,7 +837,7 @@ class Admin::EntitiesController < ApplicationController
       @this_side = "child_id"
       @this_side_name = "child"
       @other_side = "parent_id"
-      @other_side_name = "parent_entity"
+      @other_side_name = "parent"
       @child_entity = Entity.find(params["child_id"]).name
     else
       @parent_id = params["parent_id"]
@@ -852,13 +845,14 @@ class Admin::EntitiesController < ApplicationController
       @this_side = "parent_id"
       @this_side_name = "parent"
       @other_side = "child_id"
-      @other_side_name = "child_entity"
+      @other_side_name = "child"
       @parent_entity = Entity.find(params["parent_id"]).name
     end
 
     @source = Entity.find( @source_id )
     @relation_types = RelationSideType.find :all
-    @entities = Entity.find(:all, :conditions => "database_id= #{@source.database.id}")
+    @entities = @source.database.entities
+    @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
     @parent_side_edit = true
     @child_side_edit = true
 
@@ -922,7 +916,20 @@ class Admin::EntitiesController < ApplicationController
           return
         end
       end
-      redirect_to :action  => "show" , :id => params["source_id"] and return if params[:controller] == 'admin/entities'
+    respond_to do |format|
+      format.html { redirect_to :action  => "show" , :id => params["source_id"] and return if params[:controller] == 'admin/entities' }
+      format.js { 
+        r = @relation
+        translation_vars = {'parent_entity' => r.parent.name, 'child_entity' => r.child.name}
+        data = { 
+          :madb_relation_name => r.from_parent_to_child_name, 
+          :madb_child => r.child.name, 
+          :madb_parent => r.parent.name, 
+          :madb_multiple_parents_allowed => (r.parent_side_type.name=="many" ? t("madb_yes_many_parents_allowed", :vars => translation_vars ):t("madb_no_only_one_parent_allowed", :vars => translation_vars)), 
+          :madb_multiple_children_allowed => ( r.child_side_type.name=="many" ?  t("madb_yes_many_children_allowed", :vars => translation_vars ):t("madb_no_only_one_child_allowed", :vars => translation_vars)),
+          :id => r.id } 
+        render :json => { :status => :success, :data => data }}
+    end
       #@msg = 'OK'
       #@code = 201 
   end
@@ -935,39 +942,18 @@ class Admin::EntitiesController < ApplicationController
   # FIXME: The format.html blocks do not execute....
   def delete_link
     #check if the link to delete id asked from a related entity (source_id)
-    params_validity_count = Relation.count(:conditions => "id = #{params["id"]} and (parent_id=#{params["source_id"]} or child_id=#{params["source_id"]})")
-    
-    
-      
-      if params_validity_count.to_i!=1
-        flash["error"]=t("madb_error_incorrect_data")
-        redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'
-        @msg = 'Bad Reqeust (Multiple relation records found.)' 
-        @code = 400
-        return
-      end
-      # The above condition to the params_validity_count is added because its
-      # only applicable when this function is being used from the web interface.
-      # For the REST calls, executing it is not possible neither meaningful.
-      # We need to have other means of validation for it.
-      
-      
-      
+    respond_to do |format|
       begin
         Relation.delete_all "id=#{params["id"]}"
       rescue Exception => e
         logger.warn("Error: #e")
-        render :text => "Could not delete relation #{e.to_s}", :status => 500 and return if params[:controller] == 'admin/entities'
-          @msg =  "Could not delete relation #{e.to_s}" 
-          @code = 500
-          return
+        format.html { render :text => "Could not delete relation #{e.to_s}", :status => 500 and return if params[:controller] == 'admin/entities'} 
+        format.js { render :json => { :status => :failure, data => nil} }
+        return
       end
-      redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'
-      @msg = 'OK' 
-      @code = 200
-      return
-      
-    
+      format.html { redirect_to :action => "show", :id => params["source_id"] and return if params[:controller] == 'admin/entities'}
+      format.js { render :json => {:status => :success, :data => nil } }
+    end
   end
 
   # *Description*
@@ -976,6 +962,7 @@ class Admin::EntitiesController < ApplicationController
   def edit_link
     begin
       source_entity = Entity.find params["source_id"]
+      @source = source_entity
       @relation = Relation.find params["id"]
     rescue
       flash["error"]=t("madb_error_incorrect_data")
@@ -996,15 +983,18 @@ class Admin::EntitiesController < ApplicationController
     end
     @relation_types = RelationSideType.find :all
     @entities = Entity.find(:all, :conditions => "database_id=#{source_entity.database_id}")
+    @entities_for_yui_select = @entities.collect{|e| { :label => e.name, :value =>  e.id.to_s}  }
     @source_id = params["source_id"]
     if @relation.parent == source_entity
       @this_side = "parent_id"
+      @this_side_name = "parent"
       @other_side = "child_id"
-      @other_side_name= "child_entity"
+      @other_side_name= "child"
     else
       @this_side="child_id"
+      @this_side_name="child"
       @other_side = "parent_id"
-      @other_side_name= "parent_entity"
+      @other_side_name= "parent"
     end
     @parent_side_edit = true if @relation.parent_side_type.name=='one'
     @child_side_edit = true if @relation.child_side_type.name=='one'

@@ -206,9 +206,7 @@
   <%= entities_table( :js_var => "dt",:entity => relation.send(type[:to]) , :controller => self, :content_box => "##{yui_linked_list}", 
           :source => url_for(
                   :controller => "entities", :action => "related_entities_list", :id => @instance.id, :format => 'js', :params => { :relation_id => relation.id, :type => type[:to].pluralize}),
-          :actions => ["view", "edit", "unlink"],
-          :data => { :relation_id => relation.id, :type => type[:to].pluralize, :shown_instance => @instance.id } 
-          )
+          :actions => ["view", "edit", "unlink"]          )
           
           %>
   Y.publish('madb:entity_unlinked', {broadcast: 2});

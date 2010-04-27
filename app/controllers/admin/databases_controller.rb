@@ -99,9 +99,13 @@ class Admin::DatabasesController < ApplicationController
   #   Finds all the databases associated with this account.
   #
   def list
-    if params[:name]
+    if params[:detail_filter]
       begin
-        @databases = Database.find(:first, :conditions => ["name = ?", params[:name]])
+        @databases = Database.find(:all, 
+          :offset => params['start-index'], 
+          :limit => params['max-results'], 
+          :conditions => ["account_id = ? and name like ?",   session["user"].account.id, '%'+params[:value_filter]+'%' ])
+        @databases_count = Database.count( :conditions => ["account_id = ? and name like ?",   session["user"].account.id, '%'+params[:value_filter]+'%' ])
       rescue ActiveRecord::RecordNotFound
         @databases = nil
       end
@@ -109,12 +113,23 @@ class Admin::DatabasesController < ApplicationController
       @databases = Database.find(:all,  
         :offset => params['start-index'], 
         :limit => params['max-results'], 
-        :conditions => ["account_id = ?", params[:account_id]])
+        :conditions => ["account_id = ?",  session["user"].account.id])
+      @databases_count = Database.count( :conditions => ["account_id = ?", params[:account_id]])
     else
       @databases = Database.find(:all, 
         :offset => params['start-index'], 
         :limit => params['max-results'], 
         :conditions => ["account_id = ?", session["user"].account.id])
+      @databases_count = Database.count( :conditions => ["account_id = ?", session["user"].account.id])
+    end
+    @list = @databases
+    @sort = params[:sort]
+    @dir = params[:dir]
+    @paginator = ApplicationController::Paginator.new self, @databases_count , @list.length, (@databases_count/@list.length)+1
+
+    respond_to do |format|
+      format.js { render :template => "entities/entities_list"  }
+      format.html {}
     end
   end
 
@@ -144,16 +159,17 @@ class Admin::DatabasesController < ApplicationController
     # Only pick set to current account if its being called from view.
     @database.account = session['user'].account if params[:controller] == 'admin/databases'
     
+    respond_to do |format|
       if @database.save
+        user_admin_dbs.reload
         flash['notice'] = 'Database was successfully created.'
-        redirect_to :action => 'list' if params[:controller] == 'admin/databases'
-        @msg = 'OK'
-        @code = 201
+        format.html { redirect_to :action => 'list' if params[:controller] == 'admin/databases' }
+        format.js { render :json => { :status => 'success', :data => @database} }
       else
-        render :action => 'new' if params[:controller] == 'admin/databases'
-        @msg = "Failed: #{@database.errors.full_messages.join(' ')}"
-        @code = 400
+        format.html {render :action => 'new' if params[:controller] == 'admin/databases'}
+        format.js { render :json => { :status => 'failure', :data => @database.errors.full_messages } }
       end
+    end
     
     
   end
@@ -183,7 +199,10 @@ class Admin::DatabasesController < ApplicationController
 
   def destroy
     Database.find(params[:id]).destroy
-    redirect_to :action => 'list' if params[:controller] == 'admin/databases'
+    respond_to do |format|
+      format.html { redirect_to :action => 'list' if params[:controller] == 'admin/databases' }
+      format.js { render :json => { :status => 'success' } } 
+    end
   end
 end
 

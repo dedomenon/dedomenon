@@ -25,6 +25,69 @@ YUI.add('madb-tables', function(Y) {
         FILTER_SUBMIT_TEMPLATE : '<button><%= t("madb_submit") %></button>',
         FILTER_RESET_TEMPLATE : '<button><%= t("madb_reset") %></button>',
         FILTER_CSV_ICON_TEMPLATE : '<%=image_tag("icon/big/floppy.png", :alt =>t("madb_export"), :title =>t("madb_export") ,   :class => "icon") %>',
+        VIEW_FORMATTER: function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/view.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id } ); 
+        },
+
+        EDIT_FORMATTER : function(cell, record, column, data) {
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/edit.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        DELETE_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/delete.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        LINK_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/use.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        UNLINK_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/unlink.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        MANAGE_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/edit.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
+        EXPORT_FORMATTER : function(cell, record, column, data) {
+// datasource utf-8 fix
+          var record_id;
+          if (record.getData().id)
+             record_id = record.getData().id;
+          else
+            record_id = record.getData()["['id']"];
+          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/floppy.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
+        },
         ATTRS : {
                   identifier : {
                     validator: Y.Lang.isString
@@ -56,10 +119,10 @@ YUI.add('madb-tables', function(Y) {
                     value: true,
                     validator: Y.Lang.isBoolean
                   },
-                  data : {
-                    value: {},
-                    validator: Y.Lang.isObject
-                    }
+                  display_filter: {
+                    value: true,
+                    validator: Y.Lang.isBoolean
+                  }
 
 
 
@@ -84,67 +147,58 @@ YUI.add('madb-tables', function(Y) {
         _datatable_container_id: null,
         _datatable: null,
         _data_source:null,
-        _view_formatter: function(cell, record, column, data) {
+         
 // datasource utf-8 fix
-          var record_id;
-          if (record.getData().id)
-             record_id = record.getData().id;
-          else
-            record_id = record.getData()["['id']"];
-          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/view.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id } ); 
-        }, 
-// datasource utf-8 fix
-        _edit_formatter : function(cell, record, column, data) {
-          var record_id;
-          if (record.getData().id)
-             record_id = record.getData().id;
-          else
-            record_id = record.getData()["['id']"];
-          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/edit.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
-        },
-        _delete_formatter : function(cell, record, column, data) {
-// datasource utf-8 fix
-          var record_id;
-          if (record.getData().id)
-             record_id = record.getData().id;
-          else
-            record_id = record.getData()["['id']"];
-          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/delete.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
-        },
-        _link_formatter : function(cell, record, column, data) {
-// datasource utf-8 fix
-          var record_id;
-          if (record.getData().id)
-             record_id = record.getData().id;
-          else
-            record_id = record.getData()["['id']"];
-          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/use.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
-        },
-        _unlink_formatter : function(cell, record, column, data) {
-// datasource utf-8 fix
-          var record_id;
-          if (record.getData().id)
-             record_id = record.getData().id;
-          else
-            record_id = record.getData()["['id']"];
-          cell.innerHTML=Y.substitute('<%=image_tag("icon/big/unlink.png", :border =>0,  :record_id => "{record_id}")%>', { record_id: record_id} ); 
-        },
+        
         getDataTable: function(){
           return this._datatable;
         },
         initializer: function(){
           Y.publish('madb:table_refreshed', {broadcast: 2});
 
-          var available_actions = { "view" : {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": this._view_formatter },
-                                    "edit": { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": this._edit_formatter  },
-                                    "delete": { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": this._delete_formatter  },
-                                    "link": { "width" :35, "key": "link_action_column",  "label" : "<%=t("madb_use")%>" , "className" : "action_cell", "formatter": this._link_formatter },
-                                    "unlink": { "width" :35, "key": "unlink_action_column",  "label" : "<%=t("madb_unlink")%>" , "className" : "action_cell", "formatter": this._unlink_formatter }};
+          var available_actions = { "view" : {  "width": 35, "key": "view_action_column",  "label": "<%=t("madb_view")%>", "className": "action_cell", "formatter": EntitiesTable.VIEW_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ h.record_id ;
+            } },
+                                    "edit": { "width" :35, "key": "edit_action_column",  "label": "<%=t("madb_edit")%>", "className" : "action_cell", "formatter": EntitiesTable.EDIT_FORMATTER, listener: function(h) {
+                window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ h.record_id ;
+            }  },
+                                    "delete": { "width" :35, "key": "delete_action_column",  "label" : "<%=t("madb_delete")%>", "className" : "action_cell", "formatter": EntitiesTable.DELETE_FORMATTER , listener: function(h) {
+                Y.log('start define delete listener');
+                var datatable = h.datatable ;
+                var first_column = datatable.getColumnSet().keys[0].key; 
+  // datasource utf-8 fix
+                var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
+                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: h.dt_widget.get('entity_name') , title: first_column  , value: first_value}  ))) {
+                  var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+h.record_id+'.js';
+                  var config = { method: 'POST', 
+                                 on: { success : function() { this.deleteRow(h.target); },
+                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
+                                 },
+                                 context: datatable
+                  };
+                  Y.log('will send delete request');
+                  Y.io(url, config);
+                }
+            } },
+                                    "link": { "width" :35, "key": "link_action_column",  "label" : "<%=t("madb_use")%>" , "className" : "action_cell", "formatter": EntitiesTable.LINK_FORMATTER, listener_setup: function( h) { h.dt_widget.publish('madb:link') }, listener: function(h) {
+                Y.fire('madb:link',h); 
+            } },
+                                    "unlink": { "width" :35, "key": "unlink_action_column",  "label" : "<%=t("madb_unlink")%>" , "className" : "action_cell", "formatter": EntitiesTable.UNLINK_FORMATTER, listener_setup: function(h) { h.dt_widget.publish('madb:unlink')} , listener: function(h) {
+                Y.fire('madb:unlink',h); 
+            } }};
 
+          this._available_actions = available_actions;
           var actions = [];
           Y.each( this.get("actions"), function(val, key, arr) {
-            actions.push(available_actions[val]);
+              if (Y.Lang.isString(val)) {
+                actions.push(available_actions[val]);
+              }
+              else
+              {
+                actions.push(val);
+              }
           });
+          this._actions = actions;
           // used to reference ourself when in an object definition
           var self = this;
           this._filter_select_label = Y.Node.create(EntitiesTable.FILTER_SELECT_LABEL_TEMPLATE);
@@ -248,7 +302,10 @@ YUI.add('madb-tables', function(Y) {
           }
         },
         renderUI: function() {
-          this._renderFilter();
+          if (this.get('display_filter'))
+          {
+            this._renderFilter();
+          }
           this._renderDataTable();
         },
         _renderFilter: function() {
@@ -263,7 +320,7 @@ YUI.add('madb-tables', function(Y) {
   the event listener get a hash as argument
 */
 
-        _define_action_listener: function(action, f) {
+        _define_action_listener: function(action) {
             var self = this;
             this._datatable.subscribe('cellClickEvent',function (oArgs) {
               var datatable = this;
@@ -276,8 +333,10 @@ YUI.add('madb-tables', function(Y) {
                  record_id = record.getData().id;
               else
                 record_id = record.getData()["['id']"];
-              if (column.key===action+'_action_column') {
-                Y.bind(f, this)({ record_id: record_id , record: record, target:target, column:column, target: target});
+              if (column.key===action.key) {
+                Y.log("binding listener for "+action.key );
+                Y.log(action.listener);
+                Y.bind(action.listener, this)({ record_id: record_id , record: record, target:target, column:column, datatable: datatable, dt_widget: self});
               }
           });
         },
@@ -291,65 +350,20 @@ YUI.add('madb-tables', function(Y) {
           }
           // Define the delete listener only if that action is displayed
           var datatable = this._datatable;
-          var self = this;
-          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="delete") {return true; } }) )
-          {
-            Y.log('will define delete listener');
-            this._define_action_listener("delete", function(h) {
-                Y.log('start define delete listener');
-                var first_column = this.getColumnSet().keys[0].key; 
-  // datasource utf-8 fix
-                var first_value = h.record.getData("['"+this.getColumnSet().keys[0].key+"']");
-                if (confirm(Y.madb.translate("<%= t("madb_really_delete_entity_question") %>", { entity: self.get('entity_name') , title: first_column  , value: first_value}  ))) {
-                  var url = '<%= url_for  :controller => "entities", :action => "delete"%>/'+h.record_id+'.js';
-                  var datatable = this;
-                  var config = { method: 'POST', 
-                                 on: { success : function() { this.deleteRow(h.target); },
-                                       failure : function() { alert("<%= t('madb_an_error_occured')%>");}
-                                 },
-                                 context: datatable
-                  };
-                  Y.log('will send delete request');
-                  Y.io(url, config);
-                }
-            })
-          }
-          // Define the view listener only if that action is displayed
-          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="view") {return true; } }) )
-          {
-            this._define_action_listener("view", function(h) {
-                window.location='<%= url_for({ :controller => "entities", :action => "view"})%>/'+ h.record_id ;
-            })
+          Y.log('will iterate over actions');
+          Y.log(this._actions);
+          Y.each( this._actions, Y.bind( function(val, key, arr) {
+              Y.log("iterating over actions");
+              Y.log(val);
+              if (val.listener_setup)
+              {
+                Y.log("calling listener_setup");
+                Y.log(val.listener_setup);
+                Y.bind(val.listener_setup, this)({ dt_widget: this });
+              }
+              this._define_action_listener(val);
+          }, this ));
 
-          }
-          // Define the edit listener only if that action is displayed
-          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="edit") {return true; } }) )
-          {
-            this._define_action_listener("edit", function(h) {
-                window.location='<%= url_for({ :controller => "entities", :action => "edit"})%>/'+ h.record_id ;
-            })
-    
-          };
-          // Define the unlink listener
-          // It only fires the madb:unlink event
-          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="unlink") {return true; } }) )
-          {
-            this.publish('madb:unlink');
-            this._define_action_listener("unlink", function(h) {
-                Y.fire('madb:unlink',h); 
-            })
-    
-          };
-          // Define the use listener
-          // It only fires the madb:use event
-          if (Y.Array.find(this.get("actions"), function(value, key, arr) { if (value=="link") {return true; } }) )
-          {
-            this.publish('madb:link');
-            this._define_action_listener("link", function(h) {
-                Y.fire('madb:link',h); 
-            })
-    
-          };
 
         },
         _requestBuilder: function (oState, oSelf) {

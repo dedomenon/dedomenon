@@ -24,8 +24,8 @@
 
     <%= render :partial => "entity_yui_form_fields", :locals => { :instance => @instance }  %>
 
-            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
-            fields.push ( {type : 'reset', label : 'Reset'});
+            fields.push ( { type : 'submit', label : '<%= escape_javascript(t('madb_submit')) %>', id: 'commit'});
+            fields.push ( {type : 'reset', label : '<%= escape_javascript(t('madb_reset'))%>'});
     Y.publish('madb:new_entity_linked', {broadcast: 2});
     Y.publish('madb:refresh_related', {broadcast: 2});
     <%= default_entity_form( :form_content_box => "#{@yui_form_id}", :success_callback =>%{ function(form,data){ Y.fire('madb:new_entity_linked', '#{@yui_form_id}', data  );    }   }, :failure_callback => %{ function(form, data){ Y.fire('madb:refresh_related', '#{@yui_form_id}'); }} , :form_action =>url_for(:action => "apply_link_to_new") , :upload => @entity.has_file_attachment_detail?) %>

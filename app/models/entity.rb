@@ -47,6 +47,7 @@ class Entity < ActiveRecord::Base
   has_many :instances, :dependent => :destroy
   belongs_to :database
   
+  validates_uniqueness_of :name
   attr_readonly   :id,
                   :database_id
                 

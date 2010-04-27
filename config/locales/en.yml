@@ -581,3 +581,4 @@ en:
     field_separator: Field separator
     file_requirements: The first row of your CSV file must contain the column's title and can't be a data row! It is currently impossible to import a CSV file withouth column headers.
   madb_form_submission_failed: The form submission was not successful 
+  madb_databases_list: Your databases

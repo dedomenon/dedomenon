@@ -46,7 +46,7 @@
 |pause|1000||
 |assertTextPresent|O'Conolly & Associates||
 |type|value_filter|e|
-|click|//button[.="madb_submit"]||
+|click|//div[@id="societe_list_div"]//button[.="madb_submit"]||
 |pause|1000||
 |assertTextPresent|valtech||
 |assertTextPresent|O-nuclear||
@@ -56,7 +56,7 @@
 |assertTextPresent|Experteam||
 |assertTextPresent|O'Conolly & Associates||
 |assertTextNotPresent|BARDAF||
-|click|//button[.='madb_reset']||
+|click|//div[@id="societe_list_div"]//button[.='madb_reset']||
 |pause|1000||
 |assertTextPresent|raphinou||
 |assertTextPresent|O-nuclear||

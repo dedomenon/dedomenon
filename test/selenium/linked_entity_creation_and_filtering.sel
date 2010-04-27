@@ -12,7 +12,7 @@
 |assertTitle|exact:madb_madb::madb_entity_details||
 |assertNotVisible|//div[@id="e_7_from_parent_to_child_linkable_list_container"]||
 |click|link=madb_add_new_related_entity||
-|pause|1000||
+|pause|2000||
 |assertVisible|//div[@id="e_7_from_parent_to_child_form"]||
 |type|nom[0][value]|nom test|
 |type|prenom[0][value]|prénom test|

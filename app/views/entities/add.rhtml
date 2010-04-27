@@ -3,19 +3,6 @@
 
 <h1><%= @title %> </h1>
   <div id="addition_form_div">
-<!-- OLD FORM <% unless true %>
-<form id="entity_form" method="post" action="<%= url_for :action => 'apply_edit'%>" <%= %{enctype="multipart/form-data"} if @entity.has_file_attachment_detail? %>>
-
-<input type="hidden" name="instance_id" value="-1">
-<input type="hidden" name="entity" value="<%=@entity.id%>">
-
-
-<%= render :partial => "entity_form", :object => @instance %>
-
-<%= submit_tag t("madb_submit")%>
-</form>
-
-<%end%> -->
 
 <div id="addition-form"> </div>
 
@@ -32,8 +19,8 @@
 
     <%= render :partial => "entity_yui_form_fields", :locals => { :instance => @instance }  %>
 
-            fields.push ( { type : 'submit', label : 'Submit', id: 'commit'});
-            fields.push ( {type : 'reset', label : 'Reset'});
+            fields.push ( { type : 'submit', label : '<%= escape_javascript(t('madb_submit')) %>', id: 'commit'});
+            fields.push ( {type : 'reset', label : '<%= escape_javascript(t('madb_reset'))%>'});
     <%= default_entity_form( :form_content_box => "addition-form", :success_callback =>%{ function(form,data){ Y.fire('madb:entity_created', '#{@list_id}', data  );    }   } , :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();

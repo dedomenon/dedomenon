@@ -9,10 +9,12 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |clickAndWait|commit||
 |clickAndWait|link=Tasks||
 |clickAndWait|//div[@id='menu']/div[5]/table/thead/tr/th/span/a[2]/img||
-|clickAndWait|link=madb_new_entity||
-|type|entity_name|Files|
-|clickAndWait|commit||
-|clickAndWait|link=madb_administrate||
+|pause|500||
+|type|//div[@id="addition_form"]//input|Files|
+|click|//button[@id="commit"]||
+|pause|1000||
+|assertElementPresent|//div[@id="entities_list"]//table/tbody[@class="yui-dt-data"]/tr/td/div[.="Files"]||
+|clickAndWait|//div[@id="entities_list"]//table/tbody[@class="yui-dt-data"]/tr/td[contains(@class,"yui-dt-col-manage_action_column")]/div||
 |clickAndWait|link=madb_add_new_detail||
 |type|details_name|SimpleFile|
 |clickAndWait|commit||

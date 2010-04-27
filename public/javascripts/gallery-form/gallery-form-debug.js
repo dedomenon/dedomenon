@@ -1510,6 +1510,10 @@ Y.mix(ChoiceField, {
                 return this._validateChoices(val);
             }
         },  
+        disabled : { 
+            validator : Y.Lang.isBoolean,
+            value: false
+        },  
 
         /** 
          * @attribute multiple
@@ -1589,6 +1593,13 @@ Y.extend(ChoiceField, Y.FormField, {
         }, this);
 
 		this._fieldNode = contentBox.all('input');
+                // disabling field
+                if (this.get('disabled'))
+                {
+                  this._fieldNode.setAttrs({
+			disabled : "disabled"
+                  });
+                }
     },
 
 	_syncFieldNode : function () {},
@@ -1647,7 +1658,13 @@ Y.mix(SelectField, {
 	 * @type String
 	 * @description The display title of the default choice in the select box
 	 */
-	DEFAULT_OPTION_TEXT : 'Choose one'
+	DEFAULT_OPTION_TEXT : 'Choose one',
+        ATTRS : {
+          with_default_option  : { 
+            validator : Y.Lang.isBoolean,
+            value : true } 
+
+        }
 });
 
 Y.extend(SelectField, Y.ChoiceField, {
@@ -1680,8 +1697,10 @@ Y.extend(SelectField, Y.ChoiceField, {
             elOption;
        
 		// Create the "Choose one" option
-		elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
-		this._fieldNode.appendChild(elOption);
+                if (this.get("with_default_option")) {
+                  elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
+                  this._fieldNode.appendChild(elOption);
+                }
 
 		Y.Array.each(choices, function (c, i, a) {
 			elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
@@ -1700,6 +1719,13 @@ Y.extend(SelectField, Y.ChoiceField, {
 		this._fieldNode.setAttrs({
 			multiple : (this.get('multiple') === true ? 'multiple' : '')
 		});
+                // disabling field
+                if (this.get('disabled'))
+                {
+                  this._fieldNode.setAttrs({
+			disabled : "disabled"
+                  });
+                }
 	},
 
 	/**
@@ -1708,22 +1734,37 @@ Y.extend(SelectField, Y.ChoiceField, {
 	 * @description Syncs the option nodes with the choices attribute
 	 */
 	_syncOptionNodes : function () {
-        var choices = this.get('choices'),
+                var choices = this.get('choices'),
 			contentBox = this.get('contentBox'),
 			options = contentBox.all('option'),
                         select  = contentBox.all('select');
 
 		options.each(function(node, index, nodeList) {
-			var label = (index === 0 ? SelectField.DEFAULT_OPTION_TEXT : choices[index - 1].label),
-				val = (index === 0 ? '' : choices[index - 1].value);
+                        
+                    var  label, val;
+                    if (this.get("with_default_option") ) { 
+                      label = (index === 0 ? SelectField.DEFAULT_OPTION_TEXT : choices[index - 1].label);
+                      val = (index === 0 ? '' : choices[index - 1].value);
+                    }
+                    else
+                    {
+                      label = choices[index].label;
+                      val = choices[index].value;
+                    }
 
-			node.setAttrs({
-				innerHTML : label,
-				value : val
-                                });
+                    node.setAttrs({
+                      innerHTML : label,
+                      value : val
+                      });
 		}, this);
 
-                select.set("value", this.get('value'));
+                if (Y.Lang.isNull(this.get('value')) && !this.get("with_default_option") ) {
+                  Y.log( this.get("with_default_option") ) ;
+                  Y.log("setting value to " + choices[0].value);
+                  this.set('value', choices[0].value);
+                }
+                select.set("value", this.get('value')); 
+                
 
 	},
     

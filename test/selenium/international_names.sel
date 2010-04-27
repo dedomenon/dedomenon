@@ -62,18 +62,19 @@ netscape.security.PrivilegeManager.enablePrivilege('UniversalFileRead');
 |assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner']/a[@href="/app/file_attachments/download/1218" and .="logo-dedomenon.png"]||
 |assertElementPresent|//tr[@record_id=100000 and @id="yui-rec10"]/td/div[@class='yui-dt-liner']/a[@href="http://www.nsa.be" and .="http://www.nsa.be"]||
 |clickAndWait|//tbody[@id='6']/tr[14]/td/span[2]/a[3]/img||
+|pause|1000||
 |click|link=madb_add_link_to_child_entity||
 |pause|1000||
-|type|relation_from_parent_to_child_name|accent's person|
-|type|relation_from_child_to_parent_name|person's accent|
+|type|//input[@id="p2c_name_field"]|accent's person|
+|type|//input[@id="c2p_name_field"]|person's accent|
 |select|relation[parent_side_type_id]|label=madb_yes_multiple_parent|
 |select|relation[child_side_type_id]|label=madb_yes_multiple_child|
-|click|commit||
+|click|//button[@id="commit"]||
 |click|link=Persons||
 |open|/app/entities/view/202||
 |pause|1500||
 |click|link=madb_link_to_existing_entity||
-|pause|1500||
+|pause|2000||
 |assertElementPresent|//div[@id="e_1001_from_child_to_parent_linkable_list"]//tbody[@class="yui-dt-data" and count(tr)=2]||
 |assertTextPresent|遨游||
 |assertTextPresent|मी काच खाऊ शकतो, मला ते दुखत नाही.||
