@@ -28,6 +28,9 @@
 |assertElementPresent|//div[@id="to_child_form"]//input[@id="c2p_name_field"]||
 |assertElementPresent|//div[@id="to_child_form"]//select[@name="relation[parent_side_type_id]"]||
 |assertElementPresent|//div[@id="to_child_form"]//select[@name="relation[child_side_type_id]"]||
+|click|//div[@id="to_child_form"]//button[.="madb_done"]||
+|assertNotVisible|//div[@id="to_child_form"]//select[@name="relation[child_id]"]||
+|click|//div[@id="to_child_form"]//button[.="madb_done"]||
 |select|//div[@id="to_child_form"]//select[@name="relation[child_id]"]|label=Items|
 |type|//div[@id="to_child_form"]//input[@id="p2c_name_field"]|has many items|
 |type|//div[@id="to_child_form"]//input[@id="c2p_name_field"]|belongs to an order|

@@ -418,6 +418,7 @@ Y.publish('madb:entity_created', { broadcast: 2} );
                                                update_translations(text);       });
       // Initialize translations when page first displayed
       update_translations( entities_options_labels[entities_list.get('value')] );
+      Y.on('madb:form_done', function(f) { f.get('contentBox').get('parentNode').get('parentNode').toggleClass('hidden') } );
 
 
 
