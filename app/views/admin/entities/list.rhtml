@@ -91,7 +91,7 @@
 
 
 <% boolean_formatter = "function(cell, record, column, data) { Y.log('in formatter'); Y.log(data); if (data===true) {cell.innerHTML='#{t("madb_yes")}' } else {cell.innerHTML='#{t("madb_no")}' }}" %>
-<%= datatable( :js_var => "dt", :ar_class => Entity, :controller => self, :content_box => "#entities_list", :source => url_for(:controller => "admin/entities",:action => "list", :format => "js", :database_id => params[:db] )+"&", :actions => "actions", :formatters => { "has_public_form" => boolean_formatter,"has_public_data" => boolean_formatter, "public_to_all" => boolean_formatter }  )%>
+<%= datatable( :js_var => "dt", :ar_class => Entity, :controller => self, :content_box => "#entities_list", :source => url_for(:controller => "admin/entities",:action => "list", :format => "js", :database_id => params[:db] )+"&", :display_filter => false, :actions => "actions", :formatters => { "has_public_form" => boolean_formatter,"has_public_data" => boolean_formatter, "public_to_all" => boolean_formatter }  )%>
     Y.Global.on('madb:entity_created', function(result) {
         Y.log('entity_created');
         record = result.data;

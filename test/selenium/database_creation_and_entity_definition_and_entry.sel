@@ -15,6 +15,7 @@
 |type|//div[@id="addition_form"]//input[@name="entity[name]"]|my newly created entity|
 |click|//div[@id="addition_form"]//button[@id="commit"]||
 |pause|1000||
+|assertElementNotPresent|//div[@id="entities_list"]/div/span[.="madb_filter_on "]||
 |clickAndWait|//table/tbody[@class="yui-dt-data"]/tr//img[@record_id="100001"  and @alt="Edit"]||
 |assertTitle|exact:madb_madb::madb_admin_entity||
 |clickAndWait|link=madb_add_new_detail||
