@@ -1,0 +1,2 @@
+# Here are cron jobs used by the application
+12 *    * * *   madb_user    cd $RAILS_HOME && RAILS_ENV=production rake madb:monitor_dj
