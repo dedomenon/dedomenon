@@ -112,4 +112,11 @@ class Notify < ActionMailer::Base
     @body["language"] = language 
     @body["url"] = url || CONFIG['app_url'].to_s
   end
+
+  def admin(subject, message)
+    @recipients = AppConfig.exception_recipients
+    @from       = CONFIG['email_from'].to_s
+    @subject    = subject
+    @body["message"]==message
+  end
 end
