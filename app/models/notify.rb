@@ -117,6 +117,6 @@ class Notify < ActionMailer::Base
     @recipients = AppConfig.exception_recipients
     @from       = CONFIG['email_from'].to_s
     @subject    = subject
-    @body["message"]==message
+    @body["message"]=message
   end
 end
