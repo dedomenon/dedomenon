@@ -96,3 +96,8 @@
 |assertElementPresent|//div[@id="e_7_from_parent_to_child_linked_list"]//tbody[@class="yui-dt-data"]/tr[1]/td/div[.="Maccione"]||
 |echo|and form still visible||
 |assertVisible|//div[@id="e_7_from_parent_to_child_form_container"]||
+|click|//div[@id="e_7_from_parent_to_child_child_div_add_child_links"]/span[@id="e_7_from_parent_to_child_child_div_add_new_child_link"]/a||
+|assertNotVisible|//div[@id="e_7_from_parent_to_child_form_container"]||
+|click|//div[@id="e_7_from_parent_to_child_child_div_add_child_links"]/span[@id="e_7_from_parent_to_child_child_div_add_new_child_link"]/a||
+|assertVisible|//div[@id="e_7_from_parent_to_child_form_container"]||
+|assertNotVisible|//div[@id="e_7_from_parent_to_child_linkable_list_container"]||

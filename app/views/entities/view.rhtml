@@ -42,9 +42,10 @@
     <% addition_element = "#{prefix}_addition" %>
     <% addition_button = "#{prefix}_button" %>
     <% list_id = "#{prefix}_#{type[:to]}_div" %>
+    <%# initialise variables%>
+    <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
+    <% link_from_many = relation.send("#{type[:from]}_side_type").name=='many' %>
           <h2><%= t(relation_name,{:scope => "account"}) %></h2>
-          <% link_to_many = relation.send("#{type[:to]}_side_type").name=='many' %>
-          <% link_from_many = relation.send("#{type[:from]}_side_type").name=='many' %>
 
           <script type="text/javascript">
             // initialize counter so we call the linkable table contructor only once
@@ -53,9 +54,24 @@
 
 
           <div id="<%=list_id%>_add_<%=type[:to]%>_links" class="button_style <%= addition_element %> <%= addition_button %>">
+            <%# button to Link to existing instance%>
             <span id="<%=list_id%>_add_existing_<%=type[:to]%>_link">
               <a href="#"><%= t("madb_link_to_existing_entity", { :vars => { 'entity' => t( relation.send(type[:to]).name , :scope => "account")}}) %></a>
             </span>
+            <%# button to Link to a new instance that will be created with the form displayed%>
+            <span class="" id="<%=list_id%>_add_new_<%=type[:to]%>_link">
+              <%=link_to_function t("madb_add_new_related_entity" ,{ :vars => { 'entity' => t(relation.send(type[:to]).name, :scope => "account")}}), "
+              if (document.getElementById('add_new_#{type[:to]}_#{prefix}_div').childNodes.length<1)
+              {
+              new Ajax.Updater('add_new_#{type[:to]}_#{prefix}_div',  '#{url_for :controller => "entities", :action => "link_to_new" , :id => relation.send(type[:to]).id, "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "add_new_#{type[:to]}_#{prefix}_div", :update => list_id}  ', {evalScripts:true, onComplete:function(request){
+               }
+              });
+              }
+              Element.toggleClassName('#{yui_form}_container', 'hidden');
+
+                "  %>
+              </span>
+          </div>
 
 
 <script type="text/javascript">
@@ -145,7 +161,10 @@
     count++;
     Y.one('#<%=yui_linkable_list%>_container').toggleClass('hidden');
   }
-  Y.on("click", display_list, "#<%=list_id%>_add_<%=type[:to]%>_links");
+
+  /* Handle clicks on buttons to add linked instances */
+  // Link to existing
+  Y.on("click", display_list, "#<%=list_id%>_add_existing_<%=type[:to]%>_link");
 <%end%>
 
 </script>
@@ -164,19 +183,6 @@
 
 
 
-            <span class="" id="<%=list_id%>_add_new_<%=type[:to]%>_link">
-              <%=link_to_function t("madb_add_new_related_entity" ,{ :vars => { 'entity' => t(relation.send(type[:to]).name, :scope => "account")}}), "
-              if (document.getElementById('add_new_#{type[:to]}_#{prefix}_div').childNodes.length<1)
-              {
-              new Ajax.Updater('add_new_#{type[:to]}_#{prefix}_div',  '#{url_for :controller => "entities", :action => "link_to_new" , :id => relation.send(type[:to]).id, "#{type[:from]}_id".to_sym => params["id"], :relation_id=> relation.id, :embedded => "add_new_#{type[:to]}_#{prefix}_div", :update => list_id}  ', {evalScripts:true, onComplete:function(request){
-               }
-              });
-              }
-              Element.toggleClassName('#{yui_form}_container', 'hidden');
-
-                "  %>
-              </span>
-          </div>
           
 <!-- Adding new linked instances -->
 <div id="<%= yui_linkable_list %>_container" class="tool_in_page hidden <%= addition_element %>">
