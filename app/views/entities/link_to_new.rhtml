@@ -1,5 +1,7 @@
-
+<%if params[:format]!='js' %>
 <script type="text/javascript">
+<%end %>
+
 <% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom']) do %>
     // Create a Field Object manually
     var fields = [ ];
@@ -33,7 +35,10 @@
     f.render();
     f.focus();
 <% end %>
-</script>
 
+
+<%if params[:format]!='js' %>
+</script>
+<% end %>
 
 
