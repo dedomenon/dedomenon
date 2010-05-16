@@ -139,6 +139,8 @@ module LoginSystem
         format.html do
           redirect_to :controller=>"/authentication", :action =>"login"
         end
+
+        format.js { render :nothing => true , :status => 401 } 
         #format.any(:json, :xml) do
         #  request_http_basic_authentication 'Web Password'
         #end
