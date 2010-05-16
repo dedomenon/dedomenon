@@ -482,7 +482,7 @@ class Admin::EntitiesController < ApplicationController
       if @entity.save
           format.html { 
             flash['notice'] = 'Entity was successfully created.'
-            redirect_to :action => 'list', :db => db if params[:controller] == 'admin/entities'
+            redirect_to :action => 'list', :db => params[:database_id] if params[:controller] == 'admin/entities'
           }
           format.js { render :json => { :status => 'success', :data => @entity} }
       else
