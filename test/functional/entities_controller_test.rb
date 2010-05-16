@@ -133,7 +133,7 @@ class EntitiesControllerTest < ActionController::TestCase
 
      #Check contacts adding link
      assert_tag( :tag => "span",  :child => { :tag=> "a", :content => "madb_link_to_existing_entity"})
-     assert_tag( :tag => "span",  :child => {:tag=> "a", :content => "madb_add_new_related_entity"})
+     assert_tag( :tag => "span",  :child => { :tag=> "a", :content => "madb_add_new_related_entity"})
 
      #presence of div to display list of available for link
      assert_tag :tag => "div", :attributes => { :id => "e_7_from_parent_to_child_linkable_list_container"}  

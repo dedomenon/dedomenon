@@ -63,22 +63,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_template  'list'
     # we have 11 entities (NOW ITS 18)
     assert_equal 14, assigns["entities"].length
-    # test first 2 entities
-    # These were the following two when their were 11 records,
-    # They are now something else.
-    #assert_equal "societe", assigns["entities"][0].name
-    #assert_equal "contacts", assigns["entities"][1].name
-    #assert_equal "convention_partenaire", assigns["entities"][0].name
-    #assert_equal "Books", assigns["entities"][0].name
-    assert_equal "societe", assigns["entities"][0].name
-    #assert_equal "convention_partenaire", assigns["entities"][1].name
-    assert_equal "contacts", assigns["entities"][1].name
-    
-    #show, edit, destroy lonks for the first entity
-    assert_tag :tag=> "a", :attributes => { :href=> Regexp.new("/admin/entities/show/11") }
-    assert_tag :tag=> "a", :attributes => { :href=> Regexp.new("/admin/entities/destroy/11") }
-    #new link
-    assert_tag :tag=> "a", :attributes => { :href=> Regexp.new("/admin/entities/new.db=6") }
+    assert_equal ["Accents", "Books", "coaching", "commentaires_et_suivi", "contacts", "convention_partenaire", "documentation", "engagement", "formation", "Persons", "societe", "stage", "tutoriat", "visite"] , assigns["entities"].collect{|e| e.name}
     
   end
   
@@ -118,12 +103,9 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     # adding details links
     assert_tag :tag => "a", :content => "madb_link_existing_detail", :attributes => { :href => Regexp.new("/admin/entities/add_existing_choose/11")}
     assert_tag :tag => "a", :content => "madb_add_new_detail", :attributes => { :href => Regexp.new("/admin/details/new.for_entity=11")}
-    #links edition
-    assert_tag :tag => "a", :child => { :tag=> "img", :attributes => { :src => /edit.png/}}, :attributes => { :href => Regexp.new("/admin/entities/edit_link/7.source_id=11")}
-    assert_tag :tag => "a", :child => { :tag => 'img', :attributes => { :src => /images\/icon\/big\/delete.png/}}, :attributes => { :href => Regexp.new("/admin/entities/delete_link/7.source_id=11")}
     #adding link to child
-    assert_tag :tag => "a", :content => "madb_add_link_to_child_entity", :attributes => { :href => Regexp.new("/admin/entities/define_link.parent_id=11")}
-    assert_tag :tag => "a", :content => "madb_add_link_to_parent_entity", :attributes => { :href => Regexp.new("/admin/entities/define_link.child_id=11")}
+    assert_tag :tag => "a", :content => "madb_add_link_to_child_entity", :attributes => { :href => "#"}
+    assert_tag :tag => "a", :content => "madb_add_link_to_parent_entity", :attributes => { :href => "#"}
   end
 
   # *Description*
@@ -169,7 +151,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
 
   def test_reorder_details_no_user
     xhr :post, :reorder_details , { :id=> 11, :entity_details=>[61, 62, 68,63, 64, 65, 66, 67,  100, 101]  }
-    assert_response :redirect
+    assert_response 401
   end
   
   def test_reorder_details
@@ -318,12 +300,12 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "madb_error_incorrect_data",flash["error"]
   end
   
-  def test_delete_existing_link_but_with_wrong_source_id
+  def test_delete_existing_link_but_with_wrong_user_id
     #---------------------------------------------------
     pre_links_count = Link.count
     pre_links_count = Link.count
     pre_relations_count = Relation.count
-    get :delete_link, { :id => 7, :source_id => 19}, { 'user' => User.find_by_id(@db1_admin_user_id)}  
+    get :delete_link, { :id => 7}, { 'user' => User.find_by_id(@db2_admin_user_id)}  
     post_links_count = Link.count
     post_relations_count = Relation.count
 
@@ -354,31 +336,18 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "parent_id", assigns["this_side"]
     #other shide is child
     assert_equal "child_id", assigns["other_side"]
-    assert_equal "child_entity", assigns["other_side_name"]
+    assert_equal "child", assigns["other_side_name"]
     #no side is editable
     assert !assigns["parent_side_edit"], "parent side expected to be not editable"
     assert !assigns["child_side_edit"], "child side expected to be not editable"
 
   
-    #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
 
-    #entities ddl is read only and displays correct value
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "12", :selected => "selected"}} 
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]", :value => "contact_de_la_societe"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]", :value => "société de"} 
-    #parent_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
-    #child_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
-
-  
   end
 
   def test_edit_link_from_parent_to_child_one_to_one
@@ -393,33 +362,18 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "parent_id", assigns["this_side"]
     #other shide is child
     assert_equal "child_id", assigns["other_side"]
-    assert_equal "child_entity", assigns["other_side_name"]
+    assert_equal "child", assigns["other_side_name"]
     #no side is editable
     assert assigns["parent_side_edit"], "parent side expected to be not editable"
     assert assigns["child_side_edit"], "child side expected to be not editable"
 
   
     #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
-
-    #entities ddl is read only and displays correct value
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "12", :selected => "selected"}} 
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]", :value => "contact_prefere"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]", :value => "contact prefere de"} 
-    #parent_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]" , :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    #child_side_ddl
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-
-  
   end
 
   def test_edit_link_from_child_to_parent_many_to_many
@@ -433,29 +387,17 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "child_id", assigns["this_side"]
     #other side is parent
     assert_equal "parent_id", assigns["other_side"]
-    assert_equal "parent_entity", assigns["other_side_name"]
+    assert_equal "parent", assigns["other_side_name"]
     #no side is editable
     assert !assigns["parent_side_edit"], "parent side expected to be not editable"
     assert !assigns["child_side_edit"], "child side expected to be not editable"
 
   
-    #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
-
-    #entities ddl is read only and displays correct value
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "11", :selected => "selected"}} 
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]", :value => "contact_de_la_societe"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]", :value => "société de"} 
-    #parent_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
-    #child_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
 
   
   end
@@ -472,35 +414,17 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "child_id", assigns["this_side"]
     #other shide is child
     assert_equal "parent_id", assigns["other_side"]
-    assert_equal "parent_entity", assigns["other_side_name"]
+    assert_equal "parent", assigns["other_side_name"]
     #both sides are editable
     assert assigns["parent_side_edit"], "parent side expected to be not editable"
     assert assigns["child_side_edit"], "child side expected to be not editable"
 
   
-    #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
-
-    #entities ddl is read only and displays correct value
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "11", :selected => "selected"}} 
-    
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]", :value => "contact_prefere"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]", :value => "contact prefere de"} 
-    
-    #parent_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]" , :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    #child_side_ddl
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "1", :selected => "selected"}} 
-
-  
   end
 
   def test_edit_link_from_bad_source_id
@@ -640,32 +564,17 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "parent_id", assigns["this_side"]
     #other shide is child
     assert_equal "child_id", assigns["other_side"]
-    assert_equal "child_entity", assigns["other_side_name"]
+    assert_equal "child", assigns["other_side_name"]
     #no side is editable
     assert assigns["parent_side_edit"], "parent side expected to be not editable"
     assert assigns["child_side_edit"], "child side expected to be not editable"
 
   
-    #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
-
-    #entities ddl is read only and displays correct value
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[child_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "12", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "12"}} 
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]"} 
-    #parent_side_ddl
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "2"}} 
-    #child_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "2"}} 
-
   
   end
 
@@ -680,32 +589,18 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     assert_equal "child_id", assigns["this_side"]
     #other shide is parent
     assert_equal "parent_id", assigns["other_side"]
-    assert_equal "parent_entity", assigns["other_side_name"]
+    assert_equal "parent", assigns["other_side_name"]
     #editable sides
     assert assigns["parent_side_edit"], "parent side expected to be not editable"
     assert assigns["child_side_edit"], "child side expected to be not editable"
 
   
     #form tag
-    assert_tag :tag => "form", :attributes=> { :action => /add_link/, :method => "post"}
     #11 entities from this database are selected for the ddl
     assert_equal 14, assigns["entities"].length
     dbs_from_entities=assigns["entities"].collect{|e| e.database_id}.uniq
     assert_equal  1, dbs_from_entities.length 
     assert_equal  6, dbs_from_entities[0]
-
-    #entities ddl is read only and displays correct value
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[parent_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "12", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "12"}} 
-    ##relation_name
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_parent_to_child_name]"} 
-    assert_tag :tag => "input", :attributes => { :name =>"relation[from_child_to_parent_name]"} 
-    #parent_side_ddl
-    assert_no_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]", :disabled => "disabled"}, :child => { :tag => "option", :attributes=>{ :value=> "2", :selected => "selected"}} 
-    assert_tag :tag => "select", :attributes => { :name=>"relation[parent_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "2"}} 
-    #child_side_ddl
-    assert_tag :tag => "select", :attributes => { :name=>"relation[child_side_type_id]"}, :child => { :tag => "option", :attributes=>{ :value=> "2"}} 
-
   
   end
   ##################
@@ -745,7 +640,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     def test_create
       pre_entities_count = Entity.count
       pre_entities_db6_count = Entity.count(:conditions => "database_id=6")
-      post :create, {:entity=>{"name"=>"test-entity"}, :db => 6},{ 'user' => User.find_by_id(@db1_admin_user_id)}
+      post :create, {:entity=>{"name"=>"test-entity", :database_id => 6} },{ 'user' => User.find_by_id(@db1_admin_user_id)}
       post_entities_count = Entity.count
       post_entities_db6_count = Entity.count(:conditions => "database_id=6")
 
@@ -971,7 +866,7 @@ class Admin::EntitiesControllerTest < ActionController::TestCase
     def test_set_form_public_accessible_no_user
 
       xhr :post, :toggle_public_form, { :id=> 11, :value => "true" }
-      assert_response :redirect
+      assert_response 401
     end
      
     def test_set_form_public_accessible

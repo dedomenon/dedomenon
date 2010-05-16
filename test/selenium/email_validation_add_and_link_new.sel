@@ -32,6 +32,7 @@
 |pause|1500||
 |clickAndWait|//img[@record_id= '71' and @alt="View"]||
 |assertTitle|exact:madb_madb::madb_entity_details||
+|pause|500||
 |click|link=madb_add_new_related_entity||
 |pause|1000||
 |focus|//input[@name="company_email[0][value]"]||
