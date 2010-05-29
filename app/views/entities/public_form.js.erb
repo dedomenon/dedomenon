@@ -2,7 +2,7 @@ if (typeof YUI == 'undefined')
 {
 var s = document.createElement("script");
 s.type="text/javascript";
-s.src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js";
+s.src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js";
 document.getElementsByTagName("head").item(0).appendChild(s);
 
   var f = function(){
@@ -15,12 +15,18 @@ document.getElementsByTagName("head").item(0).appendChild(s);
 
 <% yui_block( :modules => [ "gallery-form", "madb" ], :use => [ 'gallery-form', 'anim', 'madb','event-custom', 'io-xdr']) do %>
     // Create a Field Object manually
-//   Flash XDR config
+
+  <%# don't apply style only if it is explicitely disabled %>
+  <% unless ["f", "no" ].include? params[:with_style] %>
+    Y.Get.css('<%= CONFIG['app_base_uri'].to_s %>/stylesheets/embedded_forms.css');
+  <% end %>
+    
+    //   Flash XDR config
        var xdrConfig = { 
          id: 'flash',
          yid: Y.id,
          // With YUI 3.1, we can enter a remote URL here
-         src:'/IO.swf'
+         src:'http://real.us.yimg.com/lib/yui/3.1.1/build/io/io.swf'
        };
        Y.io.transport(xdrConfig);
        Y.on('io:xdrReady', function() {
@@ -38,7 +44,7 @@ document.getElementsByTagName("head").item(0).appendChild(s);
 
             fields.push ( { type : 'submit', label : '<%= t('madb_submit')%>', id: 'commit'});
             fields.push ( {type : 'reset', label : '<%= t('madb_reset')%>'});
-    <%= default_entity_form( :form_content_box => "form", :success_callback => "function(f,data) { f.get('contentBox').addClass('hidden'); Y.one('#insertion_successful').removeClass('hidden');}", :upload => @entity.has_file_attachment_detail?) %>
+    <%= default_entity_form( :form_content_box => "form", :success_callback => "function(f,data) { f.get('contentBox').addClass('hidden').get('parentNode').insert('Thanks! Merci! Danke! Dank u! Gracias!');}", :upload => @entity.has_file_attachment_detail?) %>
  
     f.render();
     f.focus();

@@ -1,0 +1,48 @@
+
+.yui3-form-field label {
+  float:left;
+  width:30%;
+  text-transform: capitalize;
+  line-height: 20px;
+}
+
+.yui3-form-field {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-width: 1px 0 0 0 ;
+	border-style: dotted;
+  
+}
+.yui3-hidden-field {
+  display:none;
+  border-style: none;
+}
+.yui3-button{
+  display: inline-block;
+}
+
+.yui3-form-field input:focus, textarea:focus {
+	border: 1px solid #69C;
+}
+.yui3-form-field input, select, textarea, button {
+	border: 1px solid #036;
+}
+.yui3-form-field .checked_form_value, .filtered {
+	border-color: #036;
+}
+.hidden {
+  display: none;
+}
+.yui3-form-field .valid_form_value {
+	background: #FFF;
+}
+
+.yui3-form-field .invalid_form_value {
+	border: 1px solid #000;
+	background: Red;
+	color: White;
+}   
+
+.yui3-form-field .unchecked_form_value {
+	border: 1px solid Red;
+}

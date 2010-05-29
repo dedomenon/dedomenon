@@ -21,5 +21,5 @@ email_from: system@myowndb.com
 admin_email: admin@myowndb.com
 server_env: development
 app_url: http://213.193.145.254:3456/authentication
-app_base_uri: http://213.193.145.254:3456/
+app_base_uri: http://mdb:3000
 app_name: MADB
