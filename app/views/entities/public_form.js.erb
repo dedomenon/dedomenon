@@ -18,7 +18,7 @@ document.getElementsByTagName("head").item(0).appendChild(s);
 
   <%# don't apply style only if it is explicitely disabled %>
   <% unless ["f", "no" ].include? params[:with_style] %>
-    Y.Get.css('<%= CONFIG['app_base_uri'].to_s %>/stylesheets/embedded_forms.css');
+    Y.Get.css('http://<%= AppConfig.app_host %>/stylesheets/embedded_forms.css');
   <% end %>
     
     //   Flash XDR config
