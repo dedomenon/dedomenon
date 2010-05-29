@@ -204,7 +204,7 @@ module ApplicationHelper
    h[:upload]=false if h[:upload].nil?
    h[:success_callback] ='function(form,data){}'  if h[:success_callback].nil?
    h[:failure_callback] ='function(form,data){}'  if h[:failure_callback].nil?
-   h[:form_action] = url_for(:controller => :entities, :action=> "apply_edit") if h[:form_action].nil?
+   h[:form_action] = url_for(:host => AppConfig.app_host, :controller => :entities, :action=> "apply_edit") if h[:form_action].nil?
 
    #listen to complete event if this is an upload form
    #listent to success for normal forms
