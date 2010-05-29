@@ -112,9 +112,7 @@ Y.mix(Form, {
                 skipValidationBeforeSubmit : {
 			value : false,
 			validator : Y.Lang.isBoolean
-                },
-	},
-
+                }},
 	/**
 	 * @property Form.HTML_PARSER
 	 * @type Object
@@ -481,7 +479,7 @@ Y.extend(Form, Y.Widget, {
 				form : {
 					id : this._formNode,
                                         upload : (this.get('encodingType') === Form.MULTIPART_ENCODED)
-				},
+				}
 			};
 			
 			transaction = Y.io(formAction, cfg);
