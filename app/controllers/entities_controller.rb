@@ -43,6 +43,9 @@ class EntitiesController < ApplicationController
   
   # For the actions of list, view and add, a return url is set.
   before_filter :set_return_url , :only => ["list", "view", "add"]
+
+  # For cross domain requests, accept handle the OPTIONS request
+  before_filter :handle_options_request, :only => ["apply_edit","check_detail_value_validity"] 
   
   layout :determine_layout
 
@@ -703,13 +706,6 @@ class EntitiesController < ApplicationController
   end
   
   def check_detail_value_validity
-    if request.env["REQUEST_METHOD"]=="OPTIONS"
-      headers["Access-Control-Allow-Origin"]="*"
-      headers["Access-Control-Allow-Methods"] = "*"
-      headers["Access-Control-Allow-Headers"] = "x-requested-with"
-      render :nothing => true
-      return
-    end
     #called by javascript form observer
     detail = Detail.find params["detail_id"]
     value = params["detail_value"]
@@ -777,6 +773,15 @@ class EntitiesController < ApplicationController
   end
   def list_length
      params[:results].nil? ? MadbSettings.list_length : params[:results].to_i
+  end
+  def handle_options_request
+    if request.env["REQUEST_METHOD"]=="OPTIONS"
+      headers["Access-Control-Allow-Origin"]="*"
+      headers["Access-Control-Allow-Methods"] = "*"
+      headers["Access-Control-Allow-Headers"] = "x-requested-with"
+      render :nothing => true
+      return
+    end
   end
 
 end
